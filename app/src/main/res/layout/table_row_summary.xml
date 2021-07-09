@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tableRow"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="#49515c">
+
+    <TextView
+        android:id="@+id/serialNumberTextView"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:paddingStart="10dp"
+        android:text="1"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/distributorNameTextView"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="5dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:gravity="start"
+        android:maxLines="1"
+        android:paddingStart="10dp"
+        android:singleLine="true"
+        android:text="TextView"
+        android:textColor="#d2b566"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/totalVsiTextView"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_vertical|end"
+        android:paddingEnd="10dp"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/activeVansTextView"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_vertical|end"
+        android:paddingEnd="10dp"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/prospectTextView"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_vertical|end"
+        android:paddingRight="10dp"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/startTimeTextView"
+        android:layout_width="125dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_vertical|end"
+        android:paddingRight="10dp"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/lastActivityTextView"
+        android:layout_width="125dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right|center_vertical|end"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/totalOutlatesTextView"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right|center_vertical|end"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/totalSkuTextView"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right|center_vertical|end"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/totalQuantityTextView"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right|center_vertical|end"
+        android:paddingRight="5dp"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/totalSalesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#3f4152"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right|center_vertical|end"
+        android:text="TextView"
+        android:textColor="#78FA5A"
+        android:textSize="18sp" />
+</TableRow>
+
+
+

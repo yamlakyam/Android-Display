@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tQty" type="id" />
+    <item name="tTotalSales" type="id" />
+    <item name="tSKUcount" type="id" />
+    <item name="tOutlets" type="id" />
+    <item name="tLastSeen" type="id" />
+    <item name="tStartTime" type="id" />
+    <item name="tProspect" type="id" />
+    <item name="tactive" type="id" />
+    <item name="tVSIcount" type="id" />
+    <item name="tdistributor" type="id" />
+    <item name="tVsN" type="id" />
+</resources>

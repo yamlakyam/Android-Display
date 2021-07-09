@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/distributorTableFragment">
+
+    <fragment
+        android:id="@+id/summaryTableFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.SummaryTableFragment"
+        android:label="fragment_summary_table"
+        tools:layout="@layout/fragment_summary_table" />
+    <fragment
+        android:id="@+id/distributorTableFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.DistributorTableFragment"
+        android:label="fragment_distributor_table"
+        tools:layout="@layout/fragment_distributor_table" />
+    <fragment
+        android:id="@+id/vsmTransactionFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.VsmTransactionFragment"
+        android:label="fragment_vsm_transaction"
+        tools:layout="@layout/fragment_vsm_transaction" />
+    <fragment
+        android:id="@+id/summarizedByArticleFragment"
+        android:name="com.cnet.VisualAnalysis.SummarizedByArticleFragment"
+        android:label="fragment_summarized_by_article"
+        tools:layout="@layout/fragment_summarized_by_article" />
+    <fragment
+        android:id="@+id/summarizedByArticleParentCategFragment"
+        android:name="com.cnet.VisualAnalysis.SummarizedByArticleParentCategFragment"
+        android:label="fragment_summarized_by_article_parent_categ"
+        tools:layout="@layout/fragment_summarized_by_article_parent_categ" />
+    <fragment
+        android:id="@+id/summarizedByArticleChildCategFragment"
+        android:name="com.cnet.VisualAnalysis.SummarizedByArticleChildCategFragment"
+        android:label="fragment_summarized_by_article_child_categ"
+        tools:layout="@layout/fragment_summarized_by_article_child_categ" />
+    <fragment
+        android:id="@+id/vsmCardFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.VsmCardFragment"
+        android:label="fragment_vsm_card"
+        tools:layout="@layout/fragment_vsm_card" />
+</navigation>
