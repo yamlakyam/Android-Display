@@ -8,10 +8,12 @@ import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 public class HandleDataChangeThread extends Thread {
     Handler changeDataHandler;
     int numberOfDistributors;
+    int numberOfSeconds;
 
-    public HandleDataChangeThread( Handler changeDataHandler, int numberOfDistributors){
+    public HandleDataChangeThread( Handler changeDataHandler, int numberOfDistributors, int numberOfSeconds){
         this.changeDataHandler = changeDataHandler;
         this.numberOfDistributors = numberOfDistributors;
+        this.numberOfSeconds = numberOfSeconds;
     }
 
     public void run() {
@@ -21,7 +23,7 @@ public class HandleDataChangeThread extends Thread {
             message.obj = String.valueOf(i);
             changeDataHandler.sendMessage(message);
             try {
-                Thread.sleep(20000);
+                Thread.sleep(numberOfSeconds * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

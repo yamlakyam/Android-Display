@@ -32,7 +32,7 @@
                     android:id="@+id/distributorVsmCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/advent_pro_medium"
+                    android:fontFamily="@font/advent_pro_thin"
                     android:text="TextView"
                     android:textColor="#976454"
                     android:textSize="20sp" />
@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:fontFamily="@font/advent_pro_medium"
+                    android:fontFamily="@font/advent_pro_thin"
                     android:text="TextView"
                     android:textColor="#976454"
                     android:textSize="20sp" />
@@ -64,7 +64,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="Outlet:"
                         android:textColor="#dfdfcf"
                         android:textSize="18dp" />
@@ -74,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
                         android:textColor="#6ddb3a"
                         android:textSize="18dp" />
@@ -91,7 +91,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="Last Active:"
                         android:textColor="#dfdfcf"
                         android:textSize="18sp" />
@@ -101,7 +101,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
                         android:textColor="#6ddb3a"
                         android:textSize="18sp" />
@@ -118,7 +118,7 @@
                         android:id="@+id/textView26"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="V. Count:"
                         android:textColor="#dfdfcf"
                         android:textSize="18sp" />
@@ -128,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
                         android:textColor="#6ddb3a"
                         android:textSize="18sp" />
@@ -145,7 +145,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="Total Sales:"
                         android:textColor="#dfdfcf"
                         android:textSize="18sp" />
@@ -155,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_medium"
+                        android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
                         android:textColor="#6ddb3a"
                         android:textSize="18sp" />

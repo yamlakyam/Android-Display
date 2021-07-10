@@ -144,7 +144,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
             }
         };
 
-        HandleDataChangeThread handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, jsonArray.length());
+        HandleDataChangeThread handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, jsonArray.length(),30);
         handleDataChangeThread.start();
 
     }
