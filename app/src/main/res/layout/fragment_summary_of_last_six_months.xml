@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardBackgroundDark"
-    tools:context=".Fragments.SummarizedByArticleFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardBackgroundDark">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/titleSummaryByArticle"
+        android:id="@+id/titleSummaryOfLast6Months"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
@@ -17,58 +16,58 @@
         app:cardBackgroundColor="@color/cardBackgroundDark2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/SummaryOfLast6MonthsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Summarized By Article"
+            android:text="Summary of Last Six Months"
             android:textColor="#FFFFFF"
             android:textSize="34sp" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/pCardSummByArticle"
+        android:id="@+id/pCardSummOfLast6Months"
         android:layout_width="400dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:cardBackgroundColor="@color/cardBackgroundDark2"
-        app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticle"
+        app:layout_constraintBottom_toTopOf="@+id/bCardSummOfLast6Months"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticle">
+        app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast6Months">
 
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pchartsumByArticle"
+            android:id="@+id/pchartsummaryOfLast6Months"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal|center_vertical" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/bCardSummByArticle"
+        android:id="@+id/bCardSummOfLast6Months"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/cardBackgroundDark2"
-        app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
-        app:layout_constraintEnd_toEndOf="@+id/pCardSummByArticle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pCardSummOfLast6Months"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pCardSummByArticle">
+        app:layout_constraintTop_toBottomOf="@+id/pCardSummOfLast6Months">
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bChartSumByArticle"
+            android:id="@+id/bChartSummaryOfLast6Months"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/tCardSummByArticle"
+        android:id="@+id/tCardSummOfLast6Months"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -76,19 +75,17 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/cardBackgroundDark2"
-        app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/pCardSummByArticle"
-        app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticle">
-
-
+        app:layout_constraintStart_toEndOf="@+id/pCardSummOfLast6Months"
+        app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast6Months" >
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/summaryByParentArticleSN"
+                android:id="@+id/summaryOfLast6MonthsSN"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -98,79 +95,43 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader1"
+                android:id="@+id/summaryOfLastLast6MonthsHeader2"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="Product Name"
+                android:text="Month"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader2"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:text="Quantity"
-                android:textColor="#ffffff"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/summaryByArticleHeader3"
+                android:id="@+id/summaryOfLast6MonthsHeader3"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:gravity="end"
-                android:text="Unit Amount"
+                android:text="Amount"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader3"
+                android:id="@+id/summaryOfLast6MonthsHeader4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="Total Amount"
+                android:text="DateTime"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
         </TableRow>
 
 
         <TableLayout
-            android:id="@+id/summaryByArticleTableLayout"
+            android:id="@+id/summaryOfLast6MonthsTableLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"
             android:divider="?android:listDivider"
             android:showDividers="middle" />
+
     </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/scrollingRTextCard"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tCardSummByArticle">
-
-        <TextView
-            android:id="@+id/scrollingArticleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="                                                                                                                                 Single line text view that scrolls horizontally if the text is way too long                                                            "
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </com.google.android.material.card.MaterialCardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

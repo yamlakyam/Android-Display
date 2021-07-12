@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:background="#49515c"
+    android:gravity="center_vertical">
+
+
+    <TextView
+        android:id="@+id/tableRowArticleProperty1"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="start"
+        android:text="TextView"
+        android:textColor="#5472e8"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tableRowArticleProperty2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#27adb9"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tableRowArticleProperty3"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="TextView"
+        android:textColor="#27adb9"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tableRowArticleProperty4"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="TextView"
+        android:textColor="#27adb9"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tableRowArticleProperty5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:background="#3f4152"
+        android:gravity="end"
+        android:text="TextView"
+        android:textColor="#27adb9"
+        android:textSize="18sp" />
+</TableRow>

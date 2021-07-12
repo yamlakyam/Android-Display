@@ -286,8 +286,8 @@ public class UtilityFunctions {
             } else
                 formattedOutlet = tableRowForSingleVan.getString("outlates");
 
-            if (tableRowForSingleVan.getString("tin") == "") {
-                formattedTIN = "----------";
+            if (tableRowForSingleVan.getString("tin").length() == 0) {
+                formattedTIN = "- - - - - - - - - - -";
             } else {
                 formattedTIN = tableRowForSingleVan.getString("tin");
             }
@@ -310,51 +310,66 @@ public class UtilityFunctions {
 
     public static void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex, View view) {
 
-            ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();
-            VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
-            ArrayList<VsmTransactionTableRow> rows = vsmTableDataForSingleVan.getTableRows();
+        ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();
+        VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
+        ArrayList<VsmTransactionTableRow> rows = vsmTableDataForSingleVan.getTableRows();
 
-            VsmTransactionTableRow row = rows.get(animationIndex);
-            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
+        VsmTransactionTableRow row = rows.get(animationIndex);
+        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
 
-            TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
-            TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
-            TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);
-            TextView TINtextView = tableElements.findViewById(R.id.vsmTransTINtextView);
-            TextView dateNtimeTextView = tableElements.findViewById(R.id.vsmTransDateNtimeTextV);
-            TextView itemCountTextview = tableElements.findViewById(R.id.vsmTransItemCountTxtV);
-            TextView subTotalTextView = tableElements.findViewById(R.id.vsmTransSubTotalTxtv);
-            TextView VATtextView = tableElements.findViewById(R.id.vsmTransVATtextView);
-            TextView totalSalesTextView = tableElements.findViewById(R.id.vsmTransGrandTotalTextView);
+        TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
+        TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
+        TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);
+        TextView TINtextView = tableElements.findViewById(R.id.vsmTransTINtextView);
+        TextView dateNtimeTextView = tableElements.findViewById(R.id.vsmTransDateNtimeTextV);
+        TextView itemCountTextview = tableElements.findViewById(R.id.vsmTransItemCountTxtV);
+        TextView subTotalTextView = tableElements.findViewById(R.id.vsmTransSubTotalTxtv);
+        TextView VATtextView = tableElements.findViewById(R.id.vsmTransVATtextView);
+        TextView totalSalesTextView = tableElements.findViewById(R.id.vsmTransGrandTotalTextView);
 
-            TextView distributorHeaderVsmTransaction = view.findViewById(R.id.distributorHeaderVsmTransaction);
-            TextView vanHeaderVsmTransaction = view.findViewById(R.id.vanHeaderVsmTransaction);
+        TextView distributorHeaderVsmTransaction = view.findViewById(R.id.distributorHeaderVsmTransaction);
+        TextView vanHeaderVsmTransaction = view.findViewById(R.id.vanHeaderVsmTransaction);
 
-            NumberFormat numberFormat = NumberFormat.getInstance();
+        NumberFormat numberFormat = NumberFormat.getInstance();
 
-            numberFormat.setGroupingUsed(true);
+        numberFormat.setGroupingUsed(true);
 
 
-            snTextView.setText(String.valueOf(animationIndex + 1));
-            voucherNoTextView.setText(row.getVoucherNo());
-            outletTextView.setText(row.getOutlet());
-            TINtextView.setText(row.getTIN());
-            dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
-            itemCountTextview.setText(String.valueOf(row.getItemCount()));
-            subTotalTextView.setText(numberFormat.format(row.getSubTotal()));
-            VATtextView.setText(row.getVAT());
-            totalSalesTextView.setText(numberFormat.format(row.getTotalSales()));
+        snTextView.setText(String.valueOf(animationIndex + 1));
+        voucherNoTextView.setText(row.getVoucherNo());
+        outletTextView.setText(row.getOutlet());
+        TINtextView.setText(row.getTIN());
+        dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
+        itemCountTextview.setText(String.valueOf(row.getItemCount()));
+        subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
+        VATtextView.setText(row.getVAT());
+        totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
 
-            vanHeaderVsmTransaction.setText(vsmTableDataForAll.get(distributorIndex).getAllVansData().get(dataIndex).nameOfVan);
+        vanHeaderVsmTransaction.setText(vsmTableDataForAll.get(distributorIndex).getAllVansData().get(dataIndex).nameOfVan);
 
-            vsmTransactionTableLayout.addView(tableElements);
-            animate(vsmTransactionTableLayout, tableElements);
+        vsmTransactionTableLayout.addView(tableElements);
+        animate(vsmTransactionTableLayout, tableElements);
 
     }
 
     public static String formatTimeToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("HH:mm:ss");
+
+        Date parsed = null;
+        String formattedTime = null;
+        try {
+            parsed = input.parse(lastActive);
+            formattedTime = output.format(parsed);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedTime;
+    }
+    public static String formatDateTimeToString(String lastActive) {
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
 
         Date parsed = null;
         String formattedTime = null;

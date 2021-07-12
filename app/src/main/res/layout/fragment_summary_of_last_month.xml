@@ -7,7 +7,7 @@
     android:background="@color/cardBackgroundDark">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/titleSummaryByArticleParent"
+        android:id="@+id/titleSummaryOfLast30Days"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" >
 
         <TextView
-            android:id="@+id/articleParentSummaryTitle"
+            android:id="@+id/summaryOfLast30DaysTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -29,45 +29,27 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/pCardSummByArticleParent"
+        android:id="@+id/lCardSummaryOfLast30Days"
         android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark2"
-        app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticleParent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleParent">
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pchartsumByArticleParent"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal|center_vertical" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/bCardSummByArticleParent"
-        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/cardBackgroundDark2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/pCardSummByArticleParent"
+        app:layout_constraintEnd_toStartOf="@+id/tCardSummaryOfLast30Days"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pCardSummByArticleParent">
+        app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast30Days">
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bChartSumByArticleParent"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/last30daysLineChart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal|center_vertical" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/tCardSummByArticleParent"
+        android:id="@+id/tCardSummaryOfLast30Days"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -77,15 +59,15 @@
         app:cardBackgroundColor="@color/cardBackgroundDark2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/pCardSummByArticleParent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleParent" >
+        app:layout_constraintStart_toEndOf="@+id/lCardSummaryOfLast30Days"
+        app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast30Days" >
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/summaryByParentArticleSN"
+                android:id="@+id/summaryOfLast30DaysSN"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -95,38 +77,38 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader1"
+                android:id="@+id/summaryOfLast30DaysHeader2"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="Branch Name"
+                android:text="Day"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader2"
+                android:id="@+id/summaryOfLast30DaysHeader3"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:gravity="end"
-                android:text="Total"
+                android:text="Amount"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader3"
+                android:id="@+id/summaryOfLast30DaysHeader4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="Percentage"
+                android:text="DateTime"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
         </TableRow>
 
 
         <TableLayout
-            android:id="@+id/summaryByParentArticleTableLayout"
+            android:id="@+id/summaryOfLast30DaysTableLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"

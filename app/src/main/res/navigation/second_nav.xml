@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/second_nav"
+    app:startDestination="@id/summaryOfLastSixMonthsFragment">
+    <fragment
+        android:id="@+id/summarizedByArticleFragment2"
+        android:name="com.cnet.VisualAnalysis.Fragments.SummarizedByArticleFragment"
+        android:label="fragment_summarized_by_article"
+        tools:layout="@layout/fragment_summarized_by_article" />
+    <fragment
+        android:id="@+id/summarizedByArticleParentCategFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment"
+        android:label="SummarizedByArticleParentCategFragment" />
+    <fragment
+        android:id="@+id/summarizedByArticleChildCategFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment"
+        android:label="SummarizedByArticleChildCategFragment" />
+    <fragment
+        android:id="@+id/summaryOfLastMonthFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment"
+        android:label="fragment_summary_of_last_month"
+        tools:layout="@layout/fragment_summary_of_last_month" />
+    <fragment
+        android:id="@+id/summaryOfLastSixMonthsFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment"
+        android:label="fragment_summary_of_last_six_months"
+        tools:layout="@layout/fragment_summary_of_last_six_months" />
+</navigation>

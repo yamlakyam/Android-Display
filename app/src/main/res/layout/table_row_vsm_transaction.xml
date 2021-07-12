@@ -4,14 +4,15 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/VSMtableRow"
     android:layout_width="match_parent"
-    android:layout_height="20dp"
-    android:background="#49515c">
+    android:layout_height="40dp"
+    android:background="#49515c"
+    android:gravity="center_vertical">
 
 
     <TextView
         android:id="@+id/vsmTransSNtextView"
         android:layout_width="50dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingStart="10dp"
@@ -23,7 +24,7 @@
     <TextView
         android:id="@+id/vsmTransVoucherNtxtView"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:gravity="center_vertical|end"
         android:maxLines="1"
@@ -35,7 +36,7 @@
     <TextView
         android:id="@+id/vsmTransOutletTextView"
         android:layout_width="175dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:maxLines="1"
         android:paddingRight="5dp"
@@ -46,7 +47,7 @@
     <TextView
         android:id="@+id/vsmTransTINtextView"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -57,7 +58,7 @@
     <TextView
         android:id="@+id/vsmTransDateNtimeTextV"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -68,7 +69,7 @@
     <TextView
         android:id="@+id/vsmTransItemCountTxtV"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -79,7 +80,7 @@
     <TextView
         android:id="@+id/vsmTransSubTotalTxtv"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -90,7 +91,7 @@
     <TextView
         android:id="@+id/vsmTransVATtextView"
         android:layout_width="150dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -101,7 +102,7 @@
     <TextView
         android:id="@+id/vsmTransGrandTotalTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="#3f4152"
         android:gravity="center_vertical|end"
