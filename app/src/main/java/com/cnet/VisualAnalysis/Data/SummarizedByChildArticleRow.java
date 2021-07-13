@@ -1,23 +1,26 @@
 package com.cnet.VisualAnalysis.Data;
 
-public class SummarizedByParentArticleRow {
+public class SummarizedByChildArticleRow {
+    private String categoryType;
     private double quantity;
     private double avgAmount;
     private double totalAmount;
     private double totalServCharge;
     private double totalDiscount;
     private double taxAmount;
-    private String categoryType;
 
-
-    public SummarizedByParentArticleRow(String categoryType,double quantity, double avgAmount, double totalAmount, double totalServCharge, double totalDiscount, double taxAmount) {
+    public SummarizedByChildArticleRow(String categoryType,double quantity, double avgAmount, double totalAmount, double totalServCharge, double totalDiscount, double taxAmount) {
+        this.categoryType=categoryType;
         this.quantity = quantity;
         this.avgAmount = avgAmount;
         this.totalAmount = totalAmount;
         this.totalServCharge = totalServCharge;
         this.totalDiscount = totalDiscount;
         this.taxAmount = taxAmount;
-        this.categoryType =categoryType;
+    }
+
+    public String getCategoryType() {
+        return categoryType;
     }
 
     public double getQuantity() {
@@ -42,9 +45,5 @@ public class SummarizedByParentArticleRow {
 
     public double getTaxAmount() {
         return taxAmount;
-    }
-
-    public String getCategoryType() {
-        return categoryType;
     }
 }

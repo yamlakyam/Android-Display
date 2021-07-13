@@ -88,7 +88,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/summaryByParentArticleSN"
+                android:id="@+id/summaryByChildArticleSN"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -98,8 +98,8 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader1"
-                android:layout_width="200dp"
+                android:id="@+id/summaryByChildArticleHeader1"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="Product Name"
@@ -107,7 +107,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader2"
+                android:id="@+id/summaryByChildArticleHeader2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
@@ -125,7 +125,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader3"
+                android:id="@+id/summaryByChildArticleHeader3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -134,16 +134,38 @@
                 android:text="Total Amount"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
+
         </TableRow>
 
 
-        <TableLayout
-            android:id="@+id/summaryByArticleTableLayout"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="40dp"
-            android:divider="?android:listDivider"
-            android:showDividers="middle" />
+            android:id="@+id/summByArticleScrollView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardBackgroundColor="@color/cardBackgroundDark2">
+
+                    <TableLayout
+                        android:id="@+id/summaryByArticleTableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="?android:listDivider"
+                        android:showDividers="middle" />
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+        </ScrollView>
+
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView

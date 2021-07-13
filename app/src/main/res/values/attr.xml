@@ -9,6 +9,7 @@
         <attr name="nValueText" format="color"/>
         <attr name="tintcolor" format="color"/>
         <attr name="buttoncolor" format="color"/>
+        <attr name="totalValueBackground" format="color"/>
     </declare-styleable>
 </resources>
 

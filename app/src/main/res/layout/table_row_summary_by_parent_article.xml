@@ -5,7 +5,9 @@
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
     android:background="#49515c"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
 
     <TextView

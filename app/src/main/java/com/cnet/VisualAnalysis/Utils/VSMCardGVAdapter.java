@@ -1,7 +1,6 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
-import android.nfc.tech.NfcF;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +54,7 @@ public class VSMCardGVAdapter extends ArrayAdapter<VSMCard> {
 
         vsmName.setText(vsmCard.getVsi());
         vsmOutlet.setText(String.valueOf(vsmCard.getSalesOutLateCount()));
-        vsmLastActive.setText(UtilityFunctions.formatTimeToString(vsmCard.getLastSeen()));
+        vsmLastActive.setText(UtilityFunctionsForActivity1.formatTimeToString(vsmCard.getLastSeen()));
         vsmVcount.setText(String.valueOf(vsmCard.getvCount()));
         vsmTsale.setText(numberFormat.format(vsmCard.getTotalSales()));
         vsmDistributor.setText(preciseOrgName);

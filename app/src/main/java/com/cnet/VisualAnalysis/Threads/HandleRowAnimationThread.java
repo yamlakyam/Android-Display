@@ -22,7 +22,7 @@ public class HandleRowAnimationThread extends Thread {
     @Override
     public void run() {
         super.run();
-        for (int i = 0; i < rows; i++) {
+        for (int i = 0; i <= rows; i++) {
 
             Message message = changeDataHandler.obtainMessage();
             message.obj = String.valueOf(i);

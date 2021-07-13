@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Summarized By Article Parent Category"
+            android:text="Summary Of Last 30 Days"
             android:textColor="#FFFFFF"
             android:textSize="34sp" />
     </com.google.android.material.card.MaterialCardView>
@@ -36,13 +36,31 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/cardBackgroundDark2"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bCardSummaryOfLast30Days"
         app:layout_constraintEnd_toStartOf="@+id/tCardSummaryOfLast30Days"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast30Days">
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/last30daysLineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal|center_vertical" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bCardSummaryOfLast30Days"
+        android:layout_width="400dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/cardBackgroundDark2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tCardSummaryOfLast30Days"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lCardSummaryOfLast30Days">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/last30daysBarChart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_gravity="center_horizontal|center_vertical" />
@@ -104,15 +122,29 @@
                 android:text="DateTime"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
+
         </TableRow>
 
 
-        <TableLayout
-            android:id="@+id/summaryOfLast30DaysTableLayout"
+        <ScrollView
+            android:id="@+id/summaryOfLastMonthScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
-            android:divider="?android:listDivider"
-            android:showDividers="middle" />
+            android:layout_marginTop="45dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:id="@+id/summaryOfLast30DaysTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="?android:listDivider"
+                    android:showDividers="middle" />
+            </LinearLayout>
+        </ScrollView>
+
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/second_nav"
-    app:startDestination="@id/summaryOfLastSixMonthsFragment">
+    app:startDestination="@id/summarizedByArticleFragment2">
     <fragment
         android:id="@+id/summarizedByArticleFragment2"
         android:name="com.cnet.VisualAnalysis.Fragments.SummarizedByArticleFragment"

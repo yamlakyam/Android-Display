@@ -20,12 +20,14 @@ import com.cnet.VisualAnalysis.Data.DistributorTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.UtilityFunctions;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class DistributorTableFragment extends Fragment implements VolleyHttp.GetRequest {
@@ -40,18 +42,14 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     TextView distributorHeaderTextView;
     int respSize;
 
-    int sumofProspect;
-    int sumofOutlet;
-    int sumofSKU;
-    int sumofQuantity;
-    double sumofSales;
+
+    int sumofProspect, sumofOutlet, sumofSKU, sumofQuantity = 0;
+    double sumofSales = 0;
+
 
     ////////
     ArrayList<DistributorTableRow> distributorTableRows;
 
-    public DistributorTableFragment() {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,16 +74,10 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(JSONArray jsonArray, int index) {
-//        sumofProspect = 0;
-//        sumofOutlet = 0;
-//        sumofSKU = 0;
-//        sumofQuantity = 0;
-//        sumofSales = 0;
 
         distributorTableLayout.removeAllViews();
-
         try {
-            tablesToDisplay = UtilityFunctions.distributorTableParser(jsonArray, index);
+            tablesToDisplay = UtilityFunctionsForActivity1.distributorTableParser(jsonArray, index);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -100,19 +92,15 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                     index = Integer.parseInt(message);
                 }
 
+                if (index == tablesToDisplay.size()) {
+//                    drawLastRow();
+                }
+                else {
+                    lastRowSummation(tablesToDisplay.get(index));
+                    UtilityFunctionsForActivity1.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
+                    UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
+                }
 
-                /////
-                UtilityFunctions.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
-
-
-//                Summations(distributorTableRows.get(index).getProspect(),
-//                        distributorTableRows.get(index).getSalesOutLateCount(),
-//                        distributorTableRows.get(index).getSkuCount(),
-//                        distributorTableRows.get(index).getQuantityCount(),
-//                        distributorTableRows.get(index).getTotalSalesAmountAfterTax(), index);
-//                Log.i("sum", sumofProspect + "");
-
-                UtilityFunctions.scrollRows(scrollDistributorTable);
 
 
             }
@@ -137,6 +125,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                     index = Integer.parseInt(message);
                 }
 
+
                 inflateTable(jsonArray, index);
                 setDistributorHeader(jsonArray, index);
 
@@ -144,7 +133,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
             }
         };
 
-        HandleDataChangeThread handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, jsonArray.length(),30);
+        HandleDataChangeThread handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, jsonArray.length(), 30);
         handleDataChangeThread.start();
 
     }
@@ -158,21 +147,41 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         }
     }
 
-    public void Summations(int totalProspect, int totalOutlet, int totalSKU, int totalQty, double totalSale, int index) {
+    public void lastRowSummation(DistributorTableRow distributorTableRow) {
+        sumofProspect = sumofProspect + distributorTableRow.getProspect();
+        sumofOutlet = sumofOutlet + distributorTableRow.getSalesOutLateCount();
+        sumofSKU = sumofSKU + distributorTableRow.getSkuCount();
+        sumofQuantity = sumofQuantity + distributorTableRow.getQuantityCount();
+        sumofSales = sumofSales + distributorTableRow.getTotalSalesAmountAfterTax();
+    }
 
-        sumofProspect = sumofProspect + totalProspect;
-        sumofOutlet = sumofOutlet + totalOutlet;
-        sumofSKU = sumofSKU + totalSKU;
-        sumofQuantity = sumofQuantity + totalQty;
-        sumofSales = sumofSales + totalSale;
-        if (index == distributorTableRows.size() - 1) {
-            ArrayList<DistributorTableRow> TotaldistributorTableRows = new ArrayList<>();
-//            TotaldistributorTableRows.add("")
+    public void drawLastRow() {
 
+        View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_distributor, null, false);
+        TextView distributorSerialNumberTV = tableElements.findViewById(R.id.distributorSerialNumberTV);
+        TextView distributorVSITV = tableElements.findViewById(R.id.distributorVSITV);
+        TextView distributorProspectTV = tableElements.findViewById(R.id.distributorProspectTV);
+        TextView distributorEndTimeTV = tableElements.findViewById(R.id.distributorEndTimeTV);
+        TextView distributorSalesOutletTV = tableElements.findViewById(R.id.distributorSalesOutletTV);
+        TextView distributorSKUcountTV = tableElements.findViewById(R.id.distributorSKUcountTV);
+        TextView distributorQuantityCountTV = tableElements.findViewById(R.id.distributorQuantityCountTV);
+        TextView distributorTotalSalesTV = tableElements.findViewById(R.id.distributorTotalSalesTV);
 
-            UtilityFunctions.drawDistributorTable(distributorTableRows, getContext(), distributorTableLayout, index);
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setGroupingUsed(true);
 
-        }
+        distributorEndTimeTV.setText("");
+        distributorSerialNumberTV.setText("");
+        distributorVSITV.setText("");
+        distributorProspectTV.setText(String.valueOf(sumofProspect));
+        distributorSalesOutletTV.setText(String.valueOf(sumofOutlet));
+        distributorSKUcountTV.setText(String.valueOf(sumofSKU));
+        distributorQuantityCountTV.setText(String.valueOf(sumofQuantity));
+        distributorTotalSalesTV.setText(numberFormat.format(sumofSales));
+
+        distributorTableLayout.addView(tableElements);
+        UtilityFunctionsForActivity2.animate(distributorTableLayout, tableElements);
+
     }
 
 

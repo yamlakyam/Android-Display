@@ -85,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="#3f4152"
+        android:background="@color/totalValueBackground"
         android:gravity="center_vertical|end"
         android:text="TextView"
         android:textColor="#78FA5A"

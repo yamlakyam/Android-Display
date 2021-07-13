@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
-import com.cnet.VisualAnalysis.Utils.UtilityFunctions;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONArray;
@@ -58,7 +58,13 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
                 int index = Integer.parseInt(message);
 
                 try {
-                    UtilityFunctions.drawVSMCard(jsonArray, index, getContext(), vsmCardGridLayout);
+                    if (index == jsonArray.length()) {
+
+                    } else {
+                        UtilityFunctionsForActivity1.drawVSMCard(jsonArray, index, getContext(), vsmCardGridLayout);
+
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -66,7 +72,7 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
             }
         };
 
-        HandleDataChangeThread handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length(),30);
+        HandleDataChangeThread handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length(), 30);
         handleDataChangeThread.start();
     }
 

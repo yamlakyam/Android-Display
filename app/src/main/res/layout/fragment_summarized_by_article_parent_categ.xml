@@ -85,7 +85,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/summaryByParentArticleSN"
+                android:id="@+id/summaryByChildArticleSN"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -95,16 +95,16 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader1"
+                android:id="@+id/summaryByChildArticleHeader1"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="Branch Name"
+                android:text="Category"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader2"
+                android:id="@+id/summaryByChildArticleHeader2"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"
@@ -113,7 +113,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/summaryByParentArticleHeader3"
+                android:id="@+id/summaryByChildArticleHeader3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -122,15 +122,29 @@
                 android:text="Percentage"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
+
         </TableRow>
 
 
-        <TableLayout
-            android:id="@+id/summaryByParentArticleTableLayout"
+        <ScrollView
+            android:id="@+id/summarizedByChildArticleScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
-            android:divider="?android:listDivider"
-            android:showDividers="middle" />
+            android:layout_marginTop="45dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:id="@+id/summaryByChildArticleTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="?android:listDivider"
+                    android:showDividers="middle" />
+            </LinearLayout>
+        </ScrollView>
+
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

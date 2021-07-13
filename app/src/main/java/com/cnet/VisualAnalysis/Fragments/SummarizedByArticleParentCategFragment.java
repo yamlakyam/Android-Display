@@ -7,28 +7,37 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleData;
 import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Activity2UtilityFunctions;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 public class SummarizedByArticleParentCategFragment extends Fragment implements VolleyHttp.GetRequest {
 
-    private final String URL = "http://192.168.1.248:8001/api/ChartData/GetSalesDataForSingleOrganization";
+    private final String URL = "http://192.168.1.248:8001/api/DashBoardData/GetDashBoardData";
     Handler animationHandler;
 
     TableLayout summarizedByParentArticleTableLayout;
+    ScrollView scrollView;
+    PieChart pieChart;
+    BarChart barChart;
 
 
     @Override
@@ -43,7 +52,10 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summarized_by_article_parent_categ, container, false);
-        summarizedByParentArticleTableLayout = view.findViewById(R.id.summaryByParentArticleTableLayout);
+        summarizedByParentArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
+        scrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
+        pieChart=view.findViewById(R.id.pchartsumByArticleParent);
+        barChart=view.findViewById(R.id.bChartSumByArticleParent);
         return view;
     }
 
@@ -60,9 +72,14 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 if (message != null) {
                     index = Integer.parseInt(message);
                 }
+                if(index==tablesToDisplay.size()){
 
+                }else{
 
-                Activity2UtilityFunctions.drawSummaryByParentArticleTable(tablesToDisplay, getContext(), summarizedByParentArticleTableLayout, index);
+                    UtilityFunctionsForActivity2.drawSummaryByParentArticleTable(tablesToDisplay, getContext(), summarizedByParentArticleTableLayout, index);
+                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                }
+
             }
 
         };
@@ -74,14 +91,17 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
-        ArrayList<SummarizedByParentArticleRow> allTableData = new ArrayList<>();
-        allTableData.add(new SummarizedByParentArticleRow("Adminstrative Officer","25.62%",2566.8));
-        allTableData.add(new SummarizedByParentArticleRow("Sales","25.62%",2566.8));
-        allTableData.add(new SummarizedByParentArticleRow("Waiter","25.62%",2566.8));
-        allTableData.add(new SummarizedByParentArticleRow("Adminstrative Officer","25.62%",2566.8));
-        allTableData.add(new SummarizedByParentArticleRow("Adminstrative Officer","25.62%",2566.8));
 
-        inflateTable(allTableData);
+        try {
+            SummarizedByParentArticleData summarizedByParentArticleData = UtilityFunctionsForActivity2.summarizedByParentArticleParser(jsonArray);
+            inflateTable(summarizedByParentArticleData.getTableData());
+            UtilityFunctionsForActivity2.drawBarChart(summarizedByParentArticleData.getBarChartData(), barChart, "Summarized by Article parent category");
+            UtilityFunctionsForActivity2.drawPieChart(summarizedByParentArticleData.getPieChartData(), pieChart,"Summarized by Article parent category");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

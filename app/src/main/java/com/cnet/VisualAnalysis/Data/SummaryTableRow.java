@@ -4,20 +4,20 @@ public class SummaryTableRow {
     private String organizationName;
     private String startTimeStamp;
     private String endTimeStamp;
-    private String vsiCount;
-    private String salesOutLateCount;
-    private String skuCount;
-    private String quantityCount;
-    private String totalSalesAmountAfterTax;
-    private String activeVans;
-    private String prospect;
+    private int vsiCount;
+    private int salesOutLateCount;
+    private int skuCount;
+    private int quantityCount;
+    private double totalSalesAmountAfterTax;
+    private int activeVans;
+    private int prospect;
 
     public SummaryTableRow(
             String organizationName, String startTimeStamp,
-            String endTimeStamp, String vsiCount,
-            String salesOutLateCount, String skuCount,
-            String quantityCount, String totalSalesAmountAfterTax,
-            String activeVans, String prospect) {
+            String endTimeStamp, int vsiCount,
+            int salesOutLateCount, int skuCount,
+            int quantityCount, double totalSalesAmountAfterTax,
+            int activeVans, int prospect) {
         this.organizationName = organizationName;
         this.startTimeStamp = startTimeStamp;
         this.endTimeStamp = endTimeStamp;
@@ -34,79 +34,48 @@ public class SummaryTableRow {
         return organizationName;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
-    }
 
     public String getStartTimeStamp() {
         return startTimeStamp;
     }
 
-    public void setStartTimeStamp(String startTimeStamp) {
-        this.startTimeStamp = startTimeStamp;
-    }
 
     public String getEndTimeStamp() {
         return endTimeStamp;
     }
 
-    public void setEndTimeStamp(String endTimeStamp) {
-        this.endTimeStamp = endTimeStamp;
-    }
 
-    public String getVsiCount() {
+    public int getVsiCount() {
         return vsiCount;
     }
 
-    public void setVsiCount(String vsiCount) {
-        this.vsiCount = vsiCount;
-    }
 
-    public String getSalesOutLateCount() {
+    public int getSalesOutLateCount() {
         return salesOutLateCount;
     }
 
-    public void setSalesOutLateCount(String salesOutLateCount) {
-        this.salesOutLateCount = salesOutLateCount;
-    }
 
-    public String getSkuCount() {
+    public int getSkuCount() {
         return skuCount;
     }
 
-    public void setSkuCount(String skuCount) {
-        this.skuCount = skuCount;
-    }
-
-    public String getQuantityCount() {
+    public int getQuantityCount() {
         return quantityCount;
     }
 
-    public void setQuantityCount(String quantityCount) {
-        this.quantityCount = quantityCount;
-    }
-
-    public String getTotalSalesAmountAfterTax() {
+    public double getTotalSalesAmountAfterTax() {
         return totalSalesAmountAfterTax;
     }
 
-    public void setTotalSalesAmountAfterTax(String totalSalesAmountAfterTax) {
-        this.totalSalesAmountAfterTax = totalSalesAmountAfterTax;
-    }
 
-    public String getActiveVans() {
+    public int getActiveVans() {
         return activeVans;
     }
 
-    public void setActiveVans(String activeVans) {
-        this.activeVans = activeVans;
-    }
 
-    public String getProspect() {
+    public int getProspect() {
         return prospect;
     }
 
-    public void setProspect(String prospect) {
-        this.prospect = prospect;
-    }
+
 }

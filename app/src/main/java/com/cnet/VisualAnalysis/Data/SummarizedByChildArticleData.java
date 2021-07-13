@@ -5,19 +5,18 @@ import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.ArrayList;
 
-public class SummarizedByArticleData {
-    public ArrayList<SummarizedByArticleTableRow> tableData;
-    public BarChartData barChartData;
-    public PieChartData pieChartData;
+public class SummarizedByChildArticleData {
+    private ArrayList<SummarizedByChildArticleRow> tableData;
+    private BarChartData barChartData;
+    private PieChartData pieChartData;
 
-
-    public SummarizedByArticleData(ArrayList<SummarizedByArticleTableRow> tableData, BarChartData barChartData, PieChartData pieChartData) {
+    public SummarizedByChildArticleData(ArrayList<SummarizedByChildArticleRow> tableData, BarChartData barChartData, PieChartData pieChartData) {
         this.tableData = tableData;
         this.barChartData = barChartData;
         this.pieChartData = pieChartData;
     }
 
-    public ArrayList<SummarizedByArticleTableRow> getTableData() {
+    public ArrayList<SummarizedByChildArticleRow> getTableData() {
         return tableData;
     }
 
@@ -29,7 +28,3 @@ public class SummarizedByArticleData {
         return pieChartData;
     }
 }
-
-
-
-

@@ -7,22 +7,22 @@ import java.util.ArrayList;
 
 public class SummarizedByParentArticleData {
     private ArrayList<SummarizedByParentArticleRow> tableData;
-    private BarChart barChartData;
-    private PieChart pieChartData;
+    private BarChartData barChartData;
+    private PieChartData pieChartData;
 
     public ArrayList<SummarizedByParentArticleRow> getTableData() {
         return tableData;
     }
 
-    public BarChart getBarChartData() {
+    public BarChartData getBarChartData() {
         return barChartData;
     }
 
-    public PieChart getPieChartData() {
+    public PieChartData getPieChartData() {
         return pieChartData;
     }
 
-    public SummarizedByParentArticleData(ArrayList<SummarizedByParentArticleRow> tableData, BarChart barChartData, PieChart pieChartData) {
+    public SummarizedByParentArticleData(ArrayList<SummarizedByParentArticleRow> tableData, BarChartData barChartData, PieChartData pieChartData) {
         this.tableData = tableData;
         this.barChartData = barChartData;
         this.pieChartData = pieChartData;

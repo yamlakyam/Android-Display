@@ -32,6 +32,7 @@
         <item name="subText">@color/subTextDark3</item>
         <item name="pValueText">@color/pvalueTextDark3</item>
         <item name="nValueText">@color/nvalueTextDark3</item>
+        <item name="totalValueBackground">@color/totalValueBackground</item>
 
 <!--        <item name="buttoncolor">#ddff22</item>-->
     </style>

@@ -7,6 +7,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -16,15 +17,19 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.PieChartData;
+import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
+import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Activity2UtilityFunctions;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -33,9 +38,10 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     BarChart barChartSumByArticle;
     PieChart pieChartSumByArticle;
     TableLayout summarizedByArticleTableLayout;
-    private final String URL = "http://192.168.1.248:8001/api/ChartData/GetSalesDataForSingleOrganization";
+    private final String URL = "http://192.168.1.248:8001/api/DashBoardData/GetDashBoardData";
     Handler animationHandler;
     TextView scrollingArticleText;
+    ScrollView summByArticleScrollView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,7 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         summarizedByArticleTableLayout = view.findViewById(R.id.summaryByArticleTableLayout);
         scrollingArticleText = view.findViewById(R.id.scrollingArticleText);
         scrollingArticleText.setSelected(true);
+        summByArticleScrollView=view.findViewById(R.id.summByArticleScrollView);
 
         return view;
     }
@@ -72,8 +79,14 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
                     index = Integer.parseInt(message);
                 }
 
+                if(index==tablesToDisplay.size()){
 
-                Activity2UtilityFunctions.drawSummaryByArticleTable(tablesToDisplay, getContext(), summarizedByArticleTableLayout, index);
+                }
+                else{
+                    UtilityFunctionsForActivity2.drawSummaryByArticleTable(tablesToDisplay, getContext(), summarizedByArticleTableLayout, index);
+                    UtilityFunctionsForActivity1.scrollRows(summByArticleScrollView);
+                }
+
             }
 
         };
@@ -85,25 +98,14 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
-        ArrayList<SummarizedByArticleTableRow> allTableData = new ArrayList<>();
-        allTableData.add(new SummarizedByArticleTableRow("High Severity", 3000, 3111.2, 12005892));
-        allTableData.add(new SummarizedByArticleTableRow("High Severity", 3000, 3111.2, 12005892));
-        allTableData.add(new SummarizedByArticleTableRow("High Severity", 3000, 3111.2, 12005892));
+        try {
+            SummarizedByArticleData summarizedByArticleData = UtilityFunctionsForActivity2.summarizedByArticleParser(jsonArray);
+            inflateTable(summarizedByArticleData.getTableData());
+            UtilityFunctionsForActivity2.drawBarChart(summarizedByArticleData.getBarChartData(), barChartSumByArticle,"Summarized by Article");
+            UtilityFunctionsForActivity2.drawPieChart(summarizedByArticleData.getPieChartData(), pieChartSumByArticle,"Summarized by Article"); } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        PieChartData pieChartData = new PieChartData(
-                new float[]{2400, 500, 1000},
-                new String[]{"Hardware", "Software", "Service"}
-        );
-
-        BarChartData barChartData = new BarChartData(
-                new float[]{1, 2, 3, 4, 6},
-                new float[]{100, 25, 85, 56, 45},
-                new String[]{"JAN", "FEB", "MAR", "APR", "MAY"}
-        );
-
-        inflateTable(allTableData);
-        Activity2UtilityFunctions.drawBarChart(barChartData, barChartSumByArticle);
-        Activity2UtilityFunctions.drawPieChart(pieChartData, pieChartSumByArticle);
 
     }
 

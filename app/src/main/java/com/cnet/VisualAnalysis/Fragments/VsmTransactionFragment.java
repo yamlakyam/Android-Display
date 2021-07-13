@@ -17,12 +17,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
-import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
 import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.UtilityFunctions;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONArray;
@@ -92,7 +91,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
             }
         };
 
-        HandleDataChangeThread handleDistDataChangeThread = new HandleDataChangeThread(changeDistributorHandler, distributors, 500);
+        HandleDataChangeThread handleDistDataChangeThread = new HandleDataChangeThread(changeDistributorHandler, distributors, 400);
         handleDistDataChangeThread.start();
     }
 
@@ -137,9 +136,14 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                 if (message != null) {
                     index = Integer.parseInt(message);
                 }
+                if (index == allRows) {
 
-                UtilityFunctions.drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index, requireView());
-                UtilityFunctions.scrollRows(scrollVSMtable);
+                } else {
+                    UtilityFunctionsForActivity1.drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index, requireView());
+                    UtilityFunctionsForActivity1.scrollRows(scrollVSMtable);
+                }
+
+
             }
         };
 
@@ -153,11 +157,10 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         VSMtransactioProgressBar.setVisibility(View.GONE);
         try {
 
-            tablesToDisplay = UtilityFunctions.vsmTransactionParser(jsonArray);
+            tablesToDisplay = UtilityFunctionsForActivity1.vsmTransactionParser(jsonArray);
 //            inflateAllVansInSingleDis(tablesToDisplay);
             inflateAlldistributors(tablesToDisplay);
             Log.i("Success", "onSuccess: ");
-
 
 
         } catch (JSONException e) {

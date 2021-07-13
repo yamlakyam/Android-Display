@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class UtilityFunctions {
+public class UtilityFunctionsForActivity1 {
 
     @SuppressLint("HandlerLeak")
     public static Handler getHandlerForUpdatingDataByRedrawing(VolleyHttp.GetRequest classImplemented, Context context) {
@@ -68,13 +68,13 @@ public class UtilityFunctions {
                             table.getString("organizationName"),
                             formatTimeToString(table.getString("startTimeStamp")),
                             formatTimeToString(table.getString("endTimeStamp")),
-                            table.getString("vsiCount"),
-                            table.getString("salesOutLateCount"),
-                            table.getString("skuCount"),
-                            table.getString("quantityCount"),
-                            table.getString("totalSalesAmountAfterTax"),
-                            table.getString("active"),
-                            table.getString("prospect")
+                            table.getInt("vsiCount"),
+                            table.getInt("salesOutLateCount"),
+                            table.getInt("skuCount"),
+                            table.getInt("quantityCount"),
+                            table.getDouble("totalSalesAmountAfterTax"),
+                            table.getInt("active"),
+                            table.getInt("prospect")
                     )
             );
         }
@@ -99,18 +99,21 @@ public class UtilityFunctions {
         TextView activeVansTextView = tableElements.findViewById(R.id.activeVansTextView);
         TextView prospectTextView = tableElements.findViewById(R.id.prospectTextView);
 
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setGroupingUsed(true);
+
 
         serialNumberTextView.setText(String.valueOf(index + 1));
         distributorNameTextView.setText(row.getOrganizationName());
         startTimeTextView.setText(row.getStartTimeStamp());
         lastActivityTextView.setText(row.getEndTimeStamp());
-        totalVsiTextView.setText(row.getVsiCount());
-        totalOutlatesTextView.setText(row.getSalesOutLateCount());
-        totalSkuTextView.setText(row.getSkuCount());
-        totalQuantityTextView.setText(row.getQuantityCount());
-        totalSalesTextView.setText(row.getTotalSalesAmountAfterTax());
-        activeVansTextView.setText(row.getActiveVans());
-        prospectTextView.setText(row.getProspect());
+        totalVsiTextView.setText(numberFormat.format(row.getVsiCount()));
+        totalOutlatesTextView.setText(numberFormat.format(row.getSalesOutLateCount()));
+        totalSkuTextView.setText(numberFormat.format(row.getSkuCount()));
+        totalQuantityTextView.setText(numberFormat.format(row.getQuantityCount()));
+        totalSalesTextView.setText(numberFormat.format(row.getTotalSalesAmountAfterTax()));
+        activeVansTextView.setText(numberFormat.format(row.getActiveVans()));
+        prospectTextView.setText(numberFormat.format(row.getProspect()));
 
         summaryTableLayout.addView(tableElements);
         animate(summaryTableLayout, tableElements);
