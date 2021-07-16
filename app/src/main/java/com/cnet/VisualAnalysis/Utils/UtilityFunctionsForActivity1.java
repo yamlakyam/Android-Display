@@ -372,7 +372,7 @@ public class UtilityFunctionsForActivity1 {
     }
     public static String formatDateTimeToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
         Date parsed = null;
         String formattedTime = null;

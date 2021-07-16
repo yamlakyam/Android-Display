@@ -66,7 +66,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="Outlet:"
-                        android:textColor="#dfdfcf"
+                        android:textColor="@color/rowValueColor2"
                         android:textSize="18dp" />
 
                     <TextView
@@ -76,7 +76,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
-                        android:textColor="#6ddb3a"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -93,7 +93,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="Last Active:"
-                        android:textColor="#dfdfcf"
+                        android:textColor="@color/rowValueColor2"
                         android:textSize="18sp" />
 
                     <TextView
@@ -103,7 +103,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
-                        android:textColor="#6ddb3a"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18sp" />
 
                 </LinearLayout>
@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="V. Count:"
-                        android:textColor="#dfdfcf"
+                        android:textColor="@color/rowValueColor2"
                         android:textSize="18sp" />
 
                     <TextView
@@ -130,7 +130,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
-                        android:textColor="#6ddb3a"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18sp" />
 
                 </LinearLayout>
@@ -147,7 +147,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="Total Sales:"
-                        android:textColor="#dfdfcf"
+                        android:textColor="@color/rowValueColor2"
                         android:textSize="18sp" />
 
                     <TextView
@@ -157,7 +157,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/advent_pro_thin"
                         android:text="TextView"
-                        android:textColor="#6ddb3a"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18sp" />
                 </LinearLayout>
 

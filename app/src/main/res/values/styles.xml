@@ -33,6 +33,10 @@
         <item name="pValueText">@color/pvalueTextDark3</item>
         <item name="nValueText">@color/nvalueTextDark3</item>
         <item name="totalValueBackground">@color/totalValueBackground</item>
+        <item name= "rowValueColor1">@color/rowValueColor1</item>
+        <item name= "rowValueColor2">@color/rowValueColor2</item>
+        <item name= "rowValueColor3">@color/rowValueColor3</item>
+        <item name= "rowValueColor4">@color/rowValueColor4</item>
 
 <!--        <item name="buttoncolor">#ddff22</item>-->
     </style>

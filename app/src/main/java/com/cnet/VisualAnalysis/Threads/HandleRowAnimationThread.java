@@ -22,13 +22,21 @@ public class HandleRowAnimationThread extends Thread {
     @Override
     public void run() {
         super.run();
-        for (int i = 0; i <= rows; i++) {
+        for (int i = 0; i <= rows+1; i++) {
 
             Message message = changeDataHandler.obtainMessage();
             message.obj = String.valueOf(i);
             changeDataHandler.sendMessage(message);
             try {
-                Thread.sleep(500);
+                if(i==rows+1){
+                    Thread.sleep(3000);
+                }
+                else if(i==rows){
+                    Thread.sleep(5000);
+                }
+                else{
+                    Thread.sleep(200);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

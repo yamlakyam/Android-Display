@@ -27,6 +27,10 @@
     <color name="cardBackgroundDark2">#1f2940</color>
 
     <color name="totalValueBackground">#3f4152</color>
+    <color name= "rowValueColor1">#27adb9</color>
+    <color name= "rowValueColor2">#5472e8</color>
+    <color name= "rowValueColor3">#78FA5A</color>
+    <color name= "rowValueColor4">#d2b566</color>
 
 
 

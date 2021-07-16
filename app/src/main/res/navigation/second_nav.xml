@@ -27,4 +27,9 @@
         android:name="com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment"
         android:label="fragment_summary_of_last_six_months"
         tools:layout="@layout/fragment_summary_of_last_six_months" />
+    <fragment
+        android:id="@+id/branchSummaryFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment"
+        android:label="fragment_branch_summary"
+        tools:layout="@layout/fragment_branch_summary" />
 </navigation>

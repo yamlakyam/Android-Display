@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardBackgroundDark"
+    android:orientation="vertical">
+
+    <TableRow
+        android:id="@+id/headerRowBranchSummary"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/cardBackgroundDark1"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/headerRowBranchSummary2"
+        app:layout_constraintStart_toStartOf="@+id/headerRowBranchSummary2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/branchSummaryHeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/advent_pro_thin"
+            android:text="Branch Summary"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/headerRowBranchSummary2"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/cardBackgroundDark1"
+        app:layout_constraintBottom_toTopOf="@+id/scrollBranchSummaryTable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerRowBranchSummary">
+
+        <TextView
+            android:id="@+id/branchSummaryHeader0"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="start"
+            android:paddingStart="10dp"
+            android:text="SN"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/branchSummaryHeader1"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="start|center_horizontal|center_vertical"
+            android:text="Branch Name"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/branchSummaryHeader2"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Quantity"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/branchSummaryHeader3"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Percentage"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/branchSummaryHeader4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Total"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+    </TableRow>
+
+    <ScrollView
+        android:id="@+id/scrollBranchSummaryTable"
+        android:layout_width="match_parent"
+        android:layout_height="630dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintEnd_toEndOf="@id/headerRowBranchSummary2"
+        app:layout_constraintStart_toStartOf="@id/headerRowBranchSummary2"
+        app:layout_constraintTop_toBottomOf="@id/headerRowBranchSummary2">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardBackgroundColor="@color/cardBackgroundDark">
+
+                <TableLayout
+                    android:id="@+id/branchSummaryTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="?android:listDivider"
+                    android:showDividers="middle" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/progressBarbranchSummary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/branchSummaryProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -93,14 +93,12 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                 }
 
                 if (index == tablesToDisplay.size()) {
-//                    drawLastRow();
-                }
-                else {
+                    drawLastRow();
+                } else {
                     lastRowSummation(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
                 }
-
 
 
             }
@@ -115,7 +113,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
     @SuppressLint("HandlerLeak")
     private void inflateAllTables(JSONArray jsonArray) {
-
+        resetLastRowSummation();
         changeDataHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -153,6 +151,14 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         sumofSKU = sumofSKU + distributorTableRow.getSkuCount();
         sumofQuantity = sumofQuantity + distributorTableRow.getQuantityCount();
         sumofSales = sumofSales + distributorTableRow.getTotalSalesAmountAfterTax();
+    }
+
+    public void resetLastRowSummation() {
+        sumofProspect = 0;
+        sumofOutlet = 0;
+        sumofSKU = 0;
+        sumofQuantity = 0;
+        sumofSales = 0;
     }
 
     public void drawLastRow() {

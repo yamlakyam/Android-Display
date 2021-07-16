@@ -97,7 +97,10 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
                     NavHostFragment.findNavController(navhostFragment).navigate(R.id.distributorTableFragment);
-                } else {
+                }
+                else if(index == tablesToDisplay.size()+1){
+
+                }else {
                     sumofLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawSummaryTable(tablesToDisplay, getContext(), summaryTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollSummaryTable);

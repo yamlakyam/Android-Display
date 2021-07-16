@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class SummarizedByArticleData {
     public ArrayList<SummarizedByArticleTableRow> tableData;
     public BarChartData barChartData;
-    public PieChartData pieChartData;
+    public LineChartData lineChartData;
 
 
-    public SummarizedByArticleData(ArrayList<SummarizedByArticleTableRow> tableData, BarChartData barChartData, PieChartData pieChartData) {
+    public SummarizedByArticleData(ArrayList<SummarizedByArticleTableRow> tableData, BarChartData barChartData, LineChartData lineChartData) {
         this.tableData = tableData;
         this.barChartData = barChartData;
-        this.pieChartData = pieChartData;
+        this.lineChartData = lineChartData;
     }
 
     public ArrayList<SummarizedByArticleTableRow> getTableData() {
@@ -25,8 +25,8 @@ public class SummarizedByArticleData {
         return barChartData;
     }
 
-    public PieChartData getPieChartData() {
-        return pieChartData;
+    public LineChartData getLineChartData() {
+        return lineChartData;
     }
 }
 

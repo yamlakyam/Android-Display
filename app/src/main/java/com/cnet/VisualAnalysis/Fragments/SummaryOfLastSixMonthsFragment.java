@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,17 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -36,15 +41,15 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
-public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHttp.GetRequest {
+public class SummaryOfLastSixMonthsFragment extends Fragment{
 
-//    public static final String URL = "http://192.168.1.248:8001/api/DashBoardData/GetDashBoardData";
 
     TableLayout summaryOfLast6MonthsTableLayout;
     Handler animationHandler;
     BarChart barChart;
     PieChart pieChart;
     ScrollView scrollView;
+    Fragment fragment;
 
     double totalAmount = 0;
 
@@ -56,20 +61,26 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        VolleyHttp http = new VolleyHttp(getContext());
-        http.makeGetRequest(Constants.DashboardURL, this);
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary_of_last_six_months, container, false);
+        fragment = this;
         summaryOfLast6MonthsTableLayout = view.findViewById(R.id.summaryOfLast6MonthsTableLayout);
         pieChart = view.findViewById(R.id.pchartsummaryOfLast6Months);
         barChart = view.findViewById(R.id.bChartSummaryOfLast6Months);
         scrollView = view.findViewById(R.id.summaryOfLast6MonsScrollView);
+
+        backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
+
+        if(SecondActivity.dashBoardArray!=null){
+            initFragment(SecondActivity.dashBoardArray);
+        }
 
         return view;
     }
@@ -87,8 +98,12 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
                     index = Integer.parseInt(message);
                 }
 
-                if (index == tablesToDisplay.size()) {
+                if (index == tablesToDisplay.size() ){
                     drawLast6MonsTotalRow();
+                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                } else if (index == tablesToDisplay.size()+1) {
+                    NavController navController = NavHostFragment.findNavController(fragment);
+                    navController.navigate(R.id.summaryOfLastMonthFragment);
                 } else {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLAst6Months(tablesToDisplay, getContext(), summaryOfLast6MonthsTableLayout, index, totalAmount);
@@ -103,9 +118,11 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
         handleRowAnimationThread.start();
     }
 
-    @Override
-    public void onSuccess(JSONArray jsonArray) {
+
+    public void initFragment(JSONArray jsonArray) {
         try {
+            Log.i("success", fragment + "");
+
             SummaryOfLast6MonthsData summaryOfLast6MonthsData = UtilityFunctionsForActivity2.last6MonthsDataParser(jsonArray);
             inflateTable(summaryOfLast6MonthsData.getTableData());
             UtilityFunctionsForActivity2.drawBarChart(summaryOfLast6MonthsData.getBarChartData(), barChart, "Summarized by last 6 months");
@@ -117,16 +134,13 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
 
     }
 
-    @Override
-    public void onFailure(VolleyError error) {
-
-    }
 
     public void totalLastRow(SummaryOfLast6MonthsRow row) {
 
         totalAmount = totalAmount + row.getAmount();
 
     }
+
 
     public void drawLast6MonsTotalRow() {
         View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
@@ -152,5 +166,16 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
 
         summaryOfLast6MonthsTableLayout.addView(tableElements);
         UtilityFunctionsForActivity1.animate(summaryOfLast6MonthsTableLayout, tableElements);
+    }
+
+
+    public void backTraverse(Fragment fragment, int id) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                NavController navController = NavHostFragment.findNavController(fragment);
+                navController.navigate(id);
+            }
+        });
     }
 }
