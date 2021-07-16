@@ -1,6 +1,8 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -18,21 +22,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
-import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleData;
+import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -71,8 +71,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
         backTraverse(fragment, R.id.summarizedByArticleFragment2);
 
-        if(SecondActivity.dashBoardArray != null){
-            initFragment(SecondActivity.dashBoardArray);
+        if (SecondActivity.dashBoardArray != null) {
+            initFragment();
         }
 
         return view;
@@ -94,6 +94,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
                 }
                 if (index == tablesToDisplay.size()) {
                     drawLastArticleParentRow();
+                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+
                 } else if (index == tablesToDisplay.size() + 1) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summarizedByArticleChildCategFragment);
@@ -105,28 +107,21 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
             }
 
-        }
-
-        ;
+        };
 
         HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler);
         handleRowAnimationThread.start();
     }
 
 
-    public void initFragment(JSONArray jsonArray) {
+    public void initFragment() {
 
-        try {
-            Log.i("success", fragment + "");
+        Log.i("success", fragment + "");
 
-            SummarizedByParentArticleData summarizedByParentArticleData = UtilityFunctionsForActivity2.summarizedByParentArticleParser(jsonArray);
-            inflateTable(summarizedByParentArticleData.getTableData());
-            UtilityFunctionsForActivity2.drawBarChart(summarizedByParentArticleData.getBarChartData(), barChart, "Summarized by Article parent category");
-            UtilityFunctionsForActivity2.drawPieChart(summarizedByParentArticleData.getPieChartData(), pieChart, "Summarized by Article parent category");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        DashBoardData dashBoardData = SecondActivity.dashBoardData;
+        inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData());
+        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
+        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
 
     }
 
@@ -139,20 +134,31 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
     public void drawLastArticleParentRow() {
         View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
-
         TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
         TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
         TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
         TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
-        NumberFormat numberFormat= NumberFormat.getInstance();
+        NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
 
 
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty3.setText(numberFormat.format(grandTotal));
+        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty4.setText("");
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        tableRowProperty3.startAnimation(animation);
+        tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
+        summarizedByParentArticleTableLayout.addView(tableElements);
+        UtilityFunctionsForActivity1.animate(summarizedByParentArticleTableLayout, tableElements);
+
+
     }
 
     public void backTraverse(Fragment fragment, int id) {

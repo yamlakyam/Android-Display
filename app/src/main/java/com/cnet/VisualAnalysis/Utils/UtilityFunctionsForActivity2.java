@@ -178,38 +178,40 @@ public class UtilityFunctionsForActivity2 {
             int index) {
 
         SummarizedByArticleTableRow row = summarizedByArticleDataRows.get(index);
-        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_article, null, false);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowArticleProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowArticleProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowArticleProperty4);
-        TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowArticleProperty5);
+        if( LayoutInflater.from(context)!=null){
+            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_article, null, false);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
+            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
+            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowArticleProperty2);
+            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowArticleProperty3);
+            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowArticleProperty4);
+            TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowArticleProperty5);
 
-        double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);
 
-        String formattedArticleName;
+            double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
+
+            String formattedArticleName;
 
 
-        if (!row.getArticleName().equals("null")) {
-            if (row.getArticleName().length() > 28) {
-                formattedArticleName = row.getArticleName().substring(0, 25) + "...";
+            if (!row.getArticleName().equals("null")) {
+                if (row.getArticleName().length() > 28) {
+                    formattedArticleName = row.getArticleName().substring(0, 25) + "...";
+                } else {
+                    formattedArticleName = row.getArticleName();
+                }
             } else {
-                formattedArticleName = row.getArticleName();
+                formattedArticleName = "- - - - - - - - - - - - - ";
             }
-        } else {
-            formattedArticleName = "- - - - - - - - - - - - - ";
-        }
 
 
-        tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(formattedArticleName);
-        tableRowProperty3.setText(String.valueOf(row.getQuantity()));
-        tableRowProperty4.setText(numberFormat.format(Math.round(row.getAvgAmount() * 100.0) / 100.0));
-        tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
+            tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty2.setText(formattedArticleName);
+            tableRowProperty3.setText(String.valueOf(row.getQuantity()));
+            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAvgAmount() * 100.0) / 100.0));
+            tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
 
 //        Animation animation = AnimationUtils.loadAnimation(context, R.anim.blink);
 //        tableRowProperty5.startAnimation(animation);
@@ -219,8 +221,10 @@ public class UtilityFunctionsForActivity2 {
 //        anim.start();
 
 
-        summarizedByArticleTableLayout.addView(tableElements);
-        animate(summarizedByArticleTableLayout, tableElements);
+            summarizedByArticleTableLayout.addView(tableElements);
+            animate(summarizedByArticleTableLayout, tableElements);
+        }
+
 
     }
 
@@ -241,6 +245,14 @@ public class UtilityFunctionsForActivity2 {
 
         double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
 
+        String formattedCategoryType;
+        if (row.getCategoryType().equals("null")) {
+            formattedCategoryType = "- - - - - - - - - - - - - ";
+        } else {
+            formattedCategoryType=row.getCategoryType();
+        }
+
+
         double grandTotalForAll = 0;
         for (int i = 0; i < summarizedByParentArticleRows.size(); i++) {
             double grandTotalForI = summarizedByParentArticleRows.get(i).getTotalAmount() +
@@ -251,9 +263,9 @@ public class UtilityFunctionsForActivity2 {
         double percentage = (grandTotal / grandTotalForAll) * 100;
 
         tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(row.getCategoryType());
+        tableRowProperty2.setText(formattedCategoryType);
         tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0));
+        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0)+"%");
 
 
         summarizedByParentArticleTableLayout.addView(tableElements);
@@ -288,11 +300,18 @@ public class UtilityFunctionsForActivity2 {
         }
         double percentage = (grandTotal / grandTotalForAll) * 100;
 
+        String formattedCategoryType;
+        if (row.getCategoryType().equals("null")) {
+            formattedCategoryType = "- - - - - - - - - - - - - ";
+        } else {
+            formattedCategoryType=row.getCategoryType();
+        }
+
 
         tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(row.getCategoryType());
+        tableRowProperty2.setText(formattedCategoryType);
         tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0));
+        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0)+"%");
 
 
         summarizedByChildArticleTableLayout.addView(tableElements);
@@ -386,7 +405,7 @@ public class UtilityFunctionsForActivity2 {
         tableRowProperty1.setText(String.valueOf(index + 1));
         tableRowProperty2.setText(row.getBranch());
         tableRowProperty3.setText(String.valueOf(row.getQuantity()));
-        tableRowProperty4.setText(numberFormat.format(percentage));
+        tableRowProperty4.setText(numberFormat.format(percentage)+"%");
         tableRowProperty5.setText(numberFormat.format(row.getGrandTotal()));
 
         branchSummaryTableLayout.addView(tableElements);
@@ -398,217 +417,4 @@ public class UtilityFunctionsForActivity2 {
         Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
         child.startAnimation(animation);
     }
-
-
-    public static SummaryOfLast30DaysData last30DaysDataParser(JSONArray jsonArray) throws JSONException {
-        JSONObject allData = jsonArray.getJSONObject(0);
-        JSONArray lastDaysOfMonthSale = allData.getJSONArray("lastDaysOfMonthSale");
-
-        ArrayList<SummaryOfLast30DaysRow> tableData = new ArrayList<>();
-        float[] xValues = new float[lastDaysOfMonthSale.length()];
-        float[] yValues = new float[lastDaysOfMonthSale.length()];
-        String[] legends = new String[lastDaysOfMonthSale.length()];
-
-        for (int i = 0; i < lastDaysOfMonthSale.length(); i++) {
-            JSONObject summaryAtIndex = lastDaysOfMonthSale.getJSONObject(i);
-
-            SummaryOfLast30DaysRow summaryOfLast30DaysRow = new SummaryOfLast30DaysRow(
-                    summaryAtIndex.getString("name"),
-                    summaryAtIndex.getDouble("amount"),
-                    summaryAtIndex.getString("dateTime")
-            );
-
-            tableData.add(summaryOfLast30DaysRow);
-            xValues[i] = i + 1;
-            yValues[i] = (float) summaryAtIndex.getDouble("amount");
-            legends[i] = summaryAtIndex.getString("name");
-
-        }
-
-
-        LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
-        BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-        SummaryOfLast30DaysData summaryOfLast30DaysData = new SummaryOfLast30DaysData(lineChartData, barChartData, tableData);
-
-        return summaryOfLast30DaysData;
-    }
-
-    public static SummaryOfLast6MonthsData last6MonthsDataParser(JSONArray jsonArray) throws JSONException {
-        JSONObject allData = jsonArray.getJSONObject(0);
-        JSONArray last6MonthsSale = allData.getJSONArray("lastMonthsOfYearSale");
-
-        ArrayList<SummaryOfLast6MonthsRow> tableData = new ArrayList<>();
-        float[] xValues = new float[last6MonthsSale.length()];
-        float[] yValues = new float[last6MonthsSale.length()];
-        String[] legends = new String[last6MonthsSale.length()];
-
-        for (int i = 0; i < last6MonthsSale.length(); i++) {
-            JSONObject last6MonsSummaryAtInedx = last6MonthsSale.getJSONObject(i);
-
-            SummaryOfLast6MonthsRow summaryOfLast6MonthsRow = new SummaryOfLast6MonthsRow(
-                    last6MonsSummaryAtInedx.getString("name"),
-                    last6MonsSummaryAtInedx.getDouble("amount"),
-                    last6MonsSummaryAtInedx.getString("dateTime")
-            );
-            tableData.add(summaryOfLast6MonthsRow);
-            xValues[i] = i + 1;
-            yValues[i] = (float) last6MonsSummaryAtInedx.getDouble("amount");
-            legends[i] = last6MonsSummaryAtInedx.getString("name");
-
-
-        }
-
-        PieChartData pieChartData = new PieChartData(xValues, legends);
-        BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-
-
-        SummaryOfLast6MonthsData summaryOfLast6MonthsData = new SummaryOfLast6MonthsData(pieChartData, tableData, barChartData);
-
-        return summaryOfLast6MonthsData;
-    }
-
-    public static SummarizedByParentArticleData summarizedByParentArticleParser(JSONArray jsonArray) throws JSONException {
-        JSONObject allData = jsonArray.getJSONObject(0);
-        JSONArray summaryOfParentArticle = allData.getJSONArray("summarizedByArticleParentCategory");
-
-        ArrayList<SummarizedByParentArticleRow> tableData = new ArrayList<>();
-        float[] xValues = new float[summaryOfParentArticle.length()];
-        float[] yValues = new float[summaryOfParentArticle.length()];
-        String[] legends = new String[summaryOfParentArticle.length()];
-
-        for (int i = 0; i < summaryOfParentArticle.length(); i++) {
-            JSONObject summaryOfParentarticleAtInedx = summaryOfParentArticle.getJSONObject(i);
-
-            SummarizedByParentArticleRow summarizedByParentArticleRow = new SummarizedByParentArticleRow(
-                    summaryOfParentarticleAtInedx.getString("categoryType"),
-                    summaryOfParentarticleAtInedx.getDouble("quantity"),
-                    summaryOfParentarticleAtInedx.getDouble("avgAmount"),
-                    summaryOfParentarticleAtInedx.getDouble("totalAmount"),
-                    summaryOfParentarticleAtInedx.getDouble("totalServCharge"),
-                    summaryOfParentarticleAtInedx.getDouble("totalDiscount"),
-                    summaryOfParentarticleAtInedx.getDouble("taxAmount")
-            );
-            tableData.add(summarizedByParentArticleRow);
-            xValues[i] = i;
-            yValues[i] = (float) summaryOfParentarticleAtInedx.getDouble("totalAmount");
-            legends[i] = summaryOfParentarticleAtInedx.getString("categoryType");
-
-        }
-
-        PieChartData pieChartData = new PieChartData(xValues, legends);
-        BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-
-
-        SummarizedByParentArticleData summarizedByParentArticleData = new SummarizedByParentArticleData(tableData, barChartData, pieChartData);
-
-        return summarizedByParentArticleData;
-    }
-
-    public static SummarizedByChildArticleData summarizedByChildArticleParser(JSONArray jsonArray) throws JSONException {
-        JSONObject allData = jsonArray.getJSONObject(0);
-        JSONArray summaryOfChildArticle = allData.getJSONArray("summarizedByArticleChildCategory");
-
-        ArrayList<SummarizedByChildArticleRow> tableData = new ArrayList<>();
-        float[] xValues = new float[summaryOfChildArticle.length()];
-        float[] yValues = new float[summaryOfChildArticle.length()];
-        String[] legends = new String[summaryOfChildArticle.length()];
-
-        for (int i = 0; i < summaryOfChildArticle.length(); i++) {
-            JSONObject summaryOfChildArticleAtInedx = summaryOfChildArticle.getJSONObject(i);
-
-            SummarizedByChildArticleRow summarizedByChildArticleRow = new SummarizedByChildArticleRow(
-                    summaryOfChildArticleAtInedx.getString("categoryType"),
-                    summaryOfChildArticleAtInedx.getDouble("quantity"),
-                    summaryOfChildArticleAtInedx.getDouble("avgAmount"),
-                    summaryOfChildArticleAtInedx.getDouble("totalAmount"),
-                    summaryOfChildArticleAtInedx.getDouble("totalServCharge"),
-                    summaryOfChildArticleAtInedx.getDouble("totalDiscount"),
-                    summaryOfChildArticleAtInedx.getDouble("taxAmount")
-            );
-            tableData.add(summarizedByChildArticleRow);
-            xValues[i] = i;
-            yValues[i] = (float) summaryOfChildArticleAtInedx.getDouble("totalAmount");
-            legends[i] = summaryOfChildArticleAtInedx.getString("categoryType");
-
-        }
-
-        PieChartData pieChartData = new PieChartData(xValues, legends);
-        BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-
-
-        SummarizedByChildArticleData summarizedByChildArticleData = new SummarizedByChildArticleData(tableData, barChartData, pieChartData);
-
-        return summarizedByChildArticleData;
-    }
-
-    public static SummarizedByArticleData summarizedByArticleParser(JSONArray jsonArray) throws JSONException {
-        JSONObject allData = jsonArray.getJSONObject(0);
-        JSONArray summaryOfArticle = allData.getJSONArray("summarizedByArticleList");
-
-        ArrayList<SummarizedByArticleTableRow> tableData = new ArrayList<>();
-        float[] xValues = new float[summaryOfArticle.length()];
-        float[] yValues = new float[summaryOfArticle.length()];
-        String[] legends = new String[summaryOfArticle.length()];
-
-        for (int i = 0; i < summaryOfArticle.length(); i++) {
-            JSONObject summaryOfArticleAtInedx = summaryOfArticle.getJSONObject(i);
-
-            SummarizedByArticleTableRow summarizedByArticleTableRow = new SummarizedByArticleTableRow(
-                    summaryOfArticleAtInedx.getString("articleCode"),
-                    summaryOfArticleAtInedx.getString("articleName"),
-                    (int) summaryOfArticleAtInedx.getDouble("quantity"),
-                    summaryOfArticleAtInedx.getDouble("avgAmount"),
-                    summaryOfArticleAtInedx.getDouble("totalAmount"),
-                    summaryOfArticleAtInedx.getDouble("totalServCharge"),
-                    summaryOfArticleAtInedx.getDouble("totalDiscount"),
-                    summaryOfArticleAtInedx.getDouble("taxAmount")
-            );
-            double grandTotal = summaryOfArticleAtInedx.getDouble("totalAmount") +
-                    summaryOfArticleAtInedx.getDouble("totalServCharge") +
-                    summaryOfArticleAtInedx.getDouble("taxAmount");
-
-            tableData.add(summarizedByArticleTableRow);
-            xValues[i] = i;
-            yValues[i] = (float) grandTotal;
-            legends[i] = summaryOfArticleAtInedx.getString("articleName");
-
-        }
-
-
-        BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-        LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
-
-
-        SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, lineChartData);
-        return summarizedByArticleData;
-    }
-
-    public static BranchSummaryData branchSummaryParser(JSONArray jsonArray) throws JSONException {
-        Log.i("TAG", jsonArray.length()+"");
-
-        JSONObject allData = jsonArray.getJSONObject(0);
-        JSONArray summaryOfBranch = allData.getJSONArray("orgUnitSales");
-
-        ArrayList<BranchSummaryTableRow> tableData = new ArrayList<>();
-
-        for (int i = 0; i < summaryOfBranch.length(); i++) {
-            JSONObject branchSummaryAtInedx = summaryOfBranch.getJSONObject(i);
-
-            BranchSummaryTableRow branchSummaryTableRow = new BranchSummaryTableRow(
-                    branchSummaryAtInedx.getString("org"),
-                    branchSummaryAtInedx.getDouble("grandTotal"),
-                    branchSummaryAtInedx.getInt("countS")
-
-            );
-
-            tableData.add(branchSummaryTableRow);
-
-        }
-
-
-        BranchSummaryData branchSummaryData = new BranchSummaryData(tableData);
-        return branchSummaryData;
-    }
-
-
 }

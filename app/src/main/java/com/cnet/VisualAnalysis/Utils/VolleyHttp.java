@@ -25,7 +25,6 @@ public class VolleyHttp {
         this.context = context;
     }
 
-
     public void makeGetRequest(String url, GetRequest request){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -33,7 +32,6 @@ public class VolleyHttp {
                     @Override
                     public void onResponse(JSONArray response) {
                         request.onSuccess(response);
-
 
                     }
                 },
@@ -45,7 +43,7 @@ public class VolleyHttp {
                 });
 
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000000,
+                1000000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonArrayRequest);

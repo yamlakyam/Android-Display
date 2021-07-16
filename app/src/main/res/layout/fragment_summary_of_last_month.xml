@@ -13,10 +13,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark2"
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/summaryOfLast30DaysTitle"
@@ -36,7 +36,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark2"
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
         app:layout_constraintBottom_toTopOf="@+id/bCardSummaryOfLast30Days"
         app:layout_constraintEnd_toStartOf="@+id/tCardSummaryOfLast30Days"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
         android:layout_width="400dp"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark2"
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tCardSummaryOfLast30Days"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,11 +75,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark2"
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/lCardSummaryOfLast30Days"
-        app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast30Days" >
+        app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast30Days">
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="40dp"

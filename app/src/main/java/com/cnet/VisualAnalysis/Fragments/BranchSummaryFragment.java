@@ -1,44 +1,41 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-
-import com.android.volley.VolleyError;
-import com.cnet.VisualAnalysis.Data.BranchSummaryData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
-import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
-import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
+import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class BranchSummaryFragment extends Fragment  {
+public class BranchSummaryFragment extends Fragment {
 
     TableLayout branchSummaryTableLayout;
     ProgressBar branchSummaryProgressBar;
@@ -46,8 +43,12 @@ public class BranchSummaryFragment extends Fragment  {
     Handler animationHandler;
     Fragment fragment;
 
+
+    int totalQuantity = 0;
+    double grandTotal = 0;
+
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
@@ -55,17 +56,17 @@ public class BranchSummaryFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_branch_summary, container, false);
-        branchSummaryTableLayout=view.findViewById(R.id.branchSummaryTableLayout);
-        branchSummaryProgressBar=view.findViewById(R.id.branchSummaryProgressBar);
-        scrollBranchSummaryTable=view.findViewById(R.id.scrollBranchSummaryTable);
-        fragment=this;
+        View view = inflater.inflate(R.layout.fragment_branch_summary, container, false);
+        branchSummaryTableLayout = view.findViewById(R.id.branchSummaryTableLayout);
+        branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
+        scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
+        fragment = this;
 
-        if(SecondActivity.dashBoardArray!=null){
-            initFragment(SecondActivity.dashBoardArray);
+        if (SecondActivity.dashBoardArray != null) {
+            initFragment();
         }
 
-//        backTraverse(fragment,);
+        backTraverse(fragment,R.id.summaryOfLastMonthFragment);
 
         return view;
     }
@@ -83,15 +84,16 @@ public class BranchSummaryFragment extends Fragment  {
                 }
 
                 if (index == tablesToDisplay.size()) {
-//                    drawLast6MonsTotalRow();
-//                    UtilityFunctionsForActivity1.scrollRows(summByArticleScrollView);
-                } else if (index == tablesToDisplay.size()+1) {
+                    drawLastBranchSummaryRow();
+                    UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
+
+                } else if (index == tablesToDisplay.size() + 1) {
 
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summarizedByArticleFragment2);
 
                 } else {
-//                    totalLastRow(tablesToDisplay.get(index));
+                    totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawBranchSummary(tablesToDisplay, getContext(), branchSummaryTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
                 }
@@ -105,16 +107,12 @@ public class BranchSummaryFragment extends Fragment  {
     }
 
 
-    public void initFragment(JSONArray jsonArray) {
+    public void initFragment() {
         branchSummaryProgressBar.setVisibility(View.GONE);
         Log.i("success", fragment + "");
-        try {
-            BranchSummaryData branchSummaryData = UtilityFunctionsForActivity2.branchSummaryParser(jsonArray);
-            inflateTable(branchSummaryData.getBranchSummaryTableRows());
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        DashBoardData dashBoardData = SecondActivity.dashBoardData;
+        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows());
 
     }
 
@@ -128,4 +126,42 @@ public class BranchSummaryFragment extends Fragment  {
             }
         });
     }
+
+    public void totalLastRow(BranchSummaryTableRow row) {
+        totalQuantity = totalQuantity + row.getQuantity();
+        grandTotal = grandTotal + row.getGrandTotal();
+    }
+
+    public void drawLastBranchSummaryRow() {
+        View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_branch_summary, null, false);
+
+        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowBranchSummary1);
+        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowBranchSummary2);
+        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowBranchSummary3);
+        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowBranchSummary4);
+        TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowBranchSummary5);
+
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setGroupingUsed(true);
+
+        tableRowProperty1.setText("");
+        tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty3.setText(String.valueOf(totalQuantity));
+        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty4.setText("");
+        tableRowProperty5.setText(numberFormat.format(grandTotal));
+        tableRowProperty5.setTypeface(Typeface.DEFAULT_BOLD);
+
+
+        tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        tableRowProperty3.startAnimation(animation);
+        tableRowProperty5.startAnimation(animation);
+
+        branchSummaryTableLayout.addView(tableElements);
+        UtilityFunctionsForActivity2.animate(branchSummaryTableLayout, tableElements);
+    }
+
 }

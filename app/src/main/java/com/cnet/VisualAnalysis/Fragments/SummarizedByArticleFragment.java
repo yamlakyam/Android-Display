@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,26 +25,24 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
-import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
+import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
-import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
+import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.GetRequest {
 
@@ -64,21 +63,12 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         VolleyHttp http = new VolleyHttp(getContext());
         http.makeGetRequest(Constants.DashboardURL, this);
-//        if(SecondActivity.dashBoardArray != null){
-//            try {
-//                SummarizedByArticleData summarizedByArticleData = UtilityFunctionsForActivity2.summarizedByArticleParser(SecondActivity.dashBoardArray);
-//                inflateTable(summarizedByArticleData.getTableData());
-//                UtilityFunctionsForActivity2.drawBarChart(summarizedByArticleData.getBarChartData(), barChartSumByArticle, "Summarized by Article");
-//                UtilityFunctionsForActivity2.drawLineChart(summarizedByArticleData.getLineChartData(),lineChartSumByArticle);
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,11 +83,10 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         scrollingArticleText = view.findViewById(R.id.scrollingArticleText);
         scrollingArticleText.setSelected(true);
         summByArticleScrollView = view.findViewById(R.id.summByArticleScrollView);
-        articleSummaryProgressBar=view.findViewById(R.id.articleSummaryProgressBar);
-        constraintLayout=view.findViewById(R.id.constraintLayout);
+        articleSummaryProgressBar = view.findViewById(R.id.articleSummaryProgressBar);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
 
-//        backTraverse(fragment, R.id.summaryOfLastMonthFragment);
-
+        finishOnBackPressed();
         return view;
     }
 
@@ -117,7 +106,7 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
                 if (index == tablesToDisplay.size()) {
                     drawLast6MonsTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(summByArticleScrollView);
-                } else if (index == tablesToDisplay.size()+1) {
+                } else if (index == tablesToDisplay.size() + 1) {
 
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summarizedByArticleParentCategFragment);
@@ -137,28 +126,24 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     }
 
 
-    @Override
-    public void onSuccess(JSONArray jsonArray) {
-        try {
-            articleSummaryProgressBar.setVisibility(View.GONE);
-            constraintLayout.setVisibility(View.VISIBLE);
-            SecondActivity.dashBoardArray = jsonArray;
-            Log.i("success", fragment + "");
-            SummarizedByArticleData summarizedByArticleData = UtilityFunctionsForActivity2.summarizedByArticleParser(jsonArray);
-            inflateTable(summarizedByArticleData.getTableData());
-            UtilityFunctionsForActivity2.drawBarChart(summarizedByArticleData.getBarChartData(), barChartSumByArticle, "Summarized by Article");
-            UtilityFunctionsForActivity2.drawLineChart(summarizedByArticleData.getLineChartData(),lineChartSumByArticle);
+/*
+    public void initFragment(JSONArray jsonArray) {
+        articleSummaryProgressBar.setVisibility(View.GONE);
+        constraintLayout.setVisibility(View.VISIBLE);
+        Log.i("success", fragment + "");
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
+        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
+
+        Log.i("data", dashBoardData.getSummarizedByArticleData()+"");
+        inflateTable(dashBoardData.getSummarizedByArticleData().getTableData());
+        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
+        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle);
 
     }
 
-    @Override
-    public void onFailure(VolleyError error) {
+ */
 
-    }
 
     public void totalLastRow(SummarizedByArticleTableRow row) {
 
@@ -182,8 +167,14 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
 
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty3.setText(numberFormat.format(totalQuantity));
+        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty4.setText(numberFormat.format(Math.round(totalUnitAmount * 100.0) / 100.0));
+        tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty5.setText("");
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
 
@@ -195,12 +186,36 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         UtilityFunctionsForActivity1.animate(summarizedByArticleTableLayout, tableElements);
     }
 
-    public void backTraverse(Fragment fragment, int id) {
+    @Override
+    public void onSuccess(JSONArray jsonArray) {
+
+
+        SecondActivity.dashBoardArray = jsonArray;
+        articleSummaryProgressBar.setVisibility(View.GONE);
+        constraintLayout.setVisibility(View.VISIBLE);
+        Log.i("success", fragment + "");
+
+        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
+        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
+
+        SecondActivity.dashBoardData = dashBoardData;
+
+        Log.i("data", dashBoardData.getSummarizedByArticleData() + "");
+        inflateTable(dashBoardData.getSummarizedByArticleData().getTableData());
+        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
+        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle);
+    }
+
+    @Override
+    public void onFailure(VolleyError error) {
+
+    }
+
+    public void finishOnBackPressed() {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(id);
+               requireActivity().finish();
             }
         });
     }

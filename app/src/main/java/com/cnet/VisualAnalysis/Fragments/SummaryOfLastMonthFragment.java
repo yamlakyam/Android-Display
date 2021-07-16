@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,32 +22,20 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
-import com.cnet.VisualAnalysis.Data.LineChartData;
-import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysData;
+import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class SummaryOfLastMonthFragment extends Fragment  {
+public class SummaryOfLastMonthFragment extends Fragment {
     TableLayout summaryOfLast30DaysTableLayout;
     Handler animationHandler;
     LineChart lineChart;
@@ -80,24 +69,21 @@ public class SummaryOfLastMonthFragment extends Fragment  {
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
 
-        if(SecondActivity.dashBoardArray!=null){
-            initFragment(SecondActivity.dashBoardArray);
+        if (SecondActivity.dashBoardArray != null) {
+            initFragment();
         }
         return view;
     }
 
 
-    public void initFragment(JSONArray jsonArray) {
-        try {
+    public void initFragment() {
 
-            Log.i("success", fragment + "");
-            SummaryOfLast30DaysData summaryOfLast30DaysData = UtilityFunctionsForActivity2.last30DaysDataParser(jsonArray);
-            inflateTable(summaryOfLast30DaysData.tableData);
-            UtilityFunctionsForActivity2.drawLineChart(summaryOfLast30DaysData.lineChartData,lineChart);
-            UtilityFunctionsForActivity2.drawBarChart(summaryOfLast30DaysData.barChartData, barChart, "Summarized by last 30 days");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Log.i("success", fragment + "");
+
+        DashBoardData dashBoardData = SecondActivity.dashBoardData;
+        inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData);
+        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart);
+        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last 30 days");
     }
 
     @SuppressLint("HandlerLeak")
@@ -113,12 +99,10 @@ public class SummaryOfLastMonthFragment extends Fragment  {
 
                 }
 
-//                totalLastRow(tablesToDisplay.get(index));
-
                 if (index == tablesToDisplay.size()) {
                     drawLastTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
-                } else if (index == tablesToDisplay.size()+1) {
+                } else if (index == tablesToDisplay.size() + 1) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.branchSummaryFragment);
                 } else {
@@ -155,17 +139,21 @@ public class SummaryOfLastMonthFragment extends Fragment  {
 
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty3.setText(numberFormat.format(totalAmount));
+        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty4.setText("");
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
+
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
         tableRowProperty3.startAnimation(animation);
 
         summaryOfLast30DaysTableLayout.addView(tableElements);
         UtilityFunctionsForActivity1.animate(summaryOfLast30DaysTableLayout, tableElements);
     }
-
 
 
     public void backTraverse(Fragment fragment, int id) {

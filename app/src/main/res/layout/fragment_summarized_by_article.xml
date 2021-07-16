@@ -39,7 +39,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="@color/cardBackgroundDark2"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -60,7 +60,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/cardBackgroundDark2"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticle">
@@ -79,7 +79,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/cardBackgroundDark2"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
             app:layout_constraintEnd_toEndOf="@+id/lCardSummByArticle"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/cardBackgroundDark2"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/lCardSummByArticle"
@@ -177,7 +177,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:cardBackgroundColor="@color/cardBackgroundDark2">
+                        app:cardBackgroundColor="@color/cardBackgroundDark1">
 
                         <TableLayout
                             android:id="@+id/summaryByArticleTableLayout"
@@ -199,7 +199,8 @@
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="@color/cardBackgroundDark2"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -215,7 +216,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text="                                                                                                                                 Single line text view that scrolls horizontally if the text is way too long                                                            "
+                android:text="@string/scrollingText"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
         </com.google.android.material.card.MaterialCardView>

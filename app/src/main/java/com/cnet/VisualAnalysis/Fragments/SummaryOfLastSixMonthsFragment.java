@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,12 +23,14 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
+import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
@@ -79,7 +82,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
 
         if(SecondActivity.dashBoardArray!=null){
-            initFragment(SecondActivity.dashBoardArray);
+            initFragment();
         }
 
         return view;
@@ -119,18 +122,14 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
     }
 
 
-    public void initFragment(JSONArray jsonArray) {
-        try {
-            Log.i("success", fragment + "");
+    public void initFragment() {
+        Log.i("success", fragment + "");
 
-            SummaryOfLast6MonthsData summaryOfLast6MonthsData = UtilityFunctionsForActivity2.last6MonthsDataParser(jsonArray);
-            inflateTable(summaryOfLast6MonthsData.getTableData());
-            UtilityFunctionsForActivity2.drawBarChart(summaryOfLast6MonthsData.getBarChartData(), barChart, "Summarized by last 6 months");
-            UtilityFunctionsForActivity2.drawPieChart(summaryOfLast6MonthsData.getPieChartData(), pieChart, "Summarized by last 6 months");
+        DashBoardData dashBoardData = SecondActivity.dashBoardData;
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        inflateTable(dashBoardData.getSummaryOfLast6MonthsData().getTableData());
+        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast6MonthsData().getBarChartData(), barChart, "Summarized by last 6 months");
+        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), pieChart, "Summarized by last 6 months");
 
     }
 
@@ -153,17 +152,18 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
 
-
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty3.setText(numberFormat.format(Math.round(totalAmount * 100.0) / 100.0));
+        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+
         tableRowProperty4.setText("");
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
         tableRowProperty3.startAnimation(animation);
-
-
         summaryOfLast6MonthsTableLayout.addView(tableElements);
         UtilityFunctionsForActivity1.animate(summaryOfLast6MonthsTableLayout, tableElements);
     }
