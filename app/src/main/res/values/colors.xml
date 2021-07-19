@@ -51,6 +51,9 @@
     <color name="mainBackgroundLight3">#f8f8f8</color>
     <color name="cardBackgroundLight3">#ffffff</color>
 
+    <color name="playbacksForeground">#FF949393</color>
+    <color name="playbacksBackground">#FFD3D3D3</color>
+
 
 
 

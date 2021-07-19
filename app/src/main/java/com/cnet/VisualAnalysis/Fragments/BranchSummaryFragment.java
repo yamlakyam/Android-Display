@@ -26,6 +26,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
+import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
@@ -43,6 +44,8 @@ public class BranchSummaryFragment extends Fragment {
     Handler animationHandler;
     Fragment fragment;
 
+    public static HandleRowAnimationThread handleRowAnimationThread;
+
 
     int totalQuantity = 0;
     double grandTotal = 0;
@@ -50,6 +53,12 @@ public class BranchSummaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
+                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
+                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
+                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
+                SummaryOfLastMonthFragment.handleRowAnimationThread);
 
     }
 
@@ -62,21 +71,32 @@ public class BranchSummaryFragment extends Fragment {
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
         fragment = this;
 
-        if (SecondActivity.dashBoardArray != null) {
-            initFragment();
-        }
+
+
+
 
         backTraverse(fragment,R.id.summaryOfLastMonthFragment);
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (SecondActivity.dashBoardArray != null) {
+            initFragment(200);
+        }
+    }
+
     @SuppressLint("HandlerLeak")
-    private void inflateTable(ArrayList<BranchSummaryTableRow> tablesToDisplay) {
+    private void inflateTable(ArrayList<BranchSummaryTableRow> tablesToDisplay, int seconds) {
+        grandTotal=0;
         branchSummaryTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
+
+                Log.i("branch", SecondActivity.summaryOfBranchPause+"");
                 String message = (String) msg.obj;
                 int index = 0;
                 if (message != null) {
@@ -87,12 +107,11 @@ public class BranchSummaryFragment extends Fragment {
                     drawLastBranchSummaryRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
 
-                } else if (index == tablesToDisplay.size() + 1) {
-
+                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause ) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summarizedByArticleFragment2);
 
-                } else {
+                } else if(index<tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawBranchSummary(tablesToDisplay, getContext(), branchSummaryTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
@@ -102,17 +121,17 @@ public class BranchSummaryFragment extends Fragment {
 
         };
 
-        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler,seconds);
         handleRowAnimationThread.start();
     }
 
 
-    public void initFragment() {
+    public void initFragment(int seconds) {
         branchSummaryProgressBar.setVisibility(View.GONE);
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
-        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows());
+        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(),seconds);
 
     }
 
@@ -147,11 +166,15 @@ public class BranchSummaryFragment extends Fragment {
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty2.setTextSize(25f);
         tableRowProperty3.setText(String.valueOf(totalQuantity));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty3.setTextSize(25f);
         tableRowProperty4.setText("");
         tableRowProperty5.setText(numberFormat.format(grandTotal));
         tableRowProperty5.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty5.setTextSize(25f);
+
 
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
@@ -162,6 +185,13 @@ public class BranchSummaryFragment extends Fragment {
 
         branchSummaryTableLayout.addView(tableElements);
         UtilityFunctionsForActivity2.animate(branchSummaryTableLayout, tableElements);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(handleRowAnimationThread!=null)
+            handleRowAnimationThread.interrupt();
     }
 
 }

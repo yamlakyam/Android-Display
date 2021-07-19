@@ -138,7 +138,8 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                 }
                 if (index == allRows) {
 
-                } else {
+                }
+                else {
                     UtilityFunctionsForActivity1.drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index, requireView());
                     UtilityFunctionsForActivity1.scrollRows(scrollVSMtable);
                 }
@@ -147,7 +148,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
             }
         };
 
-        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler);
+        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler,200);
         handleRowAnimationThread.start();
 
     }

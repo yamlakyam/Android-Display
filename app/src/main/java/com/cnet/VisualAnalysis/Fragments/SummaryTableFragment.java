@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
@@ -41,7 +42,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     private ArrayList<SummaryTableRow> tablesToDisplay;
     private ProgressBar summaryTableProgressBar;
     ScrollView scrollSummaryTable;
-    Fragment navhostFragment;
+    Fragment fragment;
 
 
     int sumOfVSICount, sumOfSalesCount, sumOfSKUCount, sumOfQuantity, sumOfActiveVans, sumOfProspects = 0;
@@ -68,12 +69,13 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_summary_table, container, false);
+
+        fragment=this;
         summaryTableLayout = view.findViewById(R.id.summaryTableLayout);
         summaryTableProgressBar = view.findViewById(R.id.summaryTableprogressBar);
         scrollSummaryTable = view.findViewById(R.id.scrollSummaryTable);
 
-        View navhost = getActivity().findViewById(R.id.nav_host_fragment);
-        navhostFragment = FragmentManager.findFragment(navhost);
+
 
         return view;
     }
@@ -96,10 +98,11 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
                 }
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
-                    NavHostFragment.findNavController(navhostFragment).navigate(R.id.distributorTableFragment);
+
                 }
                 else if(index == tablesToDisplay.size()+1){
-
+                    NavController navController = NavHostFragment.findNavController(fragment);
+                    navController.navigate(R.id.distributorTableFragment);
                 }else {
                     sumofLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawSummaryTable(tablesToDisplay, getContext(), summaryTableLayout, index);
@@ -110,7 +113,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
         };
 
-        HandleRowAnimationThread changeTodoTitleThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler);
+        HandleRowAnimationThread changeTodoTitleThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler,200);
         changeTodoTitleThread.start();
 
     }

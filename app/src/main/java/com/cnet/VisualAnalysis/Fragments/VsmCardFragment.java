@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.R;
@@ -28,6 +30,7 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
     public static Handler changeDataHandler;
     public static final String URL = "http://192.168.1.248:8001/api/ChartData/GetSalesDataToDisplayVsmCards";
     ProgressBar vsmCardProgressBar;
+    Fragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         View view = inflater.inflate(R.layout.fragment_vsm_card, container, false);
         vsmCardGridLayout = view.findViewById(R.id.vsmCardGridLayout);
         vsmCardProgressBar = view.findViewById(R.id.vsmCardProgressBar);
+        fragment=this;
 
         return view;
     }
@@ -60,7 +64,12 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
                 try {
                     if (index == jsonArray.length()) {
 
-                    } else {
+                    }
+                    else if(index==jsonArray.length()+1){
+                        NavController navController = NavHostFragment.findNavController(fragment);
+                        navController.navigate(R.id.vsmTransactionFragment);
+                    }
+                    else {
                         UtilityFunctionsForActivity1.drawVSMCard(jsonArray, index, getContext(), vsmCardGridLayout);
 
                     }

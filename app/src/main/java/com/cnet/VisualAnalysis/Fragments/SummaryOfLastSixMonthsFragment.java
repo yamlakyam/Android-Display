@@ -43,6 +43,8 @@ import org.json.JSONException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import javax.xml.parsers.SAXParser;
+
 
 public class SummaryOfLastSixMonthsFragment extends Fragment{
 
@@ -53,6 +55,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
     PieChart pieChart;
     ScrollView scrollView;
     Fragment fragment;
+
+    public static HandleRowAnimationThread handleRowAnimationThread;
 
     double totalAmount = 0;
 
@@ -65,6 +69,11 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
+                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
+                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
+                SummaryOfLastMonthFragment.handleRowAnimationThread,
+                BranchSummaryFragment.handleRowAnimationThread);
     }
 
 
@@ -79,17 +88,24 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
         barChart = view.findViewById(R.id.bChartSummaryOfLast6Months);
         scrollView = view.findViewById(R.id.summaryOfLast6MonsScrollView);
 
+
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
 
-        if(SecondActivity.dashBoardArray!=null){
-            initFragment();
-        }
+
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(SecondActivity.dashBoardArray!=null){
+            initFragment(200);
+        }
+    }
+
     @SuppressLint("HandlerLeak")
-    private void inflateTable(ArrayList<SummaryOfLast6MonthsRow> tablesToDisplay) {
+    private void inflateTable(ArrayList<SummaryOfLast6MonthsRow> tablesToDisplay, int seconds) {
 
         summaryOfLast6MonthsTableLayout.removeAllViews();
         animationHandler = new Handler() {
@@ -104,10 +120,10 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
                 if (index == tablesToDisplay.size() ){
                     drawLast6MonsTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
-                } else if (index == tablesToDisplay.size()+1) {
+                } else if (index == tablesToDisplay.size()+1 && !SecondActivity.summaryOfLast6MonsPause )  {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                } else {
+                } else if(index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLAst6Months(tablesToDisplay, getContext(), summaryOfLast6MonthsTableLayout, index, totalAmount);
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
@@ -117,17 +133,17 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
 
         };
 
-        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler,seconds);
         handleRowAnimationThread.start();
     }
 
 
-    public void initFragment() {
+    public void initFragment(int seconds) {
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
 
-        inflateTable(dashBoardData.getSummaryOfLast6MonthsData().getTableData());
+        inflateTable(dashBoardData.getSummaryOfLast6MonthsData().getTableData(),seconds);
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast6MonthsData().getBarChartData(), barChart, "Summarized by last 6 months");
         UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), pieChart, "Summarized by last 6 months");
 
@@ -155,9 +171,13 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty2.setTextSize(25f);
+
 
         tableRowProperty3.setText(numberFormat.format(Math.round(totalAmount * 100.0) / 100.0));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty3.setTextSize(25f);
+
 
         tableRowProperty4.setText("");
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
@@ -177,5 +197,12 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
                 navController.navigate(id);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(handleRowAnimationThread!=null)
+            handleRowAnimationThread.interrupt();
     }
 }

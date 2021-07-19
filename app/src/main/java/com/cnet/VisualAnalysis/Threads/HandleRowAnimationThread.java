@@ -7,6 +7,7 @@ import android.provider.Browser;
 import androidx.fragment.app.Fragment;
 
 import com.cnet.VisualAnalysis.Fragments.DistributorTableFragment;
+import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleFragment;
 import com.cnet.VisualAnalysis.Fragments.SummaryTableFragment;
 
 
@@ -14,10 +15,12 @@ public class HandleRowAnimationThread extends Thread {
 
     int rows;
     Handler changeDataHandler;
+    int numberOfSeconds;
 
-    public HandleRowAnimationThread(int rows, Handler changeDataHandler){
+    public HandleRowAnimationThread(int rows, Handler changeDataHandler, int numberOfSeconds ){
         this.changeDataHandler = changeDataHandler;
         this.rows=rows;
+        this.numberOfSeconds=numberOfSeconds;
     }
     @Override
     public void run() {
@@ -32,10 +35,11 @@ public class HandleRowAnimationThread extends Thread {
                     Thread.sleep(3000);
                 }
                 else if(i==rows){
+                    SummarizedByArticleFragment.isInflatingTable = false;
                     Thread.sleep(5000);
                 }
                 else{
-                    Thread.sleep(200);
+                    Thread.sleep(numberOfSeconds);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

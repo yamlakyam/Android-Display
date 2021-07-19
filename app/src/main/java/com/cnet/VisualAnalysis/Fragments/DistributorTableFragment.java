@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
@@ -41,6 +43,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     ScrollView scrollDistributorTable;
     TextView distributorHeaderTextView;
     int respSize;
+    Fragment fragment;
 
 
     int sumofProspect, sumofOutlet, sumofSKU, sumofQuantity = 0;
@@ -68,16 +71,17 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         distributorTableProgressBar = view.findViewById(R.id.distributorTableProgressBar);
         scrollDistributorTable = view.findViewById(R.id.scrollDistributorTable);
         distributorHeaderTextView = view.findViewById(R.id.distributorHeaderTextView);
+        fragment=this;
 
         return view;
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateTable(JSONArray jsonArray, int index) {
+    private void inflateTable(JSONArray jsonArray, int dataIndex) {
 
         distributorTableLayout.removeAllViews();
         try {
-            tablesToDisplay = UtilityFunctionsForActivity1.distributorTableParser(jsonArray, index);
+            tablesToDisplay = UtilityFunctionsForActivity1.distributorTableParser(jsonArray, dataIndex);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -94,7 +98,11 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
-                } else {
+                }
+                else if(index==tablesToDisplay.size()+1 && dataIndex==jsonArray.length()){
+                    NavController navController = NavHostFragment.findNavController(fragment);
+                    navController.navigate(R.id.vsmCardFragment);
+                }else {
                     lastRowSummation(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
@@ -105,7 +113,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
         };
 
-        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler);
+        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler,200);
         handleRowAnimationThread.start();
 
     }

@@ -414,7 +414,7 @@ public class UtilityFunctionsForActivity2 {
     }
 
     public static void animate(View container, View child) {
-        Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
+        Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.bottom_to_top);
         child.startAnimation(animation);
     }
 }

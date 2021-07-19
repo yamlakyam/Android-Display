@@ -43,6 +43,8 @@ public class SummaryOfLastMonthFragment extends Fragment {
     ScrollView scrollView;
     Fragment fragment;
 
+    public static HandleRowAnimationThread handleRowAnimationThread;
+
     public double totalAmount = 0;
 
     public SummaryOfLastMonthFragment() {
@@ -53,7 +55,11 @@ public class SummaryOfLastMonthFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
+                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
+                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
+                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
+                BranchSummaryFragment.handleRowAnimationThread);
     }
 
     @Override
@@ -67,27 +73,33 @@ public class SummaryOfLastMonthFragment extends Fragment {
         scrollView = view.findViewById(R.id.summaryOfLastMonthScrollView);
         barChart = view.findViewById(R.id.last30daysBarChart);
 
+
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
 
-        if (SecondActivity.dashBoardArray != null) {
-            initFragment();
-        }
+
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (SecondActivity.dashBoardArray != null) {
+            initFragment(200);
+        }
+    }
 
-    public void initFragment() {
+    public void initFragment(int seconds) {
 
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
-        inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData);
+        inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData, seconds);
         UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart);
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last 30 days");
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateTable(ArrayList<SummaryOfLast30DaysRow> tablesToDisplay) {
+    private void inflateTable(ArrayList<SummaryOfLast30DaysRow> tablesToDisplay, int seconds) {
         summaryOfLast30DaysTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @Override
@@ -102,10 +114,10 @@ public class SummaryOfLastMonthFragment extends Fragment {
                 if (index == tablesToDisplay.size()) {
                     drawLastTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
-                } else if (index == tablesToDisplay.size() + 1) {
+                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast30DaysPause) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.branchSummaryFragment);
-                } else {
+                } else if(index<tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLast30Days(tablesToDisplay, getContext(), summaryOfLast30DaysTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
@@ -115,7 +127,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
         };
 
-        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler,seconds);
         handleRowAnimationThread.start();
     }
 
@@ -140,9 +152,13 @@ public class SummaryOfLastMonthFragment extends Fragment {
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty2.setTextSize(25f);
+
 
         tableRowProperty3.setText(numberFormat.format(totalAmount));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty3.setTextSize(25f);
+
 
         tableRowProperty4.setText("");
 
@@ -164,5 +180,12 @@ public class SummaryOfLastMonthFragment extends Fragment {
                 navController.navigate(id);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(handleRowAnimationThread!=null)
+            handleRowAnimationThread.interrupt();
     }
 }

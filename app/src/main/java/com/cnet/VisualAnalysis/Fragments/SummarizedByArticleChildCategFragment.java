@@ -44,12 +44,19 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
     PieChart pieChart;
     Fragment fragment;
 
+    public static HandleRowAnimationThread handleRowAnimationThread;
+
     double grandTotal = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
+                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
+                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
+                SummaryOfLastMonthFragment.handleRowAnimationThread,
+                BranchSummaryFragment.handleRowAnimationThread);
     }
 
     @Override
@@ -62,9 +69,9 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
         summarizedByChildArticleScrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
         pieChart = view.findViewById(R.id.pchartsumByArticleChild);
         barChart = view.findViewById(R.id.bChartSumByArticleChild);
-        if (SecondActivity.dashBoardData != null) {
-            initFragment();
-        }
+
+
+
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
 
@@ -73,11 +80,19 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
     }
 
 
-    public void initFragment() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (SecondActivity.dashBoardData != null) {
+            initFragment(200);
+        }
+    }
+
+    public void initFragment(int seconds) {
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
-        inflateTable(dashBoardData.getSummarizedByChildArticleData().getTableData());
+        inflateTable(dashBoardData.getSummarizedByChildArticleData().getTableData(),seconds);
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByChildArticleData().getBarChartData(), barChart, "Summarized by Article Child Category");
         UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
 
@@ -85,7 +100,8 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
 
 
     @SuppressLint("HandlerLeak")
-    private void inflateTable(ArrayList<SummarizedByChildArticleRow> tablesToDisplay) {
+    private void inflateTable(ArrayList<SummarizedByChildArticleRow> tablesToDisplay, int seconds) {
+        grandTotal=0;
 
         summaryByChildArticleTableLayout.removeAllViews();
         animationHandler = new Handler() {
@@ -99,10 +115,10 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
                 }
                 if (index == tablesToDisplay.size()) {
                     drawLastArticleChildRow();
-                } else if (index == tablesToDisplay.size() + 1) {
+                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByChildArticlePause ) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-                } else {
+                } else if(index<tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryByChildArticleTable(tablesToDisplay, getContext(), summaryByChildArticleTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(summarizedByChildArticleScrollView);
@@ -112,7 +128,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
 
         };
 
-        HandleRowAnimationThread handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
     }
 
@@ -137,8 +153,11 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
 
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setTextSize(25f);
+        tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty3.setText(numberFormat.format(grandTotal));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty3.setTextSize(25f);
         tableRowProperty4.setText("");
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
@@ -156,6 +175,13 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
                 navController.navigate(id);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(handleRowAnimationThread!=null)
+            handleRowAnimationThread.interrupt();
     }
 
 }
