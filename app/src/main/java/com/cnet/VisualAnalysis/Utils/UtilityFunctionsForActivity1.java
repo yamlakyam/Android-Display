@@ -311,7 +311,7 @@ public class UtilityFunctionsForActivity1 {
         return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan);
     }
 
-    public static void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex, View view) {
+    public static void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
 
         ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();
         VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
@@ -319,7 +319,6 @@ public class UtilityFunctionsForActivity1 {
 
         VsmTransactionTableRow row = rows.get(animationIndex);
         View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
-
         TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
         TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
         TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);
@@ -329,9 +328,6 @@ public class UtilityFunctionsForActivity1 {
         TextView subTotalTextView = tableElements.findViewById(R.id.vsmTransSubTotalTxtv);
         TextView VATtextView = tableElements.findViewById(R.id.vsmTransVATtextView);
         TextView totalSalesTextView = tableElements.findViewById(R.id.vsmTransGrandTotalTextView);
-
-        TextView distributorHeaderVsmTransaction = view.findViewById(R.id.distributorHeaderVsmTransaction);
-        TextView vanHeaderVsmTransaction = view.findViewById(R.id.vanHeaderVsmTransaction);
 
         NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -347,8 +343,6 @@ public class UtilityFunctionsForActivity1 {
         subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
         VATtextView.setText(row.getVAT());
         totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
-
-        vanHeaderVsmTransaction.setText(vsmTableDataForAll.get(distributorIndex).getAllVansData().get(dataIndex).nameOfVan);
 
         vsmTransactionTableLayout.addView(tableElements);
         animate(vsmTransactionTableLayout, tableElements);

@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VisualAnalysis">
-<!--        <activity android:name=".SecondActivity"></activity>-->
-        <activity android:name=".SecondActivity">
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".SecondActivity"></activity>
+        <activity android:name=".StartingActivty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

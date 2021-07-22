@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -31,12 +33,16 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
     public static final String URL = "http://192.168.1.248:8001/api/ChartData/GetSalesDataToDisplayVsmCards";
     ProgressBar vsmCardProgressBar;
     Fragment fragment;
+    HandleDataChangeThread handleDataChangeThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        VolleyHttp http = new VolleyHttp(getContext());
-        http.makeGetRequest(URL, this);
+
+        if (MainActivity.vsmCardJSONArray == null) {
+            VolleyHttp http = new VolleyHttp(getContext());
+            http.makeGetRequest(URL, this);
+        }
     }
 
     @Override
@@ -46,9 +52,18 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         View view = inflater.inflate(R.layout.fragment_vsm_card, container, false);
         vsmCardGridLayout = view.findViewById(R.id.vsmCardGridLayout);
         vsmCardProgressBar = view.findViewById(R.id.vsmCardProgressBar);
-        fragment=this;
-
+        fragment = this;
+        backTraverse(fragment, R.id.distributorTableFragment);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (MainActivity.vsmCardJSONArray != null) {
+            vsmCardProgressBar.setVisibility(View.GONE);
+            inflateAllCompanyCards(MainActivity.vsmCardJSONArray);
+        }
     }
 
     @SuppressLint("HandlerLeak")
@@ -63,13 +78,9 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
 
                 try {
                     if (index == jsonArray.length()) {
-
-                    }
-                    else if(index==jsonArray.length()+1){
                         NavController navController = NavHostFragment.findNavController(fragment);
                         navController.navigate(R.id.vsmTransactionFragment);
-                    }
-                    else {
+                    } else {
                         UtilityFunctionsForActivity1.drawVSMCard(jsonArray, index, getContext(), vsmCardGridLayout);
 
                     }
@@ -81,13 +92,14 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
             }
         };
 
-        HandleDataChangeThread handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length(), 30);
+        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length() + 1, 30);
         handleDataChangeThread.start();
     }
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
         try {
+            MainActivity.vsmCardJSONArray = jsonArray;
             vsmCardProgressBar.setVisibility(View.GONE);
             inflateAllCompanyCards(jsonArray);
         } catch (Exception e) {
@@ -99,5 +111,23 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
     @Override
     public void onFailure(VolleyError error) {
 
+    }
+
+    public void backTraverse(Fragment fragment, int id) {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                NavController navController = NavHostFragment.findNavController(fragment);
+                navController.navigate(id);
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(handleDataChangeThread !=null){
+            handleDataChangeThread.interrupt();
+        }
     }
 }

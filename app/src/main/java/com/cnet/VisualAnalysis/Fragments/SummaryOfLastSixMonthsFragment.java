@@ -57,7 +57,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
     Fragment fragment;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
-
+    public static boolean isInflatingTable;
     double totalAmount = 0;
 
     public SummaryOfLastSixMonthsFragment() {
@@ -99,13 +99,14 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        if(SecondActivity.dashBoardArray!=null){
+        if(SecondActivity.dashBoardArray!=null&& !isInflatingTable){
             initFragment(200);
         }
     }
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<SummaryOfLast6MonthsRow> tablesToDisplay, int seconds) {
+        totalAmount = 0;
 
         summaryOfLast6MonthsTableLayout.removeAllViews();
         animationHandler = new Handler() {
@@ -139,6 +140,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
 
 
     public void initFragment(int seconds) {
+        isInflatingTable=true;
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;

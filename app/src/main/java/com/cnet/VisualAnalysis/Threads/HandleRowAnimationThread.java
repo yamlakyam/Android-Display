@@ -6,8 +6,15 @@ import android.provider.Browser;
 
 import androidx.fragment.app.Fragment;
 
+import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
+import com.cnet.VisualAnalysis.Data.SummarizedByChildArticleRow;
+import com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment;
 import com.cnet.VisualAnalysis.Fragments.DistributorTableFragment;
+import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment;
 import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleFragment;
+import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment;
+import com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment;
+import com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment;
 import com.cnet.VisualAnalysis.Fragments.SummaryTableFragment;
 
 
@@ -36,6 +43,12 @@ public class HandleRowAnimationThread extends Thread {
                 }
                 else if(i==rows){
                     SummarizedByArticleFragment.isInflatingTable = false;
+                    SummarizedByArticleChildCategFragment.isInflatingTable = false;
+                    SummarizedByArticleParentCategFragment.isInflatingTable = false;
+                    SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+                    SummaryOfLastMonthFragment.isInflatingTable = false;
+                    BranchSummaryFragment.isInflatingTable = false;
+
                     Thread.sleep(5000);
                 }
                 else{

@@ -130,13 +130,13 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-    public static void drawLineChart(LineChartData lineChartData, LineChart lineChart) {
+    public static void drawLineChart(LineChartData lineChartData, LineChart lineChart,String label) {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
         for (int i = 0; i < lineChartData.x.length; i++) {
             dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
         }
 
-        LineDataSet lineDataSet = new LineDataSet(dataVals, "active users");
+        LineDataSet lineDataSet = new LineDataSet(dataVals, label);
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataSet);
         lineChart.setData(lineData);

@@ -45,6 +45,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
+    public static boolean isInflatingTable;
     public double totalAmount = 0;
 
     public SummaryOfLastMonthFragment() {
@@ -83,23 +84,25 @@ public class SummaryOfLastMonthFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (SecondActivity.dashBoardArray != null) {
+        if (SecondActivity.dashBoardArray != null&& !isInflatingTable) {
             initFragment(200);
         }
     }
 
     public void initFragment(int seconds) {
-
+        isInflatingTable = true;
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
         inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData, seconds);
-        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart);
+        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart, "Summarized by last 30 days");
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last 30 days");
     }
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<SummaryOfLast30DaysRow> tablesToDisplay, int seconds) {
+        totalAmount = 0;
+
         summaryOfLast30DaysTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @Override
@@ -117,7 +120,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast30DaysPause) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.branchSummaryFragment);
-                } else if(index<tablesToDisplay.size()) {
+                } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLast30Days(tablesToDisplay, getContext(), summaryOfLast30DaysTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
@@ -127,7 +130,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler,seconds);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
     }
 
@@ -185,7 +188,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(handleRowAnimationThread!=null)
+        if (handleRowAnimationThread != null)
             handleRowAnimationThread.interrupt();
     }
 }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
-import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
@@ -46,7 +44,7 @@ public class BranchSummaryFragment extends Fragment {
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
-
+    public static boolean isInflatingTable;
     int totalQuantity = 0;
     double grandTotal = 0;
 
@@ -72,10 +70,7 @@ public class BranchSummaryFragment extends Fragment {
         fragment = this;
 
 
-
-
-
-        backTraverse(fragment,R.id.summaryOfLastMonthFragment);
+        backTraverse(fragment, R.id.summaryOfLastMonthFragment);
 
         return view;
     }
@@ -83,20 +78,22 @@ public class BranchSummaryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (SecondActivity.dashBoardArray != null) {
+        if (SecondActivity.dashBoardArray != null && !isInflatingTable) {
             initFragment(200);
         }
     }
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<BranchSummaryTableRow> tablesToDisplay, int seconds) {
-        grandTotal=0;
+        grandTotal = 0;
+        totalQuantity = 0;
+
         branchSummaryTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
 
-                Log.i("branch", SecondActivity.summaryOfBranchPause+"");
+                Log.i("branch", SecondActivity.summaryOfBranchPause + "");
                 String message = (String) msg.obj;
                 int index = 0;
                 if (message != null) {
@@ -107,11 +104,11 @@ public class BranchSummaryFragment extends Fragment {
                     drawLastBranchSummaryRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
 
-                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause ) {
+                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summarizedByArticleFragment2);
 
-                } else if(index<tablesToDisplay.size()) {
+                } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawBranchSummary(tablesToDisplay, getContext(), branchSummaryTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
@@ -121,17 +118,18 @@ public class BranchSummaryFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler,seconds);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
     }
 
 
     public void initFragment(int seconds) {
+        isInflatingTable = true;
         branchSummaryProgressBar.setVisibility(View.GONE);
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
-        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(),seconds);
+        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds);
 
     }
 
@@ -176,7 +174,6 @@ public class BranchSummaryFragment extends Fragment {
         tableRowProperty5.setTextSize(25f);
 
 
-
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
@@ -190,7 +187,7 @@ public class BranchSummaryFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(handleRowAnimationThread!=null)
+        if (handleRowAnimationThread != null)
             handleRowAnimationThread.interrupt();
     }
 

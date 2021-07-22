@@ -66,7 +66,7 @@ public class SecondActivity extends AppCompatActivity {
 //                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 
 
-                SummarizedByArticleFragment.isInflatingTable = false;
+//                SummarizedByArticleFragment.isInflatingTable = false;
 
                 if (!firstCenterKeyPause){
                     summaryByParentArticlePause = false;

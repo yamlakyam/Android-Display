@@ -44,7 +44,7 @@
         android:maxLines="1"
         android:paddingRight="5dp"
         android:text="TextView"
-        android:textColor="@color/rowValueColor3"
+        android:textColor="@color/rowValueColor4"
         android:textSize="18sp" />
 
     <TextView

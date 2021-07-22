@@ -46,6 +46,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
     Fragment fragment;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
+    public static boolean isInflatingTable;
 
     double grandTotal = 0;
 
@@ -74,9 +75,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         barChart = view.findViewById(R.id.bChartSumByArticleParent);
 
 
-
         backTraverse(fragment, R.id.summarizedByArticleFragment2);
-
 
 
         return view;
@@ -86,7 +85,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (SecondActivity.dashBoardArray != null) {
+        if (SecondActivity.dashBoardArray != null && !isInflatingTable) {
             initFragment(200);
         }
     }
@@ -94,7 +93,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<SummarizedByParentArticleRow> tablesToDisplay, int seconds) {
 
-        grandTotal=0;
+        grandTotal = 0;
 
         summarizedByParentArticleTableLayout.removeAllViews();
         animationHandler = new Handler() {
@@ -113,7 +112,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByParentArticlePause) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summarizedByArticleChildCategFragment);
-                } else if (index<tablesToDisplay.size()){
+                } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryByParentArticleTable(tablesToDisplay, getContext(), summarizedByParentArticleTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
@@ -130,12 +129,17 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
     public void initFragment(int seconds) {
 
+        isInflatingTable = true;
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
-        inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData(),seconds);
-        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
-        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+
+        if (dashBoardData != null) {
+            inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData(), seconds);
+            UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
+            UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+
+        }
 
     }
 
@@ -192,7 +196,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(handleRowAnimationThread!=null)
+        if (handleRowAnimationThread != null)
             handleRowAnimationThread.interrupt();
     }
 }

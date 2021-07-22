@@ -2,6 +2,9 @@ package com.cnet.VisualAnalysis.Fragments;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,11 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +28,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
+import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
@@ -44,6 +52,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     ScrollView scrollSummaryTable;
     Fragment fragment;
 
+    HandleRowAnimationThread handleRowAnimationThread;
 
     int sumOfVSICount, sumOfSalesCount, sumOfSKUCount, sumOfQuantity, sumOfActiveVans, sumOfProspects = 0;
     double sumOfTotalSales = 0;
@@ -58,9 +67,10 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        VolleyHttp http = new VolleyHttp(getContext());
-        http.makeGetRequest(URL, this);
-
+        if(MainActivity.summaryTableJSONArray==null){
+            VolleyHttp http = new VolleyHttp(getContext());
+            http.makeGetRequest(URL, this);
+        }
 
     }
 
@@ -75,13 +85,22 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         summaryTableProgressBar = view.findViewById(R.id.summaryTableprogressBar);
         scrollSummaryTable = view.findViewById(R.id.scrollSummaryTable);
 
-
-
+        backTraverse();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(MainActivity.summaryTableJSONArray!=null){
+            summaryTableProgressBar.setVisibility(View.GONE);
+            inflateTable(MainActivity.summaryTableJSONArray);
+        }
     }
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(JSONArray jsonArray) {
+        resetSumOfLastRow();
         changeTodoHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -98,7 +117,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
                 }
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
-
+                    UtilityFunctionsForActivity1.scrollRows(scrollSummaryTable);
                 }
                 else if(index == tablesToDisplay.size()+1){
                     NavController navController = NavHostFragment.findNavController(fragment);
@@ -113,14 +132,15 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
         };
 
-        HandleRowAnimationThread changeTodoTitleThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler,200);
-        changeTodoTitleThread.start();
+        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler,200);
+        handleRowAnimationThread.start();
 
     }
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
         try {
+            MainActivity.summaryTableJSONArray=jsonArray;
             Log.i("TAG", jsonArray.toString());
             summaryTableProgressBar.setVisibility(View.GONE);
             respSize = jsonArray.length();
@@ -147,6 +167,15 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
     }
 
+    public void resetSumOfLastRow(){
+        sumOfVSICount =0;
+        sumOfSalesCount = 0;
+        sumOfSKUCount = 0;
+        sumOfQuantity = 0;
+        sumOfTotalSales =0;
+        sumOfProspects = 0;
+    }
+
     public void drawSumOfLastRow() {
         View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary, null, false);
 
@@ -169,19 +198,64 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         distributorNameTextView.setText("");
         startTimeTextView.setText("");
         lastActivityTextView.setText("");
-        totalVsiTextView.setText(numberFormat.format(sumOfVSICount));
-        totalOutlatesTextView.setText(String.valueOf(sumOfSalesCount));
-        totalSkuTextView.setText(String.valueOf(sumOfSKUCount));
-        totalQuantityTextView.setText(String.valueOf(sumOfQuantity));
-        totalSalesTextView.setText(String.valueOf(sumOfTotalSales));
-        activeVansTextView.setText(String.valueOf(sumOfActiveVans));
-        prospectTextView.setText(String.valueOf(sumOfProspects));
 
+        totalVsiTextView.setText(numberFormat.format(sumOfVSICount));
+        totalVsiTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        totalVsiTextView.setTextSize(25f);
+
+        totalOutlatesTextView.setText(String.valueOf(sumOfSalesCount));
+        totalOutlatesTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        totalOutlatesTextView.setTextSize(25f);
+
+        totalSkuTextView.setText(String.valueOf(sumOfSKUCount));
+        totalSkuTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        totalSkuTextView.setTextSize(25f);
+
+        totalQuantityTextView.setText(String.valueOf(sumOfQuantity));
+        totalQuantityTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        totalQuantityTextView.setTextSize(25f);
+
+        totalSalesTextView.setText(String.valueOf(sumOfTotalSales));
+        totalSalesTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        totalSalesTextView.setTextSize(25f);
+
+        activeVansTextView.setText(String.valueOf(sumOfActiveVans));
+        activeVansTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        activeVansTextView.setTextSize(25f);
+
+        prospectTextView.setText(String.valueOf(sumOfProspects));
+        prospectTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        prospectTextView.setTextSize(25f);
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        totalVsiTextView.startAnimation(animation);
+        totalOutlatesTextView.startAnimation(animation);
+        totalSkuTextView.startAnimation(animation);
+        totalQuantityTextView.startAnimation(animation);
+        totalSalesTextView.startAnimation(animation);
+        activeVansTextView.startAnimation(animation);
+        prospectTextView.startAnimation(animation);
+
+        tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summaryTableLayout.addView(tableElements);
         UtilityFunctionsForActivity1.animate(summaryTableLayout, tableElements);
     }
 
+    public void backTraverse() {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent =new Intent(requireActivity(), StartingActivty.class);
+                startActivity(intent);
+            }
+        });
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        handleRowAnimationThread.interrupt();
+    }
 }
 
 

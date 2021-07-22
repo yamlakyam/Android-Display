@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
@@ -54,7 +56,7 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     ProgressBar articleSummaryProgressBar;
     ConstraintLayout constraintLayout;
     public static HandleRowAnimationThread handleRowAnimationThread;
-    public static boolean isInflatingTable = false;
+    public static boolean isInflatingTable;
 
     double totalUnitAmount = 0;
     int totalQuantity = 0;
@@ -97,8 +99,21 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         constraintLayout = view.findViewById(R.id.constraintLayout);
 
 
-        finish();
+        backTraverse();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("resume", "onResume:" + isInflatingTable);
+        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+            Log.i("resume2", "onResume: called");
+            articleSummaryProgressBar.setVisibility(View.GONE);
+            constraintLayout.setVisibility(View.VISIBLE);
+            initFragment(SecondActivity.dashBoardData, 100);
+            Log.i("inflating", "onResume: ");
+        }
     }
 
 
@@ -210,18 +225,6 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         UtilityFunctionsForActivity1.animate(summarizedByArticleTableLayout, tableElements);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i("resume", "onResume:" + isInflatingTable);
-        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
-            Log.i("resume2", "onResume: called");
-            articleSummaryProgressBar.setVisibility(View.GONE);
-            constraintLayout.setVisibility(View.VISIBLE);
-            initFragment(SecondActivity.dashBoardData,100);
-            Log.i("inflating", "onResume: ");
-        }
-    }
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
 
@@ -229,10 +232,9 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
 
         DashBoardData dashBoardData = dashBoardDataParam;
 
-        inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(),seconds);
+        inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
-        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle);
-
+        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle, "Summarized by Article");
 
     }
 
@@ -246,7 +248,7 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
 
-        initFragment(dashBoardData,200);
+        initFragment(dashBoardData, 200);
         Log.i("inflating", "onSuccess");
 
         SecondActivity.dashBoardData = dashBoardData;
@@ -260,12 +262,16 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         Log.i("error", "onFailure: " + error);
     }
 
-    public void finish() {
+    public void backTraverse() {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                requireActivity().finish();
+
+                Intent intent = new Intent(requireActivity(), StartingActivty.class);
+                startActivity(intent);
             }
         });
     }
+
+
 }

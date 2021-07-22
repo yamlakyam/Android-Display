@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:cardBackgroundColor="#111111"
+        app:cardBackgroundColor="#49515c"
         app:cardCornerRadius="4dp">
 
 
@@ -32,9 +32,9 @@
                     android:id="@+id/distributorVsmCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/advent_pro_thin"
+                    android:fontFamily="sans-serif-light"
                     android:text="TextView"
-                    android:textColor="#976454"
+                    android:textColor="@color/rowValueColor4"
                     android:textSize="20sp" />
 
                 <TextView
@@ -42,9 +42,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:fontFamily="@font/advent_pro_thin"
+                    android:fontFamily="sans-serif-light"
                     android:text="TextView"
-                    android:textColor="#976454"
+                    android:textColor="@color/rowValueColor4"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -64,9 +64,9 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="Outlet:"
-                        android:textColor="@color/rowValueColor2"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18dp" />
 
                     <TextView
@@ -74,9 +74,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="TextView"
-                        android:textColor="@color/rowValueColor1"
+                        android:textColor="@color/rowValueColor3"
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -91,9 +91,9 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="Last Active:"
-                        android:textColor="@color/rowValueColor2"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18sp" />
 
                     <TextView
@@ -101,9 +101,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="TextView"
-                        android:textColor="@color/rowValueColor1"
+                        android:textColor="@color/rowValueColor3"
                         android:textSize="18sp" />
 
                 </LinearLayout>
@@ -118,9 +118,9 @@
                         android:id="@+id/textView26"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="V. Count:"
-                        android:textColor="@color/rowValueColor2"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18sp" />
 
                     <TextView
@@ -128,9 +128,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="TextView"
-                        android:textColor="@color/rowValueColor1"
+                        android:textColor="@color/rowValueColor3"
                         android:textSize="18sp" />
 
                 </LinearLayout>
@@ -145,9 +145,9 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="Total Sales:"
-                        android:textColor="@color/rowValueColor2"
+                        android:textColor="@color/rowValueColor1"
                         android:textSize="18sp" />
 
                     <TextView
@@ -155,9 +155,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:fontFamily="@font/advent_pro_thin"
+                        android:fontFamily="sans-serif-light"
                         android:text="TextView"
-                        android:textColor="@color/rowValueColor1"
+                        android:textColor="@color/rowValueColor3"
                         android:textSize="18sp" />
                 </LinearLayout>
 
