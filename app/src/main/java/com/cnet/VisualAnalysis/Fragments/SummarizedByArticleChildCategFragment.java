@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByChildArticleRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -92,9 +94,13 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
-        inflateTable(dashBoardData.getSummarizedByChildArticleData().getTableData(), seconds);
-        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByChildArticleData().getBarChartData(), barChart, "Summarized by Article Child Category");
-        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
+
+        if(dashBoardData.getSummarizedByChildArticleData()!=null){
+            inflateTable(dashBoardData.getSummarizedByChildArticleData().getTableData(), seconds);
+            UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByChildArticleData().getBarChartData(), barChart, "Summarized by Article Child Category");
+            UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
+        }
+
 
     }
 
@@ -171,8 +177,8 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(id);
+                Intent intent = new Intent(getActivity(), StartingActivty.class);
+                startActivity(intent);
             }
         });
     }

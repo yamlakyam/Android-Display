@@ -55,6 +55,8 @@
     <color name="playbacksBackground">#FFD3D3D3</color>
 
     <color name="buttonColor1">#ffe6c5a2</color>
+    <color name="landingPageBackground">#ff160f38</color>
+    <color name="landingPageButton">#ffb72b41</color>
 
 
 

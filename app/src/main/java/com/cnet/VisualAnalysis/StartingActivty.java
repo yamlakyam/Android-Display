@@ -19,6 +19,10 @@ public class StartingActivty extends AppCompatActivity {
 
         heinekenSummaryButton=findViewById(R.id.app1Btn);
         dashboardButton=findViewById(R.id.app2Btn);
+        heinekenSummaryButton.setFocusableInTouchMode(true);
+        dashboardButton.setFocusableInTouchMode(true);
+        heinekenSummaryButton.requestFocus();
+        dashboardButton.requestFocus();
 
 
         heinekenSummaryButton.setOnClickListener(new View.OnClickListener() {
@@ -38,5 +42,10 @@ public class StartingActivty extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+
+    }
 }

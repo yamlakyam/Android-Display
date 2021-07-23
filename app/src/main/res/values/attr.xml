@@ -14,6 +14,8 @@
         <attr name= "rowValueColor2" format="color"/>
         <attr name= "rowValueColor3" format="color"/>
         <attr name= "rowValueColor4" format="color"/>
+        <attr name= "landingPageBackground" format="color"/>
+        <attr name= "landingPageButton" format="color"/>
 
     </declare-styleable>
 </resources>

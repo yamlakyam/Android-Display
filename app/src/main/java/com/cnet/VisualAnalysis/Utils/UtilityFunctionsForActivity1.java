@@ -152,7 +152,12 @@ public class UtilityFunctionsForActivity1 {
         if (distributorTableRows != null) {
             DistributorTableRow row = distributorTableRows.get(index);
 
-            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_distributor, null, false);
+            View tableElements = null;
+            try {
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_distributor, null, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             Date lastActive = formatTime(row.getEndTimeStamp());
             Date currentTime = Calendar.getInstance().getTime();
@@ -162,44 +167,53 @@ public class UtilityFunctionsForActivity1 {
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setGroupingUsed(true);
 
+            if(tableElements !=null){
+                TextView distributorSerialNumberTV = tableElements.findViewById(R.id.distributorSerialNumberTV);
+                TextView distributorVSITV = tableElements.findViewById(R.id.distributorVSITV);
+                TextView distributorProspectTV = tableElements.findViewById(R.id.distributorProspectTV);
+                TextView distributorEndTimeTV = tableElements.findViewById(R.id.distributorEndTimeTV);
+                TextView distributorSalesOutletTV = tableElements.findViewById(R.id.distributorSalesOutletTV);
+                TextView distributorSKUcountTV = tableElements.findViewById(R.id.distributorSKUcountTV);
+                TextView distributorQuantityCountTV = tableElements.findViewById(R.id.distributorQuantityCountTV);
+                TextView distributorTotalSalesTV = tableElements.findViewById(R.id.distributorTotalSalesTV);
 
-            TextView distributorSerialNumberTV = tableElements.findViewById(R.id.distributorSerialNumberTV);
-            TextView distributorVSITV = tableElements.findViewById(R.id.distributorVSITV);
-            TextView distributorProspectTV = tableElements.findViewById(R.id.distributorProspectTV);
-            TextView distributorEndTimeTV = tableElements.findViewById(R.id.distributorEndTimeTV);
-            TextView distributorSalesOutletTV = tableElements.findViewById(R.id.distributorSalesOutletTV);
-            TextView distributorSKUcountTV = tableElements.findViewById(R.id.distributorSKUcountTV);
-            TextView distributorQuantityCountTV = tableElements.findViewById(R.id.distributorQuantityCountTV);
-            TextView distributorTotalSalesTV = tableElements.findViewById(R.id.distributorTotalSalesTV);
+
+                distributorSerialNumberTV.setText(String.valueOf(index + 1));
+                distributorVSITV.setText(row.getVsi());
+                distributorProspectTV.setText(String.valueOf(row.getProspect()));
+                distributorEndTimeTV.setText(formattedLastActive);
+                distributorSalesOutletTV.setText(String.valueOf(row.getSalesOutLateCount()));
+                distributorSKUcountTV.setText(String.valueOf(row.getSkuCount()));
+                distributorQuantityCountTV.setText(String.valueOf(row.getQuantityCount()));
+                distributorTotalSalesTV.setText(numberFormat.format(row.getTotalSalesAmountAfterTax()));
+
+                distributorTableLayout.addView(tableElements);
+                animate(distributorTableLayout, tableElements);
+            }
 
 
-            distributorSerialNumberTV.setText(String.valueOf(index + 1));
-            distributorVSITV.setText(row.getVsi());
-            distributorProspectTV.setText(String.valueOf(row.getProspect()));
-            distributorEndTimeTV.setText(formattedLastActive);
-            distributorSalesOutletTV.setText(String.valueOf(row.getSalesOutLateCount()));
-            distributorSKUcountTV.setText(String.valueOf(row.getSkuCount()));
-            distributorQuantityCountTV.setText(String.valueOf(row.getQuantityCount()));
-            distributorTotalSalesTV.setText(numberFormat.format(row.getTotalSalesAmountAfterTax()));
-
-            distributorTableLayout.addView(tableElements);
-            animate(distributorTableLayout, tableElements);
         }
 
     }
 
     public static void animate(View container, View child) {
-        Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
-        child.startAnimation(animation);
+        if(container!=null){
+            Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
+            child.startAnimation(animation);
+        }
     }
 
     public static void scrollRows(ScrollView scrollView) {
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
+
+        if(scrollView!=null){
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.fullScroll(View.FOCUS_DOWN);
+                }
+            });
+        }
+
 
     }
 
@@ -317,35 +331,43 @@ public class UtilityFunctionsForActivity1 {
         VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
         ArrayList<VsmTransactionTableRow> rows = vsmTableDataForSingleVan.getTableRows();
 
-        VsmTransactionTableRow row = rows.get(animationIndex);
-        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
-        TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
-        TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
-        TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);
-        TextView TINtextView = tableElements.findViewById(R.id.vsmTransTINtextView);
-        TextView dateNtimeTextView = tableElements.findViewById(R.id.vsmTransDateNtimeTextV);
-        TextView itemCountTextview = tableElements.findViewById(R.id.vsmTransItemCountTxtV);
-        TextView subTotalTextView = tableElements.findViewById(R.id.vsmTransSubTotalTxtv);
-        TextView VATtextView = tableElements.findViewById(R.id.vsmTransVATtextView);
-        TextView totalSalesTextView = tableElements.findViewById(R.id.vsmTransGrandTotalTextView);
+        if(animationIndex< rows.size()){
+            VsmTransactionTableRow row = rows.get(animationIndex);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
+            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
+            TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
+            TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
+            TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);
+            TextView TINtextView = tableElements.findViewById(R.id.vsmTransTINtextView);
+            TextView dateNtimeTextView = tableElements.findViewById(R.id.vsmTransDateNtimeTextV);
+            TextView itemCountTextview = tableElements.findViewById(R.id.vsmTransItemCountTxtV);
+            TextView subTotalTextView = tableElements.findViewById(R.id.vsmTransSubTotalTxtv);
+            TextView VATtextView = tableElements.findViewById(R.id.vsmTransVATtextView);
+            TextView totalSalesTextView = tableElements.findViewById(R.id.vsmTransGrandTotalTextView);
 
-        numberFormat.setGroupingUsed(true);
+            NumberFormat numberFormat = NumberFormat.getInstance();
+
+            numberFormat.setGroupingUsed(true);
 
 
-        snTextView.setText(String.valueOf(animationIndex + 1));
-        voucherNoTextView.setText(row.getVoucherNo());
-        outletTextView.setText(row.getOutlet());
-        TINtextView.setText(row.getTIN());
-        dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
-        itemCountTextview.setText(String.valueOf(row.getItemCount()));
-        subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
-        VATtextView.setText(row.getVAT());
-        totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
+            snTextView.setText(String.valueOf(animationIndex + 1));
+            voucherNoTextView.setText(row.getVoucherNo());
+            outletTextView.setText(row.getOutlet());
+            TINtextView.setText(row.getTIN());
+            dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
+            itemCountTextview.setText(String.valueOf(row.getItemCount()));
+            subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
+            VATtextView.setText(row.getVAT());
+            totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
 
-        vsmTransactionTableLayout.addView(tableElements);
-        animate(vsmTransactionTableLayout, tableElements);
+            if(vsmTransactionTableLayout!=null){
+                vsmTransactionTableLayout.addView(tableElements);
+            }
+            animate(vsmTransactionTableLayout, tableElements);
+        }
+
+
+
 
     }
 

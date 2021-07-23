@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
@@ -195,8 +197,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(id);
+                Intent intent = new Intent(getActivity(), StartingActivty.class);
+                startActivity(intent);
             }
         });
     }

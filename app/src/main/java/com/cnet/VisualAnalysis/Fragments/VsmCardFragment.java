@@ -34,6 +34,7 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
     ProgressBar vsmCardProgressBar;
     Fragment fragment;
     HandleDataChangeThread handleDataChangeThread;
+    int distributorIndex = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,12 +63,12 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         super.onResume();
         if (MainActivity.vsmCardJSONArray != null) {
             vsmCardProgressBar.setVisibility(View.GONE);
-            inflateAllCompanyCards(MainActivity.vsmCardJSONArray);
+            inflateAllCompanyCards(MainActivity.vsmCardJSONArray,0);
         }
     }
 
     @SuppressLint("HandlerLeak")
-    public void inflateAllCompanyCards(JSONArray jsonArray) {
+    public void inflateAllCompanyCards(JSONArray jsonArray, int startingIndex) {
 
         changeDataHandler = new Handler() {
             @Override
@@ -75,6 +76,7 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
                 super.handleMessage(msg);
                 String message = (String) msg.obj;
                 int index = Integer.parseInt(message);
+                distributorIndex=index;
 
                 try {
                     if (index == jsonArray.length()) {
@@ -92,7 +94,7 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
             }
         };
 
-        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length() + 1, 30);
+        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length() + 1, 30,startingIndex);
         handleDataChangeThread.start();
     }
 
@@ -101,9 +103,11 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         try {
             MainActivity.vsmCardJSONArray = jsonArray;
             vsmCardProgressBar.setVisibility(View.GONE);
-            inflateAllCompanyCards(jsonArray);
+            inflateAllCompanyCards(jsonArray,0);
         } catch (Exception e) {
-            vsmCardProgressBar.setVisibility(View.GONE);
+            if(vsmCardProgressBar!=null){
+                vsmCardProgressBar.setVisibility(View.GONE);
+            }
             e.printStackTrace();
         }
     }
@@ -117,8 +121,18 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(id);
+                if (handleDataChangeThread != null) {
+                    handleDataChangeThread.interrupt();
+
+                    if (distributorIndex == 0) {
+                        NavController navController = NavHostFragment.findNavController(fragment);
+                        navController.navigate(id);
+                    } else {
+                        inflateAllCompanyCards(MainActivity.vsmCardJSONArray,distributorIndex-1);
+                    }
+//                    inflateAllTables(MainActivity.distributorTableJSONArray, 0);
+
+                }
             }
         });
     }

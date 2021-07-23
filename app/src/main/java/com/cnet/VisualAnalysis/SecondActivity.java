@@ -37,9 +37,9 @@ public class SecondActivity extends AppCompatActivity {
 
     public static boolean firstCenterKeyPause = false;
 
-//    ImageView leftArrow;
-//    ImageView playPause;
-//    ImageView rightArrow;
+    ImageView leftArrow;
+    ImageView playPause;
+    ImageView rightArrow;
 
 
     @Override
@@ -47,9 +47,9 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-//        leftArrow = findViewById(R.id.leftArrow);
-//        playPause = findViewById(R.id.playPause);
-//        rightArrow = findViewById(R.id.rightArrow);
+        leftArrow = findViewById(R.id.leftArrow);
+        playPause = findViewById(R.id.playPause);
+        rightArrow = findViewById(R.id.rightArrow);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -58,17 +58,17 @@ public class SecondActivity extends AppCompatActivity {
 
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 Log.i("key", "center playing" + firstCenterKeyPause);
-//                playPause.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-//                leftArrow.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-//                rightArrow.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 
-
-//                SummarizedByArticleFragment.isInflatingTable = false;
+                playPause.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+                leftArrow.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+                rightArrow.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+                SummarizedByArticleFragment.isInflatingTable = false;
 
                 if (!firstCenterKeyPause){
+                    playPause.setImageResource(R.drawable.ic_pause_button);
                     summaryByParentArticlePause = false;
                     summaryByArticlePause = false;
                     summaryByChildArticlePause = false;
@@ -80,6 +80,7 @@ public class SecondActivity extends AppCompatActivity {
                     firstCenterKeyPause = true;
                 }
                 else {
+                    playPause.setImageResource(R.drawable.ic_play_button__2_);
                     pausedState();
                 }
 
@@ -93,30 +94,34 @@ public class SecondActivity extends AppCompatActivity {
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 Log.i("key", "onKeyDown: left");
                 SummarizedByArticleFragment.isInflatingTable = false;
-//                leftArrow.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-//                rightArrow.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+
+                leftArrow.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+                rightArrow.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 //                playPause.setImageTintList(ColorStateList.valueOf(
 //                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+
                 leftNavigation();
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 Log.i("key", "onKeyDown: right");
                 SummarizedByArticleFragment.isInflatingTable = false;
-//                rightArrow.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+
+                rightArrow.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
 //                playPause.setImageTintList(ColorStateList.valueOf(
 //                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-//                leftArrow.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+                leftArrow.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+
                 rightNavigation();
                 break;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    private Fragment getCurrentFragment() {
+    public Fragment getCurrentFragment() {
         Fragment navHostFragment = getSupportFragmentManager().getPrimaryNavigationFragment();
         Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
 
@@ -132,15 +137,17 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     SummarizedByArticleFragment.handleRowAnimationThread);
             navController.navigate(R.id.branchSummaryFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
+            Log.i("parent Article", "is interrupted "+SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted()+"");
             navController.navigate(R.id.summarizedByArticleFragment2);
-            pausedState();
+
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -148,7 +155,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -156,7 +163,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -164,7 +171,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -172,7 +179,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summaryOfLastMonthFragment);
-            pausedState();
+//            pausedState();
         }
 
     }
@@ -185,15 +192,18 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
+            Log.i("parent Article", "is interrupted "+SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted()+"");
+
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            pausedState();
+
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -201,7 +211,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -209,7 +219,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summaryOfLastMonthFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -217,7 +227,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     SummarizedByArticleFragment.handleRowAnimationThread);
             navController.navigate(R.id.branchSummaryFragment);
-            pausedState();
+//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -225,7 +235,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
             navController.navigate(R.id.summarizedByArticleFragment2);
-            pausedState();
+//            pausedState();
         }
     }
 

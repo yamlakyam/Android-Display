@@ -51,22 +51,18 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
     TextView distributorHeaderVsmTransaction;
     TextView vanHeaderVsmTransaction;
     Fragment fragment;
-
     HandleDataChangeThread handleDistDataChangeThread;
     HandleDataChangeThread handleVanDataChangeThread;
     HandleRowAnimationThread handleRowAnimationThread;
-
-
-    //    public int distributors = 3;
+    int vanIndex, distributorIndex;
     public int distributors;
-    //    public int vansCount = 2;
     public int vansCount;
-    //    public int allRows = 5;
     public int allRows;
-
     public int totalItemCount = 0;
     public double totalSubTotal = 0;
     public double grandTotalSales = 0;
+    public ArrayList<Integer> numberOfVansInDistributors = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> numberOfRowsInSingleVan = new ArrayList<>();
 
 
     public VsmTransactionFragment() {
@@ -77,8 +73,8 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(URL, this);
+        VolleyHttp http = new VolleyHttp(getContext());
+        http.makeGetRequest(URL, this);
     }
 
     @Override
@@ -93,6 +89,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         tablesToDisplay = new ArrayList<>();
         vanHeaderVsmTransaction = view.findViewById(R.id.vanHeaderVsmTransaction);
         distributorHeaderVsmTransaction = view.findViewById(R.id.distributorHeaderVsmTransaction);
+
         backTraverse(fragment, R.id.vsmCardFragment);
         return view;
     }
@@ -114,7 +111,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateAlldistributors(ArrayList<VsmTableForSingleDistributor> allOrgData) {
+    private void inflateAlldistributors(ArrayList<VsmTableForSingleDistributor> allOrgData, int distributorStartIndex, int vanStartingIndex) {
         distributors = allOrgData.size();
 
         changeDistributorHandler = new Handler() {
@@ -123,43 +120,39 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                 super.handleMessage(msg);
 
                 String message = (String) msg.obj;
-                int distributorIndex = 0;
+                distributorIndex = 0;
                 if (message != null) {
                     distributorIndex = Integer.parseInt(message);
                 }
+                inflateAllVansInSingleDis(allOrgData, distributorIndex, vanStartingIndex);
 
-                inflateAllVansInSingleDis(allOrgData, distributorIndex);
+                Log.i("DISTRIBUTOR INDEX", distributorIndex + "");
+                Log.i("SUM", (int) (vansSum(numberOfRowsInSingleVan.get(distributorIndex))) + "");
             }
         };
-        Log.i("length", "distributors" + "=" + distributors);
-        handleDistDataChangeThread = new HandleDataChangeThread(changeDistributorHandler, distributors, 350);
+
+        handleDistDataChangeThread = new HandleDataChangeThread(changeDistributorHandler, distributors, (int) (vansSum(numberOfRowsInSingleVan.get(distributorIndex))), distributorStartIndex);
         handleDistDataChangeThread.start();
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateAllVansInSingleDis(ArrayList<VsmTableForSingleDistributor> allOrgData, int distributorIndex) {
+    private void inflateAllVansInSingleDis(ArrayList<VsmTableForSingleDistributor> allOrgData, int distributorIndex, int startingIndex) {
         vansCount = allOrgData.get(distributorIndex).getAllVansData().size();
-        String nameOfOrg = allOrgData.get(distributorIndex).getNameOfDistributor();
-        distributorHeaderVsmTransaction.setText(nameOfOrg);
+        vanIndex = 0;
         changeVanHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
 
                 String message = (String) msg.obj;
-                int vanIndex = 0;
+                vanIndex = 0;
                 if (message != null) {
                     vanIndex = Integer.parseInt(message);
                 }
-
                 inflateTable(allOrgData, vanIndex, distributorIndex);
-
             }
         };
-
-        Log.i("length", "vans" + "=" + vansCount);
-
-        handleVanDataChangeThread = new HandleDataChangeThread(changeVanHandler, vansCount, 40);
+        handleVanDataChangeThread = new HandleDataChangeThread(changeVanHandler, vansCount, numberOfRowsInSingleVan.get(distributorIndex).get(vanIndex), startingIndex);
         handleVanDataChangeThread.start();
     }
 
@@ -169,10 +162,17 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         totalItemCount = 0;
         totalSubTotal = 0;
         grandTotalSales = 0;
-        vanHeaderVsmTransaction.setText(allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).nameOfVan);
-        vsmTransactionTableLayout.removeAllViews();
+        if(vanHeaderVsmTransaction!=null){
+            vanHeaderVsmTransaction.setText(allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).nameOfVan);
+        }
+        String nameOfOrg = allOrgData.get(distributorIndex).getNameOfDistributor();
+        if(distributorHeaderVsmTransaction!=null){
+            distributorHeaderVsmTransaction.setText(nameOfOrg);
+        }
+        if(vsmTransactionTableLayout!=null){
+            vsmTransactionTableLayout.removeAllViews();
+        }
         allRows = allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().size();
-        Log.i("allRows", allRows + "");
         animationHandler = new Handler() {
             @SuppressLint("HandlerLeak")
             @Override
@@ -185,16 +185,12 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                 if (index == allRows) {
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollVSMtable);
-                }
-               else if (index == allRows + 1 &&
+                } else if (index == allRows + 1 &&
                         vanIndex == allOrgData.get(distributorIndex).getAllVansData().size() - 1 &&
                         distributorIndex == allOrgData.size() - 1) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.summaryTableFragment);
-                } else if (index < allRows ) {
-                    Log.i("length", "rows"+allRows +" index "+index);
-                    Log.i("length", "vans"+vanIndex);
-                    Log.i("length", "distr"+distributorIndex);
+                } else if (index < allRows) {
                     lastRowSummation(allOrgData, vanIndex, distributorIndex, index);
                     UtilityFunctionsForActivity1.drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollVSMtable);
@@ -202,23 +198,35 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
 
             }
         };
-        Log.i("length", "rows" + "=" + allRows);
 
-        handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler, 200);
+        handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler, 100);
         handleRowAnimationThread.start();
     }
 
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
-        VSMtransactioProgressBar.setVisibility(View.GONE);
+        if(VSMtransactioProgressBar!=null){
+            VSMtransactioProgressBar.setVisibility(View.GONE);
+
+        }
         try {
             MainActivity.vsmTransactionJSONArray = jsonArray;
             tablesToDisplay = UtilityFunctionsForActivity1.vsmTransactionParser(jsonArray);
-//            inflateAllVansInSingleDis(tablesToDisplay);
-            inflateAlldistributors(tablesToDisplay);
-            Log.i("Success", "onSuccess: ");
+            for (int i = 0; i < tablesToDisplay.size(); i++) {
+                numberOfVansInDistributors.add(tablesToDisplay.get(i).getAllVansData().size());
+                ArrayList<Integer> numbers = new ArrayList<>();
+                for (int j = 0; j < tablesToDisplay.get(i).getAllVansData().size(); j++) {
+                    numbers.add(tablesToDisplay.get(i).getAllVansData().get(j).tableRows.size());
+                }
+                numberOfRowsInSingleVan.add(numbers);
+            }
 
+
+            Log.i("VANS COUNT", "NUMBER OF VANS : " + numberOfVansInDistributors.toString());
+            Log.i("VANS COUNT", "NUMBER OF VANS : " + numberOfRowsInSingleVan.toString());
+
+            inflateAlldistributors(tablesToDisplay, 0, 0);
 
         } catch (JSONException e) {
             VSMtransactioProgressBar.setVisibility(View.GONE);
@@ -231,7 +239,6 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
 
     }
 
-
     public void drawLastRow() {
         View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_vsm_transaction, null, false);
         TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
@@ -243,7 +250,6 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         TextView subTotalTextView = tableElements.findViewById(R.id.vsmTransSubTotalTxtv);
         TextView VATtextView = tableElements.findViewById(R.id.vsmTransVATtextView);
         TextView totalSalesTextView = tableElements.findViewById(R.id.vsmTransGrandTotalTextView);
-
 
         NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -261,7 +267,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         outletTextView.setTextSize(25f);
         TINtextView.setText("");
         dateNtimeTextView.setText("");
-        itemCountTextview.setText(String.valueOf(totalItemCount));
+        itemCountTextview.setText(numberFormat.format(totalItemCount));
         itemCountTextview.setTypeface(Typeface.DEFAULT_BOLD);
         itemCountTextview.setTextSize(25f);
 
@@ -275,54 +281,93 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         totalSalesTextView.setTextSize(25f);
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
-        voucherNoTextView.startAnimation(animation);
+        outletTextView.startAnimation(animation);
         itemCountTextview.startAnimation(animation);
         subTotalTextView.startAnimation(animation);
         totalSalesTextView.startAnimation(animation);
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
-        vsmTransactionTableLayout.addView(tableElements);
+        if(vsmTransactionTableLayout!=null){
+            vsmTransactionTableLayout.addView(tableElements);
+        }
         UtilityFunctionsForActivity1.animate(vsmTransactionTableLayout, tableElements);
     }
 
     public void lastRowSummation(ArrayList<VsmTableForSingleDistributor> allOrgData, int vanIndex, int distributorIndex, int rowNo) {
-        totalItemCount = totalItemCount + allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().get(rowNo).getItemCount();
-        totalSubTotal = totalSubTotal + allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().get(rowNo).getSubTotal();
-        grandTotalSales = totalSubTotal + allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().get(rowNo).getTotalSales();
+        if (rowNo < allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().size()) {
+            totalItemCount = totalItemCount + allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().get(rowNo).getItemCount();
+            totalSubTotal = totalSubTotal + allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().get(rowNo).getSubTotal();
+            grandTotalSales = totalSubTotal + allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().get(rowNo).getTotalSales();
+        }
     }
 
     public void backTraverse(Fragment fragment, int id) {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(id);
+
+
+                ArrayList<VsmTableForSingleDistributor> allOrgData = new ArrayList<>();
+                try {
+                    allOrgData = UtilityFunctionsForActivity1.vsmTransactionParser(MainActivity.vsmTransactionJSONArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 if (handleDistDataChangeThread != null) {
                     handleDistDataChangeThread.interrupt();
                 }
                 if (handleVanDataChangeThread != null) {
                     handleVanDataChangeThread.interrupt();
                 }
-                if (handleRowAnimationThread != null) {
-                    handleRowAnimationThread.interrupt();
+
+                if (distributorIndex == 0) {
+                    if (vanIndex == 0) {
+                        NavController navController = NavHostFragment.findNavController(fragment);
+                        navController.navigate(id);
+                    }
+
+                    if (vanIndex > 0) {
+                        inflateAlldistributors(allOrgData, distributorIndex, vanIndex - 1);
+                    }
+                } else {
+                    if (vanIndex == 0) {
+                        inflateAlldistributors(allOrgData, distributorIndex - 1, vanIndex);
+                    }
+
+                    if (vanIndex > 0) {
+                        inflateAlldistributors(allOrgData, distributorIndex, vanIndex - 1);
+                    }
+
                 }
             }
+
         });
     }
+
+    public Integer vansSum(ArrayList<Integer> numbersToAdd){
+        Integer sum = 0;
+
+        for (int i = 0; i < numbersToAdd.size(); i++) {
+            sum+=numbersToAdd.get(i);
+        }
+        return sum;
+    }
+
 
     @Override
     public void onStop() {
         super.onStop();
         if (handleDistDataChangeThread != null) {
-            Log.i("interrupt", "onStop: handleDistDataChangeThread");
+
             handleDistDataChangeThread.interrupt();
         }
         if (handleVanDataChangeThread != null) {
-            Log.i("interrupt", "onStop: handleVanDataChangeThread");
+
             handleVanDataChangeThread.interrupt();
         }
         if (handleRowAnimationThread != null) {
-            Log.i("interrupt", "onStop: handleRowAnimationThread");
+
             handleRowAnimationThread.interrupt();
         }
     }

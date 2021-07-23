@@ -248,7 +248,8 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
 
-        initFragment(dashBoardData, 200);
+        if(!isInflatingTable)
+            initFragment(dashBoardData, 200);
         Log.i("inflating", "onSuccess");
 
         SecondActivity.dashBoardData = dashBoardData;

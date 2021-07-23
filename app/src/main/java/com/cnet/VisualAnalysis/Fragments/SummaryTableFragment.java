@@ -94,6 +94,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         super.onResume();
         if(MainActivity.summaryTableJSONArray!=null){
             summaryTableProgressBar.setVisibility(View.GONE);
+            respSize = MainActivity.summaryTableJSONArray.length();
             inflateTable(MainActivity.summaryTableJSONArray);
         }
     }
@@ -132,7 +133,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler,200);
+        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler,100);
         handleRowAnimationThread.start();
 
     }
@@ -195,39 +196,43 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         numberFormat.setGroupingUsed(true);
 
         serialNumberTextView.setText("");
-        distributorNameTextView.setText("");
         startTimeTextView.setText("");
         lastActivityTextView.setText("");
+
+        distributorNameTextView.setText("Total Amount");
+        distributorNameTextView.setTypeface(Typeface.DEFAULT_BOLD);
+        distributorNameTextView.setTextSize(25f);
 
         totalVsiTextView.setText(numberFormat.format(sumOfVSICount));
         totalVsiTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalVsiTextView.setTextSize(25f);
 
-        totalOutlatesTextView.setText(String.valueOf(sumOfSalesCount));
+        totalOutlatesTextView.setText(numberFormat.format(sumOfSalesCount));
         totalOutlatesTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalOutlatesTextView.setTextSize(25f);
 
-        totalSkuTextView.setText(String.valueOf(sumOfSKUCount));
+        totalSkuTextView.setText(numberFormat.format(sumOfSKUCount));
         totalSkuTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalSkuTextView.setTextSize(25f);
 
-        totalQuantityTextView.setText(String.valueOf(sumOfQuantity));
+        totalQuantityTextView.setText(numberFormat.format(sumOfQuantity));
         totalQuantityTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalQuantityTextView.setTextSize(25f);
 
-        totalSalesTextView.setText(String.valueOf(sumOfTotalSales));
+        totalSalesTextView.setText(numberFormat.format(sumOfTotalSales));
         totalSalesTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalSalesTextView.setTextSize(25f);
 
-        activeVansTextView.setText(String.valueOf(sumOfActiveVans));
+        activeVansTextView.setText(numberFormat.format(sumOfActiveVans));
         activeVansTextView.setTypeface(Typeface.DEFAULT_BOLD);
         activeVansTextView.setTextSize(25f);
 
-        prospectTextView.setText(String.valueOf(sumOfProspects));
+        prospectTextView.setText(numberFormat.format(sumOfProspects));
         prospectTextView.setTypeface(Typeface.DEFAULT_BOLD);
         prospectTextView.setTextSize(25f);
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        distributorNameTextView.startAnimation(animation);
         totalVsiTextView.startAnimation(animation);
         totalOutlatesTextView.startAnimation(animation);
         totalSkuTextView.startAnimation(animation);
@@ -245,6 +250,8 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                if(handleRowAnimationThread!=null)
+                     handleRowAnimationThread.interrupt();
                 Intent intent =new Intent(requireActivity(), StartingActivty.class);
                 startActivity(intent);
             }
@@ -254,7 +261,9 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     @Override
     public void onStop() {
         super.onStop();
-        handleRowAnimationThread.interrupt();
+        if(handleRowAnimationThread!=null){
+            handleRowAnimationThread.interrupt();
+        }
     }
 }
 

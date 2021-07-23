@@ -49,10 +49,10 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     ProgressBar distributorTableProgressBar;
     ScrollView scrollDistributorTable;
     TextView distributorHeaderTextView;
-    int respSize;
+    int distributorIndex = 0;
     Fragment fragment;
-    HandleRowAnimationThread handleRowAnimationThread;
-    HandleDataChangeThread handleDataChangeThread;
+    public HandleRowAnimationThread handleRowAnimationThread;
+    public HandleDataChangeThread handleDataChangeThread;
 
     int sumofProspect, sumofOutlet, sumofSKU, sumofQuantity = 0;
     double sumofSales = 0;
@@ -84,6 +84,9 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         distributorHeaderTextView = view.findViewById(R.id.distributorHeaderTextView);
         fragment = this;
 
+        backTraverse(fragment, R.id.summaryTableFragment);
+
+
         return view;
     }
 
@@ -92,16 +95,18 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         super.onResume();
         if (MainActivity.distributorTableJSONArray != null) {
             distributorTableProgressBar.setVisibility(View.GONE);
-            inflateAllTables(MainActivity.distributorTableJSONArray);
+            inflateAllTables(MainActivity.distributorTableJSONArray, 0);
         }
 
-        backTraverse(fragment,R.id.summaryTableFragment);
+//        backTraverse(fragment,R.id.summaryTableFragment);
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateTable(JSONArray jsonArray, int dataIndex) {
+    public void inflateTable(JSONArray jsonArray, int dataIndex) {
         resetLastRowSummation();
-        distributorTableLayout.removeAllViews();
+        if (distributorTableLayout != null) {
+            distributorTableLayout.removeAllViews();
+        }
         try {
             tablesToDisplay = UtilityFunctionsForActivity1.distributorTableParser(jsonArray, dataIndex);
         } catch (JSONException e) {
@@ -121,11 +126,11 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
-                } else if (index == tablesToDisplay.size() + 1 && dataIndex ==jsonArray.length()-1) {
+                } else if (index == tablesToDisplay.size() + 1 && dataIndex == jsonArray.length() - 1) {
                     Log.i("from distributor", "navigating from distributor: ");
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.vsmCardFragment);
-                } else if(index<tablesToDisplay.size()){
+                } else if (index < tablesToDisplay.size()) {
                     lastRowSummation(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
@@ -139,7 +144,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateAllTables(JSONArray jsonArray) {
+    public void inflateAllTables(JSONArray jsonArray, int startingIndex) {
         changeDataHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -147,21 +152,25 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                 int index = 0;
                 if (message != null) {
                     index = Integer.parseInt(message);
+                    distributorIndex = index;
                 }
-                    inflateTable(jsonArray, index);
-                    setDistributorHeader(jsonArray, index);
+                inflateTable(jsonArray, index);
+                setDistributorHeader(jsonArray, index);
             }
         };
 
-        handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, jsonArray.length(), 30);
+        handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, jsonArray.length(), 20, startingIndex);
         handleDataChangeThread.start();
+
+        Log.i("ALIVE", "THREAD IS ALIVE: " + handleDataChangeThread.isAlive());
 
     }
 
     public void setDistributorHeader(JSONArray jsonArray, int index) {
         try {
             String distributorName = jsonArray.getJSONObject(index).getString("nameOfOrg");
-            distributorHeaderTextView.setText(distributorName);
+            if (distributorHeaderTextView != null)
+                distributorHeaderTextView.setText(distributorName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -204,19 +213,19 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         distributorVSITV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorVSITV.setTextSize(25f);
 
-        distributorProspectTV.setText(String.valueOf(sumofProspect));
+        distributorProspectTV.setText(numberFormat.format(sumofProspect));
         distributorProspectTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorProspectTV.setTextSize(25f);
 
-        distributorSalesOutletTV.setText(String.valueOf(sumofOutlet));
+        distributorSalesOutletTV.setText(numberFormat.format(sumofOutlet));
         distributorSalesOutletTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorSalesOutletTV.setTextSize(25f);
 
-        distributorSKUcountTV.setText(String.valueOf(sumofSKU));
+        distributorSKUcountTV.setText(numberFormat.format(sumofSKU));
         distributorSKUcountTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorSKUcountTV.setTextSize(25f);
 
-        distributorQuantityCountTV.setText(String.valueOf(sumofQuantity));
+        distributorQuantityCountTV.setText(numberFormat.format(sumofQuantity));
         distributorQuantityCountTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorQuantityCountTV.setTextSize(25f);
 
@@ -246,7 +255,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         MainActivity.distributorTableJSONArray = jsonArray;
         distributorTableProgressBar.setVisibility(View.GONE);
         try {
-            inflateAllTables(jsonArray);
+            inflateAllTables(jsonArray, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -262,8 +271,20 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(id);
+
+                if (handleDataChangeThread != null) {
+                    handleDataChangeThread.interrupt();
+                }
+                if (handleRowAnimationThread != null) {
+                    handleRowAnimationThread.interrupt();
+                }
+
+                if (distributorIndex == 0) {
+                    NavController navController = NavHostFragment.findNavController(fragment);
+                    navController.navigate(id);
+                } else {
+                    inflateAllTables(MainActivity.distributorTableJSONArray, distributorIndex-1);
+                }
             }
         });
     }
@@ -271,10 +292,10 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     @Override
     public void onStop() {
         super.onStop();
-        if(handleRowAnimationThread!=null){
-       handleRowAnimationThread.interrupt();
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
         }
-        if(handleDataChangeThread!=null){
+        if (handleDataChangeThread != null) {
             handleDataChangeThread.interrupt();
         }
     }

@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -69,9 +71,7 @@ public class BranchSummaryFragment extends Fragment {
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
         fragment = this;
 
-
         backTraverse(fragment, R.id.summaryOfLastMonthFragment);
-
         return view;
     }
 
@@ -137,9 +137,14 @@ public class BranchSummaryFragment extends Fragment {
     public void backTraverse(Fragment fragment, int id) {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
+
             public void handleOnBackPressed() {
-                NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(id);
+//                NavController navController = NavHostFragment.findNavController(fragment);
+//                navController.navigate(id);
+
+                Intent intent = new Intent(getActivity(), StartingActivty.class);
+                startActivity(intent);
+
             }
         });
     }

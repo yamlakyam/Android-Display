@@ -37,6 +37,9 @@
         <item name= "rowValueColor2">@color/rowValueColor2</item>
         <item name= "rowValueColor3">@color/rowValueColor3</item>
         <item name= "rowValueColor4">@color/rowValueColor4</item>
+        <item name= "landingPageBackground">@color/landingPageBackground</item>
+        <item name= "landingPageButton">@color/landingPageButton</item>
+
 
 <!--        <item name="buttoncolor">#ddff22</item>-->
     </style>
