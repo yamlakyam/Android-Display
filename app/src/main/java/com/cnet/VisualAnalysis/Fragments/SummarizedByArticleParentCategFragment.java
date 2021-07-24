@@ -96,8 +96,10 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
     private void inflateTable(ArrayList<SummarizedByParentArticleRow> tablesToDisplay, int seconds) {
 
         grandTotal = 0;
+        if (summarizedByParentArticleTableLayout != null) {
+            summarizedByParentArticleTableLayout.removeAllViews();
 
-        summarizedByParentArticleTableLayout.removeAllViews();
+        }
         animationHandler = new Handler() {
             @SuppressLint("HandlerLeak")
             @Override
@@ -126,7 +128,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
         handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
-        Log.i("parent Article", "is interrupted " + handleRowAnimationThread.isInterrupted()+"");
+        Log.i("parent Article", "is interrupted " + handleRowAnimationThread.isInterrupted() + "");
     }
 
 
@@ -138,9 +140,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         DashBoardData dashBoardData = SecondActivity.dashBoardData;
 
         if (dashBoardData != null) {
-            if(dashBoardData.getSummarizedByParentArticleData()!=null){
+            if (dashBoardData.getSummarizedByParentArticleData() != null) {
                 inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData(), seconds);
-                Log.i("parent Article", "is interrupted " + handleRowAnimationThread.isInterrupted()+"");
+                Log.i("parent Article", "is interrupted " + handleRowAnimationThread.isInterrupted() + "");
 
                 UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
                 UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");

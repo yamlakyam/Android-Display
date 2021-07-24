@@ -65,9 +65,9 @@ public class SecondActivity extends AppCompatActivity {
                         ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
                 rightArrow.setImageTintList(ColorStateList.valueOf(
                         ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-                SummarizedByArticleFragment.isInflatingTable = false;
+//                SummarizedByArticleFragment.isInflatingTable = false;
 
-                if (!firstCenterKeyPause){
+                if (!firstCenterKeyPause) {
                     playPause.setImageResource(R.drawable.ic_pause_button);
                     summaryByParentArticlePause = false;
                     summaryByArticlePause = false;
@@ -75,25 +75,26 @@ public class SecondActivity extends AppCompatActivity {
                     summaryOfLast6MonsPause = false;
                     summaryOfLast30DaysPause = false;
                     summaryOfBranchPause = false;
-                    getCurrentFragment().onResume();
+
+//                            navigate(getCurrentFragment());
+
+                    rightNavigation();
 
                     firstCenterKeyPause = true;
-                }
-                else {
+                } else {
                     playPause.setImageResource(R.drawable.ic_play_button__2_);
                     pausedState();
                 }
 
                 break;
-            case KeyEvent.KEYCODE_DPAD_UP:
-                Log.i("TAG", "onKeyDown:up ");
-                break;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                Log.i("TAG", "onKeyDown:down ");
-                break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 Log.i("key", "onKeyDown: left");
                 SummarizedByArticleFragment.isInflatingTable = false;
+                SummarizedByArticleParentCategFragment.isInflatingTable = false;
+                SummarizedByArticleChildCategFragment.isInflatingTable = false;
+                SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+                SummaryOfLastMonthFragment.isInflatingTable = false;
+                BranchSummaryFragment.isInflatingTable = false;
 
                 leftArrow.setImageTintList(ColorStateList.valueOf(
                         ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
@@ -107,6 +108,11 @@ public class SecondActivity extends AppCompatActivity {
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 Log.i("key", "onKeyDown: right");
                 SummarizedByArticleFragment.isInflatingTable = false;
+                SummarizedByArticleParentCategFragment.isInflatingTable = false;
+                SummarizedByArticleChildCategFragment.isInflatingTable = false;
+                SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+                SummaryOfLastMonthFragment.isInflatingTable = false;
+                BranchSummaryFragment.isInflatingTable = false;
 
                 rightArrow.setImageTintList(ColorStateList.valueOf(
                         ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
@@ -119,6 +125,13 @@ public class SecondActivity extends AppCompatActivity {
                 break;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void navigate(Fragment currentFragment) {
+
+        if (currentFragment instanceof SummaryOfLastMonthFragment) {
+            navController.navigate(R.id.branchSummaryFragment);
+        }
     }
 
     public Fragment getCurrentFragment() {
@@ -144,7 +157,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            Log.i("parent Article", "is interrupted "+SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted()+"");
+//            Log.i("parent Article", "is interrupted "+SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted()+"");
             navController.navigate(R.id.summarizedByArticleFragment2);
 
 //            pausedState();
@@ -199,7 +212,7 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            Log.i("parent Article", "is interrupted "+SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted()+"");
+            Log.i("parent Article", "is interrupted " + SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted() + "");
 
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
 

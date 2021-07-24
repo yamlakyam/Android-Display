@@ -15,6 +15,8 @@ import com.cnet.VisualAnalysis.R;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class VSMCardGVAdapter extends ArrayAdapter<VSMCard> {
 
@@ -51,10 +53,14 @@ public class VSMCardGVAdapter extends ArrayAdapter<VSMCard> {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
 
+        Date lastActive = UtilityFunctionsForActivity1.formatTime(vsmCard.getLastSeen());
+        Date currentTime = Calendar.getInstance().getTime();
+
+        String formattedLastActive = UtilityFunctionsForActivity1.timeElapsed(lastActive, currentTime);
 
         vsmName.setText(vsmCard.getVsi());
         vsmOutlet.setText(String.valueOf(vsmCard.getSalesOutLateCount()));
-        vsmLastActive.setText(UtilityFunctionsForActivity1.formatTimeToString(vsmCard.getLastSeen()));
+        vsmLastActive.setText(formattedLastActive);
         vsmVcount.setText(String.valueOf(vsmCard.getvCount()));
         vsmTsale.setText(numberFormat.format(vsmCard.getTotalSales()));
         vsmDistributor.setText(preciseOrgName);

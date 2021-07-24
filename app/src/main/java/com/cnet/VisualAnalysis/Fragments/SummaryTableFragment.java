@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -40,6 +40,7 @@ import org.json.JSONException;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequest {
@@ -67,7 +68,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(MainActivity.summaryTableJSONArray==null){
+        if (MainActivity.summaryTableJSONArray == null) {
             VolleyHttp http = new VolleyHttp(getContext());
             http.makeGetRequest(URL, this);
         }
@@ -80,7 +81,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
         View view = inflater.inflate(R.layout.fragment_summary_table, container, false);
 
-        fragment=this;
+        fragment = this;
         summaryTableLayout = view.findViewById(R.id.summaryTableLayout);
         summaryTableProgressBar = view.findViewById(R.id.summaryTableprogressBar);
         scrollSummaryTable = view.findViewById(R.id.scrollSummaryTable);
@@ -92,11 +93,17 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     @Override
     public void onResume() {
         super.onResume();
-        if(MainActivity.summaryTableJSONArray!=null){
+        if (MainActivity.summaryTableJSONArray != null) {
             summaryTableProgressBar.setVisibility(View.GONE);
             respSize = MainActivity.summaryTableJSONArray.length();
             inflateTable(MainActivity.summaryTableJSONArray);
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @SuppressLint("HandlerLeak")
@@ -119,11 +126,10 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollSummaryTable);
-                }
-                else if(index == tablesToDisplay.size()+1){
+                } else if (index == tablesToDisplay.size() + 1) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(R.id.distributorTableFragment);
-                }else {
+                } else {
                     sumofLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawSummaryTable(tablesToDisplay, getContext(), summaryTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(scrollSummaryTable);
@@ -133,7 +139,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler,100);
+        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 100);
         handleRowAnimationThread.start();
 
     }
@@ -141,7 +147,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     @Override
     public void onSuccess(JSONArray jsonArray) {
         try {
-            MainActivity.summaryTableJSONArray=jsonArray;
+            MainActivity.summaryTableJSONArray = jsonArray;
             Log.i("TAG", jsonArray.toString());
             summaryTableProgressBar.setVisibility(View.GONE);
             respSize = jsonArray.length();
@@ -168,12 +174,12 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
     }
 
-    public void resetSumOfLastRow(){
-        sumOfVSICount =0;
+    public void resetSumOfLastRow() {
+        sumOfVSICount = 0;
         sumOfSalesCount = 0;
         sumOfSKUCount = 0;
         sumOfQuantity = 0;
-        sumOfTotalSales =0;
+        sumOfTotalSales = 0;
         sumOfProspects = 0;
     }
 
@@ -250,18 +256,21 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(handleRowAnimationThread!=null)
-                     handleRowAnimationThread.interrupt();
-                Intent intent =new Intent(requireActivity(), StartingActivty.class);
+                if (handleRowAnimationThread != null)
+                    handleRowAnimationThread.interrupt();
+                Intent intent = new Intent(requireActivity(), StartingActivty.class);
                 startActivity(intent);
             }
         });
+
     }
+
+
 
     @Override
     public void onStop() {
         super.onStop();
-        if(handleRowAnimationThread!=null){
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
     }

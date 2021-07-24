@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,10 +58,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     int sumofProspect, sumofOutlet, sumofSKU, sumofQuantity = 0;
     double sumofSales = 0;
 
-
-    ////////
     ArrayList<DistributorTableRow> distributorTableRows;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,6 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
             VolleyHttp http = new VolleyHttp(getContext());
             http.makeGetRequest(URL, this);
         }
-
 
     }
 
@@ -86,6 +83,33 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
         backTraverse(fragment, R.id.summaryTableFragment);
 
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                Log.i("key press", "key press detected");
+
+                if(event.getAction()==KeyEvent.ACTION_DOWN){
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_DPAD_UP_LEFT:
+                            Log.i("key press", "left key pressed ");
+
+                        case KeyEvent.KEYCODE_DPAD_RIGHT:
+                            Log.i("key press", "right key pressed");
+
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                            Log.i("key press", "center key pressed");
+
+                        case KeyEvent.KEYCODE_BACK:
+                            Log.i("key press", "back key pressed");
+                    }
+                }
+                return true;
+            }
+        });
 
         return view;
     }
@@ -253,7 +277,10 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     @Override
     public void onSuccess(JSONArray jsonArray) {
         MainActivity.distributorTableJSONArray = jsonArray;
-        distributorTableProgressBar.setVisibility(View.GONE);
+
+        if(distributorTableProgressBar!=null){
+            distributorTableProgressBar.setVisibility(View.GONE);
+        }
         try {
             inflateAllTables(jsonArray, 0);
         } catch (Exception e) {

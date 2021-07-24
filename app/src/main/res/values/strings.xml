@@ -6,4 +6,6 @@
         \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t
         \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Summarized By Article
     </string>
+    <string name="title_activity_maps">Map</string>
+    <string name="welcomeTxt">Control Your Sales Statistics From The Comfort Of Your ...</string>
 </resources>

@@ -7,48 +7,42 @@
     android:background="@color/landingPageBackground"
     tools:context=".StartingActivty">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="3dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/app1Btn"
-        android:layout_width="250dp"
+        android:layout_width="275dp"
         android:layout_height="75dp"
         android:backgroundTint="@color/landingPageButton"
+        android:nextFocusForward="@id/app2Btn"
         android:text="Heineken's Summary"
         android:textAllCaps="false"
         android:textColor="#ffffff"
-        android:textSize="24sp"
+        android:textSize="22dp"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/app2Btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/highlightText" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/app2Btn"
-        android:layout_width="250dp"
+        android:layout_width="275dp"
         android:layout_height="75dp"
 
         android:backgroundTint="@color/landingPageButton"
+        android:nextFocusForward="@id/app1Btn"
         android:text="Dashboards"
         android:textAllCaps="false"
         android:textColor="#ffffff"
-        android:textSize="24sp"
+        android:textSize="22dp"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/app1Btn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/highlightText" />
+    />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/cnetLogo"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -56,4 +50,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/download" />
+
+    <TextView
+        android:id="@+id/highlightText"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
+        android:text="@string/welcomeTxt"
+        android:textColor="@color/mainTextDark3"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cnetLogo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

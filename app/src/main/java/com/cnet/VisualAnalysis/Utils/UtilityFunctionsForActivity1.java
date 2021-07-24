@@ -167,7 +167,7 @@ public class UtilityFunctionsForActivity1 {
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setGroupingUsed(true);
 
-            if(tableElements !=null){
+            if (tableElements != null) {
                 TextView distributorSerialNumberTV = tableElements.findViewById(R.id.distributorSerialNumberTV);
                 TextView distributorVSITV = tableElements.findViewById(R.id.distributorVSITV);
                 TextView distributorProspectTV = tableElements.findViewById(R.id.distributorProspectTV);
@@ -187,7 +187,9 @@ public class UtilityFunctionsForActivity1 {
                 distributorQuantityCountTV.setText(String.valueOf(row.getQuantityCount()));
                 distributorTotalSalesTV.setText(numberFormat.format(row.getTotalSalesAmountAfterTax()));
 
-                distributorTableLayout.addView(tableElements);
+                if (distributorTableLayout != null) {
+                    distributorTableLayout.addView(tableElements);
+                }
                 animate(distributorTableLayout, tableElements);
             }
 
@@ -197,7 +199,7 @@ public class UtilityFunctionsForActivity1 {
     }
 
     public static void animate(View container, View child) {
-        if(container!=null){
+        if (container != null) {
             Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
             child.startAnimation(animation);
         }
@@ -205,7 +207,7 @@ public class UtilityFunctionsForActivity1 {
 
     public static void scrollRows(ScrollView scrollView) {
 
-        if(scrollView!=null){
+        if (scrollView != null) {
             scrollView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -264,24 +266,27 @@ public class UtilityFunctionsForActivity1 {
     public static ArrayList<VsmTableForSingleDistributor> vsmTransactionParser(JSONArray jsonArray) throws JSONException {
 
         ArrayList<VsmTableForSingleDistributor> dataForAllDis = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject tableDataObjectForSingleOrgInJson = jsonArray.getJSONObject(i);
-            JSONArray tableDataForSingleOrgInJson = tableDataObjectForSingleOrgInJson.getJSONArray("vsmTables");
-            String distributorName = tableDataObjectForSingleOrgInJson.getString("orgName");
 
-            ArrayList<VsmTableDataForSingleVan> dataToDisplaySingleDis = new ArrayList<>();
-            for (int j = 0; j < tableDataForSingleOrgInJson.length(); j++) {
-                JSONObject tableDataObjectForSingleVanInJson = tableDataForSingleOrgInJson.getJSONObject(j);
-                VsmTableDataForSingleVan dataToDisplaySingleVanTable = getSingleVanData(tableDataObjectForSingleVanInJson);
-                dataToDisplaySingleDis.add(dataToDisplaySingleVanTable);
+        if (jsonArray != null) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject tableDataObjectForSingleOrgInJson = jsonArray.getJSONObject(i);
+                JSONArray tableDataForSingleOrgInJson = tableDataObjectForSingleOrgInJson.getJSONArray("vsmTables");
+                String distributorName = tableDataObjectForSingleOrgInJson.getString("orgName");
+
+                ArrayList<VsmTableDataForSingleVan> dataToDisplaySingleDis = new ArrayList<>();
+                for (int j = 0; j < tableDataForSingleOrgInJson.length(); j++) {
+                    JSONObject tableDataObjectForSingleVanInJson = tableDataForSingleOrgInJson.getJSONObject(j);
+                    VsmTableDataForSingleVan dataToDisplaySingleVanTable = getSingleVanData(tableDataObjectForSingleVanInJson);
+                    dataToDisplaySingleDis.add(dataToDisplaySingleVanTable);
+                }
+
+                VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(
+                        dataToDisplaySingleDis,
+                        distributorName
+                );
+
+                dataForAllDis.add(vsmTableForSingleDistributor);
             }
-
-            VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(
-                    dataToDisplaySingleDis,
-                    distributorName
-            );
-
-            dataForAllDis.add(vsmTableForSingleDistributor);
         }
 
         return dataForAllDis;
@@ -331,7 +336,7 @@ public class UtilityFunctionsForActivity1 {
         VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
         ArrayList<VsmTransactionTableRow> rows = vsmTableDataForSingleVan.getTableRows();
 
-        if(animationIndex< rows.size()){
+        if (animationIndex < rows.size()) {
             VsmTransactionTableRow row = rows.get(animationIndex);
 
             View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
@@ -360,13 +365,11 @@ public class UtilityFunctionsForActivity1 {
             VATtextView.setText(row.getVAT());
             totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
 
-            if(vsmTransactionTableLayout!=null){
+            if (vsmTransactionTableLayout != null) {
                 vsmTransactionTableLayout.addView(tableElements);
             }
             animate(vsmTransactionTableLayout, tableElements);
         }
-
-
 
 
     }
@@ -386,6 +389,7 @@ public class UtilityFunctionsForActivity1 {
         }
         return formattedTime;
     }
+
     public static String formatDateTimeToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");

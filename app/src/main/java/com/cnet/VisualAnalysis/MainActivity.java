@@ -37,21 +37,6 @@ public class MainActivity extends AppCompatActivity {
         return fragment;
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        navController = NavHostFragment.findNavController(getCurrentFragment());
-
-        switch(keyCode){
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                leftNavigation();
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                rightNavigation();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     private void rightNavigation() {
         if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryTableFragment")){

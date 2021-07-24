@@ -1,11 +1,12 @@
 package com.cnet.VisualAnalysis;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class StartingActivty extends AppCompatActivity {
 
@@ -17,10 +18,10 @@ public class StartingActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_starting_activty);
 
-        heinekenSummaryButton=findViewById(R.id.app1Btn);
-        dashboardButton=findViewById(R.id.app2Btn);
-        heinekenSummaryButton.setFocusableInTouchMode(true);
-        dashboardButton.setFocusableInTouchMode(true);
+        heinekenSummaryButton = findViewById(R.id.app1Btn);
+        dashboardButton = findViewById(R.id.app2Btn);
+        heinekenSummaryButton.requestFocus();
+        dashboardButton.requestFocus();
         heinekenSummaryButton.requestFocus();
         dashboardButton.requestFocus();
 
@@ -28,7 +29,7 @@ public class StartingActivty extends AppCompatActivity {
         heinekenSummaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(StartingActivty.this, MainActivity.class);
+                Intent intent = new Intent(StartingActivty.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +37,7 @@ public class StartingActivty extends AppCompatActivity {
         dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(StartingActivty.this, SecondActivity.class);
+                Intent intent = new Intent(StartingActivty.this, SecondActivity.class);
                 startActivity(intent);
             }
         });
@@ -45,7 +46,11 @@ public class StartingActivty extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
 
+        Log.i("back", "back pressed");
+        System.exit(0);
+        Log.i("back", "back pressed");
 
     }
 }

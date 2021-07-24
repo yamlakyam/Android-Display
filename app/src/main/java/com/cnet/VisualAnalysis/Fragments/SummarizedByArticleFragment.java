@@ -56,7 +56,7 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     ProgressBar articleSummaryProgressBar;
     ConstraintLayout constraintLayout;
     public static HandleRowAnimationThread handleRowAnimationThread;
-    public static boolean isInflatingTable;
+    public static boolean isInflatingTable = false;
 
     double totalUnitAmount = 0;
     int totalQuantity = 0;
@@ -106,13 +106,14 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("resume", "onResume:" + isInflatingTable);
+        Log.i("resume", "IS INFLATING  : " + isInflatingTable);
         if (SecondActivity.dashBoardData != null && !isInflatingTable) {
-            Log.i("resume2", "onResume: called");
             articleSummaryProgressBar.setVisibility(View.GONE);
             constraintLayout.setVisibility(View.VISIBLE);
-            initFragment(SecondActivity.dashBoardData, 100);
-            Log.i("inflating", "onResume: ");
+
+            if (!isInflatingTable){
+                initFragment(SecondActivity.dashBoardData, 100);
+            }
         }
     }
 
@@ -121,7 +122,6 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     private void inflateTable(ArrayList<SummarizedByArticleTableRow> tablesToDisplay, int seconds) {
         totalQuantity = 0;
         totalUnitAmount = 0;
-
         summarizedByArticleTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @Override
@@ -229,7 +229,6 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
 
         isInflatingTable = true;
-
         DashBoardData dashBoardData = dashBoardDataParam;
 
         inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);
@@ -240,19 +239,15 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
-
         SecondActivity.dashBoardArray = jsonArray;
         articleSummaryProgressBar.setVisibility(View.GONE);
         constraintLayout.setVisibility(View.VISIBLE);
 
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
-
-        if(!isInflatingTable)
-            initFragment(dashBoardData, 200);
-        Log.i("inflating", "onSuccess");
-
         SecondActivity.dashBoardData = dashBoardData;
+
+        initFragment(dashBoardData, 200);
 
 
     }

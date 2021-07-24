@@ -131,8 +131,11 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
             }
         };
 
-        handleDistDataChangeThread = new HandleDataChangeThread(changeDistributorHandler, distributors, (int) (vansSum(numberOfRowsInSingleVan.get(distributorIndex))), distributorStartIndex);
-        handleDistDataChangeThread.start();
+        if(distributors>0){
+            handleDistDataChangeThread = new HandleDataChangeThread(changeDistributorHandler, distributors, (int) (vansSum(numberOfRowsInSingleVan.get(distributorIndex))), distributorStartIndex);
+            handleDistDataChangeThread.start();
+        }
+
     }
 
     @SuppressLint("HandlerLeak")
