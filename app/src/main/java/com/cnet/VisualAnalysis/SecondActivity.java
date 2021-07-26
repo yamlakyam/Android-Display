@@ -1,15 +1,22 @@
 package com.cnet.VisualAnalysis;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.NavInflater;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
@@ -41,6 +48,12 @@ public class SecondActivity extends AppCompatActivity {
     ImageView playPause;
     ImageView rightArrow;
 
+    LinearLayout playPauseKeyPad;
+
+    public boolean[] visibleFragments = {false, false, true, false, false, false};
+
+    public static String myAndroidDeviceId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,43 @@ public class SecondActivity extends AppCompatActivity {
         leftArrow = findViewById(R.id.leftArrow);
         playPause = findViewById(R.id.playPause);
         rightArrow = findViewById(R.id.rightArrow);
+        playPauseKeyPad = findViewById(R.id.playPauseKeyPad);
+
+        setHomeFragment();
+
+    }
+
+    public void setHomeFragment() {
+        int frgamentId;
+//        mappedFragment();
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_second);
+        NavInflater inflater = navHostFragment.getNavController().getNavInflater();
+        NavGraph graph = inflater.inflate(R.navigation.second_nav);
+
+        graph.setStartDestination(mappedFragment());
+        Log.i("home frag", "setHomeFragment called");
+
+        NavController navController = navHostFragment.getNavController();
+        navController.setGraph(graph);
+
+    }
+
+    public int mappedFragment() {
+        int frgamentId = R.id.summarizedByArticleFragment2;
+        if (visibleFragments[0]) {
+            frgamentId = R.id.summarizedByArticleFragment2;
+        } else if (visibleFragments[1]) {
+            frgamentId = R.id.summarizedByArticleParentCategFragment;
+        } else if (visibleFragments[2]) {
+            frgamentId = R.id.summarizedByArticleChildCategFragment;
+        } else if (visibleFragments[3]) {
+            frgamentId = R.id.summaryOfLastSixMonthsFragment;
+        } else if (visibleFragments[4]) {
+            frgamentId = R.id.summaryOfLastMonthFragment;
+        } else if (visibleFragments[5]) {
+            frgamentId = R.id.branchSummaryFragment;
+        }
+        return frgamentId;
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -68,7 +118,18 @@ public class SecondActivity extends AppCompatActivity {
 //                SummarizedByArticleFragment.isInflatingTable = false;
 
                 if (!firstCenterKeyPause) {
+
+                    TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                    String imei = telephonyManager.getDeviceId();
+
+                    myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+                    Log.i("imei", telephonyManager.getDeviceId() + "");
+                    Log.i("unique ID", myAndroidDeviceId);
+                    //cc70a81e8233444a
+
                     playPause.setImageResource(R.drawable.ic_pause_button);
+
                     summaryByParentArticlePause = false;
                     summaryByArticlePause = false;
                     summaryByChildArticlePause = false;
@@ -79,8 +140,9 @@ public class SecondActivity extends AppCompatActivity {
 //                            navigate(getCurrentFragment());
 
                     rightNavigation();
-
                     firstCenterKeyPause = true;
+                    playPauseKeyPad.setVisibility(View.GONE);
+
                 } else {
                     playPause.setImageResource(R.drawable.ic_play_button__2_);
                     pausedState();
@@ -127,18 +189,10 @@ public class SecondActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private void navigate(Fragment currentFragment) {
-
-        if (currentFragment instanceof SummaryOfLastMonthFragment) {
-            navController.navigate(R.id.branchSummaryFragment);
-        }
-    }
-
     public Fragment getCurrentFragment() {
         Fragment navHostFragment = getSupportFragmentManager().getPrimaryNavigationFragment();
-        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
 
-        return fragment;
+        return navHostFragment.getChildFragmentManager().getFragments().get(0);
     }
 
     public void leftNavigation() {
@@ -149,7 +203,22 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     SummarizedByArticleFragment.handleRowAnimationThread);
-            navController.navigate(R.id.branchSummaryFragment);
+
+            if (visibleFragments[5]) {
+                navController.navigate(R.id.branchSummaryFragment);
+            } else if (visibleFragments[4]) {
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+
+            } else if (visibleFragments[3]) {
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+
+            } else if (visibleFragments[2]) {
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+
+            } else if (visibleFragments[1]) {
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            }
+
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -157,8 +226,19 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-//            Log.i("parent Article", "is interrupted "+SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted()+"");
-            navController.navigate(R.id.summarizedByArticleFragment2);
+
+            if (visibleFragments[0]) {
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            } else if (visibleFragments[5]) {
+                navController.navigate(R.id.branchSummaryFragment);
+            } else if (visibleFragments[4]) {
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            } else if (visibleFragments[3]) {
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            } else if (visibleFragments[2]) {
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            }
+
 
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment")) {
@@ -167,7 +247,17 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            if (visibleFragments[1]) {
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            } else if (visibleFragments[0]) {
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            } else if (visibleFragments[5]) {
+                navController.navigate(R.id.branchSummaryFragment);
+            } else if (visibleFragments[4]) {
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            } else if (visibleFragments[3]) {
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            }
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -175,7 +265,17 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            if (visibleFragments[2]) {
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            } else if (visibleFragments[1]) {
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            } else if (visibleFragments[0]) {
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            } else if (visibleFragments[5]) {
+                navController.navigate(R.id.branchSummaryFragment);
+            } else if (visibleFragments[4]) {
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            }
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -183,7 +283,17 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            if (visibleFragments[3]) {
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            } else if (visibleFragments[2]) {
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            } else if (visibleFragments[1]) {
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            } else if (visibleFragments[0]) {
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            } else if (visibleFragments[5]) {
+                navController.navigate(R.id.branchSummaryFragment);
+            }
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -191,7 +301,17 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summaryOfLastMonthFragment);
+            if (visibleFragments[4]) {
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            } else if (visibleFragments[3]) {
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            } else if (visibleFragments[2]) {
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            } else if (visibleFragments[1]) {
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            } else if (visibleFragments[0]) {
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            }
 //            pausedState();
         }
 
@@ -204,7 +324,12 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+
+            SummarizedByArticleFragment summarizedByArticleFragment = new SummarizedByArticleFragment();
+            summarizedByArticleFragment.navigate(getCurrentFragment());
+
+//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -212,9 +337,11 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            Log.i("parent Article", "is interrupted " + SummarizedByArticleParentCategFragment.handleRowAnimationThread.isInterrupted() + "");
 
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            SummarizedByArticleParentCategFragment summarizedByArticleParentCategFragment = new SummarizedByArticleParentCategFragment();
+            summarizedByArticleParentCategFragment.navigate(getCurrentFragment());
+
+//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
 
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment")) {
@@ -223,7 +350,11 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+
+            SummarizedByArticleChildCategFragment summarizedByArticleChildCategFragment = new SummarizedByArticleChildCategFragment();
+            summarizedByArticleChildCategFragment.navigate(getCurrentFragment());
+
+//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -231,7 +362,11 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summaryOfLastMonthFragment);
+
+            SummaryOfLastSixMonthsFragment summaryOfLastSixMonthsFragment = new SummaryOfLastSixMonthsFragment();
+            summaryOfLastSixMonthsFragment.navigate(getCurrentFragment());
+
+//            navController.navigate(R.id.summaryOfLastMonthFragment);
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -239,7 +374,11 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     SummarizedByArticleFragment.handleRowAnimationThread);
-            navController.navigate(R.id.branchSummaryFragment);
+
+            SummaryOfLastMonthFragment summaryOfLastMonthFragment = new SummaryOfLastMonthFragment();
+            summaryOfLastMonthFragment.navigate(getCurrentFragment());
+
+//            navController.navigate(R.id.branchSummaryFragment);
 //            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -247,13 +386,18 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            navController.navigate(R.id.summarizedByArticleFragment2);
+
+            BranchSummaryFragment branchSummaryFragment = new BranchSummaryFragment();
+            branchSummaryFragment.navigate(getCurrentFragment());
+
+//            navController.navigate(R.id.summarizedByArticleFragment2);
 //            pausedState();
         }
     }
 
     public void pausedState() {
         firstCenterKeyPause = false;
+        playPauseKeyPad.setVisibility(View.VISIBLE);
         summaryByParentArticlePause = true;
         summaryByArticlePause = true;
         summaryByChildArticlePause = true;

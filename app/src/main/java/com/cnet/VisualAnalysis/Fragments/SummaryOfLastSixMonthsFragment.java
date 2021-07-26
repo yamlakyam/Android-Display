@@ -25,7 +25,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
-import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
@@ -40,15 +39,12 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-import javax.xml.parsers.SAXParser;
 
-
-public class SummaryOfLastSixMonthsFragment extends Fragment{
+public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHttp.GetRequest {
 
 
     TableLayout summaryOfLast6MonthsTableLayout;
@@ -76,6 +72,11 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                 SummaryOfLastMonthFragment.handleRowAnimationThread,
                 BranchSummaryFragment.handleRowAnimationThread);
+
+        if (SecondActivity.dashBoardData == null) {
+            VolleyHttp http = new VolleyHttp(getContext());
+            http.makeGetRequest(Constants.DashboardURL, this);
+        }
     }
 
 
@@ -94,15 +95,14 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
 
 
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(SecondActivity.dashBoardArray!=null&& !isInflatingTable){
-            initFragment(200);
+        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+            initFragment(SecondActivity.dashBoardData ,200);
         }
     }
 
@@ -120,13 +120,17 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
                     index = Integer.parseInt(message);
                 }
 
-                if (index == tablesToDisplay.size() ){
+                if (index == tablesToDisplay.size()) {
                     drawLast6MonsTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
-                } else if (index == tablesToDisplay.size()+1 && !SecondActivity.summaryOfLast6MonsPause )  {
-                    NavController navController = NavHostFragment.findNavController(fragment);
-                    navController.navigate(R.id.summaryOfLastMonthFragment);
-                } else if(index < tablesToDisplay.size()) {
+                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast6MonsPause) {
+//                    NavController navController = NavHostFragment.findNavController(fragment);
+//                    navController.navigate(R.id.summaryOfLastMonthFragment);
+//                    SecondActivity secondActivity = new SecondActivity();
+//                    secondActivity.navigations(fragment);
+                    navigate(fragment);
+
+                } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLAst6Months(tablesToDisplay, getContext(), summaryOfLast6MonthsTableLayout, index, totalAmount);
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
@@ -136,18 +140,18 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler,seconds);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
     }
 
 
-    public void initFragment(int seconds) {
-        isInflatingTable=true;
+    public void initFragment(DashBoardData dashBoardDataParam,int seconds) {
+        isInflatingTable = true;
         Log.i("success", fragment + "");
 
-        DashBoardData dashBoardData = SecondActivity.dashBoardData;
+        DashBoardData dashBoardData = dashBoardDataParam;
 
-        inflateTable(dashBoardData.getSummaryOfLast6MonthsData().getTableData(),seconds);
+        inflateTable(dashBoardData.getSummaryOfLast6MonthsData().getTableData(), seconds);
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast6MonthsData().getBarChartData(), barChart, "Summarized by last 6 months");
         UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), pieChart, "Summarized by last 6 months");
 
@@ -203,10 +207,41 @@ public class SummaryOfLastSixMonthsFragment extends Fragment{
         });
     }
 
+    public void navigate(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+        SecondActivity secondActivity = new SecondActivity();
+        if (secondActivity.visibleFragments[4]) {
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        } else if (secondActivity.visibleFragments[5]) {
+            navController.navigate(R.id.branchSummaryFragment);
+        } else if (secondActivity.visibleFragments[0]) {
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        } else if (secondActivity.visibleFragments[1]) {
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        } else if (secondActivity.visibleFragments[2]) {
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        }
+    }
+
     @Override
     public void onStop() {
         super.onStop();
-        if(handleRowAnimationThread!=null)
+        if (handleRowAnimationThread != null)
             handleRowAnimationThread.interrupt();
+    }
+
+    @Override
+    public void onSuccess(JSONArray jsonArray) {
+        Log.i(" last 6 success", "onSuccess: last 6");
+        SecondActivity.dashBoardArray = jsonArray;
+        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
+        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
+        SecondActivity.dashBoardData = dashBoardData;
+        initFragment(dashBoardData, 200);
+    }
+
+    @Override
+    public void onFailure(VolleyError error) {
+
     }
 }

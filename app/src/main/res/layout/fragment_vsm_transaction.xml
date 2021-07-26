@@ -111,7 +111,7 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
-            android:text="Date &amp; Time"
+            android:text="Time"
             android:textColor="#FFFFFF"
             android:textSize="18dp" />
 

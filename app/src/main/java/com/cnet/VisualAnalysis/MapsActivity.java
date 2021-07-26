@@ -1,15 +1,22 @@
 package com.cnet.VisualAnalysis;
 
-import androidx.fragment.app.FragmentActivity;
-
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,10 +50,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static ArrayList<String> place_names = new ArrayList<>();
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        WindowManager.LayoutParams layoutParams;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            Log.i("wm", "1");
+//            layoutParams = new WindowManager.LayoutParams
+//                    (200, 200, WindowManager.LayoutParams.TYPE_PHONE,
+//                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN, PixelFormat.TRANSLUCENT);
+//        } else {
+            Log.i("wm", "2");
+            layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+//        }
+
+
 
 
         SupportMapFragment mapFragment =
@@ -54,6 +78,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
 
+            View map_overlay = LayoutInflater.from(mapFragment.getContext()).inflate(R.layout.map_overlay, null, false);
+            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            windowManager.addView(map_overlay, layoutParams);
         }
 
         locations.add(loc1);
@@ -80,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                intent.putExtra("fragmentNumber",1);
+                intent.putExtra("fragmentNumber", 1);
                 startActivity(intent);
                 finish();
             }
@@ -153,7 +180,7 @@ class MarkerThread extends Thread {
     public void run() {
         for (int i = 0; i < MapsActivity.locations.size(); i++) {
             Log.v("MapIndex", "" + i);
-            if(MapsActivity.handler!=null){
+            if (MapsActivity.handler != null) {
                 Message msg = MapsActivity.handler.obtainMessage();
                 msg.obj = "" + i;
                 MapsActivity.handler.sendMessage(msg);

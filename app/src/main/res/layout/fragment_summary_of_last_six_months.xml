@@ -125,7 +125,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/advent_pro_thin"
                 android:gravity="end"
-                android:text="DateTime"
+                android:text="Time"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
 

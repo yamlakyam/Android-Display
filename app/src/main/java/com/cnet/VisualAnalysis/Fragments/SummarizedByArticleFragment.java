@@ -54,6 +54,8 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     TextView scrollingArticleText;
     ScrollView summByArticleScrollView;
     ProgressBar articleSummaryProgressBar;
+    ProgressBar mainProgressBar;
+    ConstraintLayout mainConstraintLayout;
     ConstraintLayout constraintLayout;
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable = false;
@@ -79,6 +81,8 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
             VolleyHttp http = new VolleyHttp(getContext());
             http.makeGetRequest(Constants.DashboardURL, this);
         }
+
+
     }
 
 
@@ -111,7 +115,7 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
             articleSummaryProgressBar.setVisibility(View.GONE);
             constraintLayout.setVisibility(View.VISIBLE);
 
-            if (!isInflatingTable){
+            if (!isInflatingTable) {
                 initFragment(SecondActivity.dashBoardData, 100);
             }
         }
@@ -135,8 +139,15 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
                     drawLastArticleSummaryTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(summByArticleScrollView);
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByArticlePause) {
-                    NavController navController = NavHostFragment.findNavController(fragment);
-                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
+//                    NavController navController = NavHostFragment.findNavController(fragment);
+//                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
+//                    SecondActivity secondActivity = new SecondActivity();
+//                    secondActivity.navigations(fragment);
+
+                    if (getContext() != null) {
+                        navigate(fragment);
+
+                    }
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
@@ -150,6 +161,24 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
 
         handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
+    }
+
+    public void navigate(Fragment fragment) {
+
+        NavController navController = NavHostFragment.findNavController(fragment);
+        SecondActivity secondActivity = new SecondActivity();
+
+        if (secondActivity.visibleFragments[1]) {
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        } else if (secondActivity.visibleFragments[2]) {
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        } else if (secondActivity.visibleFragments[3]) {
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        } else if (secondActivity.visibleFragments[4]) {
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        } else if ((secondActivity.visibleFragments[5])) {
+            navController.navigate(R.id.branchSummaryFragment);
+        }
     }
 
     @Override
@@ -186,47 +215,50 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     }
 
     public void drawLastArticleSummaryTotalRow() {
-        View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_article, null, false);
+        if (getContext() != null) {
+            View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_article, null, false);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowArticleProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowArticleProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowArticleProperty4);
-        TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowArticleProperty5);
+            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
+            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowArticleProperty2);
+            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowArticleProperty3);
+            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowArticleProperty4);
+            TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowArticleProperty5);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
-
-
-        tableRowProperty1.setText("");
-        tableRowProperty2.setText("Total Amount");
-        tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty2.setTextSize(25f);
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);
 
 
-        tableRowProperty3.setText(numberFormat.format(totalQuantity));
-        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(25f);
+            tableRowProperty1.setText("");
+            tableRowProperty2.setText("Total Amount");
+            tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
+            tableRowProperty2.setTextSize(25f);
 
 
-        tableRowProperty4.setText(numberFormat.format(Math.round(totalUnitAmount * 100.0) / 100.0));
-        tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty4.setTextSize(25f);
+            tableRowProperty3.setText(numberFormat.format(totalQuantity));
+            tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+            tableRowProperty3.setTextSize(25f);
 
 
-        tableRowProperty5.setText("");
-        tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
+            tableRowProperty4.setText(numberFormat.format(Math.round(totalUnitAmount * 100.0) / 100.0));
+            tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
+            tableRowProperty4.setTextSize(25f);
 
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
-        tableRowProperty3.startAnimation(animation);
-        tableRowProperty4.startAnimation(animation);
 
-        summarizedByArticleTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity1.animate(summarizedByArticleTableLayout, tableElements);
+            tableRowProperty5.setText("");
+            tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
+
+            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+            tableRowProperty3.startAnimation(animation);
+            tableRowProperty4.startAnimation(animation);
+
+            summarizedByArticleTableLayout.addView(tableElements);
+            UtilityFunctionsForActivity1.animate(summarizedByArticleTableLayout, tableElements);
+        }
+
     }
 
 
-    public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
+    private void initFragment(DashBoardData dashBoardDataParam, int seconds) {
 
         isInflatingTable = true;
         DashBoardData dashBoardData = dashBoardDataParam;
@@ -239,16 +271,18 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
+
+
         SecondActivity.dashBoardArray = jsonArray;
         articleSummaryProgressBar.setVisibility(View.GONE);
         constraintLayout.setVisibility(View.VISIBLE);
 
+        Log.i("article success", "onSuccess: from article ");
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
         SecondActivity.dashBoardData = dashBoardData;
 
         initFragment(dashBoardData, 200);
-
 
     }
 
@@ -268,6 +302,4 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
             }
         });
     }
-
-
 }

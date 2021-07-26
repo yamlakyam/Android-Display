@@ -2,7 +2,7 @@ package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
+import android.graphics.DashPathEffect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,19 +11,13 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.cnet.VisualAnalysis.Data.BarChartData;
-import com.cnet.VisualAnalysis.Data.BranchSummaryData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.LineChartData;
 import com.cnet.VisualAnalysis.Data.PieChartData;
-import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
-import com.cnet.VisualAnalysis.Data.SummarizedByChildArticleData;
 import com.cnet.VisualAnalysis.Data.SummarizedByChildArticleRow;
-import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleData;
 import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleRow;
-import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
-import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.R;
 import com.github.mikephil.charting.animation.Easing;
@@ -42,10 +36,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
@@ -58,8 +48,9 @@ public class UtilityFunctionsForActivity2 {
         piechart.setDrawHoleEnabled(false);
         piechart.getDescription().setTextColor(Color.parseColor("#f6f8fb"));
         piechart.getDescription().setText(label);
-        piechart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
-        piechart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
+//        piechart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
+//        piechart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
+        piechart.getLegend().setFormLineDashEffect(new DashPathEffect(new float[] {10f, 5f},0f));
         piechart.getLegend().setTextSize(3f);
 
 
@@ -79,6 +70,9 @@ public class UtilityFunctionsForActivity2 {
                 Color.parseColor("#21130d"), Color.parseColor("#873e23")
         );
         pieDataSet.setDrawValues(false);
+
+        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
@@ -130,7 +124,7 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-    public static void drawLineChart(LineChartData lineChartData, LineChart lineChart,String label) {
+    public static void drawLineChart(LineChartData lineChartData, LineChart lineChart, String label) {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
         for (int i = 0; i < lineChartData.x.length; i++) {
             dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
@@ -179,7 +173,8 @@ public class UtilityFunctionsForActivity2 {
 
         SummarizedByArticleTableRow row = summarizedByArticleDataRows.get(index);
 
-        if( LayoutInflater.from(context)!=null){
+//        if( LayoutInflater.from(context)!=null){
+        if (context != null) {
             View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_article, null, false);
 
             TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
@@ -249,7 +244,7 @@ public class UtilityFunctionsForActivity2 {
         if (row.getCategoryType().equals("null")) {
             formattedCategoryType = "- - - - - - - - - - - - - ";
         } else {
-            formattedCategoryType=row.getCategoryType();
+            formattedCategoryType = row.getCategoryType();
         }
 
 
@@ -265,7 +260,7 @@ public class UtilityFunctionsForActivity2 {
         tableRowProperty1.setText(String.valueOf(index + 1));
         tableRowProperty2.setText(formattedCategoryType);
         tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0)+"%");
+        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
 
 
         summarizedByParentArticleTableLayout.addView(tableElements);
@@ -304,14 +299,14 @@ public class UtilityFunctionsForActivity2 {
         if (row.getCategoryType().equals("null")) {
             formattedCategoryType = "- - - - - - - - - - - - - ";
         } else {
-            formattedCategoryType=row.getCategoryType();
+            formattedCategoryType = row.getCategoryType();
         }
 
 
         tableRowProperty1.setText(String.valueOf(index + 1));
         tableRowProperty2.setText(formattedCategoryType);
         tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0)+"%");
+        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
 
 
         summarizedByChildArticleTableLayout.addView(tableElements);
@@ -405,7 +400,7 @@ public class UtilityFunctionsForActivity2 {
         tableRowProperty1.setText(String.valueOf(index + 1));
         tableRowProperty2.setText(row.getBranch());
         tableRowProperty3.setText(String.valueOf(row.getQuantity()));
-        tableRowProperty4.setText(numberFormat.format(percentage)+"%");
+        tableRowProperty4.setText(numberFormat.format(percentage) + "%");
         tableRowProperty5.setText(numberFormat.format(row.getGrandTotal()));
 
         branchSummaryTableLayout.addView(tableElements);

@@ -23,21 +23,27 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
+import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+
+import org.json.JSONArray;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class SummaryOfLastMonthFragment extends Fragment {
+public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.GetRequest {
     TableLayout summaryOfLast30DaysTableLayout;
     Handler animationHandler;
     LineChart lineChart;
@@ -63,6 +69,11 @@ public class SummaryOfLastMonthFragment extends Fragment {
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                 SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                 BranchSummaryFragment.handleRowAnimationThread);
+
+        if (SecondActivity.dashBoardData == null) {
+            VolleyHttp http = new VolleyHttp(getContext());
+            http.makeGetRequest(Constants.DashboardURL, this);
+        }
     }
 
     @Override
@@ -86,16 +97,16 @@ public class SummaryOfLastMonthFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (SecondActivity.dashBoardArray != null&& !isInflatingTable) {
-            initFragment(200);
+        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+            initFragment(SecondActivity.dashBoardData,200);
         }
     }
 
-    public void initFragment(int seconds) {
+    public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
         isInflatingTable = true;
         Log.i("success", fragment + "");
 
-        DashBoardData dashBoardData = SecondActivity.dashBoardData;
+        DashBoardData dashBoardData = dashBoardDataParam;
         inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData, seconds);
         UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart, "Summarized by last 30 days");
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last 30 days");
@@ -120,8 +131,12 @@ public class SummaryOfLastMonthFragment extends Fragment {
                     drawLastTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast30DaysPause) {
-                    NavController navController = NavHostFragment.findNavController(fragment);
-                    navController.navigate(R.id.branchSummaryFragment);
+//                    NavController navController = NavHostFragment.findNavController(fragment);
+//                    navController.navigate(R.id.branchSummaryFragment);
+//                    SecondActivity secondActivity = new SecondActivity();
+//                    secondActivity.navigations(fragment);
+                    navigate(fragment);
+
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLast30Days(tablesToDisplay, getContext(), summaryOfLast30DaysTableLayout, index);
@@ -187,10 +202,42 @@ public class SummaryOfLastMonthFragment extends Fragment {
         });
     }
 
+    public void navigate(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+        SecondActivity secondActivity = new SecondActivity();
+        if (secondActivity.visibleFragments[5]) {
+            navController.navigate(R.id.branchSummaryFragment);
+        } else if (secondActivity.visibleFragments[0]) {
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        } else if (secondActivity.visibleFragments[1]) {
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        } else if (secondActivity.visibleFragments[2]) {
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        } else if (secondActivity.visibleFragments[3]) {
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        }
+    }
+
+
     @Override
     public void onStop() {
         super.onStop();
         if (handleRowAnimationThread != null)
             handleRowAnimationThread.interrupt();
+    }
+
+    @Override
+    public void onSuccess(JSONArray jsonArray) {
+        Log.i("last month success", "onSuccess: last month");
+        SecondActivity.dashBoardArray = jsonArray;
+        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
+        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
+        SecondActivity.dashBoardData = dashBoardData;
+        initFragment(dashBoardData, 200);
+    }
+
+    @Override
+    public void onFailure(VolleyError error) {
+
     }
 }
