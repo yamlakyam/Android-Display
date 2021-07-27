@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     PieChart pieChart;
     BarChart barChart;
     Fragment fragment;
+    FrameLayout summarizedByParentArticleFrameLayout;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
@@ -86,6 +88,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         scrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
         pieChart = view.findViewById(R.id.pchartsumByArticleParent);
         barChart = view.findViewById(R.id.bChartSumByArticleParent);
+        summarizedByParentArticleFrameLayout = view.findViewById(R.id.summarizedByParentArticleFrameLayout);
 
 
         backTraverse(fragment, R.id.summarizedByArticleFragment2);
@@ -99,6 +102,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         super.onResume();
 
         if (SecondActivity.dashBoardArray != null && !isInflatingTable) {
+            summarizedByParentArticleFrameLayout.setVisibility(View.GONE);
             initFragment(SecondActivity.dashBoardData, 200);
         }
     }
@@ -246,6 +250,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
         SecondActivity.dashBoardData = dashBoardData;
+        summarizedByParentArticleFrameLayout.setVisibility(View.GONE);
         initFragment(dashBoardData, 200);
     }
 

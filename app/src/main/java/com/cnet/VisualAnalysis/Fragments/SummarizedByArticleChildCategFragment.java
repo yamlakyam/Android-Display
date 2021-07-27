@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
     BarChart barChart;
     PieChart pieChart;
     Fragment fragment;
+    FrameLayout summarizedByChildArticleFrameLayout;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -83,6 +85,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
         summarizedByChildArticleScrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
         pieChart = view.findViewById(R.id.pchartsumByArticleChild);
         barChart = view.findViewById(R.id.bChartSumByArticleChild);
+        summarizedByChildArticleFrameLayout = view.findViewById(R.id.summarizedByChildArticleFrameLayout);
 
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
@@ -96,6 +99,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
     public void onResume() {
         super.onResume();
         if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+            summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
             initFragment(SecondActivity.dashBoardData ,200);
         }
     }
@@ -234,6 +238,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
         SecondActivity.dashBoardData = dashBoardData;
+        summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
         initFragment(dashBoardData, 200);
     }
 

@@ -163,6 +163,7 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         handleRowAnimationThread.start();
     }
 
+
     public void navigate(Fragment fragment) {
 
         NavController navController = NavHostFragment.findNavController(fragment);

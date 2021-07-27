@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
 import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -92,7 +94,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
                 Log.i("key press", "key press detected");
 
-                if(event.getAction()==KeyEvent.ACTION_DOWN){
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_DPAD_UP_LEFT:
                             Log.i("key press", "left key pressed ");
@@ -152,8 +154,12 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                     UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
                 } else if (index == tablesToDisplay.size() + 1 && dataIndex == jsonArray.length() - 1) {
                     Log.i("from distributor", "navigating from distributor: ");
-                    NavController navController = NavHostFragment.findNavController(fragment);
-                    navController.navigate(R.id.vsmCardFragment);
+
+                    if(fragment!=null){
+                        NavController navController = NavHostFragment.findNavController(fragment);
+                        navController.navigate(R.id.vsmCardFragment);
+                    }
+
                 } else if (index < tablesToDisplay.size()) {
                     lastRowSummation(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
@@ -164,7 +170,6 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
         handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200);
         handleRowAnimationThread.start();
-
     }
 
     @SuppressLint("HandlerLeak")
@@ -268,8 +273,11 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         distributorTotalSalesTV.startAnimation(animation);
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
-        distributorTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity2.animate(distributorTableLayout, tableElements);
+        if(distributorTableLayout!=null){
+            distributorTableLayout.addView(tableElements);
+            UtilityFunctionsForActivity2.animate(distributorTableLayout, tableElements);
+
+        }
 
     }
 
@@ -278,7 +286,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     public void onSuccess(JSONArray jsonArray) {
         MainActivity.distributorTableJSONArray = jsonArray;
 
-        if(distributorTableProgressBar!=null){
+        if (distributorTableProgressBar != null) {
             distributorTableProgressBar.setVisibility(View.GONE);
         }
         try {
@@ -299,18 +307,22 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
             @Override
             public void handleOnBackPressed() {
 
+
                 if (handleDataChangeThread != null) {
                     handleDataChangeThread.interrupt();
                 }
                 if (handleRowAnimationThread != null) {
                     handleRowAnimationThread.interrupt();
                 }
+                if (handleDataChangeThread == null) {
+                    startActivity(new Intent(requireActivity(), StartingActivty.class));
+                }
 
                 if (distributorIndex == 0) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(id);
                 } else {
-                    inflateAllTables(MainActivity.distributorTableJSONArray, distributorIndex-1);
+                    inflateAllTables(MainActivity.distributorTableJSONArray, distributorIndex - 1);
                 }
             }
         });

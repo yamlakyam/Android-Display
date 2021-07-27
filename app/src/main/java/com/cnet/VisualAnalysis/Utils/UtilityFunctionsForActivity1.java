@@ -339,7 +339,9 @@ public class UtilityFunctionsForActivity1 {
         if (animationIndex < rows.size()) {
             VsmTransactionTableRow row = rows.get(animationIndex);
 
-            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View tableElements = inflater.inflate(R.layout.table_row_vsm_transaction,null);
+//            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
             TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
             TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
             TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);

@@ -11,12 +11,13 @@ import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.FragmentActivity;
+//import androidx.annotation.RequiresApi;
+//import androidx.fragment.app.FragmentActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,9 +31,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
 
     int width;
+
+
 
     LatLng loc1 = new LatLng(9.016947, 38.764635);
     LatLng loc2 = new LatLng(9.016677, 38.766920);
@@ -42,7 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LatLng loc6 = new LatLng(9.030900, 38.848000);
     LatLng loc7 = new LatLng(9.051921, 38.738136);
     LatLng loc8 = new LatLng(9.005130, 38.696251);
-
+    //LatLng loc6 = new LatLng(11.512322,37.402954);
     public static ArrayList<LatLng> locations = new ArrayList<LatLng>();
 
     public static Handler handler;
@@ -50,37 +54,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static ArrayList<String> place_names = new ArrayList<>();
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        WindowManager.LayoutParams layoutParams;
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            Log.i("wm", "1");
-//            layoutParams = new WindowManager.LayoutParams
-//                    (200, 200, WindowManager.LayoutParams.TYPE_PHONE,
-//                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN, PixelFormat.TRANSLUCENT);
-//        } else {
-            Log.i("wm", "2");
-            layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.TRANSLUCENT);
-//        }
-
-
 
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-
-            View map_overlay = LayoutInflater.from(mapFragment.getContext()).inflate(R.layout.map_overlay, null, false);
-            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-            windowManager.addView(map_overlay, layoutParams);
+            mapFragment.getMapAsync(this::onMapReady);
         }
 
         locations.add(loc1);
@@ -103,15 +86,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                intent.putExtra("fragmentNumber", 1);
-                startActivity(intent);
-                finish();
-            }
-        }, 15000);
+//        h.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(MapActivity.this, MainActivity.class);
+//                intent.putExtra("Last Index",lastIndex+"");
+//                Log.i("TAG-mapctivity",""+lastIndex);
+//                startActivity(intent);
+//            }
+//        }, 40000);
+
+
+
+//        h.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+//                intent.putExtra("fragmentNumber",1);
+//                startActivity(intent);
+//                finish();
+//            }
+//        }, 15000);
 
     }
 
@@ -119,6 +114,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+
+        LayoutInflater layoutInflater=(LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View map_overlay=layoutInflater.inflate(R.layout.map_overlay, null);
+        WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+
+        map_overlay.post(new Runnable() {
+            @Override
+            public void run() {
+                windowManager.addView(map_overlay, layoutParams);
+            }
+        });
+
 
         MarkerThread markerThread = new MarkerThread();
         markerThread.start();
@@ -129,42 +143,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void handleMessage(Message msg) {
                 String message = (String) msg.obj;
                 int index = Integer.parseInt(message);
-                LatLng loc = locations.get(index);
 
-                MarkerOptions marker = new MarkerOptions().position(loc);
+                if(index==MapsActivity.locations.size()){
+                    startActivity(new Intent(MapsActivity.this, MainActivity.class));
+                }
+                else{
+                    LatLng loc = locations.get(index);
 
-                Marker mMarker = googleMap.addMarker(marker);
-                builder.include(marker.getPosition());
-                LatLngBounds bounds = builder.build();
-                width = getResources().getDisplayMetrics().widthPixels;
-                int padding = (int) (width * 0.15); // offset from edges of the map 10% of screen
+                    MarkerOptions marker = new MarkerOptions().position(loc);
+                    Marker mMarker = googleMap.addMarker(marker);
+                    builder.include(marker.getPosition());
+                    LatLngBounds bounds = builder.build();
+                    width = getResources().getDisplayMetrics().widthPixels;
+                    int padding = (int) (width * 0.15); // offset from edges of the map 10% of screen
 
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    googleMap.animateCamera(cu, 1000, null);
+                    googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                        @Override
+                        public View getInfoWindow(Marker marker) {
+                            return null;
+                        }
 
-                googleMap.animateCamera(cu, 1000, null);
+                        @Override
+                        public View getInfoContents(Marker marker) {
 
-                googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                    @Override
-                    public View getInfoWindow(Marker marker) {
-                        return null;
-                    }
+                            View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
+                            TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
+                            nameTextView.setText(place_names.get(index));
+                            TextView descTextView = (TextView) view.findViewById(R.id.descTextView);
+                            descTextView.setText(loc.toString());
 
-                    @Override
-                    public View getInfoContents(Marker marker) {
+                            return view;
+                        }
+                    });
+                    mMarker.showInfoWindow();
+                }
 
-                        View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
-                        TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-                        nameTextView.setText(place_names.get(index));
-                        TextView descTextView = (TextView) view.findViewById(R.id.descTextView);
-                        descTextView.setText(loc.toString());
-
-                        return view;
-                    }
-                });
-                mMarker.showInfoWindow();
 
             }
         };
+
+
     }
 
 };
@@ -178,9 +198,9 @@ class MarkerThread extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i < MapsActivity.locations.size(); i++) {
+        for (int i = 0; i <= MapsActivity.locations.size(); i++) {
             Log.v("MapIndex", "" + i);
-            if (MapsActivity.handler != null) {
+            if(MapsActivity.handler!=null){
                 Message msg = MapsActivity.handler.obtainMessage();
                 msg.obj = "" + i;
                 MapsActivity.handler.sendMessage(msg);
@@ -191,6 +211,7 @@ class MarkerThread extends Thread {
                     e.printStackTrace();
                 }
             }
+
 
         }
     }

@@ -92,10 +92,8 @@ public class DashBoardDataParser {
 
         }
 
-
         BarChartData barChartData = new BarChartData(xValues, yValues, legends);
         LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
-
 
         SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, lineChartData);
         return summarizedByArticleData;
@@ -128,7 +126,7 @@ public class DashBoardDataParser {
 
         }
 
-        PieChartData pieChartData = new PieChartData(xValues, legends);
+        PieChartData pieChartData = new PieChartData(yValues, legends);
         BarChartData barChartData = new BarChartData(xValues, yValues, legends);
 
 
@@ -164,7 +162,7 @@ public class DashBoardDataParser {
 
         }
 
-        PieChartData pieChartData = new PieChartData(xValues, legends);
+        PieChartData pieChartData = new PieChartData(yValues, legends);
         BarChartData barChartData = new BarChartData(xValues, yValues, legends);
 
 
@@ -197,7 +195,7 @@ public class DashBoardDataParser {
 
         }
 
-        PieChartData pieChartData = new PieChartData(xValues, legends);
+        PieChartData pieChartData = new PieChartData(yValues, legends);
         BarChartData barChartData = new BarChartData(xValues, yValues, legends);
 
 

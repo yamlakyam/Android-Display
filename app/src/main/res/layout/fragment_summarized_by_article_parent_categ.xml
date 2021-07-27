@@ -6,151 +6,180 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/cardBackgroundDark">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/titleSummaryByArticleParent"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark1"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/articleParentSummaryTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/advent_pro_thin"
-            android:text="Summarized By Article Parent Category"
-            android:textColor="#FFFFFF"
-            android:textSize="34sp" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/pCardSummByArticleParent"
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark1"
-        app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticleParent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleParent">
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pchartsumByArticleParent"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal|center_vertical" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/bCardSummByArticleParent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/pCardSummByArticleParent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pCardSummByArticleParent">
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bChartSumByArticleParent"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/titleSummaryByArticleParent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:id="@+id/articleParentSummaryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/advent_pro_thin"
+                android:text="Summarized By Article Parent Category"
+                android:textColor="#FFFFFF"
+                android:textSize="34sp" />
+        </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/tCardSummByArticleParent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@color/cardBackgroundDark1"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/pCardSummByArticleParent"
+            android:layout_width="400dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
+            app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticleParent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleParent">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pchartsumByArticleParent"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal|center_vertical" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bCardSummByArticleParent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/pCardSummByArticleParent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pCardSummByArticleParent">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bChartSumByArticleParent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/tCardSummByArticleParent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pCardSummByArticleParent"
+            app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleParent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/summaryByChildArticleSN"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/advent_pro_thin"
+                    android:text="SN"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/summaryByChildArticleHeader1"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/advent_pro_thin"
+                    android:gravity="start"
+                    android:text="Category"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/summaryByChildArticleHeader2"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/advent_pro_thin"
+                    android:gravity="end"
+                    android:text="Total"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/summaryByChildArticleHeader3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/advent_pro_thin"
+                    android:gravity="end"
+                    android:text="Percentage"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+            </TableRow>
+
+
+            <ScrollView
+                android:id="@+id/summarizedByChildArticleScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="45dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TableLayout
+                        android:id="@+id/summaryByChildArticleTableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="?android:listDivider"
+                        android:showDividers="middle" />
+                </LinearLayout>
+            </ScrollView>
+
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/summarizedByParentArticleFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cardBackgroundDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/pCardSummByArticleParent"
-        app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleParent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/summaryByChildArticleSN"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="@font/advent_pro_thin"
-                android:text="SN"
-                android:textColor="#ffffff"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/summaryByChildArticleHeader1"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
-                android:gravity="start"
-                android:text="Category"
-                android:textColor="#ffffff"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/summaryByChildArticleHeader2"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
-                android:gravity="end"
-                android:text="Total"
-                android:textColor="#ffffff"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/summaryByChildArticleHeader3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/advent_pro_thin"
-                android:gravity="end"
-                android:text="Percentage"
-                android:textColor="#ffffff"
-                android:textSize="20sp" />
-
-        </TableRow>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical" />
+    </FrameLayout>
 
 
-        <ScrollView
-            android:id="@+id/summarizedByChildArticleScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="45dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TableLayout
-                    android:id="@+id/summaryByChildArticleTableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="?android:listDivider"
-                    android:showDividers="middle" />
-            </LinearLayout>
-        </ScrollView>
-
-    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

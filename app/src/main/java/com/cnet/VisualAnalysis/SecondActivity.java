@@ -1,5 +1,6 @@
 package com.cnet.VisualAnalysis;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -47,25 +48,23 @@ public class SecondActivity extends AppCompatActivity {
     ImageView leftArrow;
     ImageView playPause;
     ImageView rightArrow;
-
     LinearLayout playPauseKeyPad;
 
-    public boolean[] visibleFragments = {false, false, true, false, false, false};
-
+    public boolean[] visibleFragments = {true, true, true, false, true, true};
     public static String myAndroidDeviceId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_second);
+        setHomeFragment();
+
 
         leftArrow = findViewById(R.id.leftArrow);
         playPause = findViewById(R.id.playPause);
         rightArrow = findViewById(R.id.rightArrow);
         playPauseKeyPad = findViewById(R.id.playPauseKeyPad);
-
-        setHomeFragment();
 
     }
 
@@ -102,6 +101,7 @@ public class SecondActivity extends AppCompatActivity {
         return frgamentId;
     }
 
+    @SuppressLint("HardwareIds")
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         navController = NavHostFragment.findNavController(getCurrentFragment());
         switch (keyCode) {
@@ -434,4 +434,26 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
 
+
+
+    public void naviagateToFragment(int frgamentIndex) {
+        if (frgamentIndex == 0) {
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        } else if (frgamentIndex == 1) {
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+
+        } else if (frgamentIndex == 2) {
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+
+        } else if (frgamentIndex == 3) {
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+
+        } else if (frgamentIndex == 4) {
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+
+        } else if (frgamentIndex == 5) {
+            navController.navigate(R.id.branchSummaryFragment);
+
+        }
+    }
 }

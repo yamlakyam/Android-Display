@@ -8,6 +8,12 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.Utils.Constants;
+import com.cnet.VisualAnalysis.Utils.VolleyHttp;
+
+import org.json.JSONArray;
+
 public class StartingActivty extends AppCompatActivity {
 
     Button heinekenSummaryButton;
@@ -31,6 +37,7 @@ public class StartingActivty extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(StartingActivty.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -39,6 +46,7 @@ public class StartingActivty extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(StartingActivty.this, SecondActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -53,4 +61,5 @@ public class StartingActivty extends AppCompatActivity {
         Log.i("back", "back pressed");
 
     }
+
 }

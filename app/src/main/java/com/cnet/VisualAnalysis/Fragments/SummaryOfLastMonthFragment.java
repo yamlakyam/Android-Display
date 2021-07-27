@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
     BarChart barChart;
     ScrollView scrollView;
     Fragment fragment;
+    FrameLayout summaryOfLastMonthFrameLayout;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -86,6 +88,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
         lineChart = view.findViewById(R.id.last30daysLineChart);
         scrollView = view.findViewById(R.id.summaryOfLastMonthScrollView);
         barChart = view.findViewById(R.id.last30daysBarChart);
+        summaryOfLastMonthFrameLayout=view.findViewById(R.id.summaryOfLastMonthFrameLayout);
 
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
@@ -98,6 +101,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
     public void onResume() {
         super.onResume();
         if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+            summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
             initFragment(SecondActivity.dashBoardData,200);
         }
     }
@@ -233,6 +237,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
         SecondActivity.dashBoardData = dashBoardData;
+        summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
         initFragment(dashBoardData, 200);
     }
 

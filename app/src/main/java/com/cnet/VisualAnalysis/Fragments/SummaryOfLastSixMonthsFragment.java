@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
     PieChart pieChart;
     ScrollView scrollView;
     Fragment fragment;
+    FrameLayout summaryOfLastSixMonthFrameLayout;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
@@ -90,6 +92,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
         pieChart = view.findViewById(R.id.pchartsummaryOfLast6Months);
         barChart = view.findViewById(R.id.bChartSummaryOfLast6Months);
         scrollView = view.findViewById(R.id.summaryOfLast6MonsScrollView);
+        summaryOfLastSixMonthFrameLayout=view.findViewById(R.id.summaryOfLastSixMonthFrameLayout);
 
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
@@ -102,6 +105,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
     public void onResume() {
         super.onResume();
         if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+            summaryOfLastSixMonthFrameLayout.setVisibility(View.GONE);
             initFragment(SecondActivity.dashBoardData ,200);
         }
     }
@@ -237,6 +241,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
         DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
         DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
         SecondActivity.dashBoardData = dashBoardData;
+        summaryOfLastSixMonthFrameLayout.setVisibility(View.GONE);
         initFragment(dashBoardData, 200);
     }
 

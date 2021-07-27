@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,7 +27,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
 import com.cnet.VisualAnalysis.MainActivity;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -131,7 +134,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
             }
         };
 
-        if(distributors>0){
+        if (distributors > 0) {
             handleDistDataChangeThread = new HandleDataChangeThread(changeDistributorHandler, distributors, (int) (vansSum(numberOfRowsInSingleVan.get(distributorIndex))), distributorStartIndex);
             handleDistDataChangeThread.start();
         }
@@ -155,7 +158,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                 inflateTable(allOrgData, vanIndex, distributorIndex);
             }
         };
-        handleVanDataChangeThread = new HandleDataChangeThread(changeVanHandler, vansCount, numberOfRowsInSingleVan.get(distributorIndex).get(vanIndex), startingIndex);
+        handleVanDataChangeThread = new HandleDataChangeThread(changeVanHandler, vansCount, numberOfRowsInSingleVan.get(distributorIndex).get(vanIndex)+1, startingIndex);
         handleVanDataChangeThread.start();
     }
 
@@ -165,14 +168,14 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         totalItemCount = 0;
         totalSubTotal = 0;
         grandTotalSales = 0;
-        if(vanHeaderVsmTransaction!=null){
+        if (vanHeaderVsmTransaction != null) {
             vanHeaderVsmTransaction.setText(allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).nameOfVan);
         }
         String nameOfOrg = allOrgData.get(distributorIndex).getNameOfDistributor();
-        if(distributorHeaderVsmTransaction!=null){
+        if (distributorHeaderVsmTransaction != null) {
             distributorHeaderVsmTransaction.setText(nameOfOrg);
         }
-        if(vsmTransactionTableLayout!=null){
+        if (vsmTransactionTableLayout != null) {
             vsmTransactionTableLayout.removeAllViews();
         }
         allRows = allOrgData.get(distributorIndex).getAllVansData().get(vanIndex).getTableRows().size();
@@ -191,8 +194,9 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                 } else if (index == allRows + 1 &&
                         vanIndex == allOrgData.get(distributorIndex).getAllVansData().size() - 1 &&
                         distributorIndex == allOrgData.size() - 1) {
-                    NavController navController = NavHostFragment.findNavController(fragment);
-                    navController.navigate(R.id.summaryTableFragment);
+//                    NavController navController = NavHostFragment.findNavController(fragment);
+//                    navController.navigate(R.id.summaryTableFragment);
+                    startActivity(new Intent(getActivity(), MapsActivity.class));
                 } else if (index < allRows) {
                     lastRowSummation(allOrgData, vanIndex, distributorIndex, index);
                     UtilityFunctionsForActivity1.drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index);
@@ -209,7 +213,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
 
     @Override
     public void onSuccess(JSONArray jsonArray) {
-        if(VSMtransactioProgressBar!=null){
+        if (VSMtransactioProgressBar != null) {
             VSMtransactioProgressBar.setVisibility(View.GONE);
 
         }
@@ -290,7 +294,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         totalSalesTextView.startAnimation(animation);
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
-        if(vsmTransactionTableLayout!=null){
+        if (vsmTransactionTableLayout != null) {
             vsmTransactionTableLayout.addView(tableElements);
         }
         UtilityFunctionsForActivity1.animate(vsmTransactionTableLayout, tableElements);
@@ -309,7 +313,6 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
             @Override
             public void handleOnBackPressed() {
 
-
                 ArrayList<VsmTableForSingleDistributor> allOrgData = new ArrayList<>();
                 try {
                     allOrgData = UtilityFunctionsForActivity1.vsmTransactionParser(MainActivity.vsmTransactionJSONArray);
@@ -317,11 +320,18 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                     e.printStackTrace();
                 }
 
+                if (MainActivity.vsmTransactionJSONArray==null) {
+                    startActivity(new Intent(getActivity(), StartingActivty.class));
+                }
+
                 if (handleDistDataChangeThread != null) {
                     handleDistDataChangeThread.interrupt();
                 }
                 if (handleVanDataChangeThread != null) {
                     handleVanDataChangeThread.interrupt();
+                }
+                if (handleRowAnimationThread != null) {
+                    handleRowAnimationThread.interrupt();
                 }
 
                 if (distributorIndex == 0) {
@@ -348,11 +358,11 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         });
     }
 
-    public Integer vansSum(ArrayList<Integer> numbersToAdd){
+    public Integer vansSum(ArrayList<Integer> numbersToAdd) {
         Integer sum = 0;
 
         for (int i = 0; i < numbersToAdd.size(); i++) {
-            sum+=numbersToAdd.get(i);
+            sum += numbersToAdd.get(i);
         }
         return sum;
     }

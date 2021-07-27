@@ -260,6 +260,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
                     handleRowAnimationThread.interrupt();
                 Intent intent = new Intent(requireActivity(), StartingActivty.class);
                 startActivity(intent);
+
             }
         });
 

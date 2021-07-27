@@ -2,7 +2,6 @@ package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -42,16 +41,20 @@ import java.util.ArrayList;
 public class UtilityFunctionsForActivity2 {
 
     public static void drawPieChart(PieChartData pieChartData, PieChart piechart, String label) {
-        piechart.setDrawSliceText(false);
+        piechart.setDrawSliceText(true);// to draw the labels
+
 
         piechart.animateX(3000, Easing.EaseInOutCirc);
         piechart.setDrawHoleEnabled(false);
         piechart.getDescription().setTextColor(Color.parseColor("#f6f8fb"));
         piechart.getDescription().setText(label);
+
+
 //        piechart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
 //        piechart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
-        piechart.getLegend().setFormLineDashEffect(new DashPathEffect(new float[] {10f, 5f},0f));
-        piechart.getLegend().setTextSize(3f);
+//        piechart.getLegend().setFormLineDashEffect(new DashPathEffect(new float[] {10f, 5f},0f));
+//        piechart.getLegend().setTextSize(3f);
+        piechart.getLegend().setEnabled(false);
 
 
         ArrayList<PieEntry> pieChartEntries = new ArrayList<>();
@@ -69,10 +72,22 @@ public class UtilityFunctionsForActivity2 {
                 Color.parseColor("#1e81b0"), Color.parseColor("#063970"),
                 Color.parseColor("#21130d"), Color.parseColor("#873e23")
         );
+
+
         pieDataSet.setDrawValues(false);
+        pieDataSet.setDrawIcons(true);
 
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setValueLinePart1OffsetPercentage(10); //starting of the line from center of the chart offset
+        pieDataSet.setValueLinePart1Length(0.7f);
+        pieDataSet.setValueLinePart2Length(0.5f);
+//        pieDataSet.setValueLineColor(Color.parseColor("#FFFFFF"));
+        pieDataSet.setUsingSliceColorAsValueLineColor(true);
+        pieDataSet.setValueTextColor(Color.parseColor("#FFFFFF"));
+
+
+//        pieDataSet.setSliceSpace(2);
 
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
@@ -173,9 +188,9 @@ public class UtilityFunctionsForActivity2 {
 
         SummarizedByArticleTableRow row = summarizedByArticleDataRows.get(index);
 
-//        if( LayoutInflater.from(context)!=null){
         if (context != null) {
-            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_article, null, false);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View tableElements = inflater.inflate(R.layout.table_row_summary_by_article, null, false);
 
             TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
             TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowArticleProperty2);
@@ -218,8 +233,8 @@ public class UtilityFunctionsForActivity2 {
 
             summarizedByArticleTableLayout.addView(tableElements);
             animate(summarizedByArticleTableLayout, tableElements);
-        }
 
+        }
 
     }
 
@@ -228,7 +243,9 @@ public class UtilityFunctionsForActivity2 {
                                                        TableLayout summarizedByParentArticleTableLayout, int index) {
 
         SummarizedByParentArticleRow row = summarizedByParentArticleRows.get(index);
-        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
         TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
         TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
@@ -273,7 +290,9 @@ public class UtilityFunctionsForActivity2 {
                                                       TableLayout summarizedByChildArticleTableLayout, int index) {
 
         SummarizedByChildArticleRow row = summarizedByChildArticleRows.get(index);
-        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
         TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
         TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
@@ -321,7 +340,9 @@ public class UtilityFunctionsForActivity2 {
 
 
         SummaryOfLast30DaysRow row = summaryOfLast30DaysRows.get(index);
-        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
         TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
         TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
@@ -349,7 +370,8 @@ public class UtilityFunctionsForActivity2 {
                                                 TableLayout summarizedByLast6MonthsTableLayout, int index, double total) {
 
         SummaryOfLast6MonthsRow row = summaryOfLast6MonthsRows.get(index);
-        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
         TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
         TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
@@ -375,7 +397,9 @@ public class UtilityFunctionsForActivity2 {
                                          TableLayout branchSummaryTableLayout, int index) {
 
         BranchSummaryTableRow row = branchSummaryTableRows.get(index);
-        View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_branch_summary, null, false);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View tableElements = inflater.inflate(R.layout.table_row_branch_summary, null, false);
 
         TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowBranchSummary1);
         TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowBranchSummary2);
