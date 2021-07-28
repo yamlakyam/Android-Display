@@ -2,7 +2,6 @@ package com.cnet.VisualAnalysis.Data;
 
 public class DashBoardData {
 
-
     SummarizedByArticleData summarizedByArticleData;
     SummarizedByChildArticleData summarizedByChildArticleData;
     SummarizedByParentArticleData summarizedByParentArticleData;

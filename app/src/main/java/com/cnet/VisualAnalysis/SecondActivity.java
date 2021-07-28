@@ -85,17 +85,17 @@ public class SecondActivity extends AppCompatActivity {
 
     public int mappedFragment() {
         int frgamentId = R.id.summarizedByArticleFragment2;
-        if (visibleFragments[0]) {
+        if (SplashScreenActivity.allData.getLayoutList().get(0)==3) {
             frgamentId = R.id.summarizedByArticleFragment2;
-        } else if (visibleFragments[1]) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==4) {
             frgamentId = R.id.summarizedByArticleParentCategFragment;
-        } else if (visibleFragments[2]) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==5) {
             frgamentId = R.id.summarizedByArticleChildCategFragment;
-        } else if (visibleFragments[3]) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==6) {
             frgamentId = R.id.summaryOfLastSixMonthsFragment;
-        } else if (visibleFragments[4]) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==7) {
             frgamentId = R.id.summaryOfLastMonthFragment;
-        } else if (visibleFragments[5]) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==8) {
             frgamentId = R.id.branchSummaryFragment;
         }
         return frgamentId;

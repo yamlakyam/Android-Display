@@ -25,26 +25,28 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.Data.AllData;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByChildArticleRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
-import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
+import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 
-import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class SummarizedByArticleChildCategFragment extends Fragment implements VolleyHttp.GetRequest {
+public class SummarizedByArticleChildCategFragment extends Fragment {
 
     TableLayout summaryByChildArticleTableLayout;
     ScrollView summarizedByChildArticleScrollView;
@@ -69,10 +71,10 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
                 SummaryOfLastMonthFragment.handleRowAnimationThread,
                 BranchSummaryFragment.handleRowAnimationThread);
 
-        if (SecondActivity.dashBoardData == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.DashboardURL, this);
-        }
+//        if (SecondActivity.dashBoardData == null) {
+//            VolleyHttp http = new VolleyHttp(getContext());
+//            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
+//        }
     }
 
     @Override
@@ -98,19 +100,25 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
     @Override
     public void onResume() {
         super.onResume();
-        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+//        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+//            summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
+//            initFragment(SecondActivity.dashBoardData ,200);
+//        }
+
+        if (SplashScreenActivity.allData != null && !isInflatingTable) {
             summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
-            initFragment(SecondActivity.dashBoardData ,200);
+            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
+
         }
     }
 
-    public void initFragment(DashBoardData dashBoardDataParam,int seconds) {
+    public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
         isInflatingTable = true;
         Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = dashBoardDataParam;
 
-        if(dashBoardData.getSummarizedByChildArticleData()!=null){
+        if (dashBoardData.getSummarizedByChildArticleData() != null) {
             inflateTable(dashBoardData.getSummarizedByChildArticleData().getTableData(), seconds);
             UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByChildArticleData().getBarChartData(), barChart, "Summarized by Article Child Category");
             UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
@@ -202,22 +210,18 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
         });
     }
 
-    public void navigate(Fragment fragment){
+    public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
         SecondActivity secondActivity = new SecondActivity();
-        if(secondActivity.visibleFragments[3]){
+        if (secondActivity.visibleFragments[3]) {
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        }
-        else if(secondActivity.visibleFragments[4]){
+        } else if (secondActivity.visibleFragments[4]) {
             navController.navigate(R.id.summaryOfLastMonthFragment);
-        }
-        else if(secondActivity.visibleFragments[5]){
+        } else if (secondActivity.visibleFragments[5]) {
             navController.navigate(R.id.branchSummaryFragment);
-        }
-        else if(secondActivity.visibleFragments[0]){
+        } else if (secondActivity.visibleFragments[0]) {
             navController.navigate(R.id.summarizedByArticleFragment2);
-        }
-        else if(secondActivity.visibleFragments[1]){
+        } else if (secondActivity.visibleFragments[1]) {
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
         }
     }
@@ -230,20 +234,4 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements V
             handleRowAnimationThread.interrupt();
     }
 
-    @Override
-    public void onSuccess(JSONArray jsonArray) {
-        Log.i("child success", "onSuccess: from child");
-
-        SecondActivity.dashBoardArray = jsonArray;
-        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
-        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
-        SecondActivity.dashBoardData = dashBoardData;
-        summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
-        initFragment(dashBoardData, 200);
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-
-    }
 }

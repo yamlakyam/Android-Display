@@ -1,5 +1,7 @@
 package com.cnet.VisualAnalysis.Utils;
 
+import android.util.Log;
+
 import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
@@ -41,7 +43,8 @@ public class DashBoardDataParser {
         DashBoardData dashBoardData = new DashBoardData();
         try {
             JSONObject rootJSON = jsonArray.getJSONObject(0);
-//            JSONObject rootJSON = new JSONObject(content);
+
+            Log.i("ROOT JSON", rootJSON.toString());
 
             dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));
             dashBoardData.setSummarizedByParentArticleData(summarizedByParentArticleParser(rootJSON));
@@ -50,6 +53,7 @@ public class DashBoardDataParser {
             dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
             dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
 
+//            Log.i("ROOT JSON",  dashBoardData.getSummarizedByArticleData().tableData.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -62,6 +66,7 @@ public class DashBoardDataParser {
 
     public static SummarizedByArticleData summarizedByArticleParser(JSONObject jsonObject) throws JSONException {
         JSONArray summaryOfArticle = jsonObject.getJSONArray(TAG_summarized_by_article_list);
+        Log.i("JSON ARRAY", summaryOfArticle.toString());
 
         ArrayList<SummarizedByArticleTableRow> tableData = new ArrayList<>();
         float[] xValues = new float[summaryOfArticle.length()];

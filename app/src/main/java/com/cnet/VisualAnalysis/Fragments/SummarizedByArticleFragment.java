@@ -25,27 +25,22 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
-import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-
-import org.json.JSONArray;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.GetRequest {
+public class SummarizedByArticleFragment extends Fragment {
 
     BarChart barChartSumByArticle;
     LineChart lineChartSumByArticle;
@@ -76,20 +71,13 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
                 SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                 SummaryOfLastMonthFragment.handleRowAnimationThread,
                 BranchSummaryFragment.handleRowAnimationThread);
-
-        if (SecondActivity.dashBoardData == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.DashboardURL, this);
-        }
-
-
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_summarized_by_article, container, false);
         fragment = this;
 
@@ -101,9 +89,11 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         summByArticleScrollView = view.findViewById(R.id.summByArticleScrollView);
         articleSummaryProgressBar = view.findViewById(R.id.articleSummaryProgressBar);
         constraintLayout = view.findViewById(R.id.constraintLayout);
+        Log.i("article data", SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.toString());
 
 
         backTraverse();
+
         return view;
     }
 
@@ -111,13 +101,11 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     public void onResume() {
         super.onResume();
         Log.i("resume", "IS INFLATING  : " + isInflatingTable);
-        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+            Log.i("article data", SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.toString());
             articleSummaryProgressBar.setVisibility(View.GONE);
             constraintLayout.setVisibility(View.VISIBLE);
-
-            if (!isInflatingTable) {
-                initFragment(SecondActivity.dashBoardData, 100);
-            }
+            initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
         }
     }
 
@@ -167,19 +155,39 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
     public void navigate(Fragment fragment) {
 
         NavController navController = NavHostFragment.findNavController(fragment);
-        SecondActivity secondActivity = new SecondActivity();
 
-        if (secondActivity.visibleFragments[1]) {
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        } else if (secondActivity.visibleFragments[2]) {
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        } else if (secondActivity.visibleFragments[3]) {
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        } else if (secondActivity.visibleFragments[4]) {
-            navController.navigate(R.id.summaryOfLastMonthFragment);
-        } else if ((secondActivity.visibleFragments[5])) {
-            navController.navigate(R.id.branchSummaryFragment);
+        Log.i("next", SplashScreenActivity.allData.getLayoutList().get(1).toString());
+        Log.i("next", SplashScreenActivity.allData.getLayoutList().toString());
+
+        if (SplashScreenActivity.allData.getLayoutList().size() >= 2) {
+            if (SplashScreenActivity.allData.getLayoutList().get(1) == 4) {
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().get(1) == 5) {
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().get(1) == 6) {
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().get(1) == 7) {
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().get(1) == 8) {
+                navController.navigate(R.id.branchSummaryFragment);
+            }
         }
+
+
+//        SecondActivity secondActivity = new SecondActivity();
+//
+//
+//        if (secondActivity.visibleFragments[1]) {
+//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+//        } else if (secondActivity.visibleFragments[2]) {
+//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+//        } else if (secondActivity.visibleFragments[3]) {
+//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+//        } else if (secondActivity.visibleFragments[4]) {
+//            navController.navigate(R.id.summaryOfLastMonthFragment);
+//        } else if ((secondActivity.visibleFragments[5])) {
+//            navController.navigate(R.id.branchSummaryFragment);
+//        }
     }
 
     @Override
@@ -188,25 +196,6 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         if (handleRowAnimationThread != null)
             handleRowAnimationThread.interrupt();
     }
-
-    /*
-    public void initFragment(JSONArray jsonArray) {
-        articleSummaryProgressBar.setVisibility(View.GONE);
-        constraintLayout.setVisibility(View.VISIBLE);
-        Log.i("success", fragment + "");
-
-        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
-        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
-
-        Log.i("data", dashBoardData.getSummarizedByArticleData()+"");
-        inflateTable(dashBoardData.getSummarizedByArticleData().getTableData());
-        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
-        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle);
-
-    }
-
- */
-
 
     public void totalLastRow(SummarizedByArticleTableRow row) {
 
@@ -268,29 +257,6 @@ public class SummarizedByArticleFragment extends Fragment implements VolleyHttp.
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
         UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle, "Summarized by Article");
 
-    }
-
-    @Override
-    public void onSuccess(JSONArray jsonArray) {
-
-
-        SecondActivity.dashBoardArray = jsonArray;
-        articleSummaryProgressBar.setVisibility(View.GONE);
-        constraintLayout.setVisibility(View.VISIBLE);
-
-        Log.i("article success", "onSuccess: from article ");
-        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
-        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
-        SecondActivity.dashBoardData = dashBoardData;
-
-        initFragment(dashBoardData, 200);
-
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-        articleSummaryProgressBar.setVisibility(View.GONE);
-        Log.i("error", "onFailure: " + error);
     }
 
     public void backTraverse() {

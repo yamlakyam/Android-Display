@@ -32,11 +32,13 @@ import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -70,7 +72,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
         if (MainActivity.summaryTableJSONArray == null) {
             VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(URL, this);
+            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
         }
 
     }
@@ -145,8 +147,9 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     }
 
     @Override
-    public void onSuccess(JSONArray jsonArray) {
+    public void onSuccess(JSONObject jsonObject) {
         try {
+            JSONArray jsonArray=jsonObject.getJSONObject("consolidationObjectData").getJSONArray("getSalesDataForAllOrganizations");
             MainActivity.summaryTableJSONArray = jsonArray;
             Log.i("TAG", jsonArray.toString());
             summaryTableProgressBar.setVisibility(View.GONE);

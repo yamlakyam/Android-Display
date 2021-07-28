@@ -32,12 +32,14 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -68,7 +70,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
         if (MainActivity.distributorTableJSONArray == null) {
             VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(URL, this);
+            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
         }
 
     }
@@ -283,7 +285,14 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
 
 
     @Override
-    public void onSuccess(JSONArray jsonArray) {
+    public void onSuccess(JSONObject jsonObject) {
+
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = jsonObject.getJSONObject("consolidationObjectData").getJSONArray("getSalesDataForSingleOrganization");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         MainActivity.distributorTableJSONArray = jsonArray;
 
         if (distributorTableProgressBar != null) {

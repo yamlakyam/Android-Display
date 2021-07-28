@@ -32,11 +32,13 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -77,7 +79,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
         super.onCreate(savedInstanceState);
 
         VolleyHttp http = new VolleyHttp(getContext());
-        http.makeGetRequest(URL, this);
+        http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
     }
 
     @Override
@@ -158,7 +160,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                 inflateTable(allOrgData, vanIndex, distributorIndex);
             }
         };
-        handleVanDataChangeThread = new HandleDataChangeThread(changeVanHandler, vansCount, numberOfRowsInSingleVan.get(distributorIndex).get(vanIndex)+1, startingIndex);
+        handleVanDataChangeThread = new HandleDataChangeThread(changeVanHandler, vansCount, numberOfRowsInSingleVan.get(distributorIndex).get(vanIndex) + 1, startingIndex);
         handleVanDataChangeThread.start();
     }
 
@@ -212,12 +214,13 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
 
 
     @Override
-    public void onSuccess(JSONArray jsonArray) {
+    public void onSuccess(JSONObject jsonObject) {
         if (VSMtransactioProgressBar != null) {
             VSMtransactioProgressBar.setVisibility(View.GONE);
 
         }
         try {
+            JSONArray jsonArray = jsonObject.getJSONObject("consolidationObjectData").getJSONArray("getSalesDataToDisplayOnVsmTable");
             MainActivity.vsmTransactionJSONArray = jsonArray;
             tablesToDisplay = UtilityFunctionsForActivity1.vsmTransactionParser(jsonArray);
             for (int i = 0; i < tablesToDisplay.size(); i++) {
@@ -320,7 +323,7 @@ public class VsmTransactionFragment extends Fragment implements VolleyHttp.GetRe
                     e.printStackTrace();
                 }
 
-                if (MainActivity.vsmTransactionJSONArray==null) {
+                if (MainActivity.vsmTransactionJSONArray == null) {
                     startActivity(new Intent(getActivity(), StartingActivty.class));
                 }
 

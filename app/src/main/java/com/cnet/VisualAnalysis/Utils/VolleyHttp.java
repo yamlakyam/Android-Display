@@ -2,27 +2,23 @@ package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.cnet.VisualAnalysis.SecondActivity;
 
-import org.json.JSONArray;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class VolleyHttp {
 
     private Context context;
 
     public interface GetRequest {
-        void onSuccess(JSONArray jsonArray);
+        void onSuccess(JSONObject jsonObject) throws JSONException;
 
         void onFailure(VolleyError error);
     }
@@ -33,12 +29,17 @@ public class VolleyHttp {
 
     public void makeGetRequest(String url, GetRequest request) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-//                Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            //                Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONArray response) {
-                request.onSuccess(response);
+            public void onResponse(JSONObject response) {
+
+                try {
+                    request.onSuccess(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         },
@@ -57,13 +58,12 @@ public class VolleyHttp {
                 return super.getParams();
             }
         }
-        */
-        ;
+        */;
 
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                 1000000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(jsonArrayRequest);
+        requestQueue.add(jsonObjectRequest);
     }
 }

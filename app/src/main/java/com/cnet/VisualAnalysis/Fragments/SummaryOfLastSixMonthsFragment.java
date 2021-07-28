@@ -25,12 +25,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.Data.AllData;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -40,12 +43,14 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
-public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHttp.GetRequest {
+public class SummaryOfLastSixMonthsFragment extends Fragment {
 
 
     TableLayout summaryOfLast6MonthsTableLayout;
@@ -75,10 +80,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
                 SummaryOfLastMonthFragment.handleRowAnimationThread,
                 BranchSummaryFragment.handleRowAnimationThread);
 
-        if (SecondActivity.dashBoardData == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.DashboardURL, this);
-        }
+
     }
 
 
@@ -104,9 +106,9 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
     @Override
     public void onResume() {
         super.onResume();
-        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
             summaryOfLastSixMonthFrameLayout.setVisibility(View.GONE);
-            initFragment(SecondActivity.dashBoardData ,200);
+            initFragment(SplashScreenActivity.allData.getDashBoardData() ,200);
         }
     }
 
@@ -234,19 +236,4 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements VolleyHt
             handleRowAnimationThread.interrupt();
     }
 
-    @Override
-    public void onSuccess(JSONArray jsonArray) {
-        Log.i(" last 6 success", "onSuccess: last 6");
-        SecondActivity.dashBoardArray = jsonArray;
-        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
-        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
-        SecondActivity.dashBoardData = dashBoardData;
-        summaryOfLastSixMonthFrameLayout.setVisibility(View.GONE);
-        initFragment(dashBoardData, 200);
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-
-    }
 }

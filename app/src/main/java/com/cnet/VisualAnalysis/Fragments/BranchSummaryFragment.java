@@ -25,12 +25,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.Data.AllData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -38,11 +41,13 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetRequest {
+public class BranchSummaryFragment extends Fragment {
 
     TableLayout branchSummaryTableLayout;
     ProgressBar branchSummaryProgressBar;
@@ -66,10 +71,6 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
                 SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                 SummaryOfLastMonthFragment.handleRowAnimationThread);
 
-        if (SecondActivity.dashBoardData == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.DashboardURL, this);
-        }
 
     }
 
@@ -89,8 +90,8 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
     @Override
     public void onResume() {
         super.onResume();
-        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
-            initFragment(SecondActivity.dashBoardData,200);
+        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+            initFragment(SplashScreenActivity.allData.getDashBoardData(),200);
         }
     }
 
@@ -156,7 +157,7 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
 //                NavController navController = NavHostFragment.findNavController(fragment);
 //                navController.navigate(id);
 
-                Intent intent = new Intent(getActivity(), StartingActivty.class);
+                Intent intent = new Intent(getActivity(), SplashScreenActivity.class);
                 startActivity(intent);
 
             }
@@ -219,7 +220,6 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         }
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
@@ -227,18 +227,4 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
             handleRowAnimationThread.interrupt();
     }
 
-    @Override
-    public void onSuccess(JSONArray jsonArray) {
-        Log.i("branch success", "onSuccess: from branch ");
-        SecondActivity.dashBoardArray = jsonArray;
-        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
-        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
-        SecondActivity.dashBoardData = dashBoardData;
-        initFragment(dashBoardData, 200);
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-
-    }
 }

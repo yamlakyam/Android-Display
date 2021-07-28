@@ -8,4 +8,5 @@
     </string>
     <string name="title_activity_maps">Map</string>
     <string name="welcomeTxt">Control Your Sales Statistics From The Comfort Of Your ...</string>
+    <string name="volley_error">Error getting data, check your network connectivity</string>
 </resources>

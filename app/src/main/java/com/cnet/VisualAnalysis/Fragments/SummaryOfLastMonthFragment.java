@@ -24,27 +24,22 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
-import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-
-import org.json.JSONArray;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.GetRequest {
+public class SummaryOfLastMonthFragment extends Fragment {
     TableLayout summaryOfLast30DaysTableLayout;
     Handler animationHandler;
     LineChart lineChart;
@@ -71,11 +66,6 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                 SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                 BranchSummaryFragment.handleRowAnimationThread);
-
-        if (SecondActivity.dashBoardData == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.DashboardURL, this);
-        }
     }
 
     @Override
@@ -88,7 +78,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
         lineChart = view.findViewById(R.id.last30daysLineChart);
         scrollView = view.findViewById(R.id.summaryOfLastMonthScrollView);
         barChart = view.findViewById(R.id.last30daysBarChart);
-        summaryOfLastMonthFrameLayout=view.findViewById(R.id.summaryOfLastMonthFrameLayout);
+        summaryOfLastMonthFrameLayout = view.findViewById(R.id.summaryOfLastMonthFrameLayout);
 
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
@@ -100,9 +90,9 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
     @Override
     public void onResume() {
         super.onResume();
-        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
             summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
-            initFragment(SecondActivity.dashBoardData,200);
+            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }
     }
 
@@ -230,19 +220,4 @@ public class SummaryOfLastMonthFragment extends Fragment implements VolleyHttp.G
             handleRowAnimationThread.interrupt();
     }
 
-    @Override
-    public void onSuccess(JSONArray jsonArray) {
-        Log.i("last month success", "onSuccess: last month");
-        SecondActivity.dashBoardArray = jsonArray;
-        DashBoardDataParser dashBoardDataParser = new DashBoardDataParser(jsonArray);
-        DashBoardData dashBoardData = dashBoardDataParser.parseDashBoardData();
-        SecondActivity.dashBoardData = dashBoardData;
-        summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
-        initFragment(dashBoardData, 200);
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-
-    }
 }
