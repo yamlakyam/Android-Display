@@ -243,45 +243,49 @@ public class UtilityFunctionsForActivity2 {
                                                        TableLayout summarizedByParentArticleTableLayout, int index) {
 
         SummarizedByParentArticleRow row = summarizedByParentArticleRows.get(index);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        if (context != null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+            View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
+            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
-        double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);
 
-        String formattedCategoryType;
-        if (row.getCategoryType().equals("null")) {
-            formattedCategoryType = "- - - - - - - - - - - - - ";
-        } else {
-            formattedCategoryType = row.getCategoryType();
+            double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
+
+            String formattedCategoryType;
+            if (row.getCategoryType().equals("null")) {
+                formattedCategoryType = "- - - - - - - - - - - - - ";
+            } else {
+                formattedCategoryType = row.getCategoryType();
+            }
+
+
+            double grandTotalForAll = 0;
+            for (int i = 0; i < summarizedByParentArticleRows.size(); i++) {
+                double grandTotalForI = summarizedByParentArticleRows.get(i).getTotalAmount() +
+                        summarizedByParentArticleRows.get(i).getTotalServCharge() +
+                        summarizedByParentArticleRows.get(i).getTaxAmount();
+                grandTotalForAll = grandTotalForAll + grandTotalForI;
+            }
+            double percentage = (grandTotal / grandTotalForAll) * 100;
+
+            tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty2.setText(formattedCategoryType);
+            tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
+            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
+
+
+            summarizedByParentArticleTableLayout.addView(tableElements);
+            animate(summarizedByParentArticleTableLayout, tableElements);
         }
 
-
-        double grandTotalForAll = 0;
-        for (int i = 0; i < summarizedByParentArticleRows.size(); i++) {
-            double grandTotalForI = summarizedByParentArticleRows.get(i).getTotalAmount() +
-                    summarizedByParentArticleRows.get(i).getTotalServCharge() +
-                    summarizedByParentArticleRows.get(i).getTaxAmount();
-            grandTotalForAll = grandTotalForAll + grandTotalForI;
-        }
-        double percentage = (grandTotal / grandTotalForAll) * 100;
-
-        tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(formattedCategoryType);
-        tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
-
-
-        summarizedByParentArticleTableLayout.addView(tableElements);
-        animate(summarizedByParentArticleTableLayout, tableElements);
 
     }
 
@@ -290,46 +294,50 @@ public class UtilityFunctionsForActivity2 {
                                                       TableLayout summarizedByChildArticleTableLayout, int index) {
 
         SummarizedByChildArticleRow row = summarizedByChildArticleRows.get(index);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        if (context != null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+            View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
+            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
-        double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);
+
+            double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
 
 
-        double grandTotalForAll = 0;
-        for (int i = 0; i < summarizedByChildArticleRows.size(); i++) {
-            double grandTotalForI = summarizedByChildArticleRows.get(i).getTotalAmount() +
-                    summarizedByChildArticleRows.get(i).getTotalServCharge() +
-                    summarizedByChildArticleRows.get(i).getTaxAmount();
-            grandTotalForAll = grandTotalForAll + grandTotalForI;
+            double grandTotalForAll = 0;
+            for (int i = 0; i < summarizedByChildArticleRows.size(); i++) {
+                double grandTotalForI = summarizedByChildArticleRows.get(i).getTotalAmount() +
+                        summarizedByChildArticleRows.get(i).getTotalServCharge() +
+                        summarizedByChildArticleRows.get(i).getTaxAmount();
+                grandTotalForAll = grandTotalForAll + grandTotalForI;
+            }
+            double percentage = (grandTotal / grandTotalForAll) * 100;
+
+            String formattedCategoryType;
+            if (row.getCategoryType().equals("null")) {
+                formattedCategoryType = "- - - - - - - - - - - - - ";
+            } else {
+                formattedCategoryType = row.getCategoryType();
+            }
+
+
+            tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty2.setText(formattedCategoryType);
+            tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
+            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
+
+
+            summarizedByChildArticleTableLayout.addView(tableElements);
+            animate(summarizedByChildArticleTableLayout, tableElements);
         }
-        double percentage = (grandTotal / grandTotalForAll) * 100;
 
-        String formattedCategoryType;
-        if (row.getCategoryType().equals("null")) {
-            formattedCategoryType = "- - - - - - - - - - - - - ";
-        } else {
-            formattedCategoryType = row.getCategoryType();
-        }
-
-
-        tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(formattedCategoryType);
-        tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
-
-
-        summarizedByChildArticleTableLayout.addView(tableElements);
-        animate(summarizedByChildArticleTableLayout, tableElements);
 
     }
 
@@ -340,27 +348,30 @@ public class UtilityFunctionsForActivity2 {
 
 
         SummaryOfLast30DaysRow row = summaryOfLast30DaysRows.get(index);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (context != null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
+            View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
-
-
-        tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(row.getName());
-        tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-        tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateTimeToString(row.getDateTime()));
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);
 
 
-        summarizedByLast30DaysTableLayout.addView(tableElements);
-        animate(summarizedByLast30DaysTableLayout, tableElements);
+            tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty2.setText(row.getName());
+            tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
+            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateTimeToString(row.getDateTime()));
+
+
+            summarizedByLast30DaysTableLayout.addView(tableElements);
+            animate(summarizedByLast30DaysTableLayout, tableElements);
+        }
+
 
     }
 
@@ -370,25 +381,27 @@ public class UtilityFunctionsForActivity2 {
                                                 TableLayout summarizedByLast6MonthsTableLayout, int index, double total) {
 
         SummaryOfLast6MonthsRow row = summaryOfLast6MonthsRows.get(index);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        if (context != null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);
 
-        tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(row.getName());
-        tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-        tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateTimeToString(row.getDateTime()));
+            tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty2.setText(row.getName());
+            tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
+            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateTimeToString(row.getDateTime()));
 
+            summarizedByLast6MonthsTableLayout.addView(tableElements);
+            animate(summarizedByLast6MonthsTableLayout, tableElements);
+        }
 
-        summarizedByLast6MonthsTableLayout.addView(tableElements);
-        animate(summarizedByLast6MonthsTableLayout, tableElements);
 
     }
 
@@ -397,38 +410,42 @@ public class UtilityFunctionsForActivity2 {
                                          TableLayout branchSummaryTableLayout, int index) {
 
         BranchSummaryTableRow row = branchSummaryTableRows.get(index);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View tableElements = inflater.inflate(R.layout.table_row_branch_summary, null, false);
+        if (context != null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowBranchSummary1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowBranchSummary2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowBranchSummary3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowBranchSummary4);
-        TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowBranchSummary5);
+            View tableElements = inflater.inflate(R.layout.table_row_branch_summary, null, false);
 
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
+            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowBranchSummary1);
+            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowBranchSummary2);
+            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowBranchSummary3);
+            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowBranchSummary4);
+            TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowBranchSummary5);
+
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);
 
 
-        double grandTotalForAll = 0;
+            double grandTotalForAll = 0;
 
-        double grandTotal = row.getGrandTotal();
-        for (int i = 0; i < branchSummaryTableRows.size(); i++) {
-            double grandTotalForI = branchSummaryTableRows.get(i).getGrandTotal();
-            grandTotalForAll = grandTotalForAll + grandTotalForI;
+            double grandTotal = row.getGrandTotal();
+            for (int i = 0; i < branchSummaryTableRows.size(); i++) {
+                double grandTotalForI = branchSummaryTableRows.get(i).getGrandTotal();
+                grandTotalForAll = grandTotalForAll + grandTotalForI;
+            }
+            double percentage = (grandTotal / grandTotalForAll) * 100;
+
+
+            tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty2.setText(row.getBranch());
+            tableRowProperty3.setText(String.valueOf(row.getQuantity()));
+            tableRowProperty4.setText(numberFormat.format(percentage) + "%");
+            tableRowProperty5.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
+
+            branchSummaryTableLayout.addView(tableElements);
+            animate(branchSummaryTableLayout, tableElements);
         }
-        double percentage = (grandTotal / grandTotalForAll) * 100;
 
-
-        tableRowProperty1.setText(String.valueOf(index + 1));
-        tableRowProperty2.setText(row.getBranch());
-        tableRowProperty3.setText(String.valueOf(row.getQuantity()));
-        tableRowProperty4.setText(numberFormat.format(percentage) + "%");
-        tableRowProperty5.setText(numberFormat.format(row.getGrandTotal()));
-
-        branchSummaryTableLayout.addView(tableElements);
-        animate(branchSummaryTableLayout, tableElements);
 
     }
 

@@ -48,11 +48,8 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
         AllDataParser allDataParser = new AllDataParser(jsonObject);
 
-        Log.i("jsonObject", jsonObject + "");
         try {
             allData = allDataParser.parseAllData();
-            Log.i("all data2 ", allData.getLayoutList() + "");
-            Log.i("all data3 ", allData.getTransitionTimeInMinutes() + "");
 
             if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0){
                 startActivity(new Intent(SplashScreenActivity.this, SecondActivity.class));

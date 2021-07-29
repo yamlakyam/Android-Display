@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class FmcgData {
 
     ArrayList<SummaryTableRow> summaryTableRows;
-    ArrayList<DistributorTableRow> distributorTableRows;
+    ArrayList<SingleDistributorData> distributorTableRows;
     ArrayList<ArrayList<VSMCard>> vsmCards;
     ArrayList<VsmTableForSingleDistributor> vsmTableForSingleDistributors;
 
@@ -17,11 +17,11 @@ public class FmcgData {
         this.summaryTableRows = summaryTableRows;
     }
 
-    public ArrayList<DistributorTableRow> getDistributorTableRows() {
+    public ArrayList<SingleDistributorData> getDistributorTableRows() {
         return distributorTableRows;
     }
 
-    public void setDistributorTableRows(ArrayList<DistributorTableRow> distributorTableRows) {
+    public void setDistributorTableRows(ArrayList<SingleDistributorData> distributorTableRows) {
         this.distributorTableRows = distributorTableRows;
     }
 

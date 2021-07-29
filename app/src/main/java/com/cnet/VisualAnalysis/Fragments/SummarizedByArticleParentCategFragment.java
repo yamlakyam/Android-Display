@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,23 +139,21 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this);
         handleRowAnimationThread.start();
-        Log.i("parent Article", "is interrupted " + handleRowAnimationThread.isInterrupted() + "");
+
     }
 
 
     private void initFragment(DashBoardData dashBoardDataP, int seconds) {
 
         isInflatingTable = true;
-        Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = dashBoardDataP;
 
         if (dashBoardData != null) {
             if (dashBoardData.getSummarizedByParentArticleData() != null) {
                 inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData(), seconds);
-                Log.i("parent Article", "is interrupted " + handleRowAnimationThread.isInterrupted() + "");
 
                 UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
                 UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
@@ -207,7 +204,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(getActivity(), StartingActivty.class);
+                Intent intent = new Intent(getActivity(), SplashScreenActivity.class);
                 startActivity(intent);
             }
         });
@@ -227,8 +224,10 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
                     navController.navigate(R.id.summaryOfLastMonthFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().get(next) == 8)
                     navController.navigate(R.id.branchSummaryFragment);
-
-
+            }
+            else if(SplashScreenActivity.allData.getLayoutList().size() >1){
+                if(SplashScreenActivity.allData.getLayoutList().get(0)==3)
+                    navController.navigate(R.id.summarizedByArticleFragment2);
             }
 
         }

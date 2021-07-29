@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,25 +23,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
-import com.cnet.VisualAnalysis.Data.AllData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.AllDataParser;
-import com.cnet.VisualAnalysis.Utils.Constants;
-import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -91,7 +79,7 @@ public class BranchSummaryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
-            initFragment(SplashScreenActivity.allData.getDashBoardData(),200);
+            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }
     }
 
@@ -105,7 +93,6 @@ public class BranchSummaryFragment extends Fragment {
             @Override
             public void handleMessage(@NonNull Message msg) {
 
-                Log.i("branch", SecondActivity.summaryOfBranchPause + "");
                 String message = (String) msg.obj;
                 int index = 0;
                 if (message != null) {
@@ -133,15 +120,14 @@ public class BranchSummaryFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this);
         handleRowAnimationThread.start();
     }
 
 
-    public void initFragment(DashBoardData dashBoardDataParam,int seconds) {
+    public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
         isInflatingTable = true;
         branchSummaryProgressBar.setVisibility(View.GONE);
-        Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = dashBoardDataParam;
         inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds);
@@ -206,17 +192,23 @@ public class BranchSummaryFragment extends Fragment {
 
     public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
-        SecondActivity secondActivity = new SecondActivity();
-        if (secondActivity.visibleFragments[0]) {
-            navController.navigate(R.id.summarizedByArticleFragment2);
-        } else if (secondActivity.visibleFragments[1]) {
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        } else if (secondActivity.visibleFragments[2]) {
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        } else if (secondActivity.visibleFragments[3]) {
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        } else if (secondActivity.visibleFragments[4]) {
-            navController.navigate(R.id.summaryOfLastMonthFragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+
+            if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
+                if (SplashScreenActivity.allData.getLayoutList().get(0) == 3)
+                    navController.navigate(R.id.summarizedByArticleFragment2);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 4)
+                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 5)
+                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 6)
+                    navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+                 else if (SplashScreenActivity.allData.getLayoutList().get(0) == 7)
+                    navController.navigate(R.id.summaryOfLastMonthFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 8)
+                    navController.navigate(R.id.branchSummaryFragment);
+            }
+
         }
     }
 

@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -19,7 +18,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment;
 import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment;
@@ -76,7 +74,7 @@ public class SecondActivity extends AppCompatActivity {
         NavGraph graph = inflater.inflate(R.navigation.second_nav);
 
         graph.setStartDestination(mappedFragment());
-        Log.i("home frag", "setHomeFragment called");
+
 
         NavController navController = navHostFragment.getNavController();
         navController.setGraph(graph);
@@ -85,17 +83,17 @@ public class SecondActivity extends AppCompatActivity {
 
     public int mappedFragment() {
         int frgamentId = R.id.summarizedByArticleFragment2;
-        if (SplashScreenActivity.allData.getLayoutList().get(0)==3) {
+        if (SplashScreenActivity.allData.getLayoutList().get(0) == 3) {
             frgamentId = R.id.summarizedByArticleFragment2;
-        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==4) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 4) {
             frgamentId = R.id.summarizedByArticleParentCategFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==5) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 5) {
             frgamentId = R.id.summarizedByArticleChildCategFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==6) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 6) {
             frgamentId = R.id.summaryOfLastSixMonthsFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==7) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 7) {
             frgamentId = R.id.summaryOfLastMonthFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().get(0)==8) {
+        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 8) {
             frgamentId = R.id.branchSummaryFragment;
         }
         return frgamentId;
@@ -103,88 +101,89 @@ public class SecondActivity extends AppCompatActivity {
 
     @SuppressLint("HardwareIds")
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        navController = NavHostFragment.findNavController(getCurrentFragment());
-        switch (keyCode) {
+        if (SplashScreenActivity.allData.isEnableNavigation()) {
+            navController = NavHostFragment.findNavController(getCurrentFragment());
+            switch (keyCode) {
 
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-                Log.i("key", "center playing" + firstCenterKeyPause);
+                case KeyEvent.KEYCODE_DPAD_CENTER:
 
-                playPause.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-                leftArrow.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-                rightArrow.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+                    playPause.setImageTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+                    leftArrow.setImageTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+                    rightArrow.setImageTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 //                SummarizedByArticleFragment.isInflatingTable = false;
 
-                if (!firstCenterKeyPause) {
+                    if (!firstCenterKeyPause) {
 
-                    TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                    String imei = telephonyManager.getDeviceId();
+                        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                        String imei = telephonyManager.getDeviceId();
 
-                    myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                    Log.i("imei", telephonyManager.getDeviceId() + "");
-                    Log.i("unique ID", myAndroidDeviceId);
-                    //cc70a81e8233444a
+                        Log.i("imei", telephonyManager.getDeviceId() + "");
+                        Log.i("unique ID", myAndroidDeviceId);
+                        //cc70a81e8233444a
 
-                    playPause.setImageResource(R.drawable.ic_pause_button);
+                        playPause.setImageResource(R.drawable.ic_pause_button);
 
-                    summaryByParentArticlePause = false;
-                    summaryByArticlePause = false;
-                    summaryByChildArticlePause = false;
-                    summaryOfLast6MonsPause = false;
-                    summaryOfLast30DaysPause = false;
-                    summaryOfBranchPause = false;
+                        summaryByParentArticlePause = false;
+                        summaryByArticlePause = false;
+                        summaryByChildArticlePause = false;
+                        summaryOfLast6MonsPause = false;
+                        summaryOfLast30DaysPause = false;
+                        summaryOfBranchPause = false;
 
 //                            navigate(getCurrentFragment());
 
+                        rightNavigation();
+                        firstCenterKeyPause = true;
+                        playPauseKeyPad.setVisibility(View.GONE);
+
+                    } else {
+                        playPause.setImageResource(R.drawable.ic_play_button__2_);
+                        pausedState();
+                    }
+
+                    break;
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+
+                    SummarizedByArticleFragment.isInflatingTable = false;
+                    SummarizedByArticleParentCategFragment.isInflatingTable = false;
+                    SummarizedByArticleChildCategFragment.isInflatingTable = false;
+                    SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+                    SummaryOfLastMonthFragment.isInflatingTable = false;
+                    BranchSummaryFragment.isInflatingTable = false;
+
+                    leftArrow.setImageTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+                    rightArrow.setImageTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+//                playPause.setImageTintList(ColorStateList.valueOf(
+//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+
+                    leftNavigation();
+                    break;
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+
+                    SummarizedByArticleFragment.isInflatingTable = false;
+                    SummarizedByArticleParentCategFragment.isInflatingTable = false;
+                    SummarizedByArticleChildCategFragment.isInflatingTable = false;
+                    SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+                    SummaryOfLastMonthFragment.isInflatingTable = false;
+                    BranchSummaryFragment.isInflatingTable = false;
+
+                    rightArrow.setImageTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+//                playPause.setImageTintList(ColorStateList.valueOf(
+//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
+                    leftArrow.setImageTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
+
                     rightNavigation();
-                    firstCenterKeyPause = true;
-                    playPauseKeyPad.setVisibility(View.GONE);
-
-                } else {
-                    playPause.setImageResource(R.drawable.ic_play_button__2_);
-                    pausedState();
-                }
-
-                break;
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                Log.i("key", "onKeyDown: left");
-                SummarizedByArticleFragment.isInflatingTable = false;
-                SummarizedByArticleParentCategFragment.isInflatingTable = false;
-                SummarizedByArticleChildCategFragment.isInflatingTable = false;
-                SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-                SummaryOfLastMonthFragment.isInflatingTable = false;
-                BranchSummaryFragment.isInflatingTable = false;
-
-                leftArrow.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-                rightArrow.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-//                playPause.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-
-                leftNavigation();
-                break;
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                Log.i("key", "onKeyDown: right");
-                SummarizedByArticleFragment.isInflatingTable = false;
-                SummarizedByArticleParentCategFragment.isInflatingTable = false;
-                SummarizedByArticleChildCategFragment.isInflatingTable = false;
-                SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-                SummaryOfLastMonthFragment.isInflatingTable = false;
-                BranchSummaryFragment.isInflatingTable = false;
-
-                rightArrow.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-//                playPause.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-                leftArrow.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-
-                rightNavigation();
-                break;
+                    break;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -196,7 +195,6 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public void leftNavigation() {
-        Log.i("currentClass-2", getCurrentFragment().getClass().getName());
         if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -204,22 +202,22 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     SummarizedByArticleFragment.handleRowAnimationThread);
 
-            if (visibleFragments[5]) {
-                navController.navigate(R.id.branchSummaryFragment);
-            } else if (visibleFragments[4]) {
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-
-            } else if (visibleFragments[3]) {
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-
-            } else if (visibleFragments[2]) {
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-
-            } else if (visibleFragments[1]) {
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+//              if(SplashScreenActivity.allData.getLayoutList().indexOf(3)-1!=)
+                int lastIndex = SplashScreenActivity.allData.getLayoutList().size() - 1;
+                if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 4)
+                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 5)
+                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 6)
+                    navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 7)
+                    navController.navigate(R.id.summaryOfLastMonthFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 8)
+                    navController.navigate(R.id.branchSummaryFragment);
             }
 
-//            pausedState();
+
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -227,92 +225,132 @@ public class SecondActivity extends AppCompatActivity {
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
 
-            if (visibleFragments[0]) {
-                navController.navigate(R.id.summarizedByArticleFragment2);
-            } else if (visibleFragments[5]) {
-                navController.navigate(R.id.branchSummaryFragment);
-            } else if (visibleFragments[4]) {
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            } else if (visibleFragments[3]) {
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            } else if (visibleFragments[2]) {
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                int lastIndex = SplashScreenActivity.allData.getLayoutList().size() - 1;
+
+                if (SplashScreenActivity.allData.getLayoutList().indexOf(4) != 0) {
+                    int prevIndex = SplashScreenActivity.allData.getLayoutList().indexOf(4) - 1;
+                    if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 3)
+                        navController.navigate(R.id.summarizedByArticleFragment2);
+                } else if (SplashScreenActivity.allData.getLayoutList().indexOf(4) == 0) {
+                    if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 5)
+                        navController.navigate(R.id.summarizedByArticleChildCategFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 6)
+                        navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 7)
+                        navController.navigate(R.id.summaryOfLastMonthFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 8)
+                        navController.navigate(R.id.branchSummaryFragment);
+
+                }
             }
 
-
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            if (visibleFragments[1]) {
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            } else if (visibleFragments[0]) {
-                navController.navigate(R.id.summarizedByArticleFragment2);
-            } else if (visibleFragments[5]) {
-                navController.navigate(R.id.branchSummaryFragment);
-            } else if (visibleFragments[4]) {
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            } else if (visibleFragments[3]) {
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+
+            if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                int lastIndex = SplashScreenActivity.allData.getLayoutList().size() - 1;
+
+                if (SplashScreenActivity.allData.getLayoutList().indexOf(5) != 0) {
+                    int prevIndex = SplashScreenActivity.allData.getLayoutList().indexOf(5) - 1;
+                    if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 3)
+                        navController.navigate(R.id.summarizedByArticleFragment2);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 4)
+                        navController.navigate(R.id.summarizedByArticleParentCategFragment);
+
+                } else if (SplashScreenActivity.allData.getLayoutList().indexOf(5) == 0) {
+                    if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 6)
+                        navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 7)
+                        navController.navigate(R.id.summaryOfLastMonthFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 8)
+                        navController.navigate(R.id.branchSummaryFragment);
+
+                }
             }
-//            pausedState();
+
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            if (visibleFragments[2]) {
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            } else if (visibleFragments[1]) {
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            } else if (visibleFragments[0]) {
-                navController.navigate(R.id.summarizedByArticleFragment2);
-            } else if (visibleFragments[5]) {
-                navController.navigate(R.id.branchSummaryFragment);
-            } else if (visibleFragments[4]) {
-                navController.navigate(R.id.summaryOfLastMonthFragment);
+            if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                int lastIndex = SplashScreenActivity.allData.getLayoutList().size() - 1;
+
+                if (SplashScreenActivity.allData.getLayoutList().indexOf(6) != 0) {
+                    int prevIndex = SplashScreenActivity.allData.getLayoutList().indexOf(6) - 1;
+                    if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 3)
+                        navController.navigate(R.id.summarizedByArticleFragment2);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 4)
+                        navController.navigate(R.id.summarizedByArticleParentCategFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 5)
+                        navController.navigate(R.id.summarizedByArticleChildCategFragment);
+
+                } else if (SplashScreenActivity.allData.getLayoutList().indexOf(6) == 0) {
+                    if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 7)
+                        navController.navigate(R.id.summaryOfLastMonthFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 8)
+                        navController.navigate(R.id.branchSummaryFragment);
+
+                }
             }
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastMonthFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            if (visibleFragments[3]) {
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            } else if (visibleFragments[2]) {
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            } else if (visibleFragments[1]) {
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            } else if (visibleFragments[0]) {
-                navController.navigate(R.id.summarizedByArticleFragment2);
-            } else if (visibleFragments[5]) {
-                navController.navigate(R.id.branchSummaryFragment);
+            if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                int lastIndex = SplashScreenActivity.allData.getLayoutList().size() - 1;
+
+                if (SplashScreenActivity.allData.getLayoutList().indexOf(7) != 0) {
+                    int prevIndex = SplashScreenActivity.allData.getLayoutList().indexOf(7) - 1;
+                    if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 3)
+                        navController.navigate(R.id.summarizedByArticleFragment2);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 4)
+                        navController.navigate(R.id.summarizedByArticleParentCategFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 5)
+                        navController.navigate(R.id.summarizedByArticleChildCategFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 6)
+                        navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+
+
+                } else if (SplashScreenActivity.allData.getLayoutList().indexOf(7) == 0) {
+                    if (SplashScreenActivity.allData.getLayoutList().get(lastIndex) == 8)
+                        navController.navigate(R.id.branchSummaryFragment);
+
+                }
             }
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                     SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                     BranchSummaryFragment.handleRowAnimationThread);
-            if (visibleFragments[4]) {
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            } else if (visibleFragments[3]) {
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            } else if (visibleFragments[2]) {
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            } else if (visibleFragments[1]) {
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            } else if (visibleFragments[0]) {
-                navController.navigate(R.id.summarizedByArticleFragment2);
+
+            if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                int lastIndex = SplashScreenActivity.allData.getLayoutList().size() - 1;
+
+                if (SplashScreenActivity.allData.getLayoutList().indexOf(7) != 0) {
+                    int prevIndex = SplashScreenActivity.allData.getLayoutList().indexOf(7) - 1;
+                    if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 3)
+                        navController.navigate(R.id.summarizedByArticleFragment2);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 4)
+                        navController.navigate(R.id.summarizedByArticleParentCategFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 5)
+                        navController.navigate(R.id.summarizedByArticleChildCategFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 6)
+                        navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+                    else if (SplashScreenActivity.allData.getLayoutList().get(prevIndex) == 7)
+                        navController.navigate(R.id.summaryOfLastMonthFragment);
+                }
             }
-//            pausedState();
+
         }
 
     }
@@ -328,9 +366,6 @@ public class SecondActivity extends AppCompatActivity {
             SummarizedByArticleFragment summarizedByArticleFragment = new SummarizedByArticleFragment();
             summarizedByArticleFragment.navigate(getCurrentFragment());
 
-//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -341,9 +376,6 @@ public class SecondActivity extends AppCompatActivity {
             SummarizedByArticleParentCategFragment summarizedByArticleParentCategFragment = new SummarizedByArticleParentCategFragment();
             summarizedByArticleParentCategFragment.navigate(getCurrentFragment());
 
-//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -354,8 +386,6 @@ public class SecondActivity extends AppCompatActivity {
             SummarizedByArticleChildCategFragment summarizedByArticleChildCategFragment = new SummarizedByArticleChildCategFragment();
             summarizedByArticleChildCategFragment.navigate(getCurrentFragment());
 
-//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -366,8 +396,6 @@ public class SecondActivity extends AppCompatActivity {
             SummaryOfLastSixMonthsFragment summaryOfLastSixMonthsFragment = new SummaryOfLastSixMonthsFragment();
             summaryOfLastSixMonthsFragment.navigate(getCurrentFragment());
 
-//            navController.navigate(R.id.summaryOfLastMonthFragment);
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -378,8 +406,6 @@ public class SecondActivity extends AppCompatActivity {
             SummaryOfLastMonthFragment summaryOfLastMonthFragment = new SummaryOfLastMonthFragment();
             summaryOfLastMonthFragment.navigate(getCurrentFragment());
 
-//            navController.navigate(R.id.branchSummaryFragment);
-//            pausedState();
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment")) {
             interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                     SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -390,8 +416,6 @@ public class SecondActivity extends AppCompatActivity {
             BranchSummaryFragment branchSummaryFragment = new BranchSummaryFragment();
             branchSummaryFragment.navigate(getCurrentFragment());
 
-//            navController.navigate(R.id.summarizedByArticleFragment2);
-//            pausedState();
         }
     }
 
@@ -433,8 +457,6 @@ public class SecondActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 
     public void naviagateToFragment(int frgamentIndex) {
         if (frgamentIndex == 0) {

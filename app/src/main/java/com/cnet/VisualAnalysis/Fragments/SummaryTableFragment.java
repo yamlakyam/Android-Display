@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,26 +25,18 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
-import com.cnet.VisualAnalysis.MainActivity;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
-import com.cnet.VisualAnalysis.StartingActivty;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
-public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequest {
+public class SummaryTableFragment extends Fragment {
 
     private TableLayout summaryTableLayout;
     public static Handler changeTodoHandler;
@@ -70,10 +61,10 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MainActivity.summaryTableJSONArray == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
-        }
+//        if (MainActivity.summaryTableJSONArray == null) {
+//            VolleyHttp http = new VolleyHttp(getContext());
+//            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
+//        }
 
     }
 
@@ -88,28 +79,32 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         summaryTableProgressBar = view.findViewById(R.id.summaryTableprogressBar);
         scrollSummaryTable = view.findViewById(R.id.scrollSummaryTable);
 
-        backTraverse();
+        if (SplashScreenActivity.allData.isEnableNavigation()) {
+            backTraverse();
+
+        }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (MainActivity.summaryTableJSONArray != null) {
+
+        if (SplashScreenActivity.allData.getFmcgData() != null) {
             summaryTableProgressBar.setVisibility(View.GONE);
-            respSize = MainActivity.summaryTableJSONArray.length();
-            inflateTable(MainActivity.summaryTableJSONArray);
+            respSize = SplashScreenActivity.allData.getFmcgData().getSummaryTableRows().size();
+            inflateTable(SplashScreenActivity.allData.getFmcgData().getSummaryTableRows());
         }
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateTable(JSONArray jsonArray) {
+//    private void inflateTable(JSONArray jsonArray) {
+    private void inflateTable(ArrayList<SummaryTableRow> tableRows) {
         resetSumOfLastRow();
         changeTodoHandler = new Handler() {
             @Override
@@ -119,18 +114,28 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
                 if (message != null) {
                     index = Integer.parseInt(message);
                 }
-
-                try {
-                    tablesToDisplay = UtilityFunctionsForActivity1.summaryTableParser(jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                //                    tablesToDisplay = UtilityFunctionsForActivity1.summaryTableParser(jsonArray);
+//                tablesToDisplay = SplashScreenActivity.allData.getFmcgData().getSummaryTableRows();
+                tablesToDisplay = tableRows;
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollSummaryTable);
                 } else if (index == tablesToDisplay.size() + 1) {
                     NavController navController = NavHostFragment.findNavController(fragment);
-                    navController.navigate(R.id.distributorTableFragment);
+
+                    if (SplashScreenActivity.allData.getLayoutList().size() > 0) {
+
+                        Log.i("first index", SplashScreenActivity.allData.getLayoutList().get(0) + "");
+                        if (SplashScreenActivity.allData.getLayoutList().get(0) == 0) {
+                            navController.navigate(R.id.distributorTableFragment);
+                        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 1) {
+                            startActivity(new Intent(requireActivity(), MapsActivity.class));
+                        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 2) {
+                            navController.navigate(R.id.vsmTransactionFragment);
+                        }
+                    }
+//                    NavController navController = NavHostFragment.findNavController(fragment);
+//                    navController.navigate(R.id.distributorTableFragment);
                 } else {
                     sumofLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawSummaryTable(tablesToDisplay, getContext(), summaryTableLayout, index);
@@ -141,30 +146,11 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 100);
+        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200,this);
+//        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 1000 * Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) / SplashScreenActivity.allData.getFmcgData().getSummaryTableRows().size());
         handleRowAnimationThread.start();
 
     }
-
-    @Override
-    public void onSuccess(JSONObject jsonObject) {
-        try {
-            JSONArray jsonArray=jsonObject.getJSONObject("consolidationObjectData").getJSONArray("getSalesDataForAllOrganizations");
-            MainActivity.summaryTableJSONArray = jsonArray;
-            Log.i("TAG", jsonArray.toString());
-            summaryTableProgressBar.setVisibility(View.GONE);
-            respSize = jsonArray.length();
-            inflateTable(jsonArray);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-        error.printStackTrace();
-    }
-
 
     public void sumofLastRow(SummaryTableRow summaryTableRow) {
         sumOfVSICount = sumOfVSICount + summaryTableRow.getVsiCount();
@@ -228,7 +214,7 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
         totalQuantityTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalQuantityTextView.setTextSize(25f);
 
-        totalSalesTextView.setText(numberFormat.format(sumOfTotalSales));
+        totalSalesTextView.setText(numberFormat.format(Math.round(sumOfTotalSales * 100.0) / 100.0));
         totalSalesTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalSalesTextView.setTextSize(25f);
 
@@ -261,14 +247,13 @@ public class SummaryTableFragment extends Fragment implements VolleyHttp.GetRequ
             public void handleOnBackPressed() {
                 if (handleRowAnimationThread != null)
                     handleRowAnimationThread.interrupt();
-                Intent intent = new Intent(requireActivity(), StartingActivty.class);
+                Intent intent = new Intent(requireActivity(), SplashScreenActivity.class);
                 startActivity(intent);
 
             }
         });
 
     }
-
 
 
     @Override

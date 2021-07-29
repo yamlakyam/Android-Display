@@ -62,7 +62,7 @@ public class VSMCardGVAdapter extends ArrayAdapter<VSMCard> {
         vsmOutlet.setText(String.valueOf(vsmCard.getSalesOutLateCount()));
         vsmLastActive.setText(formattedLastActive);
         vsmVcount.setText(String.valueOf(vsmCard.getvCount()));
-        vsmTsale.setText(numberFormat.format(vsmCard.getTotalSales()));
+        vsmTsale.setText(numberFormat.format(Math.round(vsmCard.getTotalSales() * 100.0) / 100.0));
         vsmDistributor.setText(preciseOrgName);
 
         return listedView;

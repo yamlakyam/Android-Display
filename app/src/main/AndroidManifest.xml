@@ -35,7 +35,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:noHistory="true"/>
         <activity
             android:name=".MainActivity"
             android:noHistory="true" />

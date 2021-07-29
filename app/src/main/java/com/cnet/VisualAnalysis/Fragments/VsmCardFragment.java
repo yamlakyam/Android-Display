@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,19 +17,15 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
-import com.cnet.VisualAnalysis.MainActivity;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
+public class VsmCardFragment extends Fragment {
 
     GridView vsmCardGridLayout;
     public static Handler changeDataHandler;
@@ -42,10 +39,6 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MainActivity.vsmCardJSONArray == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
-        }
     }
 
     @Override
@@ -56,21 +49,27 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         vsmCardGridLayout = view.findViewById(R.id.vsmCardGridLayout);
         vsmCardProgressBar = view.findViewById(R.id.vsmCardProgressBar);
         fragment = this;
-        backTraverse(fragment, R.id.distributorTableFragment);
+
+        if (SplashScreenActivity.allData.isEnableNavigation()) {
+            backTraverse(fragment, R.id.distributorTableFragment);
+        }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (MainActivity.vsmCardJSONArray != null) {
+
+        if (SplashScreenActivity.allData.getFmcgData().getVsmCards() != null) {
             vsmCardProgressBar.setVisibility(View.GONE);
-            inflateAllCompanyCards(MainActivity.vsmCardJSONArray, 0);
+            inflateAllCompanyCards(0);
+
         }
     }
 
     @SuppressLint("HandlerLeak")
-    public void inflateAllCompanyCards(JSONArray jsonArray, int startingIndex) {
+//    public void inflateAllCompanyCards(JSONArray jsonArray, int startingIndex) {
+    public void inflateAllCompanyCards(int startingIndex) {
 
         changeDataHandler = new Handler() {
             @Override
@@ -81,11 +80,20 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
                 distributorIndex = index;
 
                 try {
-                    if (index == jsonArray.length()) {
+//                    if (index == jsonArray.length()) {
+                    if (index == SplashScreenActivity.allData.getFmcgData().getVsmCards().size()) {
                         NavController navController = NavHostFragment.findNavController(fragment);
-                        navController.navigate(R.id.vsmTransactionFragment);
+//                        navController.navigate(R.id.vsmTransactionFragment);
+
+                        if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
+                            if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+                                navController.navigate(R.id.vsmTransactionFragment);
+                            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                            }
+                        }
                     } else {
-                        UtilityFunctionsForActivity1.drawVSMCard(jsonArray, index, getContext(), vsmCardGridLayout);
+                        UtilityFunctionsForActivity1.drawVSMCard(index, getContext(), vsmCardGridLayout);
 
                     }
 
@@ -96,29 +104,14 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
             }
         };
 
-        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length() + 1, 30, startingIndex);
+//        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length() + 1, 30, startingIndex);
+//        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getVsmCards().size() + 1, 30, startingIndex);
+        if (SplashScreenActivity.allData != null) {
+            handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getVsmCards().size() + 1,
+                    Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()), startingIndex);
+        } else
+            handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getVsmCards().size() + 1, 30, startingIndex);
         handleDataChangeThread.start();
-    }
-
-    @Override
-    public void onSuccess(JSONObject jsonObject) {
-        try {
-            JSONArray jsonArray = jsonObject.getJSONObject("consolidationObjectData").getJSONArray("getSalesDataToDisplayVsmCards");
-
-            MainActivity.vsmCardJSONArray = jsonArray;
-            vsmCardProgressBar.setVisibility(View.GONE);
-            inflateAllCompanyCards(jsonArray, 0);
-        } catch (Exception e) {
-            if (vsmCardProgressBar != null) {
-                vsmCardProgressBar.setVisibility(View.GONE);
-            }
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-
     }
 
     public void backTraverse(Fragment fragment, int id) {
@@ -132,7 +125,7 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
                         NavController navController = NavHostFragment.findNavController(fragment);
                         navController.navigate(id);
                     } else {
-                        inflateAllCompanyCards(MainActivity.vsmCardJSONArray, distributorIndex - 1);
+                        inflateAllCompanyCards(distributorIndex - 1);
                     }
 //                    inflateAllTables(MainActivity.distributorTableJSONArray, 0);
 

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,9 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-
-//import androidx.annotation.RequiresApi;
-//import androidx.fragment.app.FragmentActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,8 +31,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     int width;
-
-
 
     LatLng loc1 = new LatLng(9.016947, 38.764635);
     LatLng loc2 = new LatLng(9.016677, 38.766920);
@@ -97,7 +91,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }, 40000);
 
 
-
 //        h.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -121,8 +114,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        LayoutInflater layoutInflater=(LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View map_overlay=layoutInflater.inflate(R.layout.map_overlay, null);
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View map_overlay = layoutInflater.inflate(R.layout.map_overlay, null);
         WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
 
@@ -143,11 +136,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void handleMessage(Message msg) {
                 String message = (String) msg.obj;
                 int index = Integer.parseInt(message);
-
-                if(index==MapsActivity.locations.size()){
+                if (index == MapsActivity.locations.size()) {
                     startActivity(new Intent(MapsActivity.this, MainActivity.class));
-                }
-                else{
+                } else {
                     LatLng loc = locations.get(index);
 
                     MarkerOptions marker = new MarkerOptions().position(loc);
@@ -184,10 +175,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         };
 
-
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(MapsActivity.this, MainActivity.class));
+    }
 };
+
 
 class MarkerThread extends Thread {
 
@@ -200,7 +196,7 @@ class MarkerThread extends Thread {
     public void run() {
         for (int i = 0; i <= MapsActivity.locations.size(); i++) {
             Log.v("MapIndex", "" + i);
-            if(MapsActivity.handler!=null){
+            if (MapsActivity.handler != null) {
                 Message msg = MapsActivity.handler.obtainMessage();
                 msg.obj = "" + i;
                 MapsActivity.handler.sendMessage(msg);

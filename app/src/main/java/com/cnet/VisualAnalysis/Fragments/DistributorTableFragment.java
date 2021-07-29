@@ -25,26 +25,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
-import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class DistributorTableFragment extends Fragment implements VolleyHttp.GetRequest {
+public class DistributorTableFragment extends Fragment {
 
     public static Handler animationHandler;
     public static Handler changeDataHandler;
@@ -62,16 +55,14 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     int sumofProspect, sumofOutlet, sumofSKU, sumofQuantity = 0;
     double sumofSales = 0;
 
+    float numberOfRows = 0;
+
     ArrayList<DistributorTableRow> distributorTableRows;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (MainActivity.distributorTableJSONArray == null) {
-            VolleyHttp http = new VolleyHttp(getContext());
-            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
-        }
 
     }
 
@@ -85,7 +76,10 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         distributorHeaderTextView = view.findViewById(R.id.distributorHeaderTextView);
         fragment = this;
 
-        backTraverse(fragment, R.id.summaryTableFragment);
+        if (SplashScreenActivity.allData.isEnableNavigation()) {
+            backTraverse(fragment, R.id.summaryTableFragment);
+
+        }
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
@@ -121,26 +115,20 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     @Override
     public void onResume() {
         super.onResume();
-        if (MainActivity.distributorTableJSONArray != null) {
+        if (SplashScreenActivity.allData.getFmcgData().getDistributorTableRows() != null) {
             distributorTableProgressBar.setVisibility(View.GONE);
-            inflateAllTables(MainActivity.distributorTableJSONArray, 0);
+            inflateAllTables(0);
         }
 
-//        backTraverse(fragment,R.id.summaryTableFragment);
     }
 
     @SuppressLint("HandlerLeak")
-    public void inflateTable(JSONArray jsonArray, int dataIndex) {
+    public void inflateTable(int dataIndex) {
         resetLastRowSummation();
         if (distributorTableLayout != null) {
             distributorTableLayout.removeAllViews();
         }
-        try {
-            tablesToDisplay = UtilityFunctionsForActivity1.distributorTableParser(jsonArray, dataIndex);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        tablesToDisplay = SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().get(dataIndex).getTableData();
 
         animationHandler = new Handler() {
             @Override
@@ -154,10 +142,10 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
-                } else if (index == tablesToDisplay.size() + 1 && dataIndex == jsonArray.length() - 1) {
+                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size() - 1) {
                     Log.i("from distributor", "navigating from distributor: ");
 
-                    if(fragment!=null){
+                    if (fragment != null) {
                         NavController navController = NavHostFragment.findNavController(fragment);
                         navController.navigate(R.id.vsmCardFragment);
                     }
@@ -170,12 +158,14 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200, this);
+//        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler,
+//                1000 * Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) / SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().get(dataIndex).getTableData().size());
         handleRowAnimationThread.start();
     }
 
     @SuppressLint("HandlerLeak")
-    public void inflateAllTables(JSONArray jsonArray, int startingIndex) {
+    public void inflateAllTables(int startingIndex) {
         changeDataHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -184,27 +174,24 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                 if (message != null) {
                     index = Integer.parseInt(message);
                     distributorIndex = index;
+
                 }
-                inflateTable(jsonArray, index);
-                setDistributorHeader(jsonArray, index);
+                inflateTable(index);
+                setDistributorHeader(index);
             }
         };
 
-        handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, jsonArray.length(), 20, startingIndex);
-        handleDataChangeThread.start();
+        float secondsToWait = Float.parseFloat(SplashScreenActivity.allData.getTransitionTimeInMinutes());
 
-        Log.i("ALIVE", "THREAD IS ALIVE: " + handleDataChangeThread.isAlive());
+        handleDataChangeThread = new HandleDataChangeThread(DistributorTableFragment.changeDataHandler, SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size(), (int) secondsToWait, startingIndex);
+        handleDataChangeThread.start();
 
     }
 
-    public void setDistributorHeader(JSONArray jsonArray, int index) {
-        try {
-            String distributorName = jsonArray.getJSONObject(index).getString("nameOfOrg");
-            if (distributorHeaderTextView != null)
-                distributorHeaderTextView.setText(distributorName);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void setDistributorHeader(int index) {
+        String distributorName = SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().get(index).getNameOfOrg();
+        if (distributorHeaderTextView != null)
+            distributorHeaderTextView.setText(distributorName);
     }
 
     public void lastRowSummation(DistributorTableRow distributorTableRow) {
@@ -260,7 +247,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         distributorQuantityCountTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorQuantityCountTV.setTextSize(25f);
 
-        distributorTotalSalesTV.setText(numberFormat.format(sumofSales));
+        distributorTotalSalesTV.setText(numberFormat.format(Math.round(sumofSales * 100.0) / 100.0));
         distributorTotalSalesTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorTotalSalesTV.setTextSize(25f);
 
@@ -275,7 +262,7 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
         distributorTotalSalesTV.startAnimation(animation);
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
-        if(distributorTableLayout!=null){
+        if (distributorTableLayout != null) {
             distributorTableLayout.addView(tableElements);
             UtilityFunctionsForActivity2.animate(distributorTableLayout, tableElements);
 
@@ -284,38 +271,10 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
     }
 
 
-    @Override
-    public void onSuccess(JSONObject jsonObject) {
-
-        JSONArray jsonArray = null;
-        try {
-            jsonArray = jsonObject.getJSONObject("consolidationObjectData").getJSONArray("getSalesDataForSingleOrganization");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        MainActivity.distributorTableJSONArray = jsonArray;
-
-        if (distributorTableProgressBar != null) {
-            distributorTableProgressBar.setVisibility(View.GONE);
-        }
-        try {
-            inflateAllTables(jsonArray, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-
-    }
-
     public void backTraverse(Fragment fragment, int id) {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-
 
                 if (handleDataChangeThread != null) {
                     handleDataChangeThread.interrupt();
@@ -324,14 +283,14 @@ public class DistributorTableFragment extends Fragment implements VolleyHttp.Get
                     handleRowAnimationThread.interrupt();
                 }
                 if (handleDataChangeThread == null) {
-                    startActivity(new Intent(requireActivity(), StartingActivty.class));
+                    startActivity(new Intent(requireActivity(), SplashScreenActivity.class));
                 }
 
                 if (distributorIndex == 0) {
                     NavController navController = NavHostFragment.findNavController(fragment);
                     navController.navigate(id);
                 } else {
-                    inflateAllTables(MainActivity.distributorTableJSONArray, distributorIndex - 1);
+                    inflateAllTables(distributorIndex - 1);
                 }
             }
         });

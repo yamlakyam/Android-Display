@@ -2,24 +2,22 @@ package com.cnet.VisualAnalysis.Threads;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 
-public class HandleDataChangeThread extends Thread {
+public class HandleDistributorChangeThread extends Thread {
     Handler changeDataHandler;
     int numberOfDistributors;
     int numberOfSeconds;
     int startingIndex;
 
-    public HandleDataChangeThread(Handler changeDataHandler, int numberOfDistributors, int numberOfSeconds, int startingIndex) {
+    public HandleDistributorChangeThread(Handler changeDataHandler, int numberOfDistributors, int numberOfSeconds, int startingIndex) {
         this.changeDataHandler = changeDataHandler;
         this.numberOfDistributors = numberOfDistributors;
         this.numberOfSeconds = numberOfSeconds;
         this.startingIndex = startingIndex;
     }
-
-//    VsmTransactionFragment vsmTransactionFragment = new VsmTransactionFragment();
-//    Integer vansSum =vsmTransactionFragment.vansSum(SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().get(1).getAllVansData().get(0)
 
     public void run() {
         super.run();
@@ -29,9 +27,9 @@ public class HandleDataChangeThread extends Thread {
             message.obj = String.valueOf(i);
             changeDataHandler.sendMessage(message);
             try {
-
-                Thread.sleep(numberOfSeconds * 1000);
-
+                int wait = Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes());
+                Log.i("wait", SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().get(i).getTableData().size() * wait + " ");
+                Thread.sleep((int) ((SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().get(i).getTableData().size() * wait * 1000) * 1.2));
             } catch (InterruptedException e) {
 
                 e.printStackTrace();
@@ -40,4 +38,3 @@ public class HandleDataChangeThread extends Thread {
         }
     }
 }
-

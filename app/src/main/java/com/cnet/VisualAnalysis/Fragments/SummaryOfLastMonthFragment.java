@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +97,6 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
         isInflatingTable = true;
-        Log.i("success", fragment + "");
 
         DashBoardData dashBoardData = dashBoardDataParam;
         inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData, seconds);
@@ -141,7 +139,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds,this);
         handleRowAnimationThread.start();
     }
 
@@ -190,7 +188,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(getActivity(), StartingActivty.class);
+                Intent intent = new Intent(getActivity(), SplashScreenActivity.class);
                 startActivity(intent);
             }
         });
@@ -198,17 +196,25 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
     public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
-        SecondActivity secondActivity = new SecondActivity();
-        if (secondActivity.visibleFragments[5]) {
-            navController.navigate(R.id.branchSummaryFragment);
-        } else if (secondActivity.visibleFragments[0]) {
-            navController.navigate(R.id.summarizedByArticleFragment2);
-        } else if (secondActivity.visibleFragments[1]) {
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        } else if (secondActivity.visibleFragments[2]) {
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        } else if (secondActivity.visibleFragments[3]) {
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+
+            if (SplashScreenActivity.allData.getLayoutList().size() > SplashScreenActivity.allData.getLayoutList().indexOf(7) + 1) {
+                int next = SplashScreenActivity.allData.getLayoutList().indexOf(7) + 1;
+                if (SplashScreenActivity.allData.getLayoutList().get(next) == 8)
+                    navController.navigate(R.id.branchSummaryFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
+                if (SplashScreenActivity.allData.getLayoutList().get(0) == 3)
+                    navController.navigate(R.id.summarizedByArticleFragment2);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 4)
+                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 5)
+                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 6)
+                    navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 8)
+                    navController.navigate(R.id.branchSummaryFragment);
+            }
+
         }
     }
 

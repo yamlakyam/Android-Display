@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
 import com.cnet.VisualAnalysis.Data.FmcgData;
+import com.cnet.VisualAnalysis.Data.SingleDistributorData;
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
 import com.cnet.VisualAnalysis.Data.VSMCard;
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
@@ -31,7 +32,7 @@ public class FmcgDataParser {
         FmcgData fmcgData = new FmcgData();
 
         fmcgData.setSummaryTableRows(summaryTableParser(jsonObject));
-        fmcgData.setDistributorTableRows(distributorTableParser(jsonObject, 0));
+        fmcgData.setDistributorTableRows(allDistributorTableData(jsonObject));
         fmcgData.setVsmCards(vsmCardParser(jsonObject));
         fmcgData.setVsmTableForSingleDistributors(vsmTransactionParser(jsonObject));
 
@@ -62,6 +63,43 @@ public class FmcgDataParser {
             }
         }
         return tableData;
+    }
+
+
+    public static ArrayList<SingleDistributorData> allDistributorTableData(JSONObject jsonObject) throws JSONException {
+        JSONArray jsonArray = jsonObject.getJSONArray("getSalesDataForSingleOrganization");
+        ArrayList<SingleDistributorData> allDistributorData = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject singleDisData = jsonArray.getJSONObject(i);
+            JSONArray singleDisTableData = singleDisData.getJSONArray("organizationChartDataList");
+            String nameOfOrg = singleDisData.getString("nameOfOrg");
+            ArrayList<DistributorTableRow> distributorTableRows = new ArrayList<>();
+            for (int j = 0; j < singleDisTableData.length(); j++) {
+                JSONObject singleDisTableObject = singleDisTableData.getJSONObject(j);
+                DistributorTableRow distributorTableRow = new DistributorTableRow(
+                        nameOfOrg,
+                        singleDisTableObject.getString("vsi"),
+                        singleDisTableObject.getInt("salesOutLateCount"),
+                        singleDisTableObject.getInt("skuCount"),
+                        singleDisTableObject.getInt("quantityCount"),
+                        singleDisTableObject.getDouble("totalSalesAmountAfterTax"),
+                        singleDisTableObject.getInt("prospect"),
+                        singleDisTableObject.getString("startTimeStamp"),
+                        singleDisTableObject.getString("endTimeStamp")
+                );
+                distributorTableRows.add(distributorTableRow);
+
+            }
+
+            SingleDistributorData singleDistributorData = new SingleDistributorData(
+                    distributorTableRows,
+                    nameOfOrg
+            );
+
+            allDistributorData.add(singleDistributorData);
+        }
+
+        return allDistributorData;
     }
 
     public static ArrayList<DistributorTableRow> distributorTableParser(JSONObject jsonObject, int index) throws JSONException {

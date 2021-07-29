@@ -1,16 +1,10 @@
 package com.cnet.VisualAnalysis;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-
-import com.cnet.VisualAnalysis.Data.DashBoardData;
-import com.cnet.VisualAnalysis.Fragments.DistributorTableFragment;
 
 import org.json.JSONArray;
 
@@ -23,11 +17,11 @@ public class MainActivity extends AppCompatActivity {
 
     NavController navController;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     public Fragment getCurrentFragment() {
@@ -37,36 +31,4 @@ public class MainActivity extends AppCompatActivity {
         return fragment;
     }
 
-
-    private void rightNavigation() {
-        if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryTableFragment")){
-            navController.navigate(R.id.distributorTableFragment);
-        }
-        else if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.DistributorTableFragment")){
-            navController.navigate(R.id.vsmCardFragment);
-        }
-        else if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.VsmCardFragment")){
-            navController.navigate(R.id.vsmTransactionFragment);
-        }
-        else if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.VsmTransactionFragment")){
-            navController.navigate(R.id.summaryTableFragment);
-        }
-
-    }
-
-    private void leftNavigation() {
-        if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.SummaryTableFragment")){
-
-            navController.navigate(R.id.vsmTransactionFragment);
-        }
-        else if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.DistributorTableFragment")){
-            navController.navigate(R.id.summaryTableFragment);
-        }
-        else if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.VsmCardFragment")){
-            navController.navigate(R.id.distributorTableFragment);
-        }
-        else if(getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.VsmTransactionFragment")){
-            navController.navigate(R.id.vsmCardFragment);
-        }
-    }
 }
