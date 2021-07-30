@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,8 +104,6 @@ public class VsmTransactionFragment extends Fragment {
     @SuppressLint("HandlerLeak")
     private void inflateAlldistributors(ArrayList<VsmTableForSingleDistributor> allOrgData, int distributorStartIndex, int vanStartingIndex) {
         distributors = allOrgData.size();
-        Log.i("distributors", distributors + "");
-
         changeDistributorHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -119,8 +116,6 @@ public class VsmTransactionFragment extends Fragment {
                 }
                 inflateAllVansInSingleDis(allOrgData, distributorIndex, vanStartingIndex);
 
-                Log.i("DISTRIBUTOR INDEX", distributorIndex + "");
-                Log.i("SUM", (int) (vansSum(numberOfRowsInSingleVan.get(distributorIndex))) + "");
             }
         };
 
@@ -218,7 +213,7 @@ public class VsmTransactionFragment extends Fragment {
     }
 
     public void drawLastRow() {
-        if(getContext()!=null){
+        if (getContext() != null) {
             View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_vsm_transaction, null, false);
             TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
             TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);

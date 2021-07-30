@@ -43,25 +43,7 @@ public class HandleRowAnimationThread extends Thread {
                     Thread.sleep(3000);
 
                 } else if (i == rows) {
-                    SummarizedByArticleFragment.isInflatingTable = false;
-                    SummarizedByArticleChildCategFragment.isInflatingTable = false;
-                    SummarizedByArticleParentCategFragment.isInflatingTable = false;
-                    SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-                    SummaryOfLastMonthFragment.isInflatingTable = false;
-                    BranchSummaryFragment.isInflatingTable = false;
-                    if (SplashScreenActivity.allData != null) {
-
-                        if (fragment instanceof SummaryTableFragment ) {
-                            int secondsToWait = Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) - (rows * (numberOfSeconds / 1000));
-                            Log.i("SECONDS ", secondsToWait + "");
-                            Thread.sleep(secondsToWait * 1000);
-                        } else {
-                            Thread.sleep(5000);
-                        }
-
-                    } else {
-                        Thread.sleep(5000);
-                    }
+                    lastRowAnimationSleep();
                 } else {
                     Thread.sleep(numberOfSeconds);
                 }
@@ -69,6 +51,31 @@ public class HandleRowAnimationThread extends Thread {
                 e.printStackTrace();
                 return;
             }
+        }
+    }
+
+    public void lastRowAnimationSleep() throws InterruptedException {
+        SummarizedByArticleFragment.isInflatingTable = false;
+        SummarizedByArticleChildCategFragment.isInflatingTable = false;
+        SummarizedByArticleParentCategFragment.isInflatingTable = false;
+        SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+        SummaryOfLastMonthFragment.isInflatingTable = false;
+        BranchSummaryFragment.isInflatingTable = false;
+        if (SplashScreenActivity.allData != null) {
+
+            if (fragment instanceof SummaryTableFragment) {
+                int secondsToWait = Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) - (rows * (numberOfSeconds / 1000));
+                Log.i("SECONDS ", secondsToWait + "");
+                if (secondsToWait < 0) {
+                    secondsToWait = rows * (numberOfSeconds / 1000) + 5000;
+                }
+                Thread.sleep(secondsToWait * 1000);
+            } else {
+                Thread.sleep(5000);
+            }
+
+        } else {
+            Thread.sleep(5000);
         }
     }
 }

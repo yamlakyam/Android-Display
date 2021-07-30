@@ -49,7 +49,6 @@ public class UtilityFunctionsForActivity2 {
         piechart.getDescription().setTextColor(Color.parseColor("#f6f8fb"));
         piechart.getDescription().setText(label);
 
-
 //        piechart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
 //        piechart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
 //        piechart.getLegend().setFormLineDashEffect(new DashPathEffect(new float[] {10f, 5f},0f));

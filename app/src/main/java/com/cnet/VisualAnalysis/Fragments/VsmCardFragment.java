@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -17,19 +18,22 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
+import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
+import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
-public class VsmCardFragment extends Fragment {
+public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
 
     GridView vsmCardGridLayout;
     public static Handler changeDataHandler;
-    public static final String URL = "http://192.168.1.248:8001/api/ChartData/GetSalesDataToDisplayVsmCards";
     ProgressBar vsmCardProgressBar;
     Fragment fragment;
     HandleDataChangeThread handleDataChangeThread;
@@ -80,37 +84,38 @@ public class VsmCardFragment extends Fragment {
                 distributorIndex = index;
 
                 try {
-//                    if (index == jsonArray.length()) {
                     if (index == SplashScreenActivity.allData.getFmcgData().getVsmCards().size()) {
                         NavController navController = NavHostFragment.findNavController(fragment);
-//                        navController.navigate(R.id.vsmTransactionFragment);
 
                         if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
                             if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                                 navController.navigate(R.id.vsmTransactionFragment);
                             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                                 startActivity(new Intent(requireActivity(), MapsActivity.class));
+                            } else {
+                                navController.navigate(R.id.summaryTableFragment);
                             }
+                        } else {
+                            navController.navigate(R.id.summaryTableFragment);
                         }
                     } else {
                         UtilityFunctionsForActivity1.drawVSMCard(index, getContext(), vsmCardGridLayout);
-
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         };
 
-//        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, jsonArray.length() + 1, 30, startingIndex);
-//        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getVsmCards().size() + 1, 30, startingIndex);
+
         if (SplashScreenActivity.allData != null) {
             handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getVsmCards().size() + 1,
                     Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()), startingIndex);
-        } else
-            handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getVsmCards().size() + 1, 30, startingIndex);
+        } else {
+            handleDataChangeThread = new HandleDataChangeThread(changeDataHandler,
+                    SplashScreenActivity.allData.getFmcgData().getVsmCards().size() + 1, 30, startingIndex);
+        }
         handleDataChangeThread.start();
     }
 
@@ -127,7 +132,6 @@ public class VsmCardFragment extends Fragment {
                     } else {
                         inflateAllCompanyCards(distributorIndex - 1);
                     }
-//                    inflateAllTables(MainActivity.distributorTableJSONArray, 0);
 
                 }
             }
@@ -140,5 +144,17 @@ public class VsmCardFragment extends Fragment {
         if (handleDataChangeThread != null) {
             handleDataChangeThread.interrupt();
         }
+    }
+
+    @Override
+    public void onSuccess(JSONObject jsonObject) throws JSONException {
+        AllDataParser allDataParser = new AllDataParser(jsonObject);
+        SplashScreenActivity.allData = allDataParser.parseAllData();
+    }
+
+    @Override
+    public void onFailure(VolleyError error) {
+        Toast.makeText(getContext(), "Failed updating", Toast.LENGTH_SHORT).show();
+
     }
 }

@@ -7,8 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -62,8 +59,6 @@ public class DistributorTableFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -78,37 +73,7 @@ public class DistributorTableFragment extends Fragment {
 
         if (SplashScreenActivity.allData.isEnableNavigation()) {
             backTraverse(fragment, R.id.summaryTableFragment);
-
         }
-
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                Log.i("key press", "key press detected");
-
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    switch (keyCode) {
-                        case KeyEvent.KEYCODE_DPAD_UP_LEFT:
-                            Log.i("key press", "left key pressed ");
-
-                        case KeyEvent.KEYCODE_DPAD_RIGHT:
-                            Log.i("key press", "right key pressed");
-
-                        case KeyEvent.KEYCODE_DPAD_CENTER:
-                            Log.i("key press", "center key pressed");
-
-                        case KeyEvent.KEYCODE_BACK:
-                            Log.i("key press", "back key pressed");
-                    }
-                }
-                return true;
-            }
-        });
-
         return view;
     }
 
@@ -143,8 +108,6 @@ public class DistributorTableFragment extends Fragment {
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
                 } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size() - 1) {
-                    Log.i("from distributor", "navigating from distributor: ");
-
                     if (fragment != null) {
                         NavController navController = NavHostFragment.findNavController(fragment);
                         navController.navigate(R.id.vsmCardFragment);

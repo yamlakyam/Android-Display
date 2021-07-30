@@ -1,7 +1,11 @@
 package com.cnet.VisualAnalysis;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -22,6 +26,8 @@ import org.json.JSONObject;
 public class SplashScreenActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
     public static AllData allData;
+    public static String myAndroidDeviceId;
+
 
     ProgressBar progressBarCircular;
     TextView loadingTextView;
@@ -35,10 +41,9 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         loadingTextView = findViewById(R.id.loadingTextView);
 
         VolleyHttp http = new VolleyHttp(getApplicationContext());
-        http.makeGetRequest(Constants.allDataWithConfigurationURL, SplashScreenActivity.this);
-
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(),
+                SplashScreenActivity.this);
     }
-
 
     @Override
     public void onSuccess(JSONObject jsonObject) {
@@ -51,17 +56,14 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         try {
             allData = allDataParser.parseAllData();
 
-            if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0){
+            if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0) {
                 startActivity(new Intent(SplashScreenActivity.this, SecondActivity.class));
-            }
-            else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0){
+            } else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -69,5 +71,22 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         progressBarCircular.setVisibility(View.GONE);
         loadingTextView.setText(R.string.volley_error);
         Log.i("error", error + "");
+    }
+
+    @SuppressLint("HardwareIds")
+    public String getDeviceId() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = telephonyManager.getDeviceId();
+
+        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        return myAndroidDeviceId;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        System.exit(0);
+
     }
 }

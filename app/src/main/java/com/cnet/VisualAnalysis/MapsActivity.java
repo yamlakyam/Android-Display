@@ -180,7 +180,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(MapsActivity.this, MainActivity.class));
+        Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+        intent.putExtra("back","pressed");
+        startActivity(intent);
     }
 };
 

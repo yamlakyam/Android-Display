@@ -1,9 +1,6 @@
 package com.cnet.VisualAnalysis.Utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +10,6 @@ import android.widget.GridView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
@@ -37,26 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class UtilityFunctionsForActivity1 {
-
-    @SuppressLint("HandlerLeak")
-    public static Handler getHandlerForUpdatingDataByRedrawing(VolleyHttp.GetRequest classImplemented, Context context) {
-        return new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                String message = (String) msg.obj;
-                Integer index = 0;
-                if (message != null) {
-                    index = Integer.parseInt(message);
-                }
-
-                VolleyHttp http = new VolleyHttp(context);
-                http.makeGetRequest("https://jsonplaceholder.typicode.com/todos/" + index, classImplemented);
-
-            }
-
-        };
-
-    }
 
     public static ArrayList<SummaryTableRow> summaryTableParser(JSONArray tableInJson) throws JSONException {
         ArrayList<SummaryTableRow> tableData = new ArrayList<>();

@@ -49,7 +49,6 @@ public class SecondActivity extends AppCompatActivity {
     LinearLayout playPauseKeyPad;
 
     public boolean[] visibleFragments = {true, true, true, false, true, true};
-    public static String myAndroidDeviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,16 +115,7 @@ public class SecondActivity extends AppCompatActivity {
 //                SummarizedByArticleFragment.isInflatingTable = false;
 
                     if (!firstCenterKeyPause) {
-
-                        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                        String imei = telephonyManager.getDeviceId();
-
-                        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-
-                        Log.i("imei", telephonyManager.getDeviceId() + "");
-                        Log.i("unique ID", myAndroidDeviceId);
                         //cc70a81e8233444a
-
                         playPause.setImageResource(R.drawable.ic_pause_button);
 
                         summaryByParentArticlePause = false;
