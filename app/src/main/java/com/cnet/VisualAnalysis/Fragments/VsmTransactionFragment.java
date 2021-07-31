@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
+import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -35,9 +37,8 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class VsmTransactionFragment extends Fragment {
+public class VsmTransactionFragment extends Fragment implements MainActivity.keyPress {
 
-    public static final String URL = "http://192.168.1.248:8001/api/ChartData/GetSalesDataToDisplayOnVsmTable";
     public static Handler changeVanHandler;
     public static Handler changeDistributorHandler;
     static Handler animationHandler;
@@ -337,17 +338,30 @@ public class VsmTransactionFragment extends Fragment {
     public void onStop() {
         super.onStop();
         if (handleDistDataChangeThread != null) {
-
             handleDistDataChangeThread.interrupt();
         }
         if (handleVanDataChangeThread != null) {
-
             handleVanDataChangeThread.interrupt();
         }
         if (handleRowAnimationThread != null) {
 
             handleRowAnimationThread.interrupt();
         }
+    }
+
+    @Override
+    public void centerKey(int keyCode, KeyEvent event) {
+
+    }
+
+    @Override
+    public void leftKey(int keyCode, KeyEvent event) {
+
+    }
+
+    @Override
+    public void rightKey(int keyCode, KeyEvent event) {
+
     }
 }
 

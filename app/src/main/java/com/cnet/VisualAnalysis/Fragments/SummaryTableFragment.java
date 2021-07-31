@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
+import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -36,7 +38,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
-public class SummaryTableFragment extends Fragment {
+public class SummaryTableFragment extends Fragment implements MainActivity.keyPress {
 
     private TableLayout summaryTableLayout;
     public static Handler changeTodoHandler;
@@ -45,6 +47,7 @@ public class SummaryTableFragment extends Fragment {
     private ProgressBar summaryTableProgressBar;
     ScrollView scrollSummaryTable;
     Fragment fragment;
+    NavController navController;
 
     HandleRowAnimationThread handleRowAnimationThread;
 
@@ -146,7 +149,7 @@ public class SummaryTableFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200,this);
+        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200, this);
 //        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 1000 * Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) / SplashScreenActivity.allData.getFmcgData().getSummaryTableRows().size());
         handleRowAnimationThread.start();
 
@@ -262,6 +265,31 @@ public class SummaryTableFragment extends Fragment {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
+    }
+
+    @Override
+    public void centerKey(int keyCode, KeyEvent event) {
+
+    }
+
+    @Override
+    public void leftKey(int keyCode, KeyEvent event) {
+        if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+        }
+        else if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+            navController = NavHostFragment.findNavController(fragment);
+            navController.navigate(R.id.vsmTransactionFragment);
+        }
+        else{
+            navController.navigate(R.id.vsmCardFragment);
+        }
+    }
+
+    @Override
+    public void rightKey(int keyCode, KeyEvent event) {
+        navController = NavHostFragment.findNavController(fragment);
+        navController.navigate(R.id.distributorTableFragment);
     }
 }
 

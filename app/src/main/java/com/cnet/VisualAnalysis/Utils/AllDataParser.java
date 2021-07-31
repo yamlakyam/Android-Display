@@ -20,8 +20,6 @@ public class AllDataParser {
 
         allData.setLayoutList(layoutListParser(jsonObject));
 
-//        if(jsonObject.getJSONArray("consolidationObjectData").length()!=0){
-
         if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData")) {
             allData.setFmcgData(new FmcgDataParser(jsonObject.getJSONArray("consolidationObjectData")).parseFmcgData());
         }
@@ -31,8 +29,8 @@ public class AllDataParser {
         if (jsonObject.has("enableNavigation") && !jsonObject.isNull("enableNavigation")) {
             allData.setEnableNavigation(jsonObject.getBoolean("enableNavigation"));
         }
-        if (jsonObject.has("transitionTimeInMinutes") && !jsonObject.isNull("transitionTimeInMinutes")) {
-            allData.setTransitionTimeInMinutes(jsonObject.getString("transitionTimeInMinutes"));
+        if (jsonObject.has("transitionTimeInSeconds") && !jsonObject.isNull("transitionTimeInSeconds")) {
+            allData.setTransitionTimeInMinutes(jsonObject.getString("transitionTimeInSeconds"));
         }
         return allData;
     }

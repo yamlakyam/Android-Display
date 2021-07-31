@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -23,19 +24,26 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.AllDataParser;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.Utils.VolleyHttp;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class BranchSummaryFragment extends Fragment {
+public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetRequest {
 
     TableLayout branchSummaryTableLayout;
     ProgressBar branchSummaryProgressBar;
@@ -58,8 +66,6 @@ public class BranchSummaryFragment extends Fragment {
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                 SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                 SummaryOfLastMonthFragment.handleRowAnimationThread);
-
-
     }
 
     @Override
@@ -70,6 +76,10 @@ public class BranchSummaryFragment extends Fragment {
         branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
         fragment = this;
+
+        VolleyHttp http = new VolleyHttp(getContext());
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + new SplashScreenActivity().getDeviceId(requireContext()),
+                this);
 
         backTraverse(fragment, R.id.summaryOfLastMonthFragment);
         return view;
@@ -104,10 +114,6 @@ public class BranchSummaryFragment extends Fragment {
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
 
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause) {
-//                    NavController navController = NavHostFragment.findNavController(fragment);
-//                    navController.navigate(R.id.summarizedByArticleFragment2);
-//                    SecondActivity secondActivity = new SecondActivity();
-//                    secondActivity.navigations(fragment);
                     navigate(fragment);
 
                 } else if (index < tablesToDisplay.size()) {
@@ -187,7 +193,7 @@ public class BranchSummaryFragment extends Fragment {
         tableRowProperty5.startAnimation(animation);
 
         branchSummaryTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity2.animate(branchSummaryTableLayout, tableElements);
+        UtilityFunctionsForActivity2.animateBottomToTop(branchSummaryTableLayout, tableElements);
     }
 
     public void navigate(Fragment fragment) {
@@ -203,7 +209,7 @@ public class BranchSummaryFragment extends Fragment {
                     navController.navigate(R.id.summarizedByArticleChildCategFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().get(0) == 6)
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-                 else if (SplashScreenActivity.allData.getLayoutList().get(0) == 7)
+                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 7)
                     navController.navigate(R.id.summaryOfLastMonthFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().get(0) == 8)
                     navController.navigate(R.id.branchSummaryFragment);
@@ -219,4 +225,15 @@ public class BranchSummaryFragment extends Fragment {
             handleRowAnimationThread.interrupt();
     }
 
+    @Override
+    public void onSuccess(JSONObject jsonObject) throws JSONException {
+        AllDataParser allDataParser = new AllDataParser(jsonObject);
+        SplashScreenActivity.allData = allDataParser.parseAllData();
+    }
+
+    @Override
+    public void onFailure(VolleyError error) {
+        Toast.makeText(getContext(), "Failed updating", Toast.LENGTH_SHORT).show();
+
+    }
 }

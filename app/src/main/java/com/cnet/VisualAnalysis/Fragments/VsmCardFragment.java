@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Utils.AllDataParser;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
@@ -36,12 +38,13 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
     public static Handler changeDataHandler;
     ProgressBar vsmCardProgressBar;
     Fragment fragment;
-    HandleDataChangeThread handleDataChangeThread;
+   public static HandleDataChangeThread handleDataChangeThread;
     int distributorIndex = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -53,6 +56,10 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         vsmCardGridLayout = view.findViewById(R.id.vsmCardGridLayout);
         vsmCardProgressBar = view.findViewById(R.id.vsmCardProgressBar);
         fragment = this;
+
+        VolleyHttp http = new VolleyHttp(getContext());
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + new SplashScreenActivity().getDeviceId(requireContext()),
+                this);
 
         if (SplashScreenActivity.allData.isEnableNavigation()) {
             backTraverse(fragment, R.id.distributorTableFragment);
@@ -148,6 +155,8 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
 
     @Override
     public void onSuccess(JSONObject jsonObject) throws JSONException {
+
+        Log.i("updated", "onSuccess: ");
         AllDataParser allDataParser = new AllDataParser(jsonObject);
         SplashScreenActivity.allData = allDataParser.parseAllData();
     }

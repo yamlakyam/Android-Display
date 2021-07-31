@@ -1,25 +1,31 @@
 package com.cnet.VisualAnalysis;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.fragment.NavHostFragment;
 
-import org.json.JSONArray;
-
 public class MainActivity extends AppCompatActivity {
 
-    public static JSONArray summaryTableJSONArray;
-    public static JSONArray vsmCardJSONArray;
-    public static JSONArray distributorTableJSONArray;
-    public static JSONArray vsmTransactionJSONArray;
+    private Context context;
 
-    NavController navController;
+    public interface keyPress {
+        void centerKey(int keyCode, KeyEvent event);
+
+        void leftKey(int keyCode, KeyEvent event);
+
+        void rightKey(int keyCode, KeyEvent event);
+    }
+
+    keyPress keyPress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("back");
-
         if (name != null) {
             Log.i("Message", name);
             if (name.equals("pressed")) {
@@ -39,7 +44,72 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                keyPress.centerKey(keyCode, event);
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                keyPress.leftKey(keyCode, event);
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                keyPress.rightKey(keyCode, event);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+//    private void rightNavigation() {
+//        if (getCurrentFragment() instanceof SummaryTableFragment) {
+//            navController.navigate(R.id.distributorTableFragment);
+//        } else if (getCurrentFragment() instanceof DistributorTableFragment) {
+//            navController.navigate(R.id.vsmCardFragment);
+//        } else if (getCurrentFragment() instanceof VsmCardFragment) {
+//            Log.i("key", "right key from vsm card ");
+//            VsmCardFragment.handleDataChangeThread.interrupt();
+//            if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+//                navController.navigate(R.id.vsmTransactionFragment);
+//            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+//                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+//            } else {
+//                navController.navigate(R.id.summaryTableFragment);
+//            }
+//        } else if (getCurrentFragment() instanceof VsmTransactionFragment) {
+//            if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+//                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+//            } else {
+//                navController.navigate(R.id.summaryTableFragment);
+//            }
+//        }
+//    }
+//
+//    private void leftNavigation() {
+//
+//        if (getCurrentFragment() instanceof SummaryTableFragment) {
+//            if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+//                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+//            } else if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+//                navController.navigate(R.id.vsmTransactionFragment);
+//            } else {
+//                navController.navigate(R.id.vsmCardFragment);
+//
+//            }
+//        } else if (getCurrentFragment() instanceof DistributorTableFragment) {
+//            navController.navigate(R.id.summaryTableFragment);
+//        } else if (getCurrentFragment() instanceof VsmCardFragment) {
+//            Log.i("key", "left key from vsm card ");
+//            VsmCardFragment.handleDataChangeThread.interrupt();
+//            navController.navigate(R.id.distributorTableFragment);
+//        } else if (getCurrentFragment() instanceof VsmTransactionFragment) {
+//            navController.navigate(R.id.vsmCardFragment);
+//        }
+//    }
+
+
+    public Fragment getCurrentFragment() {
+        Fragment navHostFragment = getSupportFragmentManager().getPrimaryNavigationFragment();
+        return navHostFragment.getChildFragmentManager().getFragments().get(0);
     }
 
     public void setHomeFragment(int fragmentId) {

@@ -180,7 +180,6 @@ public class SecondActivity extends AppCompatActivity {
 
     public Fragment getCurrentFragment() {
         Fragment navHostFragment = getSupportFragmentManager().getPrimaryNavigationFragment();
-
         return navHostFragment.getChildFragmentManager().getFragments().get(0);
     }
 

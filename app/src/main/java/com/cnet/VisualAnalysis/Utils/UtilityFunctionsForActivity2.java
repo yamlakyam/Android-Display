@@ -231,7 +231,7 @@ public class UtilityFunctionsForActivity2 {
 
 
             summarizedByArticleTableLayout.addView(tableElements);
-            animate(summarizedByArticleTableLayout, tableElements);
+            animateBottomToTop(summarizedByArticleTableLayout, tableElements);
 
         }
 
@@ -282,7 +282,7 @@ public class UtilityFunctionsForActivity2 {
 
 
             summarizedByParentArticleTableLayout.addView(tableElements);
-            animate(summarizedByParentArticleTableLayout, tableElements);
+            animateBottomToTop(summarizedByParentArticleTableLayout, tableElements);
         }
 
 
@@ -334,7 +334,7 @@ public class UtilityFunctionsForActivity2 {
 
 
             summarizedByChildArticleTableLayout.addView(tableElements);
-            animate(summarizedByChildArticleTableLayout, tableElements);
+            animateBottomToTop(summarizedByChildArticleTableLayout, tableElements);
         }
 
 
@@ -368,7 +368,7 @@ public class UtilityFunctionsForActivity2 {
 
 
             summarizedByLast30DaysTableLayout.addView(tableElements);
-            animate(summarizedByLast30DaysTableLayout, tableElements);
+            animateBottomToTop(summarizedByLast30DaysTableLayout, tableElements);
         }
 
 
@@ -398,7 +398,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateTimeToString(row.getDateTime()));
 
             summarizedByLast6MonthsTableLayout.addView(tableElements);
-            animate(summarizedByLast6MonthsTableLayout, tableElements);
+            animateBottomToTop(summarizedByLast6MonthsTableLayout, tableElements);
         }
 
 
@@ -442,13 +442,13 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty5.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
 
             branchSummaryTableLayout.addView(tableElements);
-            animate(branchSummaryTableLayout, tableElements);
+            animateBottomToTop(branchSummaryTableLayout, tableElements);
         }
 
 
     }
 
-    public static void animate(View container, View child) {
+    public static void animateBottomToTop(View container, View child) {
         Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.bottom_to_top);
         child.startAnimation(animation);
     }

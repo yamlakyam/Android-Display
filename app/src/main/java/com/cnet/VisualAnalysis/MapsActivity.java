@@ -1,16 +1,12 @@
 package com.cnet.VisualAnalysis;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +25,7 @@ import java.util.ArrayList;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-
+    public MarkerThread markerThread;
     int width;
 
     LatLng loc1 = new LatLng(9.016947, 38.764635);
@@ -47,7 +43,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static ArrayList<String> place_names = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +53,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this::onMapReady);
+
         }
 
         locations.add(loc1);
@@ -77,58 +73,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         place_names.add("Van 6");
         place_names.add("Van 7");
         place_names.add("Van 8");
+    }
 
-
-        Handler h = new Handler();
-//        h.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent intent = new Intent(MapActivity.this, MainActivity.class);
-//                intent.putExtra("Last Index",lastIndex+"");
-//                Log.i("TAG-mapctivity",""+lastIndex);
-//                startActivity(intent);
-//            }
-//        }, 40000);
-
-
-//        h.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-//                intent.putExtra("fragmentNumber",1);
-//                startActivity(intent);
-//                finish();
-//            }
-//        }, 15000);
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        markerThread.interrupt();
     }
 
     @SuppressLint("HandlerLeak")
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-
-        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View map_overlay = layoutInflater.inflate(R.layout.map_overlay, null);
-        WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
-
-        map_overlay.post(new Runnable() {
-            @Override
-            public void run() {
-                windowManager.addView(map_overlay, layoutParams);
-            }
-        });
-
-
-        MarkerThread markerThread = new MarkerThread();
-        markerThread.start();
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         handler = new Handler() {
@@ -137,61 +93,66 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String message = (String) msg.obj;
                 int index = Integer.parseInt(message);
                 if (index == MapsActivity.locations.size()) {
+//                    markerThread.interrupt();
+                    place_names.clear();
+                    locations.clear();
                     startActivity(new Intent(MapsActivity.this, MainActivity.class));
                 } else {
-                    LatLng loc = locations.get(index);
-
-                    MarkerOptions marker = new MarkerOptions().position(loc);
-                    Marker mMarker = googleMap.addMarker(marker);
-                    builder.include(marker.getPosition());
-                    LatLngBounds bounds = builder.build();
-                    width = getResources().getDisplayMetrics().widthPixels;
-                    int padding = (int) (width * 0.15); // offset from edges of the map 10% of screen
-
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                    googleMap.animateCamera(cu, 1000, null);
-                    googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                        @Override
-                        public View getInfoWindow(Marker marker) {
-                            return null;
-                        }
-
-                        @Override
-                        public View getInfoContents(Marker marker) {
-
-                            View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
-                            TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-                            nameTextView.setText(place_names.get(index));
-                            TextView descTextView = (TextView) view.findViewById(R.id.descTextView);
-                            descTextView.setText(loc.toString());
-
-                            return view;
-                        }
-                    });
-                    mMarker.showInfoWindow();
+                    drawMarkerWithInfo(googleMap, builder, index);
                 }
-
-
             }
         };
 
+        markerThread = new MarkerThread();
+        markerThread.start();
+    }
+
+    private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, int index) {
+
+        LatLng loc = locations.get(index);
+        MarkerOptions marker = new MarkerOptions().position(loc);
+        Marker mMarker = googleMap.addMarker(marker);
+        builder.include(marker.getPosition());
+        LatLngBounds bounds = builder.build();
+        width = getResources().getDisplayMetrics().widthPixels;
+        int padding = (int) (width * 0.15); // offset from edges of the map 10% of screen
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        googleMap.animateCamera(cu, 1000, null);
+        googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
+                TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
+                nameTextView.setText(place_names.get(index));
+                TextView descTextView = (TextView) view.findViewById(R.id.descTextView);
+                descTextView.setText(loc.toString());
+
+                return view;
+            }
+        });
+        mMarker.showInfoWindow();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        markerThread.interrupt();
         Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-        intent.putExtra("back","pressed");
+        intent.putExtra("back", "pressed");
         startActivity(intent);
     }
-};
 
+}
 
 class MarkerThread extends Thread {
 
-    //    MapActivity mapActivity = new MapActivity();
     public MarkerThread() {
-
     }
 
     @Override
@@ -203,14 +164,17 @@ class MarkerThread extends Thread {
                 msg.obj = "" + i;
                 MapsActivity.handler.sendMessage(msg);
 
+                if(i==MapsActivity.locations.size()){
+
+                }
+
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    return;
                 }
             }
-
-
         }
     }
 }

@@ -54,7 +54,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
     double grandTotal = 0;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

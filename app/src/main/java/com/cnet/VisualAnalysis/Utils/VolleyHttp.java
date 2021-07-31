@@ -49,16 +49,7 @@ public class VolleyHttp {
                         request.onFailure(error);
                     }
 
-                })
-       /* {
-
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("imei", SecondActivity.myAndroidDeviceId);
-                return super.getParams();
-            }
-        }
-        */;
+                });
 
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                 1000000,

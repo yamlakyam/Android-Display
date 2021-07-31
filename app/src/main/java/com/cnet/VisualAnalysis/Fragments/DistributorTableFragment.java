@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
+import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
@@ -34,7 +36,7 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class DistributorTableFragment extends Fragment {
+public class DistributorTableFragment extends Fragment implements MainActivity.keyPress {
 
     public static Handler animationHandler;
     public static Handler changeDataHandler;
@@ -48,6 +50,7 @@ public class DistributorTableFragment extends Fragment {
     Fragment fragment;
     public HandleRowAnimationThread handleRowAnimationThread;
     public HandleDataChangeThread handleDataChangeThread;
+    NavController navController;
 
     int sumofProspect, sumofOutlet, sumofSKU, sumofQuantity = 0;
     double sumofSales = 0;
@@ -227,7 +230,7 @@ public class DistributorTableFragment extends Fragment {
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         if (distributorTableLayout != null) {
             distributorTableLayout.addView(tableElements);
-            UtilityFunctionsForActivity2.animate(distributorTableLayout, tableElements);
+            UtilityFunctionsForActivity2.animateBottomToTop(distributorTableLayout, tableElements);
 
         }
 
@@ -268,5 +271,23 @@ public class DistributorTableFragment extends Fragment {
         if (handleDataChangeThread != null) {
             handleDataChangeThread.interrupt();
         }
+    }
+
+    @Override
+    public void centerKey(int keyCode, KeyEvent event) {
+
+    }
+
+    @Override
+    public void leftKey(int keyCode, KeyEvent event) {
+        navController = NavHostFragment.findNavController(fragment);
+        navController.navigate(R.id.summaryTableFragment);
+
+    }
+
+    @Override
+    public void rightKey(int keyCode, KeyEvent event) {
+        navController = NavHostFragment.findNavController(fragment);
+        navController.navigate(R.id.vsmCardFragment);
     }
 }

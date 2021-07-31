@@ -41,7 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         loadingTextView = findViewById(R.id.loadingTextView);
 
         VolleyHttp http = new VolleyHttp(getApplicationContext());
-        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(),
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
                 SplashScreenActivity.this);
     }
 
@@ -74,11 +74,12 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     }
 
     @SuppressLint("HardwareIds")
-    public String getDeviceId() {
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String imei = telephonyManager.getDeviceId();
+    public String getDeviceId(Context context) {
+//        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//        String imei = telephonyManager.getDeviceId();
 
-        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+//        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return myAndroidDeviceId;
     }
 

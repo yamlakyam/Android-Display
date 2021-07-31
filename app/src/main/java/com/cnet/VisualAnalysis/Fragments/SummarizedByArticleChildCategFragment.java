@@ -28,7 +28,6 @@ import com.cnet.VisualAnalysis.Data.SummarizedByChildArticleRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -63,10 +62,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
                 SummaryOfLastMonthFragment.handleRowAnimationThread,
                 BranchSummaryFragment.handleRowAnimationThread);
 
-//        if (SecondActivity.dashBoardData == null) {
-//            VolleyHttp http = new VolleyHttp(getContext());
-//            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
-//        }
     }
 
     @Override
@@ -81,9 +76,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
         barChart = view.findViewById(R.id.bChartSumByArticleChild);
         summarizedByChildArticleFrameLayout = view.findViewById(R.id.summarizedByChildArticleFrameLayout);
 
-
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
-
 
         return view;
     }
@@ -92,10 +85,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        if (SecondActivity.dashBoardData != null && !isInflatingTable) {
-//            summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
-//            initFragment(SecondActivity.dashBoardData ,200);
-//        }
 
         if (SplashScreenActivity.allData != null && !isInflatingTable) {
             summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
@@ -115,14 +104,12 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
             UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
         }
 
-
     }
 
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<SummarizedByChildArticleRow> tablesToDisplay, int seconds) {
         grandTotal = 0;
-
         summaryByChildArticleTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @SuppressLint("HandlerLeak")
@@ -136,12 +123,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
                 if (index == tablesToDisplay.size()) {
                     drawLastArticleChildRow();
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByChildArticlePause) {
-//                    NavController navController = NavHostFragment.findNavController(fragment);
-//                    navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//                    SecondActivity secondActivity=new SecondActivity();
-//                    secondActivity.navigations(fragment);
                     navigate(fragment);
-
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryByChildArticleTable(tablesToDisplay, getContext(), summaryByChildArticleTableLayout, index);
@@ -204,7 +186,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
     public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
-
             if (SplashScreenActivity.allData.getLayoutList().size() > SplashScreenActivity.allData.getLayoutList().indexOf(5) + 1) {
                 int next = SplashScreenActivity.allData.getLayoutList().indexOf(5) + 1;
                 if (SplashScreenActivity.allData.getLayoutList().get(next) == 6)
@@ -220,14 +201,9 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
                     navController.navigate(R.id.summarizedByArticleParentCategFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().get(0) == 5)
                     navController.navigate(R.id.summarizedByArticleChildCategFragment);
-
             }
-
-
         }
-
     }
-
 
     @Override
     public void onStop() {

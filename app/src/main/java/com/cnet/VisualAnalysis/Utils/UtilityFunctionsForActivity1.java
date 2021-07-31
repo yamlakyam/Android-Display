@@ -100,33 +100,6 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-
-    public static ArrayList<DistributorTableRow> distributorTableParser(JSONArray tableInJson, int index) throws JSONException {
-
-        ArrayList<DistributorTableRow> distributorTableData = new ArrayList<>();
-
-        JSONObject singleDistributor = tableInJson.getJSONObject(index);
-        String orgName = singleDistributor.getString("nameOfOrg");
-
-        JSONArray tableData = singleDistributor.getJSONArray("organizationChartDataList");
-        for (int j = 0; j < tableData.length(); j++) {
-            JSONObject singleVan = tableData.getJSONObject(j);
-            distributorTableData.add(new DistributorTableRow(orgName,
-                    singleVan.getString("vsi"),
-                    singleVan.getInt("salesOutLateCount"),
-                    singleVan.getInt("skuCount"),
-                    singleVan.getInt("quantityCount"),
-                    singleVan.getDouble("totalSalesAmountAfterTax"),
-                    singleVan.getInt("prospect"),
-                    singleVan.getString("startTimeStamp"),
-                    singleVan.getString("endTimeStamp")));
-        }
-
-        Log.i("COUNT", distributorTableData.size() + "");
-        return distributorTableData;
-
-    }
-
     public static void drawDistributorTable(ArrayList<DistributorTableRow> distributorTableRows, Context context, TableLayout distributorTableLayout, int index) {
         if (distributorTableRows != null) {
             DistributorTableRow row = distributorTableRows.get(index);
@@ -198,80 +171,12 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static ArrayList<ArrayList<VSMCard>> vsmCardParser(JSONArray cardsInJSon) throws JSONException {
-
-        ArrayList<ArrayList<VSMCard>> allVSMcards = new ArrayList<>();
-
-        for (int i = 0; i < cardsInJSon.length(); i++) {
-            ArrayList<VSMCard> vsmCardData = new ArrayList<>();
-
-            JSONObject singleDistributor = cardsInJSon.getJSONObject(i);
-
-            //change this to new method
-            String distributorName;
-            if (singleDistributor.getString("nameOfOrg").length() > 20) {
-                distributorName = singleDistributor.getString("nameOfOrg").substring(0, 15) + "...";
-            } else
-                distributorName = singleDistributor.getString("nameOfOrg");
-
-            JSONArray vans = singleDistributor.getJSONArray("vsmCards");
-
-            for (int j = 0; j < vans.length(); j++) {
-
-                JSONObject van = vans.getJSONObject(j);
-
-                vsmCardData.add(new VSMCard(van.getString("vsm"),
-                        van.getInt("salesOutLateCount"),
-                        van.getString("lastActive"),
-                        van.getInt("allLineItemCount"),
-                        van.getDouble("totalSalesAmount"),
-                        distributorName
-                ));
-            }
-            allVSMcards.add(vsmCardData);
-        }
-
-
-        return allVSMcards;
-    }
-
-    //    public static void drawVSMCard(JSONArray cardsInJSon, int index, Context context, GridView VSMcardGridView) throws JSONException {
     public static void drawVSMCard(int index, Context context, GridView VSMcardGridView) throws JSONException {
 
-//        VSMCardGVAdapter adapter = new VSMCardGVAdapter(context, vsmCardParser(cardsInJSon).get(index));
         VSMCardGVAdapter adapter = new VSMCardGVAdapter(context, SplashScreenActivity.allData.getFmcgData().getVsmCards().get(index));
         VSMcardGridView.setAdapter(adapter);
-
     }
 
-    public static ArrayList<VsmTableForSingleDistributor> vsmTransactionParser(JSONArray jsonArray) throws JSONException {
-
-        ArrayList<VsmTableForSingleDistributor> dataForAllDis = new ArrayList<>();
-
-        if (jsonArray != null) {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject tableDataObjectForSingleOrgInJson = jsonArray.getJSONObject(i);
-                JSONArray tableDataForSingleOrgInJson = tableDataObjectForSingleOrgInJson.getJSONArray("vsmTables");
-                String distributorName = tableDataObjectForSingleOrgInJson.getString("orgName");
-
-                ArrayList<VsmTableDataForSingleVan> dataToDisplaySingleDis = new ArrayList<>();
-                for (int j = 0; j < tableDataForSingleOrgInJson.length(); j++) {
-                    JSONObject tableDataObjectForSingleVanInJson = tableDataForSingleOrgInJson.getJSONObject(j);
-                    VsmTableDataForSingleVan dataToDisplaySingleVanTable = getSingleVanData(tableDataObjectForSingleVanInJson);
-                    dataToDisplaySingleDis.add(dataToDisplaySingleVanTable);
-                }
-
-                VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(
-                        dataToDisplaySingleDis,
-                        distributorName
-                );
-
-                dataForAllDis.add(vsmTableForSingleDistributor);
-            }
-        }
-
-        return dataForAllDis;
-    }
 
     public static VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
         JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
@@ -295,7 +200,6 @@ public class UtilityFunctionsForActivity1 {
                 formattedTIN = tableRowForSingleVan.getString("tin");
             }
 
-
             vsmTableForSingleVan.add(new VsmTransactionTableRow(
                     tableRowForSingleVan.getString("voucherNo"),
                     formattedOutlet,
@@ -312,7 +216,6 @@ public class UtilityFunctionsForActivity1 {
     }
 
     public static void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
-
         ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();
         VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
         ArrayList<VsmTransactionTableRow> rows = vsmTableDataForSingleVan.getTableRows();
