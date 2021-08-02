@@ -11,7 +11,7 @@
     <TableRow
         android:id="@+id/headerRowDB4"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"

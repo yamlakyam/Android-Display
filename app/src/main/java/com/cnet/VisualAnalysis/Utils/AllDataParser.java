@@ -20,7 +20,7 @@ public class AllDataParser {
 
         allData.setLayoutList(layoutListParser(jsonObject));
 
-        if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData")) {
+        if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
             allData.setFmcgData(new FmcgDataParser(jsonObject.getJSONArray("consolidationObjectData")).parseFmcgData());
         }
         if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData")) {
@@ -37,7 +37,6 @@ public class AllDataParser {
 
     public ArrayList<Integer> layoutListParser(JSONObject jsonObject) throws JSONException {
         JSONArray layoutLists = jsonObject.getJSONArray("layoutList");
-
         ArrayList<Integer> fragmentsToBeDisplayed = new ArrayList<>();
         for (int i = 0; i < layoutLists.length(); i++) {
             fragmentsToBeDisplayed.add(layoutLists.getInt(i));

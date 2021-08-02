@@ -3,6 +3,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -38,7 +40,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
-public class SummaryTableFragment extends Fragment implements MainActivity.keyPress {
+public class SummaryTableFragment extends Fragment implements MainActivity.KeyPress {
 
     private TableLayout summaryTableLayout;
     public static Handler changeTodoHandler;
@@ -64,11 +66,6 @@ public class SummaryTableFragment extends Fragment implements MainActivity.keyPr
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        if (MainActivity.summaryTableJSONArray == null) {
-//            VolleyHttp http = new VolleyHttp(getContext());
-//            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
-//        }
-
     }
 
     @Override
@@ -84,8 +81,8 @@ public class SummaryTableFragment extends Fragment implements MainActivity.keyPr
 
         if (SplashScreenActivity.allData.isEnableNavigation()) {
             backTraverse();
-
         }
+
         return view;
     }
 
@@ -117,8 +114,6 @@ public class SummaryTableFragment extends Fragment implements MainActivity.keyPr
                 if (message != null) {
                     index = Integer.parseInt(message);
                 }
-                //                    tablesToDisplay = UtilityFunctionsForActivity1.summaryTableParser(jsonArray);
-//                tablesToDisplay = SplashScreenActivity.allData.getFmcgData().getSummaryTableRows();
                 tablesToDisplay = tableRows;
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
@@ -129,16 +124,14 @@ public class SummaryTableFragment extends Fragment implements MainActivity.keyPr
                     if (SplashScreenActivity.allData.getLayoutList().size() > 0) {
 
                         Log.i("first index", SplashScreenActivity.allData.getLayoutList().get(0) + "");
-                        if (SplashScreenActivity.allData.getLayoutList().get(0) == 0) {
+                        if (SplashScreenActivity.allData.getLayoutList().contains(0)) {
                             navController.navigate(R.id.distributorTableFragment);
-                        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 1) {
+                        } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                             startActivity(new Intent(requireActivity(), MapsActivity.class));
-                        } else if (SplashScreenActivity.allData.getLayoutList().get(0) == 2) {
+                        } else if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                             navController.navigate(R.id.vsmTransactionFragment);
                         }
                     }
-//                    NavController navController = NavHostFragment.findNavController(fragment);
-//                    navController.navigate(R.id.distributorTableFragment);
                 } else {
                     sumofLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity1.drawSummaryTable(tablesToDisplay, getContext(), summaryTableLayout, index);
@@ -150,7 +143,6 @@ public class SummaryTableFragment extends Fragment implements MainActivity.keyPr
         };
 
         handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200, this);
-//        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 1000 * Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) / SplashScreenActivity.allData.getFmcgData().getSummaryTableRows().size());
         handleRowAnimationThread.start();
 
     }
@@ -258,6 +250,13 @@ public class SummaryTableFragment extends Fragment implements MainActivity.keyPr
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+    }
 
     @Override
     public void onStop() {
@@ -267,30 +266,48 @@ public class SummaryTableFragment extends Fragment implements MainActivity.keyPr
         }
     }
 
+
     @Override
-    public void centerKey(int keyCode, KeyEvent event) {
+    public void centerKey() {
+        Log.i("centerKey", "summary");
+        handleRowAnimationThread.interrupt();
+        MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
+
+
+        if(!MainActivity.secondCenterKeyPause){
+            navController = NavHostFragment.findNavController(fragment);
+            navController.navigate(R.id.distributorTableFragment);
+        }
 
     }
 
     @Override
-    public void leftKey(int keyCode, KeyEvent event) {
+    public void leftKey() {
+        Log.i("leftKey", "summary");
+
+        handleRowAnimationThread.interrupt();
+
         if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
             startActivity(new Intent(requireActivity(), MapsActivity.class));
-        }
-        else if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
             navController = NavHostFragment.findNavController(fragment);
             navController.navigate(R.id.vsmTransactionFragment);
-        }
-        else{
+        } else {
             navController.navigate(R.id.vsmCardFragment);
         }
     }
 
     @Override
-    public void rightKey(int keyCode, KeyEvent event) {
+    public void rightKey() {
+
+        Log.i("rightKey", "summary");
+
+        handleRowAnimationThread.interrupt();
         navController = NavHostFragment.findNavController(fragment);
         navController.navigate(R.id.distributorTableFragment);
     }
+
+
 }
 
 

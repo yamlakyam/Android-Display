@@ -201,17 +201,17 @@ public class SummarizedByArticleFragment extends Fragment {
             tableRowProperty1.setText("");
             tableRowProperty2.setText("Total Amount");
             tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-            tableRowProperty2.setTextSize(25f);
+            tableRowProperty2.setTextSize(14f);
 
 
             tableRowProperty3.setText(numberFormat.format(totalQuantity));
             tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-            tableRowProperty3.setTextSize(25f);
+            tableRowProperty3.setTextSize(14f);
 
 
             tableRowProperty4.setText(numberFormat.format(Math.round(totalUnitAmount * 100.0) / 100.0));
             tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
-            tableRowProperty4.setTextSize(25f);
+            tableRowProperty4.setTextSize(14f);
 
 
             tableRowProperty5.setText("");

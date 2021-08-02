@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,11 +37,10 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class DistributorTableFragment extends Fragment implements MainActivity.keyPress {
+public class DistributorTableFragment extends Fragment implements MainActivity.KeyPress {
 
     public static Handler animationHandler;
     public static Handler changeDataHandler;
-    private final String URL = "http://192.168.1.248:8001/api/ChartData/GetSalesDataForSingleOrganization";
     private ArrayList<DistributorTableRow> tablesToDisplay;
     TableLayout distributorTableLayout;
     ProgressBar distributorTableProgressBar;
@@ -125,8 +125,6 @@ public class DistributorTableFragment extends Fragment implements MainActivity.k
         };
 
         handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200, this);
-//        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler,
-//                1000 * Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) / SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().get(dataIndex).getTableData().size());
         handleRowAnimationThread.start();
     }
 
@@ -274,20 +272,58 @@ public class DistributorTableFragment extends Fragment implements MainActivity.k
     }
 
     @Override
-    public void centerKey(int keyCode, KeyEvent event) {
+    public void centerKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
+
+
 
     }
 
     @Override
-    public void leftKey(int keyCode, KeyEvent event) {
-        navController = NavHostFragment.findNavController(fragment);
-        navController.navigate(R.id.summaryTableFragment);
+    public void leftKey() {
 
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        if (handleDataChangeThread == null) {
+            startActivity(new Intent(requireActivity(), SplashScreenActivity.class));
+        }
+
+        if (distributorIndex == 0) {
+            NavController navController = NavHostFragment.findNavController(fragment);
+            navController.navigate(R.id.summaryTableFragment);
+        } else {
+            inflateAllTables(distributorIndex - 1);
+        }
     }
 
     @Override
-    public void rightKey(int keyCode, KeyEvent event) {
-        navController = NavHostFragment.findNavController(fragment);
-        navController.navigate(R.id.vsmCardFragment);
+    public void rightKey() {
+        Log.i("rightKey", "distributor");
+
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        if (distributorIndex == SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size() - 1) {
+            navController = NavHostFragment.findNavController(fragment);
+            navController.navigate(R.id.vsmCardFragment);
+        } else {
+            inflateAllTables(distributorIndex + 1);
+        }
+
     }
+
+
+
 }

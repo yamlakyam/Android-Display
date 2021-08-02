@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -148,6 +149,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        markerThread.interrupt();
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                intent.putExtra("back", "pressed");
+                startActivity(intent);
+                break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                startActivity(new Intent(MapsActivity.this, MainActivity.class));
+                break;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 }
 
 class MarkerThread extends Thread {
@@ -164,7 +184,7 @@ class MarkerThread extends Thread {
                 msg.obj = "" + i;
                 MapsActivity.handler.sendMessage(msg);
 
-                if(i==MapsActivity.locations.size()){
+                if (i == MapsActivity.locations.size()) {
 
                 }
 

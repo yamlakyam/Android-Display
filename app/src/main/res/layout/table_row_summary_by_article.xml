@@ -10,48 +10,48 @@
 
     <TextView
         android:id="@+id/tableRowArticleProperty1"
-        android:layout_width="40dp"
+        android:layout_width="25dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
         android:fontFamily="sans-serif-light"
         android:gravity="start"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="TextView"
         android:textColor="@color/rowValueColor2"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tableRowArticleProperty2"
-        android:layout_width="285dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tableRowArticleProperty3"
-        android:layout_width="150dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:gravity="end"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tableRowArticleProperty4"
-        android:layout_width="150dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:gravity="end"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tableRowArticleProperty5"
@@ -63,5 +63,5 @@
         android:gravity="end"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 </TableRow>

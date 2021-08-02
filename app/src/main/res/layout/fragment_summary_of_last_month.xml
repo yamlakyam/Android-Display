@@ -25,6 +25,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/download" />
+
             <TextView
                 android:id="@+id/summaryOfLast30DaysTitle"
                 android:layout_width="wrap_content"

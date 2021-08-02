@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -28,7 +28,6 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     public static AllData allData;
     public static String myAndroidDeviceId;
 
-
     ProgressBar progressBarCircular;
     TextView loadingTextView;
 
@@ -40,14 +39,24 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         progressBarCircular = findViewById(R.id.progressBarCircular);
         loadingTextView = findViewById(R.id.loadingTextView);
 
-        VolleyHttp http = new VolleyHttp(getApplicationContext());
-        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
-                SplashScreenActivity.this);
+        Handler handler = new Handler();
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                VolleyHttp http = new VolleyHttp(getApplicationContext());
+                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+                        SplashScreenActivity.this);
+                handler.postDelayed(this, 600000);
+            }
+        };
+        handler.post(runnable);
     }
 
     @Override
     public void onSuccess(JSONObject jsonObject) {
 
+        Log.i("TAG", "onSuccess: ");
         progressBarCircular.setVisibility(View.GONE);
         loadingTextView.setVisibility(View.GONE);
 
@@ -90,4 +99,5 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         System.exit(0);
 
     }
+
 }

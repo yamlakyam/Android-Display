@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class VsmTransactionFragment extends Fragment implements MainActivity.keyPress {
+public class VsmTransactionFragment extends Fragment implements MainActivity.KeyPress {
 
     public static Handler changeVanHandler;
     public static Handler changeDistributorHandler;
@@ -349,19 +350,108 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.key
         }
     }
 
+    //
     @Override
-    public void centerKey(int keyCode, KeyEvent event) {
+    public void centerKey() {
+        if(handleDistDataChangeThread!=null){
+            handleDistDataChangeThread.interrupt();
+        }
+        if(handleVanDataChangeThread!=null){
+            handleVanDataChangeThread.interrupt();
+        }
+        if(handleRowAnimationThread!=null){
+            handleRowAnimationThread.interrupt();
+        }
+        MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
+        Log.i("keyPress", "centerKey: ");
 
     }
 
     @Override
-    public void leftKey(int keyCode, KeyEvent event) {
+    public void leftKey() {
+        Log.i("leftKey", "vsmTransaction");
 
+        ArrayList<VsmTableForSingleDistributor> allOrgData = new ArrayList<>();
+        if (SplashScreenActivity.allData != null)
+            allOrgData = SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors();
+
+        if (SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors() == null) {
+            startActivity(new Intent(getActivity(), SplashScreenActivity.class));
+        }
+        if (handleDistDataChangeThread != null) {
+            handleDistDataChangeThread.interrupt();
+        }
+        if (handleVanDataChangeThread != null) {
+            handleVanDataChangeThread.interrupt();
+        }
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+
+        if (distributorIndex == 0) {
+            if (vanIndex == 0) {
+                NavController navController = NavHostFragment.findNavController(fragment);
+                navController.navigate(R.id.vsmCardFragment);
+            }
+
+            if (vanIndex > 0) {
+                inflateAlldistributors(allOrgData, distributorIndex, vanIndex - 1);
+            }
+        } else {
+            if (vanIndex == 0) {
+                inflateAlldistributors(allOrgData, distributorIndex - 1, vanIndex);
+            }
+
+            if (vanIndex > 0) {
+                inflateAlldistributors(allOrgData, distributorIndex, vanIndex - 1);
+            }
+
+        }
     }
 
     @Override
-    public void rightKey(int keyCode, KeyEvent event) {
+    public void rightKey() {
+        Log.i("rightKey", "vsmTransaction");
 
+        handleDistDataChangeThread.interrupt();
+        handleVanDataChangeThread.interrupt();
+        handleRowAnimationThread.interrupt();
+
+        ArrayList<VsmTableForSingleDistributor> allOrgData = new ArrayList<>();
+        if (SplashScreenActivity.allData != null)
+            allOrgData = SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors();
+
+        if (SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors() == null) {
+            startActivity(new Intent(getActivity(), SplashScreenActivity.class));
+        }
+
+        if (handleDistDataChangeThread != null) {
+            handleDistDataChangeThread.interrupt();
+        }
+        if (handleVanDataChangeThread != null) {
+            handleVanDataChangeThread.interrupt();
+        }
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+
+        if (distributorIndex < SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().size() - 1) {
+            if (vanIndex < SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().get(distributorIndex).getAllVansData().size() - 1) {
+                inflateAlldistributors(allOrgData, distributorIndex, vanIndex + 1);
+            }
+            if (vanIndex == SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().get(distributorIndex).getAllVansData().size() - 1) {
+                inflateAlldistributors(allOrgData, distributorIndex + 1, 0);
+            }
+        } else if (distributorIndex == SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().size() - 1) {
+            if (vanIndex < SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().get(distributorIndex).getAllVansData().size() - 1) {
+                inflateAlldistributors(allOrgData, distributorIndex, vanIndex + 1);
+            }
+            if (vanIndex == SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().get(distributorIndex).getAllVansData().size() - 1) {
+                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+                }
+            }
+        }
     }
 }
 

@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -19,26 +19,22 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.volley.VolleyError;
+import com.cnet.VisualAnalysis.MainActivity;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
-import com.cnet.VisualAnalysis.Utils.AllDataParser;
-import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
-import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
+public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
 
     GridView vsmCardGridLayout;
-    public static Handler changeDataHandler;
+    public Handler changeDataHandler;
+    public HandleDataChangeThread handleDataChangeThread;
     ProgressBar vsmCardProgressBar;
     Fragment fragment;
-   public static HandleDataChangeThread handleDataChangeThread;
     int distributorIndex = 0;
 
     @Override
@@ -57,9 +53,9 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         vsmCardProgressBar = view.findViewById(R.id.vsmCardProgressBar);
         fragment = this;
 
-        VolleyHttp http = new VolleyHttp(getContext());
-        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + new SplashScreenActivity().getDeviceId(requireContext()),
-                this);
+//        VolleyHttp http = new VolleyHttp(getContext());
+//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + new SplashScreenActivity().getDeviceId(requireContext()),
+//                this);
 
         if (SplashScreenActivity.allData.isEnableNavigation()) {
             backTraverse(fragment, R.id.distributorTableFragment);
@@ -153,17 +149,115 @@ public class VsmCardFragment extends Fragment implements VolleyHttp.GetRequest {
         }
     }
 
-    @Override
-    public void onSuccess(JSONObject jsonObject) throws JSONException {
+//    @Override
+//    public void onSuccess(JSONObject jsonObject) throws JSONException {
+//
+//        Log.i("updated", "onSuccess: ");
+//        AllDataParser allDataParser = new AllDataParser(jsonObject);
+//        SplashScreenActivity.allData = allDataParser.parseAllData();
+//    }
+//
+//    @Override
+//    public void onFailure(VolleyError error) {
+//        Toast.makeText(getContext(), "Failed updating", Toast.LENGTH_SHORT).show();
+//
+//    }
 
-        Log.i("updated", "onSuccess: ");
-        AllDataParser allDataParser = new AllDataParser(jsonObject);
-        SplashScreenActivity.allData = allDataParser.parseAllData();
+    @Override
+    public void centerKey() {
+
+        Log.i("vsmcard", "centerKey: ");
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
+        MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
+
+        if (!MainActivity.secondCenterKeyPause) {
+            NavController navController = NavHostFragment.findNavController(fragment);
+
+            if (distributorIndex == SplashScreenActivity.allData.getFmcgData().getVsmCards().size() - 1) {
+                if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+                    navController.navigate(R.id.vsmTransactionFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+                } else {
+                    navController.navigate(R.id.summaryTableFragment);
+                }
+            } else {
+                inflateAllCompanyCards(distributorIndex + 1);
+
+            }
+        }
     }
 
     @Override
-    public void onFailure(VolleyError error) {
-        Toast.makeText(getContext(), "Failed updating", Toast.LENGTH_SHORT).show();
+    public void leftKey() {
+
 
     }
+
+    @Override
+    public void rightKey() {
+        Log.i("IAM ", "right");
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+            NavController navController = NavHostFragment.findNavController(fragment);
+
+            if (distributorIndex == SplashScreenActivity.allData.getFmcgData().getVsmCards().size() - 1) {
+                if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+                    navController.navigate(R.id.vsmTransactionFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+                } else {
+                    navController.navigate(R.id.summaryTableFragment);
+                }
+            } else {
+                inflateAllCompanyCards(distributorIndex + 1);
+
+            }
+        }
+    }
+
+//    @Override
+//    public void dispatchKey(KeyEvent event) {
+//        if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER) {
+//            Log.i("center press", "dispatchKey: ");
+//            MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
+//        } else if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
+//            Log.i("IAM ", "right");
+//            if (handleDataChangeThread != null) {
+//                handleDataChangeThread.interrupt();
+//                NavController navController = NavHostFragment.findNavController(fragment);
+//
+//                if (distributorIndex == SplashScreenActivity.allData.getFmcgData().getVsmCards().size() - 1) {
+//                    if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
+//                        navController.navigate(R.id.vsmTransactionFragment);
+//                    } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+//                        startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                    } else {
+//                        navController.navigate(R.id.summaryTableFragment);
+//                    }
+//                } else {
+//                    inflateAllCompanyCards(distributorIndex + 1);
+//
+//                }
+//            }
+//        }
+//        else if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT){
+//            Log.i("leftKey", "vsmCard");
+//
+//            if (handleDataChangeThread != null) {
+//                handleDataChangeThread.interrupt();
+//
+//                if (distributorIndex == 0) {
+//                    NavController navController = NavHostFragment.findNavController(fragment);
+//                    navController.navigate(R.id.distributorTableFragment);
+//                } else {
+//                    inflateAllCompanyCards(distributorIndex - 1);
+//                }
+//
+//            }
+//        }
+//    }
+
 }
