@@ -97,7 +97,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    markerThread.interrupt();
                     place_names.clear();
                     locations.clear();
-                    startActivity(new Intent(MapsActivity.this, MainActivity.class));
+//                    startActivity(new Intent(MapsActivity.this, MainActivity.class));
+                    startActivity(new Intent(MapsActivity.this, SecondActivity.class));
                 } else {
                     drawMarkerWithInfo(googleMap, builder, index);
                 }
@@ -144,9 +145,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onBackPressed() {
         super.onBackPressed();
         markerThread.interrupt();
-        Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-        intent.putExtra("back", "pressed");
-        startActivity(intent);
+//        Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+//        intent.putExtra("back", "pressed");
+//        startActivity(intent);
     }
 
     @Override
@@ -157,12 +158,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                intent.putExtra("back", "pressed");
-                startActivity(intent);
+//                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+//                intent.putExtra("back", "pressed");
+//                startActivity(intent);
+
+
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                startActivity(new Intent(MapsActivity.this, MainActivity.class));
+//                startActivity(new Intent(MapsActivity.this, MainActivity.class));
+                Intent intent = new Intent(MapsActivity.this, SecondActivity.class);
+                startActivity(intent);
                 break;
         }
 
@@ -185,7 +190,6 @@ class MarkerThread extends Thread {
                 MapsActivity.handler.sendMessage(msg);
 
                 if (i == MapsActivity.locations.size()) {
-
                 }
 
                 try {

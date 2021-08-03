@@ -7,11 +7,13 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DigitalClock;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -27,6 +30,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -43,6 +47,7 @@ import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetRequest {
 
@@ -53,6 +58,7 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
     Handler animationHandler;
     Fragment fragment;
     TextView scrollingBranchText;
+    DigitalClock digitalClock;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -79,8 +85,11 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
         pChartBranchSummary = view.findViewById(R.id.pChartBranchSummary);
-        scrollingBranchText= view.findViewById(R.id.scrollingBranchText);
+        scrollingBranchText = view.findViewById(R.id.scrollingBranchText);
         scrollingBranchText.setSelected(true);
+        digitalClock=view.findViewById(R.id.digitalClock);
+//        digitalClock.setTypeface(Typeface.createFromAsset(requireActivity().getAssets(),"font/digital_7.ttf"));
+        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
 
         VolleyHttp http = new VolleyHttp(getContext());
@@ -120,7 +129,8 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
 
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause) {
-                    navigate(fragment);
+                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                    navigate(fragment);
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
@@ -143,7 +153,7 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
 
         DashBoardData dashBoardData = dashBoardDataParam;
         inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds);
-        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(),pChartBranchSummary, "Branch summary");
+        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(), pChartBranchSummary, "Branch summary");
 
     }
 
@@ -209,17 +219,17 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
 
             if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
-                if (SplashScreenActivity.allData.getLayoutList().get(0) == 3)
+                if (SplashScreenActivity.allData.getLayoutList().contains(3))
                     navController.navigate(R.id.summarizedByArticleFragment2);
-                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 4)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(4))
                     navController.navigate(R.id.summarizedByArticleParentCategFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 5)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(5))
                     navController.navigate(R.id.summarizedByArticleChildCategFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 6)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(6))
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 7)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 8)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8))
                     navController.navigate(R.id.branchSummaryFragment);
             }
 

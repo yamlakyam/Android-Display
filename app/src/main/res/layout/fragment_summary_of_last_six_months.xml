@@ -218,10 +218,13 @@
                     android:orientation="horizontal">
 
                     <DigitalClock
+                        android:id="@+id/digitalClock"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:fontFamily="@font/digital_7"
+                        android:gravity="center_vertical"
                         android:textColor="@color/rowValueColor3"
-                        android:textSize="24sp">
+                        android:textSize="34sp">
 
                     </DigitalClock>
                 </LinearLayout>

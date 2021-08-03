@@ -39,18 +39,18 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         progressBarCircular = findViewById(R.id.progressBarCircular);
         loadingTextView = findViewById(R.id.loadingTextView);
 
-        Handler handler = new Handler();
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
+//        Handler handler = new Handler();
+//
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
                 VolleyHttp http = new VolleyHttp(getApplicationContext());
                 http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
                         SplashScreenActivity.this);
-                handler.postDelayed(this, 600000);
-            }
-        };
-        handler.post(runnable);
+//                handler.postDelayed(this, 600000);
+//            }
+//        };
+//        handler.post(runnable);
     }
 
     @Override

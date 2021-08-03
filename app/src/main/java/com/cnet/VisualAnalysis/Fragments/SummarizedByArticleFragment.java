@@ -7,11 +7,14 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.style.TtsSpan;
+import android.view.DisplayCutout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DigitalClock;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -52,6 +56,7 @@ public class SummarizedByArticleFragment extends Fragment {
     ProgressBar mainProgressBar;
     ConstraintLayout mainConstraintLayout;
     ConstraintLayout constraintLayout;
+    DigitalClock digitalClock;
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable = false;
 
@@ -88,6 +93,8 @@ public class SummarizedByArticleFragment extends Fragment {
         summByArticleScrollView = view.findViewById(R.id.summByArticleScrollView);
         articleSummaryProgressBar = view.findViewById(R.id.articleSummaryProgressBar);
         constraintLayout = view.findViewById(R.id.constraintLayout);
+        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
 
 
         backTraverse();
