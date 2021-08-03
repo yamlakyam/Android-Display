@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +29,12 @@ import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class SummarizedByArticleFragment extends Fragment {
 
     BarChart barChartSumByArticle;
     LineChart lineChartSumByArticle;
+    PieChart pChartSumByArticle;
     TableLayout summarizedByArticleTableLayout;
     Handler animationHandler;
     TextView scrollingArticleText;
@@ -81,6 +81,7 @@ public class SummarizedByArticleFragment extends Fragment {
 
         barChartSumByArticle = view.findViewById(R.id.bChartSumByArticle);
         lineChartSumByArticle = view.findViewById(R.id.lchartsumByArticle);
+        pChartSumByArticle = view.findViewById(R.id.pChartSumByArticle);
         summarizedByArticleTableLayout = view.findViewById(R.id.summaryByArticleTableLayout);
         scrollingArticleText = view.findViewById(R.id.scrollingArticleText);
         scrollingArticleText.setSelected(true);
@@ -201,17 +202,17 @@ public class SummarizedByArticleFragment extends Fragment {
             tableRowProperty1.setText("");
             tableRowProperty2.setText("Total Amount");
             tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-            tableRowProperty2.setTextSize(14f);
+            tableRowProperty2.setTextSize(16f);
 
 
             tableRowProperty3.setText(numberFormat.format(totalQuantity));
             tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-            tableRowProperty3.setTextSize(14f);
+            tableRowProperty3.setTextSize(16f);
 
 
             tableRowProperty4.setText(numberFormat.format(Math.round(totalUnitAmount * 100.0) / 100.0));
             tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
-            tableRowProperty4.setTextSize(14f);
+            tableRowProperty4.setTextSize(16f);
 
 
             tableRowProperty5.setText("");
@@ -236,7 +237,7 @@ public class SummarizedByArticleFragment extends Fragment {
         inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
         UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle, "Summarized by Article");
-
+        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByArticleData().pieChartData, pChartSumByArticle, "Summarized by Article");
     }
 
     public void backTraverse() {

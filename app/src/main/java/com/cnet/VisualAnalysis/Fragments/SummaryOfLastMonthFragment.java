@@ -46,6 +46,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
     ScrollView scrollView;
     Fragment fragment;
     FrameLayout summaryOfLastMonthFrameLayout;
+    TextView scrollingLastMonthText;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -78,6 +79,8 @@ public class SummaryOfLastMonthFragment extends Fragment {
         scrollView = view.findViewById(R.id.summaryOfLastMonthScrollView);
         barChart = view.findViewById(R.id.last30daysBarChart);
         summaryOfLastMonthFrameLayout = view.findViewById(R.id.summaryOfLastMonthFrameLayout);
+        scrollingLastMonthText=view.findViewById(R.id.scrollingLastMonthText);
+        scrollingLastMonthText.setSelected(true);
 
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
@@ -164,12 +167,12 @@ public class SummaryOfLastMonthFragment extends Fragment {
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty2.setTextSize(25f);
+        tableRowProperty2.setTextSize(16f);
 
 
         tableRowProperty3.setText(numberFormat.format(totalAmount));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(25f);
+        tableRowProperty3.setTextSize(16f);
 
 
         tableRowProperty4.setText("");

@@ -99,8 +99,9 @@ public class DashBoardDataParser {
 
         BarChartData barChartData = new BarChartData(xValues, yValues, legends);
         LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
+        PieChartData pieChartData = new PieChartData(yValues, legends);
 
-        SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, lineChartData);
+        SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, lineChartData, pieChartData);
         return summarizedByArticleData;
     }
 
@@ -247,6 +248,10 @@ public class DashBoardDataParser {
 
         ArrayList<BranchSummaryTableRow> tableData = new ArrayList<>();
 
+        float[] xValues = new float[summaryOfBranch.length()];
+        float[] yValues = new float[summaryOfBranch.length()];
+        String[] legends = new String[summaryOfBranch.length()];
+
         for (int i = 0; i < summaryOfBranch.length(); i++) {
             JSONObject branchSummaryAtInedx = summaryOfBranch.getJSONObject(i);
 
@@ -258,11 +263,14 @@ public class DashBoardDataParser {
             );
 
             tableData.add(branchSummaryTableRow);
+            xValues[i] = i + 1;
+            yValues[i] = (float)branchSummaryAtInedx.getDouble("grandTotal");
+            legends[i] = branchSummaryAtInedx.getString("org");
 
         }
 
-
-        BranchSummaryData branchSummaryData = new BranchSummaryData(tableData);
+        PieChartData pieChartData = new PieChartData(yValues,legends);
+        BranchSummaryData branchSummaryData = new BranchSummaryData(tableData,pieChartData);
         return branchSummaryData;
     }
 

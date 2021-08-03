@@ -49,6 +49,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
     ScrollView scrollView;
     Fragment fragment;
     FrameLayout summaryOfLastSixMonthFrameLayout;
+    TextView scrollingLast6MonthText;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
@@ -84,6 +85,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
         barChart = view.findViewById(R.id.bChartSummaryOfLast6Months);
         scrollView = view.findViewById(R.id.summaryOfLast6MonsScrollView);
         summaryOfLastSixMonthFrameLayout = view.findViewById(R.id.summaryOfLastSixMonthFrameLayout);
+        scrollingLast6MonthText= view.findViewById(R.id.scrollingLast6MonthText);
+        scrollingLast6MonthText.setSelected(true);
 
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
@@ -173,12 +176,12 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty2.setTextSize(25f);
+        tableRowProperty2.setTextSize(16f);
 
 
         tableRowProperty3.setText(numberFormat.format(Math.round(totalAmount * 100.0) / 100.0));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(25f);
+        tableRowProperty3.setTextSize(16f);
 
 
         tableRowProperty4.setText("");

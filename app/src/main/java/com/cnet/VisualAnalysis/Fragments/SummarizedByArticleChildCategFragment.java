@@ -46,6 +46,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
     PieChart pieChart;
     Fragment fragment;
     FrameLayout summarizedByChildArticleFrameLayout;
+    TextView scrollingChildText;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -75,6 +76,8 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
         pieChart = view.findViewById(R.id.pchartsumByArticleChild);
         barChart = view.findViewById(R.id.bChartSumByArticleChild);
         summarizedByChildArticleFrameLayout = view.findViewById(R.id.summarizedByChildArticleFrameLayout);
+        scrollingChildText=view.findViewById(R.id.scrollingChildText);
+        scrollingChildText.setSelected(true);
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
 
@@ -159,14 +162,15 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
 
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
-        tableRowProperty2.setTextSize(25f);
+        tableRowProperty2.setTextSize(16f);
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty3.setText(numberFormat.format(grandTotal));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(25f);
+        tableRowProperty3.setTextSize(16f);
         tableRowProperty4.setText("");
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        tableRowProperty2.startAnimation(animation);
         tableRowProperty3.startAnimation(animation);
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summaryByChildArticleTableLayout.addView(tableElements);

@@ -48,6 +48,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
     BarChart barChart;
     Fragment fragment;
     FrameLayout summarizedByParentArticleFrameLayout;
+    TextView scrollingParentText;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
@@ -82,6 +83,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         pieChart = view.findViewById(R.id.pchartsumByArticleParent);
         barChart = view.findViewById(R.id.bChartSumByArticleParent);
         summarizedByParentArticleFrameLayout = view.findViewById(R.id.summarizedByParentArticleFrameLayout);
+        scrollingParentText= view.findViewById(R.id.scrollingParentText);
+        scrollingParentText.setSelected(true);
 
 
         backTraverse(fragment, R.id.summarizedByArticleFragment2);
@@ -181,12 +184,12 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty2.setTextSize(25f);
+        tableRowProperty2.setTextSize(16f);
 
 
         tableRowProperty3.setText(numberFormat.format(grandTotal));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(25f);
+        tableRowProperty3.setTextSize(16f);
 
 
         tableRowProperty4.setText("");

@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/tableRowParentArtProperty1"
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -20,26 +20,26 @@
         android:gravity="start"
         android:text="TextView"
         android:textColor="@color/rowValueColor2"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tableRowParentArtProperty2"
-        android:layout_width="200dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tableRowParentArtProperty3"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:gravity="end"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tableRowParentArtProperty4"
@@ -51,5 +51,5 @@
         android:gravity="end"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 </TableRow>

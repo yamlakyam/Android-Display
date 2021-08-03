@@ -16,49 +16,68 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <FrameLayout
+                android:id="@+id/progressBarbranchSummary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="10dp"
+                tools:layout_editor_absoluteY="2dp">
+
+                <ProgressBar
+                    android:id="@+id/branchSummaryProgressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
-    <TableRow
-        android:id="@+id/headerRowBranchSummary"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/headerRowCardBranchSummary"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/cardBackgroundDark1"
-        android:gravity="center"
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
         app:layout_constraintEnd_toEndOf="@+id/headerRowBranchSummary2"
         app:layout_constraintStart_toStartOf="@+id/headerRowBranchSummary2"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/download" />
+
         <TextView
             android:id="@+id/branchSummaryHeaderTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
             android:fontFamily="@font/advent_pro_thin"
+            android:gravity="center"
             android:text="Branch Summary"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
-    </TableRow>
+            android:textSize="34sp" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TableRow
         android:id="@+id/headerRowBranchSummary2"
-        android:layout_width="match_parent"
+        android:layout_width="500dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:background="@color/cardBackgroundDark1"
         app:layout_constraintBottom_toTopOf="@+id/scrollBranchSummaryTable"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerRowBranchSummary">
+        app:layout_constraintTop_toBottomOf="@+id/headerRowCardBranchSummary">
 
         <TextView
             android:id="@+id/branchSummaryHeader0"
-            android:layout_width="75dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
@@ -66,40 +85,40 @@
             android:paddingStart="10dp"
             android:text="SN"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/branchSummaryHeader1"
-            android:layout_width="250dp"
+            android:layout_width="150dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="start|center_horizontal|center_vertical"
             android:text="Branch Name"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/branchSummaryHeader2"
-            android:layout_width="250dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Quantity"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/branchSummaryHeader3"
-            android:layout_width="250dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Percentage"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/branchSummaryHeader4"
@@ -111,62 +130,135 @@
             android:gravity="end"
             android:text="Total"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
     </TableRow>
 
-    <ScrollView
-        android:id="@+id/scrollBranchSummaryTable"
-        android:layout_width="match_parent"
+
+
+        <ScrollView
+            android:id="@+id/scrollBranchSummaryTable"
+            app:layout_constraintBottom_toTopOf="@+id/scrollingCardBranchSummary"
+            app:layout_constraintEnd_toEndOf="@id/headerRowBranchSummary2"
+            app:layout_constraintStart_toStartOf="@id/headerRowBranchSummary2"
+            app:layout_constraintTop_toBottomOf="@id/headerRowBranchSummary2"
+            android:layout_width="500dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardBackgroundColor="@color/cardBackgroundDark1">
+
+                    <TableLayout
+                        android:id="@+id/branchSummaryTableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="?android:listDivider"
+                        android:showDividers="middle" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pcardBranchSummary"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/headerRowBranchSummary2"
-        app:layout_constraintStart_toStartOf="@id/headerRowBranchSummary2"
-        app:layout_constraintTop_toBottomOf="@id/headerRowBranchSummary2">
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
+        app:layout_constraintBottom_toTopOf="@+id/scrollingCardBranchSummary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/scrollBranchSummaryTable"
+        app:layout_constraintTop_toTopOf="@id/headerRowBranchSummary2">
 
-        <LinearLayout
-
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pChartBranchSummary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp">
 
-            android:orientation="vertical">
+        </com.github.mikephil.charting.charts.PieChart>
 
+    </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardBackgroundColor="@color/cardBackgroundDark1">
-
-                <TableLayout
-                    android:id="@+id/branchSummaryTableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="?android:listDivider"
-                    android:showDividers="middle" />
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/progressBarbranchSummary"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/scrollingCardBranchSummary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="10dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/scrollBranchSummaryTable">
 
-        <ProgressBar
-            android:id="@+id/branchSummaryProgressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/scrollingBranchText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="right"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="@string/scrollingBranchText"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <DigitalClock
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/rowValueColor3"
+                    android:textSize="24sp">
+
+                </DigitalClock>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

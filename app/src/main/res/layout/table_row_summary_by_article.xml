@@ -24,14 +24,14 @@
 
     <TextView
         android:id="@+id/tableRowArticleProperty2"
-        android:layout_width="150dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
-        android:textSize="14sp" />
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/tableRowArticleProperty3"

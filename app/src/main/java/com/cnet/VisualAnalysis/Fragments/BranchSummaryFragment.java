@@ -36,6 +36,7 @@ import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
+import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,8 +49,10 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
     TableLayout branchSummaryTableLayout;
     ProgressBar branchSummaryProgressBar;
     ScrollView scrollBranchSummaryTable;
+    PieChart pChartBranchSummary;
     Handler animationHandler;
     Fragment fragment;
+    TextView scrollingBranchText;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -75,6 +78,9 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         branchSummaryTableLayout = view.findViewById(R.id.branchSummaryTableLayout);
         branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
+        pChartBranchSummary = view.findViewById(R.id.pChartBranchSummary);
+        scrollingBranchText= view.findViewById(R.id.scrollingBranchText);
+        scrollingBranchText.setSelected(true);
         fragment = this;
 
         VolleyHttp http = new VolleyHttp(getContext());
@@ -137,6 +143,7 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
 
         DashBoardData dashBoardData = dashBoardDataParam;
         inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds);
+        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(),pChartBranchSummary, "Branch summary");
 
     }
 
@@ -176,19 +183,20 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         tableRowProperty1.setText("");
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty2.setTextSize(25f);
+        tableRowProperty2.setTextSize(16f);
         tableRowProperty3.setText(String.valueOf(totalQuantity));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(25f);
+        tableRowProperty3.setTextSize(16f);
         tableRowProperty4.setText("");
         tableRowProperty5.setText(numberFormat.format(grandTotal));
         tableRowProperty5.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty5.setTextSize(25f);
+        tableRowProperty5.setTextSize(16f);
 
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        tableRowProperty2.startAnimation(animation);
         tableRowProperty3.startAnimation(animation);
         tableRowProperty5.startAnimation(animation);
 
