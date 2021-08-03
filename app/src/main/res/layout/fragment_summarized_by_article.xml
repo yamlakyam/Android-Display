@@ -66,7 +66,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticle"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +86,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
             app:layout_constraintEnd_toEndOf="@+id/lCardSummByArticle"
@@ -102,7 +103,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/tCardSummByArticle"
-            android:layout_width="450dp"
+            android:layout_width="500dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -130,7 +131,7 @@
 
                 <TextView
                     android:id="@+id/summaryByChildArticleHeader1"
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="Product Name"
@@ -188,7 +189,7 @@
                         <TableLayout
                             android:id="@+id/summaryByArticleTableLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="13dp"
                             android:divider="?android:listDivider"
                             android:showDividers="middle" />
                     </com.google.android.material.card.MaterialCardView>
@@ -196,6 +197,28 @@
 
                 </LinearLayout>
             </ScrollView>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/pCardSummByArticle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
+            app:layout_constraintBottom_toTopOf="@id/scrollingRTextCard"
+            app:layout_constraintEnd_toEndOf="@+id/titleSummaryByArticle"
+            app:layout_constraintStart_toEndOf="@+id/tCardSummByArticle"
+            app:layout_constraintTop_toTopOf="@+id/tCardSummByArticle">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pChartSumByarticle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.github.mikephil.charting.charts.PieChart>
+
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -212,19 +235,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tCardSummByArticle">
 
-            <TextView
-                android:id="@+id/scrollingArticleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:text="@string/scrollingText"
-                android:textColor="#ffffff"
-                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/scrollingArticleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="@string/scrollingText"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+                <DigitalClock
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/rowValueColor3" />
+            </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/tableRowArticleProperty2"
-        android:layout_width="150dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:paddingTop="5dp"

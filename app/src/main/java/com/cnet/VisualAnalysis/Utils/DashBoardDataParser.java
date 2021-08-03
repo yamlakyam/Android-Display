@@ -99,8 +99,9 @@ public class DashBoardDataParser {
 
         BarChartData barChartData = new BarChartData(xValues, yValues, legends);
         LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
+        PieChartData pieChartData = new PieChartData(yValues, legends);
 
-        SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, lineChartData);
+        SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, lineChartData, pieChartData);
         return summarizedByArticleData;
     }
 

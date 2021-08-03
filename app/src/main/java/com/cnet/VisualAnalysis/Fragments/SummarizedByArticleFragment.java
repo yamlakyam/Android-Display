@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +29,12 @@ import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class SummarizedByArticleFragment extends Fragment {
 
     BarChart barChartSumByArticle;
     LineChart lineChartSumByArticle;
+    PieChart pChartSumByarticle;
     TableLayout summarizedByArticleTableLayout;
     Handler animationHandler;
     TextView scrollingArticleText;
@@ -87,6 +87,7 @@ public class SummarizedByArticleFragment extends Fragment {
         summByArticleScrollView = view.findViewById(R.id.summByArticleScrollView);
         articleSummaryProgressBar = view.findViewById(R.id.articleSummaryProgressBar);
         constraintLayout = view.findViewById(R.id.constraintLayout);
+        pChartSumByarticle = view.findViewById(R.id.pChartSumByarticle);
 
 
         backTraverse();
@@ -234,8 +235,9 @@ public class SummarizedByArticleFragment extends Fragment {
         DashBoardData dashBoardData = dashBoardDataParam;
 
         inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);
-        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
-        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle, "Summarized by Article");
+//        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
+//        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle, "Summarized by Article");
+        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByArticleData().pieChartData, pChartSumByarticle,"Summarized by Article");
 
     }
 
