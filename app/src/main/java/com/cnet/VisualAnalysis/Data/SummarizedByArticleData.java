@@ -1,8 +1,5 @@
 package com.cnet.VisualAnalysis.Data;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
-
 import java.util.ArrayList;
 
 public class SummarizedByArticleData {
@@ -13,7 +10,12 @@ public class SummarizedByArticleData {
 
 
     public SummarizedByArticleData(ArrayList<SummarizedByArticleTableRow> tableData,
+<<<<<<< HEAD
                                    BarChartData barChartData, LineChartData lineChartData,
+=======
+                                   BarChartData barChartData,
+                                   LineChartData lineChartData,
+>>>>>>> master
                                    PieChartData pieChartData) {
         this.tableData = tableData;
         this.barChartData = barChartData;
@@ -31,6 +33,10 @@ public class SummarizedByArticleData {
 
     public LineChartData getLineChartData() {
         return lineChartData;
+    }
+
+    public PieChartData getPieChartData() {
+        return pieChartData;
     }
 }
 
