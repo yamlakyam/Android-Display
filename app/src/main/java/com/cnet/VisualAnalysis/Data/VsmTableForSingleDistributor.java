@@ -3,8 +3,8 @@ package com.cnet.VisualAnalysis.Data;
 import java.util.ArrayList;
 
 public class VsmTableForSingleDistributor {
-   private final ArrayList<VsmTableDataForSingleVan> allVansData;
-   private final String nameOfDistributor;
+    private final ArrayList<VsmTableDataForSingleVan> allVansData;
+    private final String nameOfDistributor;
 
     public VsmTableForSingleDistributor(ArrayList<VsmTableDataForSingleVan> allVansData, String nameOfDistributor) {
         this.allVansData = allVansData;

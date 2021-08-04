@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -39,6 +42,8 @@ import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class SummarizedByArticleParentCategFragment extends Fragment {
 
@@ -52,6 +57,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
     FrameLayout summarizedByParentArticleFrameLayout;
     TextView scrollingParentText;
     DigitalClock digitalClock;
+    TextView articleParentSummaryTitle;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
@@ -74,6 +80,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 //        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,6 +97,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         scrollingParentText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        articleParentSummaryTitle=view.findViewById(R.id.articleParentSummaryTitle);
+        articleParentSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
 
         backTraverse(fragment, R.id.summarizedByArticleFragment2);

@@ -207,8 +207,10 @@ public class UtilityFunctionsForActivity1 {
                     tableRowForSingleVan.getString("dateAndTime"),
                     tableRowForSingleVan.getInt("itemCount"),
                     tableRowForSingleVan.getDouble("subTotal"),
-                    tableRowForSingleVan.getString("vat"),
-                    tableRowForSingleVan.getDouble("grandTotal")
+                    tableRowForSingleVan.getDouble("vat"),
+                    tableRowForSingleVan.getDouble("grandTotal"),
+                    tableRowForSingleVan.getDouble("latitude"),
+                    tableRowForSingleVan.getDouble("longitude")
             ));
         }
 
@@ -248,7 +250,7 @@ public class UtilityFunctionsForActivity1 {
                 dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
                 itemCountTextview.setText(String.valueOf(row.getItemCount()));
                 subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
-                VATtextView.setText(row.getVAT());
+                VATtextView.setText((int) row.getVAT());
                 totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
                 if (vsmTransactionTableLayout != null) {
                     vsmTransactionTableLayout.addView(tableElements);
@@ -293,7 +295,7 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-    static Date formatTime(String lastActive) {
+    public static Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsed = null;
         try {

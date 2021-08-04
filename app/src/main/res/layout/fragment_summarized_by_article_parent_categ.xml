@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,20 +39,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/advent_pro_thin"
-                android:text="Summarized By Article Parent Category"
+                android:text="Summary of Article By Parent Category"
                 android:textColor="#FFFFFF"
                 android:textSize="34sp" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/pCardSummByArticleParent"
-            android:layout_width="400dp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/scrollingCardParentCateg"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tCardSummByArticleParent"
             app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleParent">
 

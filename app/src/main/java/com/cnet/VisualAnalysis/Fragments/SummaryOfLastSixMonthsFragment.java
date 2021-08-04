@@ -4,10 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -31,7 +33,6 @@ import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -40,6 +41,8 @@ import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class SummaryOfLastSixMonthsFragment extends Fragment {
@@ -54,6 +57,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
     FrameLayout summaryOfLastSixMonthFrameLayout;
     TextView scrollingLast6MonthText;
     DigitalClock digitalClock;
+    TextView SummaryOfLast6MonthsTitle;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
@@ -78,6 +82,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,10 +94,12 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
         barChart = view.findViewById(R.id.bChartSummaryOfLast6Months);
         scrollView = view.findViewById(R.id.summaryOfLast6MonsScrollView);
         summaryOfLastSixMonthFrameLayout = view.findViewById(R.id.summaryOfLastSixMonthFrameLayout);
-        scrollingLast6MonthText= view.findViewById(R.id.scrollingLast6MonthText);
+        scrollingLast6MonthText = view.findViewById(R.id.scrollingLast6MonthText);
         scrollingLast6MonthText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        SummaryOfLast6MonthsTitle = view.findViewById(R.id.SummaryOfLast6MonthsTitle);
+        SummaryOfLast6MonthsTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
 
@@ -143,7 +150,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds,this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this);
         handleRowAnimationThread.start();
     }
 
@@ -219,8 +226,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
                     navController.navigate(R.id.summaryOfLastMonthFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().get(next) == 8)
                     navController.navigate(R.id.branchSummaryFragment);
-            }
-            else if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
+            } else if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
                 if (SplashScreenActivity.allData.getLayoutList().get(0) == 3)
                     navController.navigate(R.id.summarizedByArticleFragment2);
                 else if (SplashScreenActivity.allData.getLayoutList().get(0) == 4)

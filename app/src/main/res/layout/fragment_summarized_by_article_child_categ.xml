@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/advent_pro_thin"
-                android:text="Summarized By Article Child Category"
+                android:text="Summary Of Article By Child Category"
                 android:textColor="#FFFFFF"
                 android:textSize="34sp" />
         </com.google.android.material.card.MaterialCardView>

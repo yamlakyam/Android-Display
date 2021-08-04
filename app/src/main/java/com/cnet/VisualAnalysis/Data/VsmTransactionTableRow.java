@@ -7,10 +7,17 @@ public class VsmTransactionTableRow {
     private String dateNtime;
     private int itemCount;
     private double subTotal;
-    private String VAT;
+    private double VAT;
     private double totalSales;
 
-    public VsmTransactionTableRow(String voucherNo, String outlet, String TIN, String dateNtime, int itemCount, double subTotal, String VAT, double totalSales) {
+    private double latitude;
+    private double longitude;
+
+    public VsmTransactionTableRow(String voucherNo, String outlet,
+                                  String TIN, String dateNtime,
+                                  int itemCount, double subTotal,
+                                  double VAT, double totalSales,
+                                  double latitude, double longitude) {
         this.voucherNo = voucherNo;
         this.outlet = outlet;
         this.TIN = TIN;
@@ -19,6 +26,9 @@ public class VsmTransactionTableRow {
         this.subTotal = subTotal;
         this.VAT = VAT;
         this.totalSales = totalSales;
+        this.latitude=latitude;
+        this.longitude=longitude;
+
     }
 
     public String getVoucherNo() {
@@ -69,11 +79,11 @@ public class VsmTransactionTableRow {
         this.subTotal = subTotal;
     }
 
-    public String getVAT() {
+    public double getVAT() {
         return VAT;
     }
 
-    public void setVAT(String VAT) {
+    public void setVAT(double VAT) {
         this.VAT = VAT;
     }
 
@@ -83,5 +93,22 @@ public class VsmTransactionTableRow {
 
     public void setTotalSales(double totalSales) {
         this.totalSales = totalSales;
+    }
+
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

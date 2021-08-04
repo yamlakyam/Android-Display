@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -39,6 +42,8 @@ import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class SummarizedByArticleChildCategFragment extends Fragment {
 
@@ -51,6 +56,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
     FrameLayout summarizedByChildArticleFrameLayout;
     TextView scrollingChildText;
     DigitalClock digitalClock;
+    TextView articleChildSummaryTitle;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -69,6 +75,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +91,8 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
         scrollingChildText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        articleChildSummaryTitle= view.findViewById(R.id.articleChildSummaryTitle);
+        articleChildSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
 

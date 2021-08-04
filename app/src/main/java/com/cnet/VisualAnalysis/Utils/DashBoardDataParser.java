@@ -18,6 +18,9 @@ import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
+import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
+import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
+import com.cnet.VisualAnalysis.Data.VsmTransactionTableRow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +55,7 @@ public class DashBoardDataParser {
             dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
             dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
             dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
+            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
 
 //            Log.i("ROOT JSON",  dashBoardData.getSummarizedByArticleData().tableData.toString());
 
@@ -264,14 +268,59 @@ public class DashBoardDataParser {
 
             tableData.add(branchSummaryTableRow);
             xValues[i] = i + 1;
-            yValues[i] = (float)branchSummaryAtInedx.getDouble("grandTotal");
+            yValues[i] = (float) branchSummaryAtInedx.getDouble("grandTotal");
             legends[i] = branchSummaryAtInedx.getString("org");
 
         }
 
-        PieChartData pieChartData = new PieChartData(yValues,legends);
-        BranchSummaryData branchSummaryData = new BranchSummaryData(tableData,pieChartData);
+        PieChartData pieChartData = new PieChartData(yValues, legends);
+        BranchSummaryData branchSummaryData = new BranchSummaryData(tableData, pieChartData);
         return branchSummaryData;
+    }
+
+    public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
+        JSONArray vsmTransactionArray = jsonObject.getJSONArray("getSalesDataToDisplayOnVsmTable");
+
+        JSONObject vsmTransactionObject = vsmTransactionArray.getJSONObject(0);
+
+//        VsmTableForSingleDistributor dataForAdistributor = new VsmTableForSingleDistributor();
+        JSONArray vsmTables = vsmTransactionObject.getJSONArray("vsmTables");
+        String orgName = vsmTransactionObject.getString("orgName");
+
+        ArrayList<VsmTableDataForSingleVan> allVans = new ArrayList<VsmTableDataForSingleVan>();
+
+        for (int i = 0; i < vsmTables.length(); i++) {
+            JSONObject tableDataObjectForSingleVanInJson = vsmTables.getJSONObject(i);
+
+            JSONArray transactionsOfaVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
+            String vanName = tableDataObjectForSingleVanInJson.getString("van");
+
+            ArrayList<VsmTransactionTableRow> singleTransactionOfaVan = new ArrayList<VsmTransactionTableRow>();
+            for (int j = 0; j < transactionsOfaVan.length(); j++) {
+                JSONObject singleTransactionObject = transactionsOfaVan.getJSONObject(j);
+
+                VsmTransactionTableRow vsmTransactionTableRow = new VsmTransactionTableRow(
+                        singleTransactionObject.getString("voucherNo"),
+                        singleTransactionObject.getString("outlates"),
+                        singleTransactionObject.getString("tin"),
+                        singleTransactionObject.getString("dateAndTime"),
+                        (int) singleTransactionObject.getDouble("itemCount"),
+                        singleTransactionObject.getDouble("subTotal"),
+                        singleTransactionObject.getDouble("vat"),
+                        singleTransactionObject.getDouble("grandTotal"),
+                        singleTransactionObject.getDouble("latitude"),
+                        singleTransactionObject.getDouble("longitude"));
+
+                singleTransactionOfaVan.add(vsmTransactionTableRow);
+            }
+
+            VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan);
+            allVans.add(vsmTableDataForSingleVan);
+
+        }
+
+        VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(allVans, orgName);
+        return vsmTableForSingleDistributor;
     }
 
 

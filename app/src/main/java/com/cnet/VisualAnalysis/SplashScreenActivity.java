@@ -5,16 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.AllData;
+import com.cnet.VisualAnalysis.Threads.HandleDataRefreshThread;
 import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
@@ -30,6 +33,9 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
     ProgressBar progressBarCircular;
     TextView loadingTextView;
+    public Handler handler;
+    boolean isFirstRefresh;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +50,42 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 //        Runnable runnable = new Runnable() {
 //            @Override
 //            public void run() {
-                VolleyHttp http = new VolleyHttp(getApplicationContext());
-                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
-                        SplashScreenActivity.this);
-//                handler.postDelayed(this, 600000);
+//        VolleyHttp http = new VolleyHttp(getApplicationContext());
+//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+//                SplashScreenActivity.this);
+//                handler.postDelayed(this, 2000);
 //            }
 //        };
 //        handler.post(runnable);
+
+
+//        @SuppressLint("HandlerLeak")
+//        Handler handler = new Handler() {
+//            @Override
+//            public void handleMessage(@NonNull Message msg) {
+//                super.handleMessage(msg);
+//                String message = (String) msg.obj;
+//                int index = Integer.parseInt(message);
+//
+//                if (index == 0) {
+//                    isFirstRefresh = true;
+//                }
+                VolleyHttp http = new VolleyHttp(getApplicationContext());
+                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+                        SplashScreenActivity.this);
+
+//                Log.i("request", "request made");
+//
+//            }
+//        };
+//        if (allData != null) {
+//            HandleDataRefreshThread handleDataRefreshThread = new HandleDataRefreshThread(handler, Integer.parseInt(allData.getTransitionTimeInMinutes()));
+//            handleDataRefreshThread.start();
+//        } else {
+//            HandleDataRefreshThread handleDataRefreshThread = new HandleDataRefreshThread(handler, 30);
+//            handleDataRefreshThread.start();
+//        }
+
     }
 
     @Override
@@ -65,11 +100,14 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         try {
             allData = allDataParser.parseAllData();
 
-            if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0) {
-                startActivity(new Intent(SplashScreenActivity.this, SecondActivity.class));
-            } else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-            }
+//            if (isFirstRefresh) {
+                if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0) {
+                    startActivity(new Intent(SplashScreenActivity.this, SecondActivity.class));
+                } else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                }
+//            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

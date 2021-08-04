@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.style.TtsSpan;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -47,7 +50,8 @@ import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetRequest {
 
@@ -59,6 +63,7 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
     Fragment fragment;
     TextView scrollingBranchText;
     DigitalClock digitalClock;
+    TextView branchSummaryHeaderTextView;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -77,6 +82,7 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
                 SummaryOfLastMonthFragment.handleRowAnimationThread);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,8 +93,9 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         pChartBranchSummary = view.findViewById(R.id.pChartBranchSummary);
         scrollingBranchText = view.findViewById(R.id.scrollingBranchText);
         scrollingBranchText.setSelected(true);
-        digitalClock=view.findViewById(R.id.digitalClock);
-//        digitalClock.setTypeface(Typeface.createFromAsset(requireActivity().getAssets(),"font/digital_7.ttf"));
+        digitalClock = view.findViewById(R.id.digitalClock);
+        branchSummaryHeaderTextView = view.findViewById(R.id.branchSummaryHeaderTextView);
+        branchSummaryHeaderTextView.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
 

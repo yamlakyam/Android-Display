@@ -166,7 +166,6 @@ public class FmcgDataParser {
             }
         }
 
-
         return allVSMcards;
     }
 

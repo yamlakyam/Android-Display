@@ -8,6 +8,8 @@ public class DashBoardData {
     SummaryOfLast6MonthsData summaryOfLast6MonthsData;
     SummaryOfLast30DaysData summaryOfLast30DaysData;
     BranchSummaryData branchSummaryData;
+    VsmTableForSingleDistributor vsmTableForSingleDistributor;
+
 
     public SummarizedByArticleData getSummarizedByArticleData() {
         return summarizedByArticleData;
@@ -55,6 +57,14 @@ public class DashBoardData {
 
     public void setBranchSummaryData(BranchSummaryData branchSummaryData) {
         this.branchSummaryData = branchSummaryData;
+    }
+
+    public VsmTableForSingleDistributor getVsmTableForSingleDistributor() {
+        return vsmTableForSingleDistributor;
+    }
+
+    public void setVsmTableForSingleDistributor(VsmTableForSingleDistributor vsmTableForSingleDistributor) {
+        this.vsmTableForSingleDistributor = vsmTableForSingleDistributor;
     }
 }
 

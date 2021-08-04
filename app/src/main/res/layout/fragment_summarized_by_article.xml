@@ -51,11 +51,11 @@
                 android:src="@drawable/download" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/summarizedByarticleTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Summarized By Article"
+                android:text="Summary Of Article"
                 android:textColor="#FFFFFF"
                 android:textSize="34sp" />
         </com.google.android.material.card.MaterialCardView>
