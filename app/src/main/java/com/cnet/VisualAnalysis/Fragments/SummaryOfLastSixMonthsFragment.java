@@ -30,6 +30,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -219,22 +220,18 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
     public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
-
-            if (SplashScreenActivity.allData.getLayoutList().size() > SplashScreenActivity.allData.getLayoutList().indexOf(6) + 1) {
-                int next = SplashScreenActivity.allData.getLayoutList().indexOf(6) + 1;
-                if (SplashScreenActivity.allData.getLayoutList().get(next) == 7)
-                    navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().get(next) == 8)
-                    navController.navigate(R.id.branchSummaryFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
-                if (SplashScreenActivity.allData.getLayoutList().get(0) == 3)
-                    navController.navigate(R.id.summarizedByArticleFragment2);
-                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 4)
-                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 5)
-                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            }
-
+            if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8))
+                navController.navigate(R.id.branchSummaryFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
 
         }
 

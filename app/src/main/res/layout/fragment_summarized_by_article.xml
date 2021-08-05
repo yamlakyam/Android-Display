@@ -51,11 +51,11 @@
                 android:src="@drawable/download" />
 
             <TextView
-                android:id="@+id/summarizedByarticleTitle"
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Summary Of Article"
+                android:text="Summarized By Article"
                 android:textColor="#FFFFFF"
                 android:textSize="34sp" />
         </com.google.android.material.card.MaterialCardView>
@@ -66,7 +66,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticle"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:visibility="gone"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
             app:layout_constraintEnd_toEndOf="@+id/lCardSummByArticle"
@@ -214,7 +213,7 @@
                         <TableLayout
                             android:id="@+id/summaryByArticleTableLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="13dp"
+                            android:layout_height="match_parent"
                             android:divider="?android:listDivider"
                             android:showDividers="middle" />
                     </com.google.android.material.card.MaterialCardView>
@@ -222,28 +221,6 @@
 
                 </LinearLayout>
             </ScrollView>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/pCardSummByArticle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/cardBackgroundDark1"
-            app:layout_constraintBottom_toTopOf="@id/scrollingRTextCard"
-            app:layout_constraintEnd_toEndOf="@+id/titleSummaryByArticle"
-            app:layout_constraintStart_toEndOf="@+id/tCardSummByArticle"
-            app:layout_constraintTop_toTopOf="@+id/tCardSummByArticle">
-
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pChartSumByarticle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </com.github.mikephil.charting.charts.PieChart>
-
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -260,16 +237,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tCardSummByArticle">
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-<<<<<<< HEAD
                 <LinearLayout
                     android:id="@+id/weight"
                     android:layout_width="match_parent"
@@ -312,27 +284,6 @@
                     </DigitalClock>
                 </LinearLayout>
 
-=======
-                <TextView
-                    android:id="@+id/scrollingArticleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:text="@string/scrollingText"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp" />
-
-                <DigitalClock
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/rowValueColor3" />
->>>>>>> master
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

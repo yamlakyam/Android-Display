@@ -1,6 +1,8 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -9,7 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +73,8 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
     int totalQuantity = 0;
     double grandTotal = 0;
 
+    Activity activity;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +84,16 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                 SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
                 SummaryOfLastMonthFragment.handleRowAnimationThread);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        activity = getActivity();
+
         View view = inflater.inflate(R.layout.fragment_branch_summary, container, false);
         branchSummaryTableLayout = view.findViewById(R.id.branchSummaryTableLayout);
         branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
@@ -115,6 +123,12 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+//        activity = (Activity) context;
+    }
+
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<BranchSummaryTableRow> tablesToDisplay, int seconds) {
         grandTotal = 0;
@@ -136,8 +150,8 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
 
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause) {
-                    startActivity(new Intent(requireActivity(), MapsActivity.class));
-//                    navigate(fragment);
+//                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+                    navigate(fragment);
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
@@ -224,22 +238,21 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
     public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
-
-            if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(3))
-                    navController.navigate(R.id.summarizedByArticleFragment2);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(4))
-                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(5))
-                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(6))
-                    navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(7))
-                    navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(8))
-                    navController.navigate(R.id.branchSummaryFragment);
-            }
-
+            if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                Log.i("activity", activity + "");
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8))
+                navController.navigate(R.id.branchSummaryFragment);
         }
     }
 
