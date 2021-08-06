@@ -5,21 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.AllData;
-import com.cnet.VisualAnalysis.Threads.HandleDataRefreshThread;
 import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
+import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONException;
@@ -70,9 +68,9 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 //                if (index == 0) {
 //                    isFirstRefresh = true;
 //                }
-                VolleyHttp http = new VolleyHttp(getApplicationContext());
-                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
-                        SplashScreenActivity.this);
+        VolleyHttp http = new VolleyHttp(getApplicationContext());
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+                SplashScreenActivity.this);
 
 //                Log.i("request", "request made");
 //
@@ -101,13 +99,14 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
             allData = allDataParser.parseAllData();
 
 //            if (isFirstRefresh) {
-                if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0) {
-                    startActivity(new Intent(SplashScreenActivity.this, SecondActivity.class));
-                } else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                }
+            if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0) {
+//                Log.i("user report", allData.getDashBoardData().getUserReportForAllOus() + "");
+//                Log.i("report", DashBoardDataParser.userReportDataParser(jsonObject) + "");
+                startActivity(new Intent(SplashScreenActivity.this, SecondActivity.class));
+            } else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
+                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+            }
 //            }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -124,8 +123,8 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     public String getDeviceId(Context context) {
 //        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 //        String imei = telephonyManager.getDeviceId();
-
 //        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
         myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return myAndroidDeviceId;
     }

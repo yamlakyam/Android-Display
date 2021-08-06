@@ -7,8 +7,8 @@ public class SummaryOfLast30DaysData {
     public BarChartData barChartData;
     public ArrayList<SummaryOfLast30DaysRow> tableData;
 
-    public SummaryOfLast30DaysData(LineChartData lineChartData, BarChartData barChartData, ArrayList<SummaryOfLast30DaysRow> tableData) {
-        this.lineChartData = lineChartData;
+    public SummaryOfLast30DaysData( BarChartData barChartData, ArrayList<SummaryOfLast30DaysRow> tableData) {
+
         this.tableData = tableData;
         this.barChartData = barChartData;
     }

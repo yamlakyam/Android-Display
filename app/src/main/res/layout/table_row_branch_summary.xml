@@ -5,7 +5,9 @@
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
     android:background="#49515c"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
 
     <TextView
@@ -15,8 +17,6 @@
         android:fontFamily="sans-serif-light"
         android:gravity="start"
         android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:text="TextView"
         android:textColor="@color/rowValueColor2"
         android:textSize="14sp" />
@@ -26,8 +26,6 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:text="TextView"
         android:textColor="@color/rowValueColor1"
         android:textSize="14sp" />

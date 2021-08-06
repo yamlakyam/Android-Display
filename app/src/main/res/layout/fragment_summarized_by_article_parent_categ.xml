@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/advent_pro_thin"
                     android:gravity="end"
-                    android:text="Total"
+                    android:text="Grand Total"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 

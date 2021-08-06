@@ -1,7 +1,6 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
-import com.cnet.VisualAnalysis.Data.VSMCard;
+import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
 import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
 import com.cnet.VisualAnalysis.Data.VsmTransactionTableRow;
@@ -145,9 +144,48 @@ public class UtilityFunctionsForActivity1 {
                 animate(distributorTableLayout, tableElements);
             }
 
-
         }
 
+    }
+
+    public static void drawUserReport(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
+        if (userReportTableRows != null) {
+            UserReportTableRow row = userReportTableRows.get(index);
+
+            View tableElements = null;
+            try {
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (tableElements != null) {
+                TextView userReportSN = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+                TextView userReportSummaryType = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+                TextView userReportGrandTotal = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+                TextView userReportPercentage = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+
+                double grandTotalForAll = 0;
+                for (int i = 0; i < userReportTableRows.size(); i++) {
+                    double grandTotalForI = userReportTableRows.get(i).getGrandTotal();
+                    grandTotalForAll = grandTotalForAll + grandTotalForI;
+                }
+                double percentage = (row.grandTotal / grandTotalForAll) * 100;
+
+                NumberFormat numberFormat = NumberFormat.getInstance();
+
+                userReportSN.setText(String.valueOf(index + 1));
+                userReportSummaryType.setText(row.getSummaryType());
+                userReportGrandTotal.setText(String.valueOf(row.grandTotal));
+                userReportPercentage.setText(numberFormat.format(percentage) + "%");
+
+
+                if (userReportTableLayout != null) {
+                    userReportTableLayout.addView(tableElements);
+                }
+                animate(userReportTableLayout, tableElements);
+            }
+
+        }
     }
 
     public static void animate(View container, View child) {
@@ -304,6 +342,19 @@ public class UtilityFunctionsForActivity1 {
             e.printStackTrace();
         }
         return parsed;
+    }
+
+    public static Date peakHourFormatter(String dateTime){
+        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy HH:mmaa");
+
+        Date parsed = null;
+        try {
+            parsed = input.parse(dateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return parsed;
+
     }
 
     public static String timeElapsed(Date startDate, Date endDate) {

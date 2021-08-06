@@ -138,7 +138,6 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
                 if (message != null) {
                     index = Integer.parseInt(message);
                     distributorIndex = index;
-
                 }
                 inflateTable(index);
                 setDistributorHeader(index);

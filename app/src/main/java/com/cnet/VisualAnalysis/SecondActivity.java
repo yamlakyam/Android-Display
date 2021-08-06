@@ -84,20 +84,23 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public int mappedFragment() {
-        int frgamentId = R.id.branchSummaryFragment;
-        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
-            frgamentId = R.id.summarizedByArticleFragment2;
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
-            frgamentId = R.id.summarizedByArticleParentCategFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
-            frgamentId = R.id.summarizedByArticleChildCategFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
-            frgamentId = R.id.summaryOfLastSixMonthsFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
-            frgamentId = R.id.summaryOfLastMonthFragment;
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
-            frgamentId = R.id.branchSummaryFragment;
-        }
+//        int frgamentId = R.id.branchSummaryFragment;
+//        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+//            frgamentId = R.id.summarizedByArticleFragment2;
+//        } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+//            frgamentId = R.id.summarizedByArticleParentCategFragment;
+//        } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+//            frgamentId = R.id.summarizedByArticleChildCategFragment;
+//        } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+//            frgamentId = R.id.summaryOfLastSixMonthsFragment;
+//        } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+//            frgamentId = R.id.summaryOfLastMonthFragment;
+//        } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+//            frgamentId = R.id.branchSummaryFragment;
+//        }
+
+//        int frgamentId = R.id.userReportForAllOusFragment;
+        int frgamentId = R.id.peakHourReportFragment;
         return frgamentId;
     }
 
@@ -344,7 +347,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.summaryOfLastMonthFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
                     navController.navigate(R.id.branchSummaryFragment);
-                } else if(SplashScreenActivity.allData.getLayoutList().contains(1)){
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     startActivity(new Intent(SecondActivity.this, MapsActivity.class));
                 }
 
@@ -360,7 +363,7 @@ public class SecondActivity extends AppCompatActivity {
 
             if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
 
-                if (SplashScreenActivity.allData.getLayoutList().contains(5) )
+                if (SplashScreenActivity.allData.getLayoutList().contains(5))
                     navController.navigate(R.id.summarizedByArticleChildCategFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(6))
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
@@ -368,9 +371,9 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.summaryOfLastMonthFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(8))
                     navController.navigate(R.id.branchSummaryFragment);
-                else if(SplashScreenActivity.allData.getLayoutList().contains(1))
+                else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                     startActivity(new Intent(SecondActivity.this, MapsActivity.class));
-                else if(SplashScreenActivity.allData.getLayoutList().contains(3))
+                else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                     navController.navigate(R.id.summarizedByArticleFragment2);
 
             }

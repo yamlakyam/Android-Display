@@ -32,4 +32,14 @@
         android:name="com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment"
         android:label="fragment_branch_summary"
         tools:layout="@layout/fragment_branch_summary" />
+    <fragment
+        android:id="@+id/userReportForAllOusFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.UserReportForEachOuFragment"
+        android:label="fragment_user_report_for_all_ous"
+        tools:layout="@layout/fragment_user_report_for_each_ou" />
+    <fragment
+        android:id="@+id/peakHourReportFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment"
+        android:label="fragment_peak_hour_report"
+        tools:layout="@layout/fragment_peak_hour_report" />
 </navigation>

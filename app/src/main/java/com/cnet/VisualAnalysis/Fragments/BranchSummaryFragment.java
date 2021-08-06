@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetRequest {
+public class BranchSummaryFragment extends Fragment{
 
     TableLayout branchSummaryTableLayout;
     ProgressBar branchSummaryProgressBar;
@@ -106,10 +106,6 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
         branchSummaryHeaderTextView.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
-
-        VolleyHttp http = new VolleyHttp(getContext());
-        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + new SplashScreenActivity().getDeviceId(requireContext()),
-                this);
 
         backTraverse(fragment, R.id.summaryOfLastMonthFragment);
         return view;
@@ -263,15 +259,4 @@ public class BranchSummaryFragment extends Fragment implements VolleyHttp.GetReq
             handleRowAnimationThread.interrupt();
     }
 
-    @Override
-    public void onSuccess(JSONObject jsonObject) throws JSONException {
-        AllDataParser allDataParser = new AllDataParser(jsonObject);
-        SplashScreenActivity.allData = allDataParser.parseAllData();
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-        Toast.makeText(getContext(), "Failed updating", Toast.LENGTH_SHORT).show();
-
-    }
 }

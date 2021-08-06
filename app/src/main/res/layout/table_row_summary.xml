@@ -6,7 +6,9 @@
     android:id="@+id/tableRow"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="#49515c">
+    android:background="#49515c"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/serialNumberTextView"

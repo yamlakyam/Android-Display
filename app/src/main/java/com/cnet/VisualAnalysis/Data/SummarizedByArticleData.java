@@ -11,12 +11,12 @@ public class SummarizedByArticleData {
 
     public SummarizedByArticleData(ArrayList<SummarizedByArticleTableRow> tableData,
 
-                                   BarChartData barChartData, LineChartData lineChartData,
+                                   BarChartData barChartData,
 
                                    PieChartData pieChartData) {
         this.tableData = tableData;
         this.barChartData = barChartData;
-        this.lineChartData = lineChartData;
+
         this.pieChartData = pieChartData;
     }
 

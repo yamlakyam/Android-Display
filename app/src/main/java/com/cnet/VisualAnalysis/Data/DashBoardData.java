@@ -1,5 +1,7 @@
 package com.cnet.VisualAnalysis.Data;
 
+import java.util.ArrayList;
+
 public class DashBoardData {
 
     SummarizedByArticleData summarizedByArticleData;
@@ -9,6 +11,11 @@ public class DashBoardData {
     SummaryOfLast30DaysData summaryOfLast30DaysData;
     BranchSummaryData branchSummaryData;
     VsmTableForSingleDistributor vsmTableForSingleDistributor;
+
+    ArrayList<UserReportDataForSingleOu> userReportForAllOus;
+    ArrayList<FigureReportData> allFigureReportData;
+
+
 
 
     public SummarizedByArticleData getSummarizedByArticleData() {
@@ -65,6 +72,22 @@ public class DashBoardData {
 
     public void setVsmTableForSingleDistributor(VsmTableForSingleDistributor vsmTableForSingleDistributor) {
         this.vsmTableForSingleDistributor = vsmTableForSingleDistributor;
+    }
+
+    public ArrayList<UserReportDataForSingleOu> getUserReportForAllOus() {
+        return userReportForAllOus;
+    }
+
+    public void setUserReportForAllOus(ArrayList<UserReportDataForSingleOu> userReportForAllOus) {
+        this.userReportForAllOus = userReportForAllOus;
+    }
+
+    public ArrayList<FigureReportData> getAllFigureReportData() {
+        return allFigureReportData;
+    }
+
+    public void setAllFigureReportData(ArrayList<FigureReportData> allFigureReportData) {
+        this.allFigureReportData = allFigureReportData;
     }
 }
 
