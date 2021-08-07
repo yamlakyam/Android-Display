@@ -45,7 +45,6 @@ public class UserReportForEachOuFragment extends Fragment {
 
     double grandTotalSum;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class UserReportForEachOuFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (SplashScreenActivity.allData.getDashBoardData().getUserReportForAllOus() != null) {
+        if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null) {
 //            distributorTableProgressBar.setVisibility(View.GONE);
             inflateAllTables(0);
         }
@@ -83,10 +82,10 @@ public class UserReportForEachOuFragment extends Fragment {
 
                 }
                 inflateTable(index);
-                UtilityFunctionsForActivity2.drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForAllOus().get(index).pieChartData,
+                UtilityFunctionsForActivity2.drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).pieChartData,
                         pieChart, "User Report");
                 userReportTitle.setText("User Report For " +
-                        SplashScreenActivity.allData.getDashBoardData().getUserReportForAllOus().get(index).org);
+                        SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).org);
 
             }
         };
@@ -94,7 +93,7 @@ public class UserReportForEachOuFragment extends Fragment {
         float secondsToWait = Float.parseFloat(SplashScreenActivity.allData.getTransitionTimeInMinutes());
 
 //        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size(), (int) secondsToWait, startingIndex);
-        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getDashBoardData().getUserReportForAllOus().size(), (int) secondsToWait, startingIndex);
+        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size(), (int) secondsToWait, startingIndex);
         handleDataChangeThread.start();
 
     }
@@ -106,7 +105,7 @@ public class UserReportForEachOuFragment extends Fragment {
         if (userReportTableLayout != null) {
             userReportTableLayout.removeAllViews();
         }
-        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getUserReportForAllOus().get(dataIndex).userReportTableRowArrayList;
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(dataIndex).userReportTableRowArrayList;
 
         animationHandler = new Handler() {
             @Override
@@ -120,7 +119,7 @@ public class UserReportForEachOuFragment extends Fragment {
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
-                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForAllOus().size() - 1) {
+                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
@@ -128,7 +127,7 @@ public class UserReportForEachOuFragment extends Fragment {
 
                 } else if (index < tablesToDisplay.size()) {
                     grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
-                    UtilityFunctionsForActivity1.drawUserReport(tablesToDisplay, getContext(), userReportTableLayout, index);
+                    UtilityFunctionsForActivity1.drawUserReportForEachOu(tablesToDisplay, getContext(), userReportTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
                 }
             }

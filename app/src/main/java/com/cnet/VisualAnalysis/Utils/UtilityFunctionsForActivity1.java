@@ -11,6 +11,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.cnet.VisualAnalysis.Data.DistributorTableRow;
+import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
@@ -148,7 +149,7 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void drawUserReport(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
+    public static void drawUserReportForEachOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
         if (userReportTableRows != null) {
             UserReportTableRow row = userReportTableRows.get(index);
 
@@ -186,6 +187,89 @@ public class UtilityFunctionsForActivity1 {
             }
 
         }
+    }
+
+
+    public static void drawPeakHourReportForEachOu(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
+        if (figureReportDataElements != null) {
+            FigureReportDataElements row = figureReportDataElements.get(index);
+
+            View tableElements = null;
+            try {
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (tableElements != null) {
+                TextView peakHourReportSN = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+                TextView peakHourReportSummaryType = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+                TextView peakHourReportTotalCount = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+                TextView peakHourReportGrandTotal = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+
+                double grandTotalForAll = 0;
+                for (int i = 0; i < figureReportDataElements.size(); i++) {
+                    double grandTotalForI = figureReportDataElements.get(i).getGrandTotal();
+                    grandTotalForAll = grandTotalForAll + grandTotalForI;
+                }
+                double percentage = (row.grandTotal / grandTotalForAll) * 100;
+
+                NumberFormat numberFormat = NumberFormat.getInstance();
+
+                peakHourReportSN.setText(String.valueOf(index + 1));
+                peakHourReportSummaryType.setText(row.dateNTime);
+                peakHourReportTotalCount.setText(String.valueOf(row.totalCount));
+                peakHourReportGrandTotal.setText(numberFormat.format(row.getGrandTotal()) );
+
+                if (peakHourReportTableLayout != null) {
+                    peakHourReportTableLayout.addView(tableElements);
+                }
+                animate(peakHourReportTableLayout, tableElements);
+            }
+
+        }
+
+    }
+
+    public static void drawUserReportForAllOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
+        if (userReportTableRows != null) {
+            UserReportTableRow row = userReportTableRows.get(index);
+
+            View tableElements = null;
+            try {
+                tableElements = LayoutInflater.from(context).inflate(R.layout.user_report_for_all_table_row, null, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (tableElements != null) {
+                TextView userReportForAllSN = tableElements.findViewById(R.id.tableRowAllUserReportProperty1);
+                TextView userReportForAllUserName = tableElements.findViewById(R.id.tableRowAllUserReportProperty2);
+                TextView userReportForAllGrandTotal = tableElements.findViewById(R.id.tableRowAllUserReportProperty3);
+                TextView userReportForAllBranchName = tableElements.findViewById(R.id.tableRowAllUserReportProperty4);
+                TextView userReportForAllPercentage = tableElements.findViewById(R.id.tableRowAllUserReportProperty5);
+
+                double grandTotalForAll = 0;
+                for (int i = 0; i < userReportTableRows.size(); i++) {
+                    double grandTotalForI = userReportTableRows.get(i).getGrandTotal();
+                    grandTotalForAll = grandTotalForAll + grandTotalForI;
+                }
+                double percentage = (row.grandTotal / grandTotalForAll) * 100;
+
+                NumberFormat numberFormat = NumberFormat.getInstance();
+
+                userReportForAllSN.setText(String.valueOf(index + 1));
+                userReportForAllUserName.setText(row.getSummaryType());
+                userReportForAllGrandTotal.setText(String.valueOf(row.grandTotal));
+                userReportForAllBranchName.setText(row.getOrg());
+                userReportForAllPercentage.setText(numberFormat.format(percentage) + "%");
+
+                if (userReportTableLayout != null) {
+                    userReportTableLayout.addView(tableElements);
+                }
+                animate(userReportTableLayout, tableElements);
+            }
+
+        }
+
     }
 
     public static void animate(View container, View child) {
@@ -280,7 +364,6 @@ public class UtilityFunctionsForActivity1 {
 
                 numberFormat.setGroupingUsed(true);
 
-
                 snTextView.setText(String.valueOf(animationIndex + 1));
                 voucherNoTextView.setText(row.getVoucherNo());
                 outletTextView.setText(row.getOutlet());
@@ -295,10 +378,7 @@ public class UtilityFunctionsForActivity1 {
                 }
                 animate(vsmTransactionTableLayout, tableElements);
             }
-
         }
-
-
     }
 
     public static String formatTimeToString(String lastActive) {
@@ -344,7 +424,7 @@ public class UtilityFunctionsForActivity1 {
         return parsed;
     }
 
-    public static Date peakHourFormatter(String dateTime){
+    public static Date peakHourFormatter(String dateTime) {
         SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy HH:mmaa");
 
         Date parsed = null;

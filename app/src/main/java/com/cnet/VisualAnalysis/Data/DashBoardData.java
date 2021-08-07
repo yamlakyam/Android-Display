@@ -12,10 +12,10 @@ public class DashBoardData {
     BranchSummaryData branchSummaryData;
     VsmTableForSingleDistributor vsmTableForSingleDistributor;
 
-    ArrayList<UserReportDataForSingleOu> userReportForAllOus;
+    ArrayList<UserReportDataForSingleOu> userReportForEachBranch;
     ArrayList<FigureReportData> allFigureReportData;
 
-
+    ArrayList<UserReportTableRow> userReportForAllBranch;
 
 
     public SummarizedByArticleData getSummarizedByArticleData() {
@@ -74,12 +74,12 @@ public class DashBoardData {
         this.vsmTableForSingleDistributor = vsmTableForSingleDistributor;
     }
 
-    public ArrayList<UserReportDataForSingleOu> getUserReportForAllOus() {
-        return userReportForAllOus;
+    public ArrayList<UserReportDataForSingleOu> getUserReportForEachBranch() {
+        return userReportForEachBranch;
     }
 
-    public void setUserReportForAllOus(ArrayList<UserReportDataForSingleOu> userReportForAllOus) {
-        this.userReportForAllOus = userReportForAllOus;
+    public void setUserReportForEachBranch(ArrayList<UserReportDataForSingleOu> userReportForAllOus) {
+        this.userReportForEachBranch = userReportForAllOus;
     }
 
     public ArrayList<FigureReportData> getAllFigureReportData() {
@@ -88,6 +88,14 @@ public class DashBoardData {
 
     public void setAllFigureReportData(ArrayList<FigureReportData> allFigureReportData) {
         this.allFigureReportData = allFigureReportData;
+    }
+
+    public ArrayList<UserReportTableRow> getUserReportForAllBranch() {
+        return userReportForAllBranch;
+    }
+
+    public void setUserReportForAllBranch(ArrayList<UserReportTableRow> userReportForAllBranch) {
+        this.userReportForAllBranch = userReportForAllBranch;
     }
 }
 

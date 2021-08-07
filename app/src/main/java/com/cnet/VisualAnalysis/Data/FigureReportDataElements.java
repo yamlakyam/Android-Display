@@ -1,18 +1,20 @@
 package com.cnet.VisualAnalysis.Data;
 
 public class FigureReportDataElements {
-    public String summaryType;
+    public String dateNTime;
     public int totalCount;
     public double grandTotal;
+    public String org;
 
-    public FigureReportDataElements(String summaryType, int totalCount, double grandTotal) {
-        this.summaryType = summaryType;
+    public FigureReportDataElements(String dateNTime, int totalCount, double grandTotal, String org) {
+        this.dateNTime = dateNTime;
         this.totalCount = totalCount;
         this.grandTotal = grandTotal;
+        this.org = org;
     }
 
-    public String getSummaryType() {
-        return summaryType;
+    public String getDateNTime() {
+        return dateNTime;
     }
 
     public int getTotalCount() {
@@ -21,5 +23,9 @@ public class FigureReportDataElements {
 
     public double getGrandTotal() {
         return grandTotal;
+    }
+
+    public String getOrg() {
+        return org;
     }
 }

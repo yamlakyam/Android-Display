@@ -89,7 +89,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     @Override
     public void onSuccess(JSONObject jsonObject) {
 
-        Log.i("TAG", "onSuccess: ");
+//        Log.i("TAG", "onSuccess: ");
         progressBarCircular.setVisibility(View.GONE);
         loadingTextView.setVisibility(View.GONE);
 

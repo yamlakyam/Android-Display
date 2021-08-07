@@ -101,6 +101,7 @@ public class SecondActivity extends AppCompatActivity {
 
 //        int frgamentId = R.id.userReportForAllOusFragment;
         int frgamentId = R.id.peakHourReportFragment;
+//        int frgamentId = R.id.userReportForAllOusFragment2;
         return frgamentId;
     }
 
@@ -111,7 +112,6 @@ public class SecondActivity extends AppCompatActivity {
             switch (keyCode) {
 
                 case KeyEvent.KEYCODE_DPAD_CENTER:
-
                     playPause.setImageTintList(ColorStateList.valueOf(
                             ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
                     leftArrow.setImageTintList(ColorStateList.valueOf(

@@ -1,7 +1,5 @@
 package com.cnet.VisualAnalysis.Utils;
 
-import android.util.Log;
-
 import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
@@ -25,6 +23,7 @@ import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
 import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
 import com.cnet.VisualAnalysis.Data.VsmTransactionTableRow;
+import com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class DashBoardDataParser {
 
@@ -43,6 +41,7 @@ public class DashBoardDataParser {
     private static final String TAG_last_months_of_year_sale = "lastMonthsOfYearSale";
     private static final String TAG_summarized_by_article_child_cate_list = "summarizedByArticleChildCategory";
     private static final String TAG_summarized_by_article_parent_cate_list = "summarizedByArticleParentCategory";
+
 
     public DashBoardDataParser(JSONArray jsonArray) {
         this.jsonArray = jsonArray;
@@ -62,10 +61,12 @@ public class DashBoardDataParser {
             dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
             dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
 //            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
-            dashBoardData.setUserReportForAllOus(userReportForEachOuDataParser(rootJSON));
+            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
             dashBoardData.setAllFigureReportData(figureReportDataParser(rootJSON));
+            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
 
-            Log.i("figureReport", figureReportDataParser(rootJSON) + "");
+//            dashBoardData.setAllFigureReportData(filteredFigureReportDataParser(parseFilteredFigureReport(rootJSON)));
+            parseFilteredFigureReport(rootJSON);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -347,6 +348,7 @@ public class DashBoardDataParser {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
 
         ArrayList<FigureReportData> figureReportDataArrayList = new ArrayList<>();
+        ArrayList<FigureReportData> figureReportDataArrayListFiltered = new ArrayList<>();
 
         for (int i = 0; i < summaryOfBranchArray.length(); i++) {
 
@@ -354,44 +356,96 @@ public class DashBoardDataParser {
 
             JSONArray figureReportArray = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport");
             ArrayList<FigureReportDataElements> figureReportDataElementsArrayList = new ArrayList<>();
+            ArrayList<FigureReportDataElements> figureReportDataElementsFiltered = new ArrayList<>();
 
             float[] xValues = new float[figureReportArray.length()];
             float[] yValues = new float[figureReportArray.length()];
             String[] legends = new String[figureReportArray.length()];
-            Date[] x_legends = new Date[figureReportArray.length()];
 
             int count = 0;
             for (int j = 0; j < figureReportArray.length(); j++) {
                 JSONObject singleFigureReportObject = figureReportArray.getJSONObject(j);
 
                 FigureReportDataElements figureReportDataElements = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
-                        singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"));
+                        singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
                 figureReportDataElementsArrayList.add(figureReportDataElements);
 
                 xValues[j] = j + 1;
                 yValues[j] = (float) singleFigureReportObject.getDouble("grandTotal");
                 legends[j] = singleFigureReportObject.getString("summaryType");
-                x_legends[j] = UtilityFunctionsForActivity1.peakHourFormatter(singleFigureReportObject.getString("summaryType"));
-                int year = UtilityFunctionsForActivity1.peakHourFormatter(singleFigureReportObject.getString("summaryType")).getYear();
-                int month = UtilityFunctionsForActivity1.peakHourFormatter(singleFigureReportObject.getString("summaryType")).getMonth();
-                int day = UtilityFunctionsForActivity1.peakHourFormatter(singleFigureReportObject.getString("summaryType")).getDay();
 
-                int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-                int thisMonth = Calendar.getInstance().get(Calendar.MONTH);
-                int thisDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
-                if (year == thisYear && month == thisMonth && day == thisDay) {
-                    count = count + 1;
-                }
-
-                Log.i("compare", x_legends[j].compareTo(Calendar.getInstance().getTime()) + "");
+//                if (PeakHourReportFragment.convertToTime(singleFigureReportObject.getString("summaryType")).getMonth() == Calendar.MAY
+//                ) {
+//
+//                    FigureReportDataElements figureReportDataElementsFilterd = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
+//                            singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
+//                    figureReportDataElementsFiltered.add(figureReportDataElementsFilterd);
+//
+//                }
             }
 
-            LineChartData lineChartData = new LineChartData(xValues, yValues, legends, x_legends);
+//            for (int k = 0; k < figureReportDataElementsFiltered.size(); k++) {
+//                xValues[k] = k + 1;
+//                yValues[k] = (float) figureReportDataElementsFiltered.get(k).grandTotal;
+//                legends[k] = figureReportDataElementsFiltered.get(k).dateNTime;
+//            }
+
+            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
             FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData, org);
             figureReportDataArrayList.add(figureReportData);
+
+//            LineChartData lineChartDataFiltered = new LineChartData(xValues, yValues, legends);
+//            FigureReportData figureReportData = new FigureReportData(figureReportDataElementsFiltered, lineChartDataFiltered, org);
+//            figureReportDataArrayListFiltered.add(figureReportData);
+
         }
+//        return figureReportDataArrayListFiltered;
         return figureReportDataArrayList;
+    }
+
+    public static ArrayList<ArrayList<FigureReportDataElements>> parseFilteredFigureReport(JSONObject jsonObject) throws JSONException {
+        JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
+        ArrayList<FigureReportData> figureReportDataArrayListFiltered = new ArrayList<>();
+
+        ArrayList<ArrayList<FigureReportDataElements>> allFigureReportDataElementsFiltered = new ArrayList<>();
+
+        for (int i = 0; i < summaryOfBranchArray.length(); i++) {
+
+            String org = summaryOfBranchArray.getJSONObject(i).getString("org");
+
+            JSONArray figureReportArray = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport");
+            ArrayList<FigureReportDataElements> figureReportDataElementsFiltered = new ArrayList<>();
+
+            float[] xValues = new float[figureReportArray.length()];
+            float[] yValues = new float[figureReportArray.length()];
+            String[] legends = new String[figureReportArray.length()];
+
+            int count = 0;
+            for (int j = 0; j < figureReportArray.length(); j++) {
+                JSONObject singleFigureReportObject = figureReportArray.getJSONObject(j);
+
+//                FigureReportDataElements figureReportDataElements = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
+//                        singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"));
+//                figureReportDataElementsArrayList.add(figureReportDataElements);
+
+//                xValues[j] = j + 1;
+//                yValues[j] = (float) singleFigureReportObject.getDouble("grandTotal");
+//                legends[j] = singleFigureReportObject.getString("summaryType");
+//                x_legends[j] = UtilityFunctionsForActivity1.peakHourFormatter(singleFigureReportObject.getString("summaryType"));
+
+                if (PeakHourReportFragment.convertToTime(singleFigureReportObject.getString("summaryType")).getMonth() == Calendar.MAY
+                ) {
+
+                    FigureReportDataElements figureReportDataElementsFilterd = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
+                            singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
+                    figureReportDataElementsFiltered.add(figureReportDataElementsFilterd);
+
+                }
+            }
+
+            allFigureReportDataElementsFiltered.add(figureReportDataElementsFiltered);
+        }
+        return allFigureReportDataElementsFiltered;
     }
 
     public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
@@ -437,6 +491,35 @@ public class DashBoardDataParser {
 
         VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(allVans, orgName);
         return vsmTableForSingleDistributor;
+    }
+
+    public static ArrayList<FigureReportData> filteredFigureReportDataParser(ArrayList<ArrayList<FigureReportDataElements>> filteredUserReport) {
+
+        ArrayList<FigureReportData> figureReportDataArrayList = new ArrayList<>();
+        for (int i = 0; i < filteredUserReport.size(); i++) {
+
+            ArrayList<FigureReportDataElements> figureReportDataElementsArrayList = new ArrayList<>();
+
+            float[] xValues = new float[filteredUserReport.get(i).size()];
+            float[] yValues = new float[filteredUserReport.get(i).size()];
+            String[] legends = new String[filteredUserReport.get(i).size()];
+
+            for (int j = 0; j < filteredUserReport.get(i).size(); j++) {
+                FigureReportDataElements figureReportDataElements = new FigureReportDataElements(filteredUserReport.get(i).get(j).dateNTime,
+                        filteredUserReport.get(i).get(j).totalCount, filteredUserReport.get(i).get(j).grandTotal, filteredUserReport.get(i).get(j).org);
+                figureReportDataElementsArrayList.add(figureReportDataElements);
+
+                xValues[j] = j + 1;
+                yValues[j] = (float) filteredUserReport.get(i).get(j).grandTotal;
+                legends[j] = filteredUserReport.get(i).get(j).dateNTime;
+            }
+
+            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
+            FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData, figureReportDataElementsArrayList.get(i).org);
+            figureReportDataArrayList.add(figureReportData);
+
+        }
+        return figureReportDataArrayList;
     }
 
 }

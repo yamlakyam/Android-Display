@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="#49515c"
+    android:gravity="center_vertical"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+
+    <TextView
+        android:id="@+id/tableRowAllUserReportProperty1"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="start"
+        android:text="TextView"
+        android:textColor="@color/rowValueColor2"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tableRowAllUserReportProperty2"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="TextView"
+        android:textColor="@color/rowValueColor1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tableRowAllUserReportProperty3"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:gravity="end"
+        android:text="TextView"
+        android:textColor="@color/rowValueColor1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tableRowAllUserReportProperty4"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:gravity="end"
+        android:text="TextView"
+        android:textColor="@color/rowValueColor1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tableRowAllUserReportProperty5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-light"
+        android:gravity="end"
+        android:text="TextView"
+        android:textColor="@color/rowValueColor1"
+        android:textSize="14sp" />
+</TableRow>
