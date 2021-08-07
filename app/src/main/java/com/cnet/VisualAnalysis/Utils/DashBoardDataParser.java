@@ -272,7 +272,6 @@ public class DashBoardDataParser {
                     branchSummaryAtInedx.getString("org"),
                     branchSummaryAtInedx.getDouble("grandTotal"),
                     branchSummaryAtInedx.getInt("countS")
-
             );
 
             tableData.add(branchSummaryTableRow);

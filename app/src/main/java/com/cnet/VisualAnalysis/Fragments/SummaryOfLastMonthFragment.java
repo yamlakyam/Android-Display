@@ -218,6 +218,15 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
             if (SplashScreenActivity.allData.getLayoutList().contains(8))
                 navController.navigate(R.id.branchSummaryFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                navController.navigate(R.id.userReportForAllOusFragment2);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                navController.navigate(R.id.peakHourReportFragment);
+            }
             else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                 startActivity(new Intent(requireActivity(), MapsActivity.class));
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))

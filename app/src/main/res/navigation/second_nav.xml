@@ -47,4 +47,9 @@
         android:name="com.cnet.VisualAnalysis.Fragments.UserReportForAllOusFragment"
         android:label="fragment_user_report_for_all_ous"
         tools:layout="@layout/fragment_user_report_for_all_ous" />
+    <fragment
+        android:id="@+id/peakHourReportForAllOusFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.PeakHourReportForAllOusFragment"
+        android:label="fragment_peak_hour_report_for_all_ous"
+        tools:layout="@layout/fragment_peak_hour_report_for_all_ous" />
 </navigation>

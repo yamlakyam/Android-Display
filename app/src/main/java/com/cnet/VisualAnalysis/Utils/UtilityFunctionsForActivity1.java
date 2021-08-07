@@ -189,7 +189,6 @@ public class UtilityFunctionsForActivity1 {
         }
     }
 
-
     public static void drawPeakHourReportForEachOu(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
         if (figureReportDataElements != null) {
             FigureReportDataElements row = figureReportDataElements.get(index);
@@ -298,7 +297,6 @@ public class UtilityFunctionsForActivity1 {
         VSMCardGVAdapter adapter = new VSMCardGVAdapter(context, SplashScreenActivity.allData.getFmcgData().getVsmCards().get(index));
         VSMcardGridView.setAdapter(adapter);
     }
-
 
     public static VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
         JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");

@@ -7,8 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.style.TtsSpan;
-import android.view.DisplayCutout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,7 +169,15 @@ public class SummarizedByArticleFragment extends Fragment {
                 navController.navigate(R.id.summaryOfLastMonthFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
                 navController.navigate(R.id.branchSummaryFragment);
-            } else if(SplashScreenActivity.allData.getLayoutList().contains(1)){
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                navController.navigate(R.id.userReportForAllOusFragment2);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                navController.navigate(R.id.peakHourReportFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                 startActivity(new Intent(requireActivity(), MapsActivity.class));
             }
 
