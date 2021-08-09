@@ -34,7 +34,6 @@ import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.StartingActivty;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -58,6 +57,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
     DigitalClock digitalClock;
     TextView summaryOfLast30DaysTitle;
 
+
     public static HandleRowAnimationThread handleRowAnimationThread;
 
     public static boolean isInflatingTable;
@@ -78,7 +78,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
                 BranchSummaryFragment.handleRowAnimationThread);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,12 +90,11 @@ public class SummaryOfLastMonthFragment extends Fragment {
         scrollView = view.findViewById(R.id.summaryOfLastMonthScrollView);
         barChart = view.findViewById(R.id.last30daysBarChart);
         summaryOfLastMonthFrameLayout = view.findViewById(R.id.summaryOfLastMonthFrameLayout);
-        scrollingLastMonthText=view.findViewById(R.id.scrollingLastMonthText);
+        scrollingLastMonthText = view.findViewById(R.id.scrollingLastMonthText);
         scrollingLastMonthText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
-        summaryOfLast30DaysTitle=view.findViewById(R.id.summaryOfLast30DaysTitle);
-        summaryOfLast30DaysTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        summaryOfLast30DaysTitle = view.findViewById(R.id.summaryOfLastxDaysTitle);
 
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
@@ -104,10 +103,16 @@ public class SummaryOfLastMonthFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResume() {
         super.onResume();
         if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+
+            int days = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size();
+            summaryOfLast30DaysTitle.setText("Summary of Last " + days + " days");
+            summaryOfLast30DaysTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+            scrollingLastMonthText.append(" " + days + " days");
             summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }
@@ -115,11 +120,13 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
         isInflatingTable = true;
+        int days = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size();
+
 
         DashBoardData dashBoardData = dashBoardDataParam;
         inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData, seconds);
-        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart, "Summarized by last 30 days");
-        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last 30 days");
+//        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart, "Summarized by last 30 days");
+        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last " + days + "  days");
     }
 
     @SuppressLint("HandlerLeak")
@@ -157,7 +164,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds,this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -226,8 +233,7 @@ public class SummaryOfLastMonthFragment extends Fragment {
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
-            }
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                 startActivity(new Intent(requireActivity(), MapsActivity.class));
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);

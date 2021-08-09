@@ -83,7 +83,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,21 +96,26 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
         summaryOfLastSixMonthFrameLayout = view.findViewById(R.id.summaryOfLastSixMonthFrameLayout);
         scrollingLast6MonthText = view.findViewById(R.id.scrollingLast6MonthText);
         scrollingLast6MonthText.setSelected(true);
+
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         SummaryOfLast6MonthsTitle = view.findViewById(R.id.SummaryOfLast6MonthsTitle);
-        SummaryOfLast6MonthsTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
-
 
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResume() {
         super.onResume();
         if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+            int months = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size();
+            SummaryOfLast6MonthsTitle.setText("Summary of Last " + months + " Months");
+            SummaryOfLast6MonthsTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+            scrollingLast6MonthText.append(" " + months + " months");
             summaryOfLastSixMonthFrameLayout.setVisibility(View.GONE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }
@@ -135,12 +139,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
                     drawLast6MonsTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
                 } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast6MonsPause) {
-//                    NavController navController = NavHostFragment.findNavController(fragment);
-//                    navController.navigate(R.id.summaryOfLastMonthFragment);
-//                    SecondActivity secondActivity = new SecondActivity();
-//                    secondActivity.navigations(fragment);
                     navigate(fragment);
-
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLAst6Months(tablesToDisplay, getContext(), summaryOfLast6MonthsTableLayout, index, totalAmount);
@@ -151,7 +150,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this,0);
         handleRowAnimationThread.start();
     }
 
@@ -232,8 +231,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
-            }
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                 startActivity(new Intent(requireActivity(), MapsActivity.class));
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);

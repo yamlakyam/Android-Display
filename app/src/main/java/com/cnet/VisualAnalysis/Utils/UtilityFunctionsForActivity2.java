@@ -146,42 +146,43 @@ public class UtilityFunctionsForActivity2 {
 
     public static void drawLineChart(LineChartData lineChartData, LineChart lineChart, String label) {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
-        for (int i = 0; i < lineChartData.x.length; i++) {
-            dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
+
+        if (lineChartData != null) {
+            for (int i = 0; i < lineChartData.x.length; i++) {
+                dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
+            }
+
+            LineDataSet lineDataSet = new LineDataSet(dataVals, label);
+            LineData lineData = new LineData();
+            lineData.addDataSet(lineDataSet);
+            lineChart.setData(lineData);
+
+
+            lineChart.getAxisLeft().setDrawLabels(true);
+            lineChart.getAxisRight().setDrawGridLines(false);
+            lineChart.getAxisLeft().setDrawGridLines(false);
+            lineChart.getAxisRight().setDrawAxisLine(false);
+            lineChart.getAxisRight().setDrawLabels(false);
+            lineChart.getDescription().setEnabled(false);
+            lineChart.getXAxis().setDrawAxisLine(false);
+            lineChart.getXAxis().setDrawGridLines(false);
+            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            lineChart.setDrawGridBackground(false);
+            lineChart.getAxisLeft().setDrawGridLines(false);
+            lineChart.getXAxis().setGranularity(1f);
+            lineChart.getXAxis().setCenterAxisLabels(false);
+            lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            lineDataSet.setDrawValues(false);
+            lineDataSet.setColors(Color.parseColor("#5b79e7"));
+            lineDataSet.setDrawCircles(false);
+            lineChart.setExtraBottomOffset(15f);
+            lineChart.setExtraTopOffset(15f);
+            lineChart.animateX(500, Easing.EaseInCubic);
+            lineChart.getXAxis().setTextColor(Color.parseColor("#f6f8fb"));
+            lineChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
+            lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
         }
 
-        LineDataSet lineDataSet = new LineDataSet(dataVals, label);
-        LineData lineData = new LineData();
-        lineData.addDataSet(lineDataSet);
-        lineChart.setData(lineData);
-
-        lineChart.getAxisLeft().setDrawLabels(true);
-        lineChart.getAxisRight().setDrawGridLines(false);
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.getAxisRight().setDrawAxisLine(false);
-        lineChart.getAxisRight().setDrawLabels(false);
-        lineChart.getDescription().setEnabled(false);
-        lineChart.getXAxis().setDrawAxisLine(false);
-        lineChart.getXAxis().setDrawGridLines(false);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.setDrawGridBackground(false);
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setDrawValues(false);
-        lineDataSet.setColors(Color.parseColor("#5b79e7"));
-        lineDataSet.setDrawCircles(false);
-
-//        ArrayList<String> xAxisVals = new ArrayList<>(Arrays.asList("Apr 6", "Apr 7", "Apr 8", "Apr 9", "Apr 10", "Apr 11", "Apr 12"));
-//        ArrayList<String> yAxisVals = new ArrayList<>(Arrays.asList("0", "10k", "20k", "30k", "40k", "50k", "60k"));
-//        lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xAxisVals));
-//        //lineChart.getAxisLeft().setValueFormatter(new IndexAxisValueFormatter(yAxisVals));
-//        lineChart.getAxisLeft().setLabelCount(yAxisVals.size());
-        lineChart.setExtraBottomOffset(15f);
-        lineChart.setExtraTopOffset(15f);
-        lineChart.animateX(500, Easing.EaseInCubic);
-        lineChart.getXAxis().setTextColor(Color.parseColor("#f6f8fb"));
-        lineChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
-        lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
     }
 
 

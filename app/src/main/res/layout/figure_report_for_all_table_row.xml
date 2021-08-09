@@ -11,7 +11,7 @@
 
 
     <TextView
-        android:id="@+id/tableRowAllUserReportProperty1"
+        android:id="@+id/tableRowPeakHourReportForAllProperty1"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
@@ -23,7 +23,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tableRowAllUserReportProperty2"
+        android:id="@+id/tableRowPeakHourReportForAllProperty2"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
@@ -32,7 +32,17 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tableRowAllUserReportProperty3"
+        android:id="@+id/tableRowPeakHourReportForAllProperty3"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:gravity="end"
+        android:text="TextView"
+        android:textColor="@color/rowValueColor1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tableRowPeakHourReportForAllProperty4"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
@@ -42,17 +52,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tableRowAllUserReportProperty4"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:gravity="end"
-        android:text="TextView"
-        android:textColor="@color/rowValueColor1"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tableRowAllUserReportProperty5"
+        android:id="@+id/tableRowPeakHourReportForAllProperty5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"

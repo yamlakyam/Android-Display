@@ -2,7 +2,6 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -18,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -50,7 +48,7 @@ import java.util.Locale;
 public class BranchSummaryFragment extends Fragment {
 
     TableLayout branchSummaryTableLayout;
-    ProgressBar branchSummaryProgressBar;
+    //    ProgressBar branchSummaryProgressBar;
     ScrollView scrollBranchSummaryTable;
     PieChart pChartBranchSummary;
     Handler animationHandler;
@@ -66,6 +64,7 @@ public class BranchSummaryFragment extends Fragment {
     double grandTotal = 0;
 
     Activity activity;
+    int rowIndex;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,7 @@ public class BranchSummaryFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_branch_summary, container, false);
         branchSummaryTableLayout = view.findViewById(R.id.branchSummaryTableLayout);
-        branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
+//        branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
         pChartBranchSummary = view.findViewById(R.id.pChartBranchSummary);
         scrollingBranchText = view.findViewById(R.id.scrollingBranchText);
@@ -111,14 +110,8 @@ public class BranchSummaryFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        activity = (Activity) context;
-    }
-
     @SuppressLint("HandlerLeak")
-    private void inflateTable(ArrayList<BranchSummaryTableRow> tablesToDisplay, int seconds) {
+    private void inflateTable(ArrayList<BranchSummaryTableRow> tablesToDisplay, int seconds, int startingRowIndex) {
         grandTotal = 0;
         totalQuantity = 0;
 
@@ -131,6 +124,7 @@ public class BranchSummaryFragment extends Fragment {
                 int index = 0;
                 if (message != null) {
                     index = Integer.parseInt(message);
+
                 }
 
                 if (index == tablesToDisplay.size()) {
@@ -151,21 +145,20 @@ public class BranchSummaryFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this, startingRowIndex);
         handleRowAnimationThread.start();
     }
 
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
         isInflatingTable = true;
-        branchSummaryProgressBar.setVisibility(View.GONE);
+//        branchSummaryProgressBar.setVisibility(View.GONE);
 
         DashBoardData dashBoardData = dashBoardDataParam;
-        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds);
+        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds, 0);
         UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(), pChartBranchSummary, "Branch summary");
 
     }
-
 
     public void backTraverse(Fragment fragment, int id) {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
@@ -258,5 +251,6 @@ public class BranchSummaryFragment extends Fragment {
         if (handleRowAnimationThread != null)
             handleRowAnimationThread.interrupt();
     }
+
 
 }

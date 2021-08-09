@@ -22,18 +22,21 @@ public class HandleRowAnimationThread extends Thread {
     Handler changeDataHandler;
     int numberOfSeconds;
     Fragment fragment;
+    int startingIndex;
 
-    public HandleRowAnimationThread(int rows, Handler changeDataHandler, int numberOfSeconds, Fragment fragment) {
+    public HandleRowAnimationThread(int rows, Handler changeDataHandler, int numberOfSeconds, Fragment fragment, int startingIndex) {
         this.changeDataHandler = changeDataHandler;
         this.rows = rows;
         this.numberOfSeconds = numberOfSeconds;
         this.fragment = fragment;
+        this.startingIndex = startingIndex;
+
     }
 
     @Override
     public void run() {
         super.run();
-        for (int i = 0; i <= rows + 1; i++) {
+        for (int i = startingIndex; i <= rows + 1; i++) {
 
             Message message = changeDataHandler.obtainMessage();
             message.obj = String.valueOf(i);

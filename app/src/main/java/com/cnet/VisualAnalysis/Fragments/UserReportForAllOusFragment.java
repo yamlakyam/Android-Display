@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DigitalClock;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -25,30 +27,35 @@ import com.cnet.VisualAnalysis.Data.PieChartData;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
-import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
-public class UserReportForAllOusFragment extends Fragment {
+public class UserReportForAllOusFragment extends Fragment implements SecondActivity.KeyPress {
 
     TableLayout userReportForAllTableLayout;
+    TextView scrollingUserReportForAllText;
+    TextView userReportForAllTitle;
     PieChart pieChart;
     ScrollView userReportForAllScrollView;
-    TextView userReportTitle;
+    DigitalClock digitalClock;
     public static Handler animationHandler;
-    public static Handler changeDataHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
-    public HandleDataChangeThread handleDataChangeThread;
+
     private ArrayList<UserReportTableRow> tablesToDisplay;
     Fragment fragment;
 
     double grandTotalSum;
+    boolean userReportForAllPaused = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +65,15 @@ public class UserReportForAllOusFragment extends Fragment {
         userReportForAllTableLayout = view.findViewById(R.id.userReportForAllTableLayout);
         pieChart = view.findViewById(R.id.pchartUserReportForAll);
         userReportForAllScrollView = view.findViewById(R.id.userReportForAllScrollView);
+        scrollingUserReportForAllText = view.findViewById(R.id.scrollingUserReportForAllText);
+        scrollingUserReportForAllText.setSelected(true);
+        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        userReportForAllTitle = view.findViewById(R.id.userReportForAllTitle);
+        userReportForAllTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+
         fragment = this;
+
 
         return view;
     }
@@ -96,6 +111,7 @@ public class UserReportForAllOusFragment extends Fragment {
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
+                        navigate(fragment);
                     }
 
                 } else if (index < tablesToDisplay.size()) {
@@ -106,7 +122,7 @@ public class UserReportForAllOusFragment extends Fragment {
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this,0);
         handleRowAnimationThread.start();
     }
 
@@ -193,5 +209,61 @@ public class UserReportForAllOusFragment extends Fragment {
         }
     }
 
+    public void navigateLeft(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(8))
+            navController.navigate(R.id.branchSummaryFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+            navController.navigate(R.id.peakHourReportForAllOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        handleRowAnimationThread.interrupt();
+    }
+
+    @Override
+    public void centerKey() {
+        userReportForAllPaused = !userReportForAllPaused;
+        if (userReportForAllPaused) {
+            if (handleRowAnimationThread != null) {
+                handleRowAnimationThread.interrupt();
+            }
+        } else {
+            navigate(fragment);
+        }
+    }
+
+    @Override
+    public void leftKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigateLeft(fragment);
+    }
+
+    @Override
+    public void rightKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigate(fragment);
+    }
 }

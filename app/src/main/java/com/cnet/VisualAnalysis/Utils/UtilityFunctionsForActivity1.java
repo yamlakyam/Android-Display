@@ -271,6 +271,41 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
+    public static void drawPeakHourReportForAllOus(ArrayList<FigureReportDataElements> figureReportDataElements, Context context , TableLayout peakHourReportTableLayout, int index){
+        if (figureReportDataElements != null) {
+            FigureReportDataElements row = figureReportDataElements.get(index);
+
+            View tableElements = null;
+            try {
+                tableElements = LayoutInflater.from(context).inflate(R.layout.figure_report_for_all_table_row, null, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (tableElements != null) {
+                TextView peakHourReportForAllSN = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty1);
+                TextView peakHourReportForAllTime = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty2);
+                TextView peakHourReportForAllTotalCount = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty3);
+                TextView peakHourReportForAllBranchName = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty4);
+                TextView peakHourReportForAllGrandTotal = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty5);
+
+
+                NumberFormat numberFormat = NumberFormat.getInstance();
+
+                peakHourReportForAllSN.setText(String.valueOf(index + 1));
+                peakHourReportForAllTime.setText(row.getDateNTime());
+                peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
+                peakHourReportForAllBranchName.setText(row.getOrg());
+                peakHourReportForAllGrandTotal.setText(numberFormat.format(row.grandTotal));
+
+                if (peakHourReportTableLayout != null) {
+                    peakHourReportTableLayout.addView(tableElements);
+                }
+                animate(peakHourReportTableLayout, tableElements);
+            }
+
+        }
+
+    }
     public static void animate(View container, View child) {
         if (container != null) {
             Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);

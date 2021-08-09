@@ -44,6 +44,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng loc7 = new LatLng(9.051921, 38.738136);
     LatLng loc8 = new LatLng(9.005130, 38.696251);
     //LatLng loc6 = new LatLng(11.512322,37.402954);
+
     public static ArrayList<LatLng> locations = new ArrayList<LatLng>();
 
     public static Handler transactionsInVanHandler;
@@ -73,37 +74,45 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
-        for (int i = 0; i < SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size(); i++) {
-
-            for (int j = 0; j < SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().size(); j++) {
-                double latitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getLatitude();
-                double longitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getLongitude();
-                LatLng loc = new LatLng(latitude, longitude);
-                locations.add(loc);
-
-                String outlate = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getOutlet();
-                place_names.add(outlate);
-
-                String saleTime = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getDateNtime();
-                time_list.add(saleTime);
-
-                double grandTotal = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getTotalSales();
-                grandTotal_list.add(grandTotal);
-
-                int items = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getItemCount();
-                itemCount_list.add(items);
-
-                String currentVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getNameOfVan();
-                currentVan_list.add(currentVan);
-            }
-
-        }
+        addLocations();
 
 //        locations.add(loc1);
 //        locations.add(loc2);
 
 //        place_names.add("Van 1");
 //        place_names.add("Van 2");
+
+    }
+
+    private void addLocations() {
+        if (SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor() != null) {
+            for (int i = 0; i < SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size(); i++) {
+
+                for (int j = 0; j < SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().size(); j++) {
+                    double latitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getLatitude();
+                    double longitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getLongitude();
+                    LatLng loc = new LatLng(latitude, longitude);
+                    locations.add(loc);
+
+                    String outlate = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getOutlet();
+                    place_names.add(outlate);
+
+                    String saleTime = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getDateNtime();
+                    time_list.add(saleTime);
+
+                    double grandTotal = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getTotalSales();
+                    grandTotal_list.add(grandTotal);
+
+                    int items = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getItemCount();
+                    itemCount_list.add(items);
+
+                    String currentVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getNameOfVan();
+                    currentVan_list.add(currentVan);
+                }
+
+            }
+
+        }
 
     }
 
@@ -120,7 +129,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        addLocations();
+
         if (!mapPaused) {
+            Log.i("map", "not paused");
             drawMap(googleMap);
         }
 
@@ -138,6 +151,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 transactionIndex = index;
 //                startingTransactionIndex=transactionIndex;
+
+                Log.i("all locations", locations.size() + "");
+
                 if (index == MapsActivity.locations.size()) {
 //                    markerThread.interrupt();
                     place_names.clear();
@@ -146,6 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     startActivity(new Intent(MapsActivity.this, SecondActivity.class));
                 } else {
                     drawMarkerWithInfo(googleMap, builder, transactionIndex);
+                    Log.i("marker", "drawn ");
                     vanNameText.setText(currentVan_list.get(transactionIndex));
                 }
             }
@@ -158,6 +175,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, int index) {
+
 
         LatLng loc = locations.get(index);
         MarkerOptions marker = new MarkerOptions().position(loc);
@@ -244,7 +262,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (mapPaused == false) {
                         drawMap(mapFragment.getMap());
                     }
-
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:
                     leftKeyMapNavigation();

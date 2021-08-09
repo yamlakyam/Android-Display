@@ -124,7 +124,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200, this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200, this,0);
         handleRowAnimationThread.start();
     }
 

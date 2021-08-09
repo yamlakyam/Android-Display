@@ -2,18 +2,23 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.DigitalClock;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -21,6 +26,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
@@ -28,13 +34,15 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.LineChart;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
-public class PeakHourReportFragment extends Fragment {
+public class PeakHourReportFragment extends Fragment implements SecondActivity.KeyPress {
 
     public static Handler animationHandler;
     public static Handler changeDataHandler;
@@ -43,12 +51,18 @@ public class PeakHourReportFragment extends Fragment {
     public LineChart lineChart;
     Fragment fragment;
     TextView peakHourReportTitle;
+    TextView scrollingPeakText;
     TableLayout peakHourReportTableLayout;
     ScrollView peakHourReportScrollView;
+    DigitalClock digitalClock;
+    int branchIndex = 0;
+    boolean peakHourForEachPaused = false;
+
 
     private ArrayList<FigureReportDataElements> tablesToDisplay;
 
     double grandTotalSum;
+    int totalCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +73,11 @@ public class PeakHourReportFragment extends Fragment {
 
         peakHourReportTableLayout = view.findViewById(R.id.peakHourReportTableLayout);
         peakHourReportScrollView = view.findViewById(R.id.peakHourReportScrollView);
+        scrollingPeakText = view.findViewById(R.id.scrollingPeakText);
+        scrollingPeakText.setSelected(true);
+        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
 
         fragment = this;
         return view;
@@ -71,17 +90,15 @@ public class PeakHourReportFragment extends Fragment {
 //        Log.i("formatted time", UtilityFunctionsForActivity1.peakHourFormatter("May  3 2021  8:00PM")+"");
 //        Log.i("formatted time", UtilityFunctionsForActivity1.peakHourFormatter("May  3 2021  8:00PM").compareTo(Calendar.getInstance().getTime())+"");
 
-        if (SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData() != null) {
-            drawAllPeakTimeLineCharts(0);
+        if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null) {
+            drawAllPeakTimeLineCharts(0, 0);
         }
-        Date parsedDate = convertToTime(SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().get(0).figureReportDataElementsArrayList.get(0).dateNTime);
-        Log.i("time", parsedDate + "");
-        Log.i("time-cal", Calendar.getInstance().getTime() + "");
-        Log.i("compare", compareDate(parsedDate, Calendar.getInstance().getTime()));
+        Date parsedDate = convertToTime(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(0).figureReportDataElementsArrayList.get(0).dateNTime);
+
     }
 
     @SuppressLint("HandlerLeak")
-    public void drawAllPeakTimeLineCharts(int startingIndex) {
+    public void drawAllPeakTimeLineCharts(int startingIndex, int startingRowIndex) {
         changeDataHandler = new Handler() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -92,7 +109,7 @@ public class PeakHourReportFragment extends Fragment {
 //                distributorIndex = index;
 
 
-                if (index == SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().size()) {
+                if (index == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size()) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //
 //                        if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
@@ -108,10 +125,13 @@ public class PeakHourReportFragment extends Fragment {
 //                        }
                 } else {
                     UtilityFunctionsForActivity2.drawLineChart(
-                            SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().get(index).lineChartData,
+                            SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(index).lineChartData,
                             lineChart, "Peak Hour Report");
-                    peakHourReportTitle.setText("Figure Report for " + SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().get(index).org);
-                    inflateTable(index);
+                    peakHourReportTitle.setText("Peak Hour Report for " + SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(index).org);
+                    peakHourReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+
+                    inflateTable(index, startingRowIndex);
+                    branchIndex = index;
 
 //                    SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().get(index).figureReportDataElementsArrayList.get
 //                    Log.i("date", SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().get(index).lineChartData.x_labels + "");
@@ -120,23 +140,24 @@ public class PeakHourReportFragment extends Fragment {
         };
 
         if (SplashScreenActivity.allData != null) {
-            handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().size() + 1,
+            handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() + 1,
                     Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()), startingIndex);
         } else {
             handleDataChangeThread = new HandleDataChangeThread(changeDataHandler,
-                    SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().size() + 1, 30, startingIndex);
+                    SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() + 1, 30, startingIndex);
         }
         handleDataChangeThread.start();
     }
 
     @SuppressLint("HandlerLeak")
-    private void inflateTable(int dataIndex) {
+    private void inflateTable(int dataIndex, int startingRowIndex) {
         grandTotalSum = 0;
+        totalCount = 0;
         if (peakHourReportTableLayout != null) {
             peakHourReportTableLayout.removeAllViews();
         }
 
-        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().get(dataIndex).figureReportDataElementsArrayList;
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(dataIndex).figureReportDataElementsArrayList;
 
         animationHandler = new Handler() {
             @Override
@@ -150,27 +171,29 @@ public class PeakHourReportFragment extends Fragment {
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
-                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getAllFigureReportData().size() - 1) {
+                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
+                        navigate(fragment);
                     }
 
                 } else if (index < tablesToDisplay.size()) {
                     grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
+                    totalCount = totalCount + 1;
                     UtilityFunctionsForActivity1.drawPeakHourReportForEachOu(tablesToDisplay, getContext(), peakHourReportTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
                 }
             }
         };
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, startingRowIndex);
         handleRowAnimationThread.start();
     }
 
     public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-             if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                 startActivity(new Intent(requireActivity(), MapsActivity.class));
             } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
@@ -194,8 +217,71 @@ public class PeakHourReportFragment extends Fragment {
         }
     }
 
+    public void leftNavigate(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(11))
+            navController.navigate(R.id.peakHourReportForAllOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(9))
+            navController.navigate(R.id.userReportForAllOusFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8))
+            navController.navigate(R.id.branchSummaryFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment);
+
+
+    }
+
 
     private void drawLastRow() {
+        View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+
+        TextView peakHourReportSN = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+        TextView peakHourReportSummaryType = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+        TextView peakHourReportTotalCount = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+        TextView peakHourReportGrandTotal = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+
+        NumberFormat numberFormat = NumberFormat.getInstance();
+
+        peakHourReportSN.setText("");
+
+        peakHourReportSummaryType.setText("Total Amount");
+        peakHourReportSummaryType.setTypeface(Typeface.DEFAULT_BOLD);
+        peakHourReportSummaryType.setTextSize(16f);
+
+        peakHourReportTotalCount.setText(String.valueOf(totalCount));
+        peakHourReportTotalCount.setTypeface(Typeface.DEFAULT_BOLD);
+        peakHourReportTotalCount.setTextSize(16f);
+
+        peakHourReportGrandTotal.setText(numberFormat.format(grandTotalSum));
+        peakHourReportGrandTotal.setTypeface(Typeface.DEFAULT_BOLD);
+        peakHourReportGrandTotal.setTextSize(16f);
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        peakHourReportSummaryType.startAnimation(animation);
+        peakHourReportTotalCount.startAnimation(animation);
+        peakHourReportGrandTotal.startAnimation(animation);
+
+        tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
+
+        if (peakHourReportTableLayout != null) {
+            peakHourReportTableLayout.addView(tableElements);
+            UtilityFunctionsForActivity2.animateBottomToTop(peakHourReportTableLayout, tableElements);
+
+        }
     }
 
     public static Date convertToTime(String dateInString) {
@@ -219,5 +305,61 @@ public class PeakHourReportFragment extends Fragment {
             return "different date ";
         }
         return "same date";
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+
+    }
+
+    @Override
+    public void centerKey() {
+        peakHourForEachPaused = !peakHourForEachPaused;
+        if (peakHourForEachPaused) {
+            if (handleDataChangeThread != null) {
+                handleDataChangeThread.interrupt();
+            }
+        } else {
+            if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
+                navigate(fragment);
+            } else {
+                drawAllPeakTimeLineCharts(branchIndex + 1, 0);
+            }
+        }
+
+    }
+
+    @Override
+    public void leftKey() {
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
+        if (branchIndex == 0) {
+            leftNavigate(fragment);
+        } else {
+            drawAllPeakTimeLineCharts(branchIndex - 1, 0);
+        }
+
+    }
+
+    @Override
+    public void rightKey() {
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
+
+        if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
+            navigate(fragment);
+        } else {
+            drawAllPeakTimeLineCharts(branchIndex + 1, 0);
+        }
+
     }
 }

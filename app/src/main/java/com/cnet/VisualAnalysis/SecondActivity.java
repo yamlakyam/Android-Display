@@ -29,6 +29,15 @@ import com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment;
 import org.json.JSONArray;
 
 public class SecondActivity extends AppCompatActivity {
+
+    public interface KeyPress {
+        void centerKey();
+
+        void leftKey();
+
+        void rightKey();
+    }
+
     public static JSONArray dashBoardArray;
     public static DashBoardData dashBoardData;
 
@@ -50,7 +59,9 @@ public class SecondActivity extends AppCompatActivity {
 
     public static Context context;
 
-    public boolean[] visibleFragments = {true, true, true, false, true, true};
+
+    KeyPress keyPress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +88,6 @@ public class SecondActivity extends AppCompatActivity {
 
         graph.setStartDestination(mappedFragment());
 
-
         NavController navController = navHostFragment.getNavController();
         navController.setGraph(graph);
 
@@ -85,37 +95,41 @@ public class SecondActivity extends AppCompatActivity {
 
     public int mappedFragment() {
         int frgamentId = R.id.branchSummaryFragment;
-//        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
-//            frgamentId = R.id.summarizedByArticleFragment2;
-//        } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
-//            frgamentId = R.id.summarizedByArticleParentCategFragment;
-//        } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
-//            frgamentId = R.id.summarizedByArticleChildCategFragment;
-//        } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
-//            frgamentId = R.id.summaryOfLastSixMonthsFragment;
-//        } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
-//            frgamentId = R.id.summaryOfLastMonthFragment;
-//        } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
-//            frgamentId = R.id.branchSummaryFragment;
-//        }
-//        else if(SplashScreenActivity.allData.getLayoutList().contains(9)){
-//            frgamentId = R.id.userReportForAllOusFragment2;
-//        }else if(SplashScreenActivity.allData.getLayoutList().contains(10)){
-//            frgamentId = R.id.userReportForEachOusFragment;
-//        }else if(SplashScreenActivity.allData.getLayoutList().contains(11)){
-//            frgamentId = R.id.peakHourReportForAllOusFragment;
-//        }else if(SplashScreenActivity.allData.getLayoutList().contains(12)){
-//            frgamentId = R.id.peakHourReportFragment;
-//        }
+        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+            frgamentId = R.id.summarizedByArticleFragment2;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+            frgamentId = R.id.summarizedByArticleParentCategFragment;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+            frgamentId = R.id.summarizedByArticleChildCategFragment;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+            frgamentId = R.id.summaryOfLastSixMonthsFragment;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+            frgamentId = R.id.summaryOfLastMonthFragment;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+            frgamentId = R.id.branchSummaryFragment;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            frgamentId = R.id.userReportForAllOusFragment2;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+            frgamentId = R.id.userReportForEachOusFragment;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+            frgamentId = R.id.peakHourReportForAllOusFragment;
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+            frgamentId = R.id.peakHourReportFragment;
+        }
 
 //        int frgamentId = R.id.userReportForAllOusFragment;
 //        int frgamentId = R.id.peakHourReportFragment;
 //        int frgamentId = R.id.userReportForAllOusFragment2;
+//        int frgamentId = R.id.peakHourReportForAllOusFragment;
         return frgamentId;
     }
 
     @SuppressLint("HardwareIds")
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (getCurrentFragment() instanceof KeyPress)
+            keyPress = (KeyPress) getCurrentFragment();
+
+
         if (SplashScreenActivity.allData.isEnableNavigation()) {
             navController = NavHostFragment.findNavController(getCurrentFragment());
             switch (keyCode) {
@@ -129,10 +143,10 @@ public class SecondActivity extends AppCompatActivity {
                             ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 //                SummarizedByArticleFragment.isInflatingTable = false;
 
+
                     if (!firstCenterKeyPause) {
                         //cc70a81e8233444a
                         playPause.setImageResource(R.drawable.ic_pause_button);
-
                         summaryByParentArticlePause = false;
                         summaryByArticlePause = false;
                         summaryByChildArticlePause = false;
@@ -141,7 +155,6 @@ public class SecondActivity extends AppCompatActivity {
                         summaryOfBranchPause = false;
 
 //                            navigate(getCurrentFragment());
-
                         rightNavigation();
                         firstCenterKeyPause = true;
                         playPauseKeyPad.setVisibility(View.GONE);
@@ -150,6 +163,10 @@ public class SecondActivity extends AppCompatActivity {
                         playPause.setImageResource(R.drawable.ic_play_button__2_);
                         pausedState();
                     }
+
+                    if (getCurrentFragment() instanceof KeyPress)
+                        keyPress.centerKey();
+
 
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -168,7 +185,12 @@ public class SecondActivity extends AppCompatActivity {
 //                playPause.setImageTintList(ColorStateList.valueOf(
 //                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
 
-                    leftNavigation();
+                    if (getCurrentFragment() instanceof KeyPress)
+                        keyPress.leftKey();
+                    else
+                        leftNavigation();
+
+
                     break;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
 
@@ -186,7 +208,11 @@ public class SecondActivity extends AppCompatActivity {
                     leftArrow.setImageTintList(ColorStateList.valueOf(
                             ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 
-                    rightNavigation();
+                    if (getCurrentFragment() instanceof KeyPress)
+                        keyPress.rightKey();
+                    else
+                        rightNavigation();
+
                     break;
             }
         }
@@ -391,11 +417,10 @@ public class SecondActivity extends AppCompatActivity {
                     BranchSummaryFragment.handleRowAnimationThread);
 
             if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(10))
-                    navController.navigate(R.id.userReportForEachOusFragment);
+
                 if (SplashScreenActivity.allData.getLayoutList().contains(8))
                     navController.navigate(R.id.branchSummaryFragment);
-                if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(6))
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
@@ -411,6 +436,8 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.peakHourReportFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(11))
                     navController.navigate(R.id.peakHourReportForAllOusFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                    navController.navigate(R.id.userReportForEachOusFragment);
 
 
             }
@@ -444,6 +471,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.peakHourReportForAllOusFragment);
 
             }
+
         } else if (getCurrentFragment().getClass().getName().equals("com.cnet.VisualAnalysis.Fragments.PeakHourReportForAllOusFragment")) {
             interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                     SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -692,8 +720,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.peakHourReportForAllOusFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     navController.navigate(R.id.peakHourReportFragment);
-                }
-                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     startActivity(new Intent(SecondActivity.this, MapsActivity.class));
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                     navController.navigate(R.id.summarizedByArticleFragment2);
@@ -789,8 +816,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.peakHourReportForAllOusFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     navController.navigate(R.id.peakHourReportFragment);
-                }
-                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     startActivity(new Intent(SecondActivity.this, MapsActivity.class));
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                     navController.navigate(R.id.summarizedByArticleFragment2);
@@ -821,8 +847,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.peakHourReportForAllOusFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     navController.navigate(R.id.peakHourReportFragment);
-                }
-                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     startActivity(new Intent(SecondActivity.this, MapsActivity.class));
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                     navController.navigate(R.id.summarizedByArticleFragment2);
@@ -851,8 +876,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.peakHourReportForAllOusFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     navController.navigate(R.id.peakHourReportFragment);
-                }
-                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     startActivity(new Intent(SecondActivity.this, MapsActivity.class));
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                     navController.navigate(R.id.summarizedByArticleFragment2);
@@ -882,8 +906,7 @@ public class SecondActivity extends AppCompatActivity {
             if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     navController.navigate(R.id.peakHourReportFragment);
-                }
-                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     startActivity(new Intent(SecondActivity.this, MapsActivity.class));
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                     navController.navigate(R.id.summarizedByArticleFragment2);
@@ -952,51 +975,31 @@ public class SecondActivity extends AppCompatActivity {
 
     public static void interrupThreads(Thread firstThread, Thread secondThread, Thread
             thirdThread, Thread fourthThread, Thread fifthThread) {
-        try {
-            firstThread.interrupt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            secondThread.interrupt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            thirdThread.interrupt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            fourthThread.interrupt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            fifthThread.interrupt();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            firstThread.interrupt();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            secondThread.interrupt();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            thirdThread.interrupt();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            fourthThread.interrupt();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            fifthThread.interrupt();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-    public void naviagateToFragment(int frgamentIndex) {
-        if (frgamentIndex == 0) {
-            navController.navigate(R.id.summarizedByArticleFragment2);
-        } else if (frgamentIndex == 1) {
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-
-        } else if (frgamentIndex == 2) {
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-
-        } else if (frgamentIndex == 3) {
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-
-        } else if (frgamentIndex == 4) {
-            navController.navigate(R.id.summaryOfLastMonthFragment);
-
-        } else if (frgamentIndex == 5) {
-            navController.navigate(R.id.branchSummaryFragment);
-
-        }
-    }
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/cardBackgroundDark">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +12,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/titleSummaryOfLast30Days"
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 app:srcCompat="@drawable/download" />
 
             <TextView
-                android:id="@+id/summaryOfLast30DaysTitle"
+                android:id="@+id/summaryOfLastxDaysTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -67,13 +67,12 @@
             android:id="@+id/bCardSummaryOfLast30Days"
             android:layout_width="400dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tCardSummaryOfLast30Days"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lCardSummaryOfLast30Days">
+            app:layout_constraintBottom_toBottomOf="@+id/tCardSummaryOfLast30Days"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tCardSummaryOfLast30Days"
+            app:layout_constraintTop_toTopOf="@+id/lCardSummaryOfLast30Days">
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/last30daysBarChart"

@@ -60,13 +60,15 @@ public class DashBoardDataParser {
             dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
             dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
             dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
-//            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
-            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
-            dashBoardData.setAllFigureReportData(figureReportDataParser(rootJSON));
-            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
 
+            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
+            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
+            dashBoardData.setFigureReportDataforEachBranch(figureReportDataParser(rootJSON));
+            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
+            dashBoardData.setFigureReportDataforAllBranch(figureReportAllTogetherOuDataParser(rootJSON));
 //            dashBoardData.setAllFigureReportData(filteredFigureReportDataParser(parseFilteredFigureReport(rootJSON)));
-            parseFilteredFigureReport(rootJSON);
+//            parseFilteredFigureReport(rootJSON);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -402,6 +404,26 @@ public class DashBoardDataParser {
         return figureReportDataArrayList;
     }
 
+    public static ArrayList<FigureReportDataElements> figureReportAllTogetherOuDataParser(JSONObject jsonObject) throws JSONException {
+        JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
+        ArrayList<FigureReportDataElements> figureReportTableRowArrayList = new ArrayList<>();
+
+        for (int i = 0; i < summaryOfBranchArray.length(); i++) {
+            JSONArray figureReportDatForEach = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport");
+            String org = summaryOfBranchArray.getJSONObject(i).getString("org");
+
+            for (int j = 0; j < figureReportDatForEach.length(); j++) {
+                FigureReportDataElements figureReportDataElements = new FigureReportDataElements(figureReportDatForEach.getJSONObject(j).getString("summaryType"),
+                        figureReportDatForEach.getJSONObject(j).getInt("totalCount"),
+                        figureReportDatForEach.getJSONObject(j).getDouble("grandTotal"),
+                        org);
+                figureReportTableRowArrayList.add(figureReportDataElements);
+            }
+        }
+
+        return figureReportTableRowArrayList;
+    }
+
     public static ArrayList<ArrayList<FigureReportDataElements>> parseFilteredFigureReport(JSONObject jsonObject) throws JSONException {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
         ArrayList<FigureReportData> figureReportDataArrayListFiltered = new ArrayList<>();
@@ -449,7 +471,6 @@ public class DashBoardDataParser {
 
     public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
         JSONArray vsmTransactionArray = jsonObject.getJSONArray("getSalesDataToDisplayOnVsmTable");
-
         JSONObject vsmTransactionObject = vsmTransactionArray.getJSONObject(0);
 
 //        VsmTableForSingleDistributor dataForAdistributor = new VsmTableForSingleDistributor();

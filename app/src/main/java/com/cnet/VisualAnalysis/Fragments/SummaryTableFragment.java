@@ -142,7 +142,7 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200, this);
+        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200, this,0);
         handleRowAnimationThread.start();
 
     }

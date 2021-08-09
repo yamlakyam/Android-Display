@@ -93,11 +93,11 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         pieChart = view.findViewById(R.id.pchartsumByArticleParent);
         barChart = view.findViewById(R.id.bChartSumByArticleParent);
         summarizedByParentArticleFrameLayout = view.findViewById(R.id.summarizedByParentArticleFrameLayout);
-        scrollingParentText= view.findViewById(R.id.scrollingParentText);
+        scrollingParentText = view.findViewById(R.id.scrollingParentText);
         scrollingParentText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
-        articleParentSummaryTitle=view.findViewById(R.id.articleParentSummaryTitle);
+        articleParentSummaryTitle = view.findViewById(R.id.articleParentSummaryTitle);
         articleParentSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
 
@@ -155,7 +155,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this,0);
         handleRowAnimationThread.start();
 
     }
@@ -230,7 +230,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
 
-            if (SplashScreenActivity.allData.getLayoutList().contains(5) )
+            if (SplashScreenActivity.allData.getLayoutList().contains(5))
                 navController.navigate(R.id.summarizedByArticleChildCategFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(6))
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
@@ -246,10 +246,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment {
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
-            }
-            else if(SplashScreenActivity.allData.getLayoutList().contains(1))
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                 startActivity(new Intent(requireActivity(), MapsActivity.class));
-            else if(SplashScreenActivity.allData.getLayoutList().contains(3))
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
 //
 //            if (SplashScreenActivity.allData.getLayoutList().size() > SplashScreenActivity.allData.getLayoutList().indexOf(4) + 1) {

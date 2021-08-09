@@ -70,7 +70,57 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/peakHourReportLineCard" />
+        app:layout_constraintTop_toBottomOf="@+id/peakHourReportLineCard" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/scrollingPeakHourForAllText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="right"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="@string/scrollingPeakHourReportForAllText"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <DigitalClock
+                    android:id="@+id/digitalClock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/digital_7"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/rowValueColor3"
+                    android:textSize="34sp">
+
+                </DigitalClock>
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/peakHourReportTableCard"
@@ -114,11 +164,21 @@
 
             <TextView
                 android:id="@+id/peakHourReportForAllHeader2"
-                android:layout_width="150dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/advent_pro_thin"
                 android:gravity="end"
                 android:text="Total Count"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/peakHourReportForAllHeader5"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/advent_pro_thin"
+                android:gravity="end"
+                android:text="Branch"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
 
