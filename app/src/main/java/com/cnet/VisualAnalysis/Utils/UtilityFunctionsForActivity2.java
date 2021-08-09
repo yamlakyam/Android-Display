@@ -111,11 +111,12 @@ public class UtilityFunctionsForActivity2 {
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.setPinchZoom(false);
         barChart.getXAxis().setGranularity(1f);
+        barChart.getXAxis().setCenterAxisLabels(false);
+        barChart.getXAxis().setLabelCount(barChartData.x.length);
 
 //        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(barChartData.legends));
 //        barChart.getXAxis().setLabelRotationAngle(-45);
 //        barChart.getXAxis().setLabelCount(barChartData.legends.length);
-
 
         ArrayList<BarEntry> barChartEntries = new ArrayList<BarEntry>();
         for (int i = 0; i < barChartData.x.length; i++) {

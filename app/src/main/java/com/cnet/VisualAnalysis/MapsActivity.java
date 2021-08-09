@@ -130,8 +130,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        addLocations();
-
         if (!mapPaused) {
             Log.i("map", "not paused");
             drawMap(googleMap);
@@ -160,7 +158,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     locations.clear();
 //                    startActivity(new Intent(MapsActivity.this, MainActivity.class));
                     startActivity(new Intent(MapsActivity.this, SecondActivity.class));
-                } else {
+                } else if (index < MapsActivity.locations.size()) {
                     drawMarkerWithInfo(googleMap, builder, transactionIndex);
                     Log.i("marker", "drawn ");
                     vanNameText.setText(currentVan_list.get(transactionIndex));
@@ -281,7 +279,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             markerThread.interrupt();
         }
         if (transactionIndex == 0) {
-            startActivity(new Intent(MapsActivity.this, SecondActivity.class));
+            Intent intent = new Intent(MapsActivity.this, SecondActivity.class);
+            intent.putExtra("left", "pressed");
+            startActivity(intent);
         } else {
 //                drawMarkerWithInfo(mapFragment.getMap(), new LatLngBounds.Builder(), transactionIndex - 1);
             transactionIndex = transactionIndex - 1;
