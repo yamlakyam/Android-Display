@@ -46,7 +46,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class SummaryOfLastSixMonthsFragment extends Fragment {
+public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondActivity.KeyPress {
 
 
     TableLayout summaryOfLast6MonthsTableLayout;
@@ -63,6 +63,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
     double totalAmount = 0;
+
+    boolean summaryOfLAstXmonthPaused = false;
 
     public SummaryOfLastSixMonthsFragment() {
         // Required empty public constructor
@@ -138,8 +140,13 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
                 if (index == tablesToDisplay.size()) {
                     drawLast6MonsTotalRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
-                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast6MonsPause) {
-                    navigate(fragment);
+//                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast6MonsPause) {
+                } else if (index == tablesToDisplay.size() + 1) {
+                    if (summaryOfLAstXmonthPaused) {
+                        handleRowAnimationThread.interrupt();
+                    } else {
+                        navigate(fragment);
+                    }
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryOfLAst6Months(tablesToDisplay, getContext(), summaryOfLast6MonthsTableLayout, index, totalAmount);
@@ -150,7 +157,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this,0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -244,6 +251,36 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
 
     }
 
+    public void navigateLeft(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+
+        if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(5))
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+                navController.navigate(R.id.summarizedByArticleFragment2);
+
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                navController.navigate(R.id.userReportForAllOusFragment2);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                navController.navigate(R.id.branchSummaryFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+
+        }
+
+    }
+
 
     @Override
     public void onStop() {
@@ -252,4 +289,30 @@ public class SummaryOfLastSixMonthsFragment extends Fragment {
             handleRowAnimationThread.interrupt();
     }
 
+    @Override
+    public void centerKey() {
+        summaryOfLAstXmonthPaused = !summaryOfLAstXmonthPaused;
+
+        SecondActivity.firstCenterKeyPause = summaryOfLAstXmonthPaused;
+
+        if (!summaryOfLAstXmonthPaused) {
+            navigate(fragment);
+        }
+    }
+
+    @Override
+    public void leftKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigateLeft(fragment);
+    }
+
+    @Override
+    public void rightKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigate(fragment);
+    }
 }

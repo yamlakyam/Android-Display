@@ -217,7 +217,7 @@ public class UtilityFunctionsForActivity1 {
                 peakHourReportSN.setText(String.valueOf(index + 1));
                 peakHourReportSummaryType.setText(row.dateNTime);
                 peakHourReportTotalCount.setText(String.valueOf(row.totalCount));
-                peakHourReportGrandTotal.setText(numberFormat.format(row.getGrandTotal()) );
+                peakHourReportGrandTotal.setText(numberFormat.format(row.getGrandTotal()));
 
                 if (peakHourReportTableLayout != null) {
                     peakHourReportTableLayout.addView(tableElements);
@@ -271,7 +271,7 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void drawPeakHourReportForAllOus(ArrayList<FigureReportDataElements> figureReportDataElements, Context context , TableLayout peakHourReportTableLayout, int index){
+    public static void drawPeakHourReportForAllOus(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
         if (figureReportDataElements != null) {
             FigureReportDataElements row = figureReportDataElements.get(index);
 
@@ -306,6 +306,46 @@ public class UtilityFunctionsForActivity1 {
         }
 
     }
+
+    public static void drawVansOfSingleOrgTable(ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleVanArrayList, Context context, TableLayout vanListTableLayout, int index) {
+        if (vsmTableDataForSingleVanArrayList != null) {
+            VsmTableDataForSingleVan row = vsmTableDataForSingleVanArrayList.get(index);
+
+            View tableElements = null;
+            try {
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vans_of_single_org, null, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (tableElements != null) {
+                TextView singleOrgVansSerialNumberTV = tableElements.findViewById(R.id.singleOrgVansSerialNumberTV);
+                TextView singleOrgVansVSITV = tableElements.findViewById(R.id.singleOrgVansVSITV);
+                TextView singleOrgVansProspectTV = tableElements.findViewById(R.id.singleOrgVansProspectTV);
+                TextView singleOrgVansEndTimeTV = tableElements.findViewById(R.id.singleOrgVansEndTimeTV);
+                TextView singleOrgVansSalesOutletTV = tableElements.findViewById(R.id.singleOrgVansSalesOutletTV);
+                TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
+                TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
+
+
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                singleOrgVansSerialNumberTV.setText(String.valueOf(index + 1));
+                singleOrgVansVSITV.setText(row.nameOfVan);
+                singleOrgVansProspectTV.setText(String.valueOf(1));
+                singleOrgVansEndTimeTV.setText(formatDateTimeToString(row.getLastActive()));
+                singleOrgVansSalesOutletTV.setText(numberFormat.format(row.salesOutLateCount));
+                singleOrgVansQuantityCountTV.setText(numberFormat.format(row.allLineItemCount));
+                singleOrgVansTotalSalesTV.setText(numberFormat.format(Math.round(row.totalPrice * 100.0) / 100.0));
+
+                if (vanListTableLayout != null) {
+                    vanListTableLayout.addView(tableElements);
+                }
+                animate(vanListTableLayout, tableElements);
+            }
+
+        }
+
+    }
+
     public static void animate(View container, View child) {
         if (container != null) {
             Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
@@ -336,8 +376,10 @@ public class UtilityFunctionsForActivity1 {
     public static VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
         JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
         String nameOfVan = tableDataObjectForSingleVanInJson.getString("van");
-
-
+        int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
+        String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
+        int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
+        double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
         ArrayList<VsmTransactionTableRow> vsmTableForSingleVan = new ArrayList<>();
         for (int k = 0; k < tableRowsForSingleVan.length(); k++) {
             JSONObject tableRowForSingleVan = tableRowsForSingleVan.getJSONObject(k);
@@ -354,7 +396,6 @@ public class UtilityFunctionsForActivity1 {
             } else {
                 formattedTIN = tableRowForSingleVan.getString("tin");
             }
-
             vsmTableForSingleVan.add(new VsmTransactionTableRow(
                     tableRowForSingleVan.getString("voucherNo"),
                     formattedOutlet,
@@ -368,8 +409,8 @@ public class UtilityFunctionsForActivity1 {
                     tableRowForSingleVan.getDouble("longitude")
             ));
         }
-
-        return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan);
+        return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan, salesOutLateCount,
+                lastActive, allLineItemCount, totalPrice);
     }
 
     public static void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {

@@ -150,18 +150,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 transactionIndex = index;
 //                startingTransactionIndex=transactionIndex;
 
-                Log.i("all locations", locations.size() + "");
+//                Log.i("all locations", locations.size() + "");
 
-                if (index == MapsActivity.locations.size()) {
+                if (index == MapsActivity.locations.size() - 1) {
 //                    markerThread.interrupt();
                     place_names.clear();
                     locations.clear();
 //                    startActivity(new Intent(MapsActivity.this, MainActivity.class));
                     startActivity(new Intent(MapsActivity.this, SecondActivity.class));
-                } else if (index < MapsActivity.locations.size()) {
-                    drawMarkerWithInfo(googleMap, builder, transactionIndex);
-                    Log.i("marker", "drawn ");
-                    vanNameText.setText(currentVan_list.get(transactionIndex));
+                } else if (index < MapsActivity.locations.size() - 1) {
+                    drawMarkerWithInfo(googleMap, builder, index);
+//                    Log.i("marker", "drawn ");
+                    vanNameText.setText(currentVan_list.get(index));
                 }
             }
         };
@@ -316,7 +316,7 @@ class MarkerThread extends Thread {
     @Override
     public void run() {
         for (int i = startingTransactionIndex; i <= MapsActivity.locations.size(); i++) {
-            Log.v("MapIndex", "" + i);
+//            Log.v("MapIndex", "" + i);
             Handler transactionsInVanHandler = MapsActivity.transactionsInVanHandler;
 //            Handler transactionsInVanHandler = new MapsActivity().transactionsInVanHandler;
             if (transactionsInVanHandler != null) {

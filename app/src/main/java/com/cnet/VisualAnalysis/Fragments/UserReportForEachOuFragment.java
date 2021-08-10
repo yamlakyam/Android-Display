@@ -141,9 +141,11 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
                 } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
 
-//                        NavController navController = NavHostFragment.findNavController(fragment);
-//                        navController.navigate(R.id.vsmCardFragment);
-                    navigate(fragment);
+                    if (userReportForEachPaused) {
+                        handleRowAnimationThread.interrupt();
+                    } else {
+                        navigate(fragment);
+                    }
 
                 } else if (index < tablesToDisplay.size()) {
                     grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
@@ -153,7 +155,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), UserReportForEachOuFragment.animationHandler, 200, this,0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), UserReportForEachOuFragment.animationHandler, 200, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -264,14 +266,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     @Override
     public void centerKey() {
         userReportForEachPaused = !userReportForEachPaused;
-        if (userReportForEachPaused) {
-            if (handleDataChangeThread != null) {
-                handleDataChangeThread.interrupt();
-            }
-            if (handleRowAnimationThread != null) {
-                handleRowAnimationThread.interrupt();
-            }
-        } else {
+        SecondActivity.firstCenterKeyPause = userReportForEachPaused;
+
+        if (!userReportForEachPaused) {
             if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
                 navigate(fragment);
             } else {

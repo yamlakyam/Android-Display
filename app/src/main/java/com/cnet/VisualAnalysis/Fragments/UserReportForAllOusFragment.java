@@ -111,7 +111,11 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
-                        navigate(fragment);
+                        if (userReportForAllPaused) {
+                            handleRowAnimationThread.interrupt();
+                        } else {
+                            navigate(fragment);
+                        }
                     }
 
                 } else if (index < tablesToDisplay.size()) {
@@ -122,7 +126,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this,0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -242,13 +246,11 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     @Override
     public void centerKey() {
         userReportForAllPaused = !userReportForAllPaused;
-        if (userReportForAllPaused) {
-            if (handleRowAnimationThread != null) {
-                handleRowAnimationThread.interrupt();
-            }
-        } else {
+        SecondActivity.firstCenterKeyPause = userReportForAllPaused;
+        if (!userReportForAllPaused) {
             navigate(fragment);
         }
+
     }
 
     @Override

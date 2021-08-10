@@ -65,7 +65,6 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

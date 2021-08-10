@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -57,6 +59,10 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     DigitalClock digitalClock;
     int branchIndex = 0;
     boolean peakHourForEachPaused = false;
+    ImageView peakHrEachleftArrow;
+    ImageView peakHrEachrightArrow;
+    ImageView peakHrEachplaypause;
+    LinearLayout peakHrEachKeyPad;
 
 
     private ArrayList<FigureReportDataElements> tablesToDisplay;
@@ -74,6 +80,12 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         peakHourReportTableLayout = view.findViewById(R.id.peakHourReportTableLayout);
         peakHourReportScrollView = view.findViewById(R.id.peakHourReportScrollView);
         scrollingPeakText = view.findViewById(R.id.scrollingPeakText);
+
+        peakHrEachleftArrow = view.findViewById(R.id.peakHrEachleftArrow);
+        peakHrEachrightArrow = view.findViewById(R.id.peakHrEachrightArrow);
+        peakHrEachplaypause = view.findViewById(R.id.peakHrEachplayPause);
+        peakHrEachKeyPad = view.findViewById(R.id.peakHrEachKeyPad);
+
         scrollingPeakText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
@@ -175,7 +187,12 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
-                        navigate(fragment);
+
+                        if (peakHourForEachPaused) {
+                            handleRowAnimationThread.interrupt();
+                        } else {
+                            navigate(fragment);
+                        }
                     }
 
                 } else if (index < tablesToDisplay.size()) {
@@ -316,17 +333,15 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
-
     }
 
     @Override
     public void centerKey() {
         peakHourForEachPaused = !peakHourForEachPaused;
-        if (peakHourForEachPaused) {
-            if (handleDataChangeThread != null) {
-                handleDataChangeThread.interrupt();
-            }
-        } else {
+        keyPadControl(peakHourForEachPaused);
+//        SecondActivity.firstCenterKeyPause = peakHourForEachPaused;
+
+        if (!peakHourForEachPaused) {
             if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
                 navigate(fragment);
             } else {
@@ -341,6 +356,9 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (handleDataChangeThread != null) {
             handleDataChangeThread.interrupt();
         }
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
         if (branchIndex == 0) {
             leftNavigate(fragment);
         } else {
@@ -354,12 +372,21 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (handleDataChangeThread != null) {
             handleDataChangeThread.interrupt();
         }
-
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
         if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
             navigate(fragment);
         } else {
             drawAllPeakTimeLineCharts(branchIndex + 1, 0);
         }
 
+    }
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            peakHrEachplaypause.setImageResource(R.drawable.ic_play_button__2_);
+            peakHrEachKeyPad.setVisibility(View.VISIBLE);
+        }
     }
 }

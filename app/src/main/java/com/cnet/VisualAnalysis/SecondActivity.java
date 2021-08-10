@@ -27,8 +27,6 @@ import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment;
 import com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment;
 import com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment;
 
-import org.json.JSONArray;
-
 public class SecondActivity extends AppCompatActivity {
 
     public interface KeyPress {
@@ -39,19 +37,18 @@ public class SecondActivity extends AppCompatActivity {
         void rightKey();
     }
 
-    public static JSONArray dashBoardArray;
     public static DashBoardData dashBoardData;
 
     NavController navController;
 
-    public static boolean summaryByArticlePause = false;
-    public static boolean summaryByParentArticlePause = false;
-    public static boolean summaryByChildArticlePause = false;
-    public static boolean summaryOfLast6MonsPause = false;
-    public static boolean summaryOfLast30DaysPause = false;
-    public static boolean summaryOfBranchPause = false;
-
-    public static boolean firstCenterKeyPause = false;
+    //    public static boolean summaryByArticlePause = false;
+    //    public static boolean summaryByParentArticlePause = false;
+//    public static boolean summaryByChildArticlePause = false;
+//    public static boolean summaryOfLast6MonsPause = false;
+//    public static boolean summaryOfLast30DaysPause = false;
+//    public static boolean summaryOfBranchPause = false;
+    //    public static boolean firstCenterKeyPause = false;
+    public static boolean firstCenterKeyPause;
 
     ImageView leftArrow;
     ImageView playPause;
@@ -166,6 +163,9 @@ public class SecondActivity extends AppCompatActivity {
 //        int frgamentId = R.id.peakHourReportFragment;
 //        int frgamentId = R.id.userReportForAllOusFragment2;
 //        int frgamentId = R.id.peakHourReportForAllOusFragment;
+//        int frgamentId = R.id.peakHourReportForAllOusFragment;
+//        int frgamentId = R.id.vansOfASingleOrganizationFragment;
+
         return frgamentId;
     }
 
@@ -187,30 +187,28 @@ public class SecondActivity extends AppCompatActivity {
                     rightArrow.setImageTintList(ColorStateList.valueOf(
                             ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 //                SummarizedByArticleFragment.isInflatingTable = false;
-
-
-                    if (!firstCenterKeyPause) {
-                        //cc70a81e8233444a
-                        playPause.setImageResource(R.drawable.ic_pause_button);
-                        summaryByParentArticlePause = false;
-                        summaryByArticlePause = false;
-                        summaryByChildArticlePause = false;
-                        summaryOfLast6MonsPause = false;
-                        summaryOfLast30DaysPause = false;
-                        summaryOfBranchPause = false;
-
-//                            navigate(getCurrentFragment());
-                        rightNavigation();
-                        firstCenterKeyPause = true;
-                        playPauseKeyPad.setVisibility(View.GONE);
-
-                    } else {
+                    if (firstCenterKeyPause) {
                         playPause.setImageResource(R.drawable.ic_play_button__2_);
-                        pausedState();
+                        playPauseKeyPad.setVisibility(View.VISIBLE);
+                    } else {
+                        playPauseKeyPad.setVisibility(View.GONE);
                     }
-
-                    if (getCurrentFragment() instanceof KeyPress)
+                    if (getCurrentFragment() instanceof KeyPress) {
                         keyPress.centerKey();
+                    }
+//                    else {
+//                        if (!firstCenterKeyPause) {
+//                            playPause.setImageResource(R.drawable.ic_pause_button);
+//
+//                            rightNavigation();
+//                            firstCenterKeyPause = true;
+//                            playPauseKeyPad.setVisibility(View.GONE);
+//
+//                        } else {
+//                            playPause.setImageResource(R.drawable.ic_play_button__2_);
+//                            pausedState();
+//                        }
+//                    }
 
 
                     break;
@@ -220,8 +218,8 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleParentCategFragment.isInflatingTable = false;
                     SummarizedByArticleChildCategFragment.isInflatingTable = false;
                     SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-                    SummaryOfLastMonthFragment.isInflatingTable = false;
-                    BranchSummaryFragment.isInflatingTable = false;
+//                    SummaryOfLastMonthFragment.isInflatingTable = false;
+//                    BranchSummaryFragment.isInflatingTable = false;
 
                     leftArrow.setImageTintList(ColorStateList.valueOf(
                             ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
@@ -243,8 +241,8 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleParentCategFragment.isInflatingTable = false;
                     SummarizedByArticleChildCategFragment.isInflatingTable = false;
                     SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-                    SummaryOfLastMonthFragment.isInflatingTable = false;
-                    BranchSummaryFragment.isInflatingTable = false;
+//                    SummaryOfLastMonthFragment.isInflatingTable = false;
+//                    BranchSummaryFragment.isInflatingTable = false;
 
                     rightArrow.setImageTintList(ColorStateList.valueOf(
                             ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
@@ -695,7 +693,7 @@ public class SecondActivity extends AppCompatActivity {
             if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0 )
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                     navController.navigate(R.id.userReportForAllOusFragment2);
@@ -725,7 +723,7 @@ public class SecondActivity extends AppCompatActivity {
 
             if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
 
-                if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                     navController.navigate(R.id.userReportForAllOusFragment2);
@@ -777,7 +775,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
             }
 
@@ -821,7 +819,7 @@ public class SecondActivity extends AppCompatActivity {
 
             if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
 
-                if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                     navController.navigate(R.id.userReportForAllOusFragment2);
@@ -904,7 +902,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
             }
 
@@ -933,7 +931,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                     navController.navigate(R.id.userReportForAllOusFragment2);
@@ -963,7 +961,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                     navController.navigate(R.id.userReportForAllOusFragment2);
@@ -992,7 +990,7 @@ public class SecondActivity extends AppCompatActivity {
                     navController.navigate(R.id.summaryOfLastSixMonthsFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                     navController.navigate(R.id.summaryOfLastMonthFragment);
-                else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                     navController.navigate(R.id.branchSummaryFragment);
                 else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                     navController.navigate(R.id.userReportForAllOusFragment2);
@@ -1010,12 +1008,12 @@ public class SecondActivity extends AppCompatActivity {
     public void pausedState() {
         firstCenterKeyPause = false;
         playPauseKeyPad.setVisibility(View.VISIBLE);
-        summaryByParentArticlePause = true;
-        summaryByArticlePause = true;
-        summaryByChildArticlePause = true;
-        summaryOfLast6MonsPause = true;
-        summaryOfLast30DaysPause = true;
-        summaryOfBranchPause = true;
+//        summaryByParentArticlePause = true;
+//        summaryByArticlePause = true;
+//        summaryByChildArticlePause = true;
+//        summaryOfLast6MonsPause = true;
+//        summaryOfLast30DaysPause = true;
+//        summaryOfBranchPause = true;
     }
 
     public static void interrupThreads(Thread firstThread, Thread secondThread, Thread

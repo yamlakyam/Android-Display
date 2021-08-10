@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DigitalClock;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -39,6 +41,10 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     public HandleRowAnimationThread handleRowAnimationThread;
     private ArrayList<FigureReportDataElements> tablesToDisplay;
     Fragment fragment;
+    ImageView peakHrAllleftArrow;
+    ImageView peakHrAllrightArrow;
+    ImageView peakHrAllplaypause;
+    LinearLayout linearLayout;
 
     boolean peakHourForAllPaused = false;
 
@@ -51,6 +57,10 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         peakHourReportForAllTableLayout = view.findViewById(R.id.peakHourReportForAllTableLayout);
         peakHourReportScrollView = view.findViewById(R.id.peakHourReportScrollView);
         scrollingPeakHourForAllText = view.findViewById(R.id.scrollingPeakHourForAllText);
+        peakHrAllleftArrow = view.findViewById(R.id.peakHrAllleftArrow);
+        peakHrAllplaypause = view.findViewById(R.id.peakHrAllplayPause);
+        peakHrAllrightArrow = view.findViewById(R.id.peakHrAllrightArrow);
+        linearLayout = view.findViewById(R.id.peakHrForAllKeypad);
         scrollingPeakHourForAllText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
@@ -65,7 +75,6 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         super.onResume();
         if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null) {
             inflateTable();
-
         }
     }
 
@@ -92,7 +101,11 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
-                        navigate(fragment);
+                        if (peakHourForAllPaused) {
+                            handleRowAnimationThread.interrupt();
+                        } else {
+                            navigate(fragment);
+                        }
                     }
 
                 } else if (index < tablesToDisplay.size()) {
@@ -169,12 +182,9 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     @Override
     public void centerKey() {
         peakHourForAllPaused = !peakHourForAllPaused;
-
-        if (peakHourForAllPaused) {
-            if (handleRowAnimationThread != null) {
-                handleRowAnimationThread.interrupt();
-            }
-        } else {
+//        SecondActivity.firstCenterKeyPause = peakHourForAllPaused;
+        keyPadControl(peakHourForAllPaused);
+        if (!peakHourForAllPaused) {
             navigate(fragment);
         }
     }
@@ -194,4 +204,12 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         }
         navigate(fragment);
     }
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            peakHrAllplaypause.setImageResource(R.drawable.ic_play_button__2_);
+            linearLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

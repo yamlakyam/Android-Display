@@ -19,6 +19,7 @@ public class DashBoardData {
     ArrayList<FigureReportDataElements> figureReportDataforAllBranch;
 
 
+
     public SummarizedByArticleData getSummarizedByArticleData() {
         return summarizedByArticleData;
     }

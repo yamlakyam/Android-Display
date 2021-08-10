@@ -52,4 +52,9 @@
         android:name="com.cnet.VisualAnalysis.Fragments.PeakHourReportForAllOusFragment"
         android:label="fragment_peak_hour_report_for_all_ous"
         tools:layout="@layout/fragment_peak_hour_report_for_all_ous" />
+    <fragment
+        android:id="@+id/vansOfASingleOrganizationFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.VansOfASingleOrganizationFragment"
+        android:label="fragment_vans_of_a_single_organization"
+        tools:layout="@layout/fragment_vans_of_a_single_organization" />
 </navigation>

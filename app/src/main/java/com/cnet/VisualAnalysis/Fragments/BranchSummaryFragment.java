@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -45,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class BranchSummaryFragment extends Fragment {
+public class BranchSummaryFragment extends Fragment implements SecondActivity.KeyPress {
 
     TableLayout branchSummaryTableLayout;
     //    ProgressBar branchSummaryProgressBar;
@@ -56,6 +58,11 @@ public class BranchSummaryFragment extends Fragment {
     TextView scrollingBranchText;
     DigitalClock digitalClock;
     TextView branchSummaryHeaderTextView;
+    boolean branchSummaryPaused = false;
+    ImageView brancplayPause;
+    ImageView brancleft;
+    ImageView brancright;
+    LinearLayout linearLayout;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
@@ -91,6 +98,13 @@ public class BranchSummaryFragment extends Fragment {
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
         pChartBranchSummary = view.findViewById(R.id.pChartBranchSummary);
         scrollingBranchText = view.findViewById(R.id.scrollingBranchText);
+
+        brancplayPause = view.findViewById(R.id.brancplayPause);
+
+        brancleft = view.findViewById(R.id.branchleftArrow);
+        brancright = view.findViewById(R.id.brancrightArrow);
+        linearLayout = view.findViewById(R.id.branchKeypad);
+
         scrollingBranchText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         branchSummaryHeaderTextView = view.findViewById(R.id.branchSummaryHeaderTextView);
@@ -106,7 +120,7 @@ public class BranchSummaryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
-            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
+            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
         }
     }
 
@@ -124,16 +138,21 @@ public class BranchSummaryFragment extends Fragment {
                 int index = 0;
                 if (message != null) {
                     index = Integer.parseInt(message);
-
+                    rowIndex = index;
                 }
 
                 if (index == tablesToDisplay.size()) {
                     drawLastBranchSummaryRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
 
-                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause) {
+//                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause) {
+                } else if (index == tablesToDisplay.size() + 1) {
 //                    startActivity(new Intent(requireActivity(), MapsActivity.class));
-                    navigate(fragment);
+                    if (branchSummaryPaused) {
+                        handleRowAnimationThread.interrupt();
+                    } else {
+                        navigate(fragment);
+                    }
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
@@ -150,12 +169,12 @@ public class BranchSummaryFragment extends Fragment {
     }
 
 
-    public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
+    public void initFragment(DashBoardData dashBoardDataParam, int seconds, int startingRowIndex) {
         isInflatingTable = true;
 //        branchSummaryProgressBar.setVisibility(View.GONE);
 
         DashBoardData dashBoardData = dashBoardDataParam;
-        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds, 0);
+        inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds, startingRowIndex);
         UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(), pChartBranchSummary, "Branch summary");
 
     }
@@ -165,8 +184,6 @@ public class BranchSummaryFragment extends Fragment {
             @Override
 
             public void handleOnBackPressed() {
-//                NavController navController = NavHostFragment.findNavController(fragment);
-//                navController.navigate(id);
 
                 Intent intent = new Intent(getActivity(), SplashScreenActivity.class);
                 startActivity(intent);
@@ -245,6 +262,31 @@ public class BranchSummaryFragment extends Fragment {
         }
     }
 
+    public void leftNavigate(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(7))
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+            navController.navigate(R.id.peakHourReportForAllOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+            navController.navigate(R.id.userReportForEachOusFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            navController.navigate(R.id.userReportForAllOusFragment2);
+        }
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -252,5 +294,36 @@ public class BranchSummaryFragment extends Fragment {
             handleRowAnimationThread.interrupt();
     }
 
+    @Override
+    public void centerKey() {
+        branchSummaryPaused = !branchSummaryPaused;
+        keyPadControl(branchSummaryPaused);
+//        SecondActivity.firstCenterKeyPause = branchSummaryPaused;
+        if (!branchSummaryPaused) {
+            navigate(fragment);
+        }
+    }
 
+    @Override
+    public void leftKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        leftNavigate(fragment);
+    }
+
+    @Override
+    public void rightKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigate(fragment);
+    }
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            brancplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            linearLayout.setVisibility(View.VISIBLE);
+        }
+    }
 }

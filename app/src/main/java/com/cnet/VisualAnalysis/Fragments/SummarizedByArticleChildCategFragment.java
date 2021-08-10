@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class SummarizedByArticleChildCategFragment extends Fragment {
+public class SummarizedByArticleChildCategFragment extends Fragment implements SecondActivity.KeyPress {
 
     TableLayout summaryByChildArticleTableLayout;
     ScrollView summarizedByChildArticleScrollView;
@@ -58,13 +59,19 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
     TextView scrollingChildText;
     DigitalClock digitalClock;
     TextView articleChildSummaryTitle;
+    LinearLayout sumByChildKeyPad;
+    ImageView sumChildArticleleftArrow;
+    ImageView sumChildArticleplayPause;
+    ImageView sumChildArticlerightArrow;
 
     public static HandleRowAnimationThread handleRowAnimationThread;
 
     double grandTotal = 0;
     public static boolean isInflatingTable;
+    boolean summByChildArticlePaused = false;
 
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -88,12 +95,17 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
         pieChart = view.findViewById(R.id.pchartsumByArticleChild);
         barChart = view.findViewById(R.id.bChartSumByArticleChild);
         summarizedByChildArticleFrameLayout = view.findViewById(R.id.summarizedByChildArticleFrameLayout);
-        scrollingChildText=view.findViewById(R.id.scrollingChildText);
+        scrollingChildText = view.findViewById(R.id.scrollingChildText);
         scrollingChildText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
-        articleChildSummaryTitle= view.findViewById(R.id.articleChildSummaryTitle);
+        articleChildSummaryTitle = view.findViewById(R.id.articleChildSummaryTitle);
         articleChildSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+
+        sumChildArticleleftArrow = view.findViewById(R.id.sumChildArticleleftArrow);
+        sumChildArticlerightArrow = view.findViewById(R.id.sumChildArticlerightArrow);
+        sumChildArticleplayPause = view.findViewById(R.id.sumChildArticleplayPause);
+        sumByChildKeyPad = view.findViewById(R.id.sumByChildKeyPad);
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
 
@@ -141,8 +153,14 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
                 }
                 if (index == tablesToDisplay.size()) {
                     drawLastArticleChildRow();
-                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByChildArticlePause) {
-                    navigate(fragment);
+//                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByChildArticlePause) {
+                } else if (index == tablesToDisplay.size() + 1) {
+
+                    if (summByChildArticlePaused) {
+                        handleRowAnimationThread.interrupt();
+                    } else {
+                        navigate(fragment);
+                    }
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
                     UtilityFunctionsForActivity2.drawSummaryByChildArticleTable(tablesToDisplay, getContext(), summaryByChildArticleTableLayout, index);
@@ -153,7 +171,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this,0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -221,32 +239,41 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
-            }
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                 startActivity(new Intent(requireActivity(), MapsActivity.class));
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
             else if (SplashScreenActivity.allData.getLayoutList().contains(4))
                 navController.navigate(R.id.summarizedByArticleParentCategFragment);
-
-
-//            if (SplashScreenActivity.allData.getLayoutList().size() > SplashScreenActivity.allData.getLayoutList().indexOf(5) + 1) {
-//                int next = SplashScreenActivity.allData.getLayoutList().indexOf(5) + 1;
-//                if (SplashScreenActivity.allData.getLayoutList().get(next) == 6)
-//                    navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//                else if (SplashScreenActivity.allData.getLayoutList().get(next) == 7)
-//                    navController.navigate(R.id.summaryOfLastMonthFragment);
-//                else if (SplashScreenActivity.allData.getLayoutList().get(next) == 8)
-//                    navController.navigate(R.id.branchSummaryFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().size() > 1) {
-//                if (SplashScreenActivity.allData.getLayoutList().get(0) == 3)
-//                    navController.navigate(R.id.summarizedByArticleFragment2);
-//                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 4)
-//                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
-//                else if (SplashScreenActivity.allData.getLayoutList().get(0) == 5)
-//                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
-//            }
         }
+    }
+
+    public void navigateLeft(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(4))
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                navController.navigate(R.id.userReportForAllOusFragment2);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                navController.navigate(R.id.branchSummaryFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+
+        }
+
     }
 
     @Override
@@ -256,4 +283,37 @@ public class SummarizedByArticleChildCategFragment extends Fragment {
             handleRowAnimationThread.interrupt();
     }
 
+    @Override
+    public void centerKey() {
+        summByChildArticlePaused = !summByChildArticlePaused;
+        keyPadControl(summByChildArticlePaused);
+        SecondActivity.firstCenterKeyPause = summByChildArticlePaused;
+
+        if (!summByChildArticlePaused) {
+            navigate(fragment);
+        }
+    }
+
+    @Override
+    public void leftKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigateLeft(fragment);
+    }
+
+    @Override
+    public void rightKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigate(fragment);
+    }
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            sumChildArticleplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            sumByChildKeyPad.setVisibility(View.VISIBLE);
+        }
+    }
 }

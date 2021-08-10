@@ -58,6 +58,40 @@
                 android:text="Summarized By Article"
                 android:textColor="#FFFFFF"
                 android:textSize="34sp" />
+
+            <LinearLayout
+                android:id="@+id/sumByArticleKeyPad"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/summarticleleftArrow"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_left_chevron"
+                    app:tint="#D3D3D3" />
+
+                <ImageView
+                    android:id="@+id/summarticleplayPause"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_pause_button"
+                    app:tint="#D3D3D3" />
+
+                <ImageView
+                    android:id="@+id/summarticlerightArrow"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_right_chevron"
+                    app:tint="#D3D3D3" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView

@@ -484,6 +484,10 @@ public class DashBoardDataParser {
 
             JSONArray transactionsOfaVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
             String vanName = tableDataObjectForSingleVanInJson.getString("van");
+            int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
+            String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
+            int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
+            double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
 
             ArrayList<VsmTransactionTableRow> singleTransactionOfaVan = new ArrayList<VsmTransactionTableRow>();
             for (int j = 0; j < transactionsOfaVan.length(); j++) {
@@ -504,7 +508,8 @@ public class DashBoardDataParser {
                 singleTransactionOfaVan.add(vsmTransactionTableRow);
             }
 
-            VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan);
+            VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan, salesOutLateCount,
+                    lastActive, allLineItemCount, totalPrice);
             allVans.add(vsmTableDataForSingleVan);
 
         }

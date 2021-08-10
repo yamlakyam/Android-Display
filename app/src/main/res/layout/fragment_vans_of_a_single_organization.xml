@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/cardBackgroundDark1"
         android:gravity="center"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/distributorHeaderTextView"
+            android:id="@+id/OrgHeaderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/advent_pro_thin"
@@ -107,23 +107,12 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
-            android:text="Total SKU"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/vanListHeader6"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
-            android:gravity="end"
             android:text="Total Qty"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/vanListHeader7"
+            android:id="@+id/vanListHeader6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
