@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -58,7 +60,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     ScrollView peakHourReportScrollView;
     DigitalClock digitalClock;
     int branchIndex = 0;
-    boolean peakHourForEachPaused = false;
+    public static boolean peakHourForEachPaused;
     ImageView peakHrEachleftArrow;
     ImageView peakHrEachrightArrow;
     ImageView peakHrEachplaypause;
@@ -71,9 +73,20 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     int totalCount;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (!SecondActivity.pausedstate()) {
+            peakHourForEachPaused = false;}
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peak_hour_report, container, false);
+
+
+
         lineChart = view.findViewById(R.id.peakHourLineChart);
         peakHourReportTitle = view.findViewById(R.id.peakHourReportTitle);
 
@@ -90,6 +103,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
 
+//        keyPadControl(peakHourForEachPaused);
 
         fragment = this;
         return view;
@@ -338,7 +352,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     @Override
     public void centerKey() {
         peakHourForEachPaused = !peakHourForEachPaused;
-        keyPadControl(peakHourForEachPaused);
 //        SecondActivity.firstCenterKeyPause = peakHourForEachPaused;
 
         if (!peakHourForEachPaused) {
@@ -347,7 +360,11 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             } else {
                 drawAllPeakTimeLineCharts(branchIndex + 1, 0);
             }
+        } else {
+            SecondActivity.pauseAll();
         }
+        keyPadControl(peakHourForEachPaused);
+
 
     }
 
@@ -386,7 +403,12 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     public void keyPadControl(boolean paused) {
         if (paused) {
             peakHrEachplaypause.setImageResource(R.drawable.ic_play_button__2_);
+            peakHrEachplaypause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
             peakHrEachKeyPad.setVisibility(View.VISIBLE);
+
+        } else {
+            peakHrEachKeyPad.setVisibility(View.GONE);
         }
     }
 }

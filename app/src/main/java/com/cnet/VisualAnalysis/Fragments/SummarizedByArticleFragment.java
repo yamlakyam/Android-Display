@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -61,6 +63,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     ScrollView summByArticleScrollView;
     ProgressBar articleSummaryProgressBar;
     ConstraintLayout constraintLayout;
+
     LinearLayout sumByArticleKeyPad;
     ImageView summarticleleftArrow;
     ImageView summarticleplayPause;
@@ -69,7 +72,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     DigitalClock digitalClock;
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable = false;
-    boolean summByarticlePaused = false;
+    public static boolean summByarticlePaused;
 
     double totalUnitAmount = 0;
     int totalQuantity = 0;
@@ -79,6 +82,10 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!SecondActivity.pausedstate()) {
+
+            summByarticlePaused = false;
+        }
 
         SecondActivity.interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -96,6 +103,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         View view = inflater.inflate(R.layout.fragment_summarized_by_article, container, false);
         fragment = this;
 
+
+
         barChartSumByArticle = view.findViewById(R.id.bChartSumByArticle);
         lineChartSumByArticle = view.findViewById(R.id.lchartsumByArticle);
         pChartSumByArticle = view.findViewById(R.id.pChartSumByArticle);
@@ -111,9 +120,11 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         summarizedByArticleTextView.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
         summarticlerightArrow = view.findViewById(R.id.summarticlerightArrow);
-        sumByArticleKeyPad = view.findViewById(R.id.sumByArticleKeyPad);
+        summarticleplayPause = view.findViewById(R.id.summarticleplayPause);
         summarticleleftArrow = view.findViewById(R.id.summarticleleftArrow);
         sumByArticleKeyPad = view.findViewById(R.id.sumByArticleKeyPad);
+
+//        keyPadControl(summByarticlePaused);
 
         backTraverse();
         return view;
@@ -314,11 +325,14 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     @Override
     public void centerKey() {
         summByarticlePaused = !summByarticlePaused;
-        keyPadControl(summByarticlePaused);
-        SecondActivity.firstCenterKeyPause = summByarticlePaused;
+//        SecondActivity.firstCenterKeyPause = summByarticlePaused;
         if (!summByarticlePaused) {
             navigate(fragment);
+        } else {
+//            SecondActivity.pauseAll();
         }
+        keyPadControl(summByarticlePaused);
+
     }
 
     @Override
@@ -340,7 +354,11 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     public void keyPadControl(boolean paused) {
         if (paused) {
             summarticleplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            summarticleplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
             sumByArticleKeyPad.setVisibility(View.VISIBLE);
+        } else {
+            sumByArticleKeyPad.setVisibility(View.GONE);
         }
     }
 }

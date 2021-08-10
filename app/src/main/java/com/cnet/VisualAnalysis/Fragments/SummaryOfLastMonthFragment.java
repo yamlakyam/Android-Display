@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -16,6 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -56,8 +60,13 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     TextView scrollingLastMonthText;
     DigitalClock digitalClock;
     TextView summaryOfLast30DaysTitle;
-    boolean summaryOfLAstXdaysPaused = false;
+    public static boolean summaryOfLAstXdaysPaused;
     int rowIndex;
+
+    LinearLayout sumOfLastXDaysKeyPad;
+    ImageView sumLastXDayleftArrow;
+    ImageView sumLastXDayplayPause;
+    ImageView sumLastXDayrightArrow;
 
 
     public static HandleRowAnimationThread handleRowAnimationThread;
@@ -72,7 +81,10 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!SecondActivity.pausedstate()) {
+            summaryOfLAstXdaysPaused = false;
 
+        }
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                 SummarizedByArticleParentCategFragment.handleRowAnimationThread,
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -86,6 +98,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary_of_last_month, container, false);
+
+
         fragment = this;
         summaryOfLast30DaysTableLayout = view.findViewById(R.id.summaryOfLast30DaysTableLayout);
         lineChart = view.findViewById(R.id.last30daysLineChart);
@@ -98,9 +112,14 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         summaryOfLast30DaysTitle = view.findViewById(R.id.summaryOfLastxDaysTitle);
 
+        sumOfLastXDaysKeyPad = view.findViewById(R.id.sumOfLastXDaysKeyPad);
+        sumLastXDayleftArrow = view.findViewById(R.id.sumLastXDayleftArrow);
+        sumLastXDayplayPause = view.findViewById(R.id.sumLastXDayplayPause);
+        sumLastXDayrightArrow = view.findViewById(R.id.sumLastXDayrightArrow);
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
 
+//        keyPadControl(summaryOfLAstXdaysPaused);
 
         return view;
     }
@@ -295,10 +314,14 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     @Override
     public void centerKey() {
         summaryOfLAstXdaysPaused = !summaryOfLAstXdaysPaused;
-        SecondActivity.firstCenterKeyPause = summaryOfLAstXdaysPaused;
+//        SecondActivity.firstCenterKeyPause = summaryOfLAstXdaysPaused;
         if (!summaryOfLAstXdaysPaused) {
             navigate(fragment);
+        } else {
+            SecondActivity.pauseAll();
         }
+        keyPadControl(summaryOfLAstXdaysPaused);
+
 
     }
 
@@ -317,5 +340,18 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         }
         navigate(fragment);
 
+    }
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            sumLastXDayplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            sumLastXDayplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
+            sumOfLastXDaysKeyPad.setVisibility(View.VISIBLE);
+
+        } else {
+            sumOfLastXDaysKeyPad.setVisibility(View.GONE);
+
+        }
     }
 }

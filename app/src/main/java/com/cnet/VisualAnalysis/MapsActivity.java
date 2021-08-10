@@ -123,6 +123,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (markerThread != null) {
             markerThread.interrupt();
         }
+        place_names.clear();
+        locations.clear();
     }
 
     @SuppressLint("HandlerLeak")
@@ -139,7 +141,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @SuppressLint("HandlerLeak")
     private void drawMap(GoogleMap googleMap) {
-
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         transactionsInVanHandler = new Handler() {
             @Override

@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -16,6 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -59,16 +63,24 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     DigitalClock digitalClock;
     TextView articleParentSummaryTitle;
 
+    LinearLayout sumByParentKeyPad;
+    ImageView sumParentArticleleftArrow;
+    ImageView sumParentArticleplayPause;
+    ImageView sumParentArticlerightArrow;
+
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
 
     double grandTotal = 0;
-    boolean summByParentArticlePaused = false;
+    public static boolean summByParentArticlePaused;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!SecondActivity.pausedstate()) {
 
+            summByParentArticlePaused = false;
+        }
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
                 SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
@@ -89,6 +101,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         View view = inflater.inflate(R.layout.fragment_summarized_by_article_parent_categ, container, false);
         fragment = this;
 
+
+
         summarizedByParentArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
         scrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
         pieChart = view.findViewById(R.id.pchartsumByArticleParent);
@@ -100,10 +114,14 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         articleParentSummaryTitle = view.findViewById(R.id.articleParentSummaryTitle);
         articleParentSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
-
+        sumByParentKeyPad = view.findViewById(R.id.sumByParentKeyPad);
+        sumParentArticleleftArrow = view.findViewById(R.id.sumParentArticleleftArrow);
+        sumParentArticleplayPause = view.findViewById(R.id.sumParentArticleplayPause);
+        sumParentArticlerightArrow = view.findViewById(R.id.sumParentArticlerightArrow);
 
         backTraverse(fragment, R.id.summarizedByArticleFragment2);
 
+//        keyPadControl(summByParentArticlePaused);
 
         return view;
     }
@@ -294,11 +312,15 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     @Override
     public void centerKey() {
         summByParentArticlePaused = !summByParentArticlePaused;
-        SecondActivity.firstCenterKeyPause = summByParentArticlePaused;
+//        SecondActivity.firstCenterKeyPause = summByParentArticlePaused;
 
         if (!summByParentArticlePaused) {
             navigate(fragment);
+        } else {
+            SecondActivity.pauseAll();
         }
+        keyPadControl(summByParentArticlePaused);
+
     }
 
     @Override
@@ -316,5 +338,18 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
             handleRowAnimationThread.interrupt();
         }
         navigate(fragment);
+    }
+
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            sumParentArticleplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            sumParentArticleplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
+            sumByParentKeyPad.setVisibility(View.VISIBLE);
+
+        } else {
+            sumByParentKeyPad.setVisibility(View.GONE);
+        }
     }
 }

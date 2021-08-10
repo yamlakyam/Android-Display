@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -68,12 +70,16 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
 
     double grandTotal = 0;
     public static boolean isInflatingTable;
-    boolean summByChildArticlePaused = false;
+    public static boolean summByChildArticlePaused;
 
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!SecondActivity.pausedstate()) {
+
+            summByChildArticlePaused = false;
+        }
 
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                 SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -88,6 +94,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_summarized_by_article_child_categ, container, false);
+
 
         fragment = this;
         summaryByChildArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
@@ -108,6 +115,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         sumByChildKeyPad = view.findViewById(R.id.sumByChildKeyPad);
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
+//        keyPadControl(summByChildArticlePaused);
 
         return view;
     }
@@ -286,12 +294,15 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     @Override
     public void centerKey() {
         summByChildArticlePaused = !summByChildArticlePaused;
-        keyPadControl(summByChildArticlePaused);
-        SecondActivity.firstCenterKeyPause = summByChildArticlePaused;
+//        SecondActivity.firstCenterKeyPause = summByChildArticlePaused;
 
         if (!summByChildArticlePaused) {
             navigate(fragment);
+        } else {
+            SecondActivity.pauseAll();
         }
+        keyPadControl(summByChildArticlePaused);
+
     }
 
     @Override
@@ -313,7 +324,12 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     public void keyPadControl(boolean paused) {
         if (paused) {
             sumChildArticleplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            sumChildArticleplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
             sumByChildKeyPad.setVisibility(View.VISIBLE);
+
+        } else {
+            sumByChildKeyPad.setVisibility(View.GONE);
         }
     }
 }

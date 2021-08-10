@@ -17,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.AllData;
 import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
-import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 
 import org.json.JSONException;
@@ -48,9 +47,9 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 //        Runnable runnable = new Runnable() {
 //            @Override
 //            public void run() {
-//        VolleyHttp http = new VolleyHttp(getApplicationContext());
-//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
-//                SplashScreenActivity.this);
+//                VolleyHttp http = new VolleyHttp(getApplicationContext());
+//                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+//                        SplashScreenActivity.this);
 //                handler.postDelayed(this, 2000);
 //            }
 //        };
@@ -137,4 +136,8 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

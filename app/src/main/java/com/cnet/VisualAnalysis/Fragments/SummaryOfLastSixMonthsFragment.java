@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -16,6 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -60,11 +64,16 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     DigitalClock digitalClock;
     TextView SummaryOfLast6MonthsTitle;
 
+    LinearLayout sumOfLAstXMonthsKeyPad;
+    ImageView sumLastXMonthleftArrow;
+    ImageView sumLastXMonthrightArrow;
+    ImageView sumLastXMonthplayPause;
+
     public static HandleRowAnimationThread handleRowAnimationThread;
     public static boolean isInflatingTable;
     double totalAmount = 0;
 
-    boolean summaryOfLAstXmonthPaused = false;
+    public static boolean summaryOfLAstXmonthPaused;
 
     public SummaryOfLastSixMonthsFragment() {
         // Required empty public constructor
@@ -74,6 +83,10 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!SecondActivity.pausedstate()) {
+            summaryOfLAstXmonthPaused = false;
+        }
 
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                 SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -90,6 +103,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary_of_last_six_months, container, false);
+
         fragment = this;
         summaryOfLast6MonthsTableLayout = view.findViewById(R.id.summaryOfLast6MonthsTableLayout);
         pieChart = view.findViewById(R.id.pchartsummaryOfLast6Months);
@@ -103,8 +117,14 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         SummaryOfLast6MonthsTitle = view.findViewById(R.id.SummaryOfLast6MonthsTitle);
 
+        sumOfLAstXMonthsKeyPad = view.findViewById(R.id.sumOfLAstXMonthsKeyPad);
+        sumLastXMonthleftArrow = view.findViewById(R.id.sumLastXMonthleftArrow);
+        sumLastXMonthrightArrow = view.findViewById(R.id.sumLastXMonthrightArrow);
+        sumLastXMonthplayPause = view.findViewById(R.id.sumLastXMonthplayPause);
+
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
+//        keyPadControl(summaryOfLAstXmonthPaused);
 
         return view;
     }
@@ -292,12 +312,15 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     @Override
     public void centerKey() {
         summaryOfLAstXmonthPaused = !summaryOfLAstXmonthPaused;
-
-        SecondActivity.firstCenterKeyPause = summaryOfLAstXmonthPaused;
+//        SecondActivity.firstCenterKeyPause = summaryOfLAstXmonthPaused;
 
         if (!summaryOfLAstXmonthPaused) {
             navigate(fragment);
+        } else {
+            SecondActivity.pauseAll();
         }
+        keyPadControl(summaryOfLAstXmonthPaused);
+
     }
 
     @Override
@@ -314,5 +337,19 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
             handleRowAnimationThread.interrupt();
         }
         navigate(fragment);
+    }
+
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            sumLastXMonthplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            sumLastXMonthplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
+            sumOfLAstXMonthsKeyPad.setVisibility(View.VISIBLE);
+
+        } else {
+            sumOfLAstXMonthsKeyPad.setVisibility(View.GONE);
+
+        }
     }
 }

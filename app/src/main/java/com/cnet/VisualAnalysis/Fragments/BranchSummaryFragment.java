@@ -3,6 +3,7 @@ package com.cnet.VisualAnalysis.Fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -58,7 +60,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     TextView scrollingBranchText;
     DigitalClock digitalClock;
     TextView branchSummaryHeaderTextView;
-    boolean branchSummaryPaused = false;
+    public static boolean branchSummaryPaused;
     ImageView brancplayPause;
     ImageView brancleft;
     ImageView brancright;
@@ -76,6 +78,9 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!SecondActivity.pausedstate()) {
+            branchSummaryPaused = false;
+        }
 
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                 SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -93,6 +98,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         activity = getActivity();
 
         View view = inflater.inflate(R.layout.fragment_branch_summary, container, false);
+
+
         branchSummaryTableLayout = view.findViewById(R.id.branchSummaryTableLayout);
 //        branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
@@ -113,6 +120,9 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         fragment = this;
 
         backTraverse(fragment, R.id.summaryOfLastMonthFragment);
+
+//        keyPadControl(branchSummaryPaused);
+
         return view;
     }
 
@@ -297,11 +307,15 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     @Override
     public void centerKey() {
         branchSummaryPaused = !branchSummaryPaused;
-        keyPadControl(branchSummaryPaused);
 //        SecondActivity.firstCenterKeyPause = branchSummaryPaused;
+
         if (!branchSummaryPaused) {
             navigate(fragment);
+        } else {
+            SecondActivity.pauseAll();
         }
+        keyPadControl(branchSummaryPaused);
+
     }
 
     @Override
@@ -323,7 +337,11 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     public void keyPadControl(boolean paused) {
         if (paused) {
             brancplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            brancplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
             linearLayout.setVisibility(View.VISIBLE);
+        } else {
+            linearLayout.setVisibility(View.GONE);
         }
     }
 }

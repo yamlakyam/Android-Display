@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,11 +14,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DigitalClock;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -56,13 +60,27 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     Fragment fragment;
     int branchIndex;
 
+    LinearLayout eachUserReportKeyPad;
+    ImageView userRepEachleftArrow;
+    ImageView userRepEachplayPause;
+    ImageView userRepEachrightArrow;
+
     double grandTotalSum;
-    boolean userReportForEachPaused = false;
+    public static boolean userReportForEachPaused;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!SecondActivity.pausedstate()) {
+            userReportForEachPaused = false;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_report_for_each_ou, container, false);
+
         userReportTableLayout = view.findViewById(R.id.userReportTableLayout);
         pieChart = view.findViewById(R.id.pchartUserReport);
         userReportScrollView = view.findViewById(R.id.userReportScrollView);
@@ -71,6 +89,12 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         scrollingUserReportForEachText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
+        eachUserReportKeyPad = view.findViewById(R.id.eachUserReportKeyPad);
+        userRepEachleftArrow = view.findViewById(R.id.userRepEachleftArrow);
+        userRepEachplayPause = view.findViewById(R.id.userRepEachplayPause);
+        userRepEachrightArrow = view.findViewById(R.id.userRepEachrightArrow);
+//        keyPadControl(userReportForEachPaused);
 
         fragment = this;
         return view;
@@ -266,7 +290,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     @Override
     public void centerKey() {
         userReportForEachPaused = !userReportForEachPaused;
-        SecondActivity.firstCenterKeyPause = userReportForEachPaused;
+//        SecondActivity.firstCenterKeyPause = userReportForEachPaused;
 
         if (!userReportForEachPaused) {
             if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
@@ -274,7 +298,11 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             } else {
                 inflateAllTables(branchIndex + 1);
             }
+        } else {
+            SecondActivity.pauseAll();
         }
+        keyPadControl(userReportForEachPaused);
+
     }
 
     @Override
@@ -305,6 +333,18 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             navigate(fragment);
         } else {
             inflateAllTables(branchIndex + 1);
+        }
+    }
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            userRepEachplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            userRepEachplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
+            eachUserReportKeyPad.setVisibility(View.VISIBLE);
+
+        } else {
+            eachUserReportKeyPad.setVisibility(View.GONE);
         }
     }
 }
