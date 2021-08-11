@@ -88,7 +88,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
-        addLocations();
+//        addLocations();
 
 //        locations.add(loc1);
 //        locations.add(loc2);
@@ -158,6 +158,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        addLocations();
 
         if (!mapPaused) {
             Log.i("map", "not paused");

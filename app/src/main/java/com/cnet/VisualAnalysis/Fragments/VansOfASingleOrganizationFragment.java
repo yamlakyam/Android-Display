@@ -120,7 +120,7 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
                         if (vanListPaused) {
                             handleRowAnimationThread.interrupt();
                         } else {
-                            navigate(fragment);
+                            navigate();
                         }
                     }
 
@@ -136,59 +136,35 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
         handleRowAnimationThread.start();
     }
 
-    public void navigate(Fragment fragment) {
-        NavController navController = NavHostFragment.findNavController(fragment);
-        if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                startActivity(new Intent(requireActivity(), MapsActivity.class));
-            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
-                navController.navigate(R.id.summarizedByArticleFragment2);
-            if (SplashScreenActivity.allData.getLayoutList().contains(5))
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-                navController.navigate(R.id.branchSummaryFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
-                navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
-                navController.navigate(R.id.peakHourReportForAllOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-                navController.navigate(R.id.peakHourReportFragment);
-            }
-        }
+    public void navigate() {
+        startActivity(new Intent(requireActivity(), MapsActivity.class));
 
     }
 
     public void navigateLeft(Fragment fragment) {
 
         NavController navController = NavHostFragment.findNavController(fragment);
-        if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(12))
-                navController.navigate(R.id.peakHourReportFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(11))
-                navController.navigate(R.id.peakHourReportForAllOusFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
-                navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-                navController.navigate(R.id.branchSummaryFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(5))
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
-                navController.navigate(R.id.summarizedByArticleFragment2);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                startActivity(new Intent(requireActivity(), MapsActivity.class));
-        }
+        if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+            navController.navigate(R.id.peakHourReportForAllOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+            navController.navigate(R.id.userReportForEachOusFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            navController.navigate(R.id.userReportForAllOusFragment2);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            navController.navigate(R.id.branchSummaryFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
 
     }
 
@@ -260,8 +236,9 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
         vanListPaused = !vanListPaused;
 
         if (!vanListPaused) {
+            navigate();
+
             SecondActivity.playAll();
-            navigate(fragment);
         } else {
             SecondActivity.pauseAll();
         }
@@ -281,7 +258,7 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
-        navigate(fragment);
+        navigate();
 
     }
 

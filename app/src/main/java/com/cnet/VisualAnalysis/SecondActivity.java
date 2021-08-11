@@ -84,7 +84,9 @@ public class SecondActivity extends AppCompatActivity {
         if (name != null) {
             Log.i("Message", name);
             if (name.equals("pressed")) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
@@ -160,14 +162,9 @@ public class SecondActivity extends AppCompatActivity {
             frgamentId = R.id.peakHourReportForAllOusFragment;
         } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
             frgamentId = R.id.peakHourReportFragment;
-        }
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            frgamentId = R.id.vansOfASingleOrganizationFragment;
 
-//        int frgamentId = R.id.userReportForAllOusFragment;
-//        int frgamentId = R.id.peakHourReportFragment;
-//        int frgamentId = R.id.userReportForAllOusFragment2;
-//        int frgamentId = R.id.peakHourReportForAllOusFragment;
-//        int frgamentId = R.id.peakHourReportForAllOusFragment;
-//        int frgamentId = R.id.vansOfASingleOrganizationFragment;
 
         return frgamentId;
     }
@@ -184,36 +181,10 @@ public class SecondActivity extends AppCompatActivity {
 
                 case KeyEvent.KEYCODE_DPAD_CENTER:
 
-//                    playPause.setImageTintList(ColorStateList.valueOf(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-//                    leftArrow.setImageTintList(ColorStateList.valueOf(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-//                    rightArrow.setImageTintList(ColorStateList.valueOf(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-//                SummarizedByArticleFragment.isInflatingTable = false;
-//                    if (firstCenterKeyPause) {
-//                        playPause.setImageResource(R.drawable.ic_play_button__2_);
-//                        playPauseKeyPad.setVisibility(View.VISIBLE);
-//                    } else {
-//                        playPauseKeyPad.setVisibility(View.GONE);
-//                    }
+
                     if (getCurrentFragment() instanceof KeyPress) {
                         keyPress.centerKey();
                     }
-//                    else {
-//                        if (!firstCenterKeyPause) {
-//                            playPause.setImageResource(R.drawable.ic_pause_button);
-//
-//                            rightNavigation();
-//                            firstCenterKeyPause = true;
-//                            playPauseKeyPad.setVisibility(View.GONE);
-//
-//                        } else {
-//                            playPause.setImageResource(R.drawable.ic_play_button__2_);
-//                            pausedState();
-//                        }
-//                    }
-
 
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -222,15 +193,6 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleParentCategFragment.isInflatingTable = false;
                     SummarizedByArticleChildCategFragment.isInflatingTable = false;
                     SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-//                    SummaryOfLastMonthFragment.isInflatingTable = false;
-//                    BranchSummaryFragment.isInflatingTable = false;
-
-//                    leftArrow.setImageTintList(ColorStateList.valueOf(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-//                    rightArrow.setImageTintList(ColorStateList.valueOf(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
-//                playPause.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.leftKey();
@@ -243,15 +205,6 @@ public class SecondActivity extends AppCompatActivity {
                     SummarizedByArticleParentCategFragment.isInflatingTable = false;
                     SummarizedByArticleChildCategFragment.isInflatingTable = false;
                     SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-//                    SummaryOfLastMonthFragment.isInflatingTable = false;
-//                    BranchSummaryFragment.isInflatingTable = false;
-
-//                    rightArrow.setImageTintList(ColorStateList.valueOf(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-////                playPause.setImageTintList(ColorStateList.valueOf(
-////                        ContextCompat.getColor(getApplicationContext(), R.color.playbacksForeground)));
-//                    leftArrow.setImageTintList(ColorStateList.valueOf(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.playbacksBackground)));
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.rightKey();
