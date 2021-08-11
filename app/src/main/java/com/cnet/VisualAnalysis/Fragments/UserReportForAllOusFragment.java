@@ -21,7 +21,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -65,13 +64,16 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     ImageView userRepoAllrightArrow;
 
     double grandTotalSum;
-    public static boolean userReportForAllPaused ;
+    public static boolean userReportForAllPaused;
 
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
             userReportForAllPaused = false;
+        } else {
+            userReportForAllPaused = true;
+
         }
     }
 
@@ -79,7 +81,6 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_report_for_all_ous, container, false);
-
 
 
         userReportForAllTableLayout = view.findViewById(R.id.userReportForAllTableLayout);
@@ -99,7 +100,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
         fragment = this;
 
-//        keyPadControl(userReportForAllPaused);
+        keyPadControl(userReportForAllPaused);
 
         return view;
     }
@@ -274,9 +275,9 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         userReportForAllPaused = !userReportForAllPaused;
 //        SecondActivity.firstCenterKeyPause = userReportForAllPaused;
         if (!userReportForAllPaused) {
+            SecondActivity.playAll();
             navigate(fragment);
-        }
-        else{
+        } else {
             SecondActivity.pauseAll();
         }
         keyPadControl(userReportForAllPaused);
@@ -307,8 +308,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
                     ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
             allUserRepKeyPad.setVisibility(View.VISIBLE);
 
-        }
-        else{
+        } else {
             allUserRepKeyPad.setVisibility(View.GONE);
         }
     }

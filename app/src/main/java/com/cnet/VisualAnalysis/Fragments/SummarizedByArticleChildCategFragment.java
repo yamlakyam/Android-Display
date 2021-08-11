@@ -77,8 +77,10 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
-
             summByChildArticlePaused = false;
+        }else {
+            summByChildArticlePaused = true;
+
         }
 
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -115,7 +117,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         sumByChildKeyPad = view.findViewById(R.id.sumByChildKeyPad);
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
-//        keyPadControl(summByChildArticlePaused);
+        keyPadControl(summByChildArticlePaused);
 
         return view;
     }
@@ -297,6 +299,8 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
 //        SecondActivity.firstCenterKeyPause = summByChildArticlePaused;
 
         if (!summByChildArticlePaused) {
+            SecondActivity.playAll();
+
             navigate(fragment);
         } else {
             SecondActivity.pauseAll();

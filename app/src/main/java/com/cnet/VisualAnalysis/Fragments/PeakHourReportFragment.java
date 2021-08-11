@@ -77,14 +77,17 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         super.onCreate(savedInstanceState);
 
         if (!SecondActivity.pausedstate()) {
-            peakHourForEachPaused = false;}
+            peakHourForEachPaused = false;
+        } else {
+            peakHourForEachPaused = true;
+
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peak_hour_report, container, false);
-
 
 
         lineChart = view.findViewById(R.id.peakHourLineChart);
@@ -103,7 +106,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         digitalClock = view.findViewById(R.id.digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
 
-//        keyPadControl(peakHourForEachPaused);
+        keyPadControl(peakHourForEachPaused);
 
         fragment = this;
         return view;
@@ -357,6 +360,8 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (!peakHourForEachPaused) {
             if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
                 navigate(fragment);
+                SecondActivity.playAll();
+
             } else {
                 drawAllPeakTimeLineCharts(branchIndex + 1, 0);
             }

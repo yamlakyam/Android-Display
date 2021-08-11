@@ -78,8 +78,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
-
             summByParentArticlePaused = false;
+        } else {
+            summByParentArticlePaused = true;
         }
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
                 SummarizedByArticleChildCategFragment.handleRowAnimationThread,
@@ -102,7 +103,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         fragment = this;
 
 
-
         summarizedByParentArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
         scrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
         pieChart = view.findViewById(R.id.pchartsumByArticleParent);
@@ -121,7 +121,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
         backTraverse(fragment, R.id.summarizedByArticleFragment2);
 
-//        keyPadControl(summByParentArticlePaused);
+        keyPadControl(summByParentArticlePaused);
 
         return view;
     }
@@ -315,6 +315,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 //        SecondActivity.firstCenterKeyPause = summByParentArticlePaused;
 
         if (!summByParentArticlePaused) {
+            SecondActivity.playAll();
             navigate(fragment);
         } else {
             SecondActivity.pauseAll();

@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,6 +32,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public MarkerThread markerThread;
     int width;
     TextView vanNameText;
+    TextView parameter1;
+    TextView parameter2;
+    TextView parameter3;
     int transactionIndex;
 
     boolean mapPaused = false;
@@ -55,7 +59,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public ArrayList<Double> grandTotal_list = new ArrayList<>();
     public ArrayList<Integer> itemCount_list = new ArrayList<>();
+
     public ArrayList<String> currentVan_list = new ArrayList<>();
+    public ArrayList<String> last_active = new ArrayList<>();
+    public ArrayList<Integer> sales_outlet_count = new ArrayList<>();
+    public ArrayList<Integer> line_item_count = new ArrayList<>();
+    public ArrayList<Double> grand_total = new ArrayList<>();
+
+    NumberFormat numberFormat = NumberFormat.getInstance();
 
     public SupportMapFragment mapFragment;
 
@@ -65,6 +76,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         vanNameText = findViewById(R.id.vanNameText);
+        parameter1 = findViewById(R.id.parameter1);
+        parameter2 = findViewById(R.id.parameter2);
+        parameter3 = findViewById(R.id.parameter3);
 
 
         mapFragment =
@@ -100,14 +114,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     String saleTime = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getDateNtime();
                     time_list.add(saleTime);
 
-                    double grandTotal = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getTotalSales();
-                    grandTotal_list.add(grandTotal);
+                    double grandTotalEach = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getTotalSales();
+                    grandTotal_list.add(grandTotalEach);
 
                     int items = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getItemCount();
                     itemCount_list.add(items);
 
                     String currentVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getNameOfVan();
                     currentVan_list.add(currentVan);
+
+                    String lastActive = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getLastActive();
+                    last_active.add(lastActive);
+
+                    int outletCount = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getSalesOutLateCount();
+                    sales_outlet_count.add(outletCount);
+
+                    int lineItemCount = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getAllLineItemCount();
+                    line_item_count.add(lineItemCount);
+
+                    Double grandTotal = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTotalPrice();
+                    grand_total.add(grandTotal);
+
                 }
 
             }
@@ -163,6 +190,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     drawMarkerWithInfo(googleMap, builder, index);
 //                    Log.i("marker", "drawn ");
                     vanNameText.setText(currentVan_list.get(index));
+                    parameter1.setText(numberFormat.format(sales_outlet_count.get(index)));
+                    parameter2.setText(numberFormat.format(line_item_count.get(index)));
+                    parameter3.setText(numberFormat.format(Math.round(grand_total.get(index) * 100.0) / 100.0));
                 }
             }
         };

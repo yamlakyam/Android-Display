@@ -58,6 +58,10 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         if (!SecondActivity.pausedstate()) {
             peakHourForAllPaused = false;
         }
+        else{
+            peakHourForAllPaused = true;
+
+        }
     }
 
     @Override
@@ -78,7 +82,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
 
-//        keyPadControl(peakHourForAllPaused);
+        keyPadControl(peakHourForAllPaused);
 
         return view;
     }
@@ -197,9 +201,10 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         peakHourForAllPaused = !peakHourForAllPaused;
 //        SecondActivity.firstCenterKeyPause = peakHourForAllPaused;
         if (!peakHourForAllPaused) {
+            SecondActivity.playAll();
             navigate(fragment);
         } else {
-            SecondActivity.pauseAll();
+//            SecondActivity.pauseAll();
         }
         keyPadControl(peakHourForAllPaused);
 

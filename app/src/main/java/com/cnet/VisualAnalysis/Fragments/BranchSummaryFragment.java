@@ -80,6 +80,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
             branchSummaryPaused = false;
+        } else {
+            branchSummaryPaused = true;
         }
 
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -121,7 +123,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
         backTraverse(fragment, R.id.summaryOfLastMonthFragment);
 
-//        keyPadControl(branchSummaryPaused);
+        keyPadControl(branchSummaryPaused);
 
         return view;
     }
@@ -310,9 +312,10 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 //        SecondActivity.firstCenterKeyPause = branchSummaryPaused;
 
         if (!branchSummaryPaused) {
+            SecondActivity.playAll();
             navigate(fragment);
         } else {
-            SecondActivity.pauseAll();
+//            SecondActivity.pauseAll();
         }
         keyPadControl(branchSummaryPaused);
 

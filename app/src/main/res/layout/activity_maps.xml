@@ -156,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Loaded Goods"
+                        android:text="Total Outlets"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -185,7 +185,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Sold Goods"
+                        android:text="Line Items"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -214,7 +214,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Achievement"
+                        android:text="Grand Total"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 

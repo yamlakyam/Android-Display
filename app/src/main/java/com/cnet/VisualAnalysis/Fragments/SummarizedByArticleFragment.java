@@ -83,8 +83,9 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
-
             summByarticlePaused = false;
+        } else {
+            summByarticlePaused = true;
         }
 
         SecondActivity.interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
@@ -102,7 +103,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
         View view = inflater.inflate(R.layout.fragment_summarized_by_article, container, false);
         fragment = this;
-
 
 
         barChartSumByArticle = view.findViewById(R.id.bChartSumByArticle);
@@ -124,7 +124,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         summarticleleftArrow = view.findViewById(R.id.summarticleleftArrow);
         sumByArticleKeyPad = view.findViewById(R.id.sumByArticleKeyPad);
 
-//        keyPadControl(summByarticlePaused);
+        keyPadControl(summByarticlePaused);
 
         backTraverse();
         return view;
@@ -327,9 +327,10 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         summByarticlePaused = !summByarticlePaused;
 //        SecondActivity.firstCenterKeyPause = summByarticlePaused;
         if (!summByarticlePaused) {
+            SecondActivity.playAll();
             navigate(fragment);
         } else {
-//            SecondActivity.pauseAll();
+            SecondActivity.pauseAll();
         }
         keyPadControl(summByarticlePaused);
 

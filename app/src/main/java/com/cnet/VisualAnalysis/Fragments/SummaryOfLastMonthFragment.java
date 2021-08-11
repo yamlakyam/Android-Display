@@ -83,6 +83,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
             summaryOfLAstXdaysPaused = false;
+        }else{
+            summaryOfLAstXdaysPaused = true;
 
         }
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -119,7 +121,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
 
-//        keyPadControl(summaryOfLAstXdaysPaused);
+        keyPadControl(summaryOfLAstXdaysPaused);
 
         return view;
     }
@@ -316,6 +318,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         summaryOfLAstXdaysPaused = !summaryOfLAstXdaysPaused;
 //        SecondActivity.firstCenterKeyPause = summaryOfLAstXdaysPaused;
         if (!summaryOfLAstXdaysPaused) {
+            SecondActivity.playAll();
             navigate(fragment);
         } else {
             SecondActivity.pauseAll();

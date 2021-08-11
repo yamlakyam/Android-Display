@@ -1057,7 +1057,19 @@ public class SecondActivity extends AppCompatActivity {
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = true;
         UserReportForAllOusFragment.userReportForAllPaused = true;
         UserReportForEachOuFragment.userReportForEachPaused = true;
+    }
 
+    public static void playAll(){
+        BranchSummaryFragment.branchSummaryPaused = false;
+        PeakHourReportForAllOusFragment.peakHourForAllPaused = false;
+        PeakHourReportFragment.peakHourForEachPaused = false;
+        SummarizedByArticleChildCategFragment.summByChildArticlePaused = false;
+        SummarizedByArticleFragment.summByarticlePaused = false;
+        SummarizedByArticleParentCategFragment.summByParentArticlePaused = false;
+        SummaryOfLastMonthFragment.summaryOfLAstXdaysPaused = false;
+        SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = false;
+        UserReportForAllOusFragment.userReportForAllPaused = false;
+        UserReportForEachOuFragment.userReportForEachPaused = false;
     }
 
     public static boolean pausedstate() {

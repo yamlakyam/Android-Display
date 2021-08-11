@@ -86,6 +86,9 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
         if (!SecondActivity.pausedstate()) {
             summaryOfLAstXmonthPaused = false;
+        }else{
+            summaryOfLAstXmonthPaused = true;
+
         }
 
         SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
@@ -124,7 +127,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
-//        keyPadControl(summaryOfLAstXmonthPaused);
+        keyPadControl(summaryOfLAstXmonthPaused);
 
         return view;
     }
@@ -315,6 +318,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 //        SecondActivity.firstCenterKeyPause = summaryOfLAstXmonthPaused;
 
         if (!summaryOfLAstXmonthPaused) {
+            SecondActivity.playAll();
             navigate(fragment);
         } else {
             SecondActivity.pauseAll();

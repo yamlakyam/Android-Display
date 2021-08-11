@@ -73,6 +73,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
             userReportForEachPaused = false;
+        } else {
+            userReportForEachPaused = true;
         }
     }
 
@@ -94,7 +96,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         userRepEachleftArrow = view.findViewById(R.id.userRepEachleftArrow);
         userRepEachplayPause = view.findViewById(R.id.userRepEachplayPause);
         userRepEachrightArrow = view.findViewById(R.id.userRepEachrightArrow);
-//        keyPadControl(userReportForEachPaused);
+        keyPadControl(userReportForEachPaused);
 
         fragment = this;
         return view;
@@ -295,6 +297,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         if (!userReportForEachPaused) {
             if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
                 navigate(fragment);
+                SecondActivity.playAll();
+
             } else {
                 inflateAllTables(branchIndex + 1);
             }
