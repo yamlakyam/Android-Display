@@ -221,7 +221,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         tableRowProperty2.setTextSize(16f);
 
 
-        tableRowProperty3.setText(numberFormat.format(totalAmount));
+        tableRowProperty3.setText(numberFormat.format(Math.round(totalAmount * 100.0) / 100.0));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty3.setTextSize(16f);
 
@@ -253,7 +253,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
 
 //            if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-            if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                 navController.navigate(R.id.userReportForAllOusFragment2);

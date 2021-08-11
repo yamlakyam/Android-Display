@@ -487,6 +487,22 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
+    public static String formatDateToString(String lastActive) {
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
+
+        Date parsed = null;
+        String formattedTime = null;
+        try {
+            parsed = input.parse(lastActive);
+            formattedTime = output.format(parsed);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedTime;
+    }
+
     public static Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsed = null;

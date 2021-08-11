@@ -207,7 +207,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         tableRowProperty2.setText("Total Amount");
         tableRowProperty2.setTextSize(16f);
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setText(numberFormat.format(grandTotal));
+        tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty3.setTextSize(16f);
         tableRowProperty4.setText("");
@@ -238,7 +238,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                 navController.navigate(R.id.userReportForAllOusFragment2);

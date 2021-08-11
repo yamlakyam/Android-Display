@@ -180,12 +180,9 @@ public class SecondActivity extends AppCompatActivity {
             switch (keyCode) {
 
                 case KeyEvent.KEYCODE_DPAD_CENTER:
-
-
                     if (getCurrentFragment() instanceof KeyPress) {
                         keyPress.centerKey();
                     }
-
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:
 
@@ -196,8 +193,7 @@ public class SecondActivity extends AppCompatActivity {
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.leftKey();
-                    else
-                        leftNavigation();
+
                     break;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
 
@@ -208,8 +204,7 @@ public class SecondActivity extends AppCompatActivity {
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.rightKey();
-                    else
-                        rightNavigation();
+
 
                     break;
             }

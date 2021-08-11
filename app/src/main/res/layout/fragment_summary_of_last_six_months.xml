@@ -174,7 +174,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/advent_pro_thin"
                     android:gravity="end"
-                    android:text="Time"
+                    android:text="Date"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
 

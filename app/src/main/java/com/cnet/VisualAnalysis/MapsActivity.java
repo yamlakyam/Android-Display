@@ -195,6 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     parameter2.setText(numberFormat.format(line_item_count.get(index)));
                     parameter3.setText(numberFormat.format(Math.round(grand_total.get(index) * 100.0) / 100.0));
                 }
+
             }
         };
 
@@ -230,13 +231,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
                 TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-                nameTextView.setText(place_names.get(index));
+                String place_name = place_names.get(index);
+                if (place_name.length() > 21) {
+                    place_name = place_names.get(index).substring(0, 21) + "...";
+                }
+                nameTextView.setText(place_name);
                 TextView timeTextView = (TextView) view.findViewById(R.id.timeTextView);
                 timeTextView.setText(UtilityFunctionsForActivity1.timeElapsed(UtilityFunctionsForActivity1.formatTime(time_list.get(index)), Calendar.getInstance().getTime()));
                 TextView grandTotalText = (TextView) view.findViewById(R.id.grandTotalText);
-                grandTotalText.setText(String.valueOf(grandTotal_list.get(index)));
+                grandTotalText.setText(numberFormat.format(Math.round(grandTotal_list.get(index) * 100.0) / 100.0));
                 TextView itemCountText = (TextView) view.findViewById(R.id.itemCountText);
-                itemCountText.setText(String.valueOf(itemCount_list.get(index)));
+                itemCountText.setText(numberFormat.format(itemCount_list.get(index)));
 
                 return view;
             }

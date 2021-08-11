@@ -286,7 +286,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
             tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
+            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
 
 
             summarizedByParentArticleTableLayout.addView(tableElements);
@@ -338,7 +338,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
             tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 1000.0) / 1000.0) + "%");
+            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
 
 
             summarizedByChildArticleTableLayout.addView(tableElements);
@@ -372,7 +372,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(row.getName());
             tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateTimeToString(row.getDateTime()));
+            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateToString(row.getDateTime()));
 
 
             summarizedByLast30DaysTableLayout.addView(tableElements);
@@ -403,7 +403,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(row.getName());
             tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateTimeToString(row.getDateTime()));
+            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateToString(row.getDateTime()));
 
             summarizedByLast6MonthsTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByLast6MonthsTableLayout, tableElements);
