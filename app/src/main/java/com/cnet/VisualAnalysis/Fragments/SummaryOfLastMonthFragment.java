@@ -34,7 +34,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
-import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -83,7 +82,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         super.onCreate(savedInstanceState);
         if (!SecondActivity.pausedstate()) {
             summaryOfLAstXdaysPaused = false;
-        }else{
+        } else {
             summaryOfLAstXdaysPaused = true;
 
         }
@@ -254,7 +253,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
 
 //            if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-            if (SplashScreenActivity.allData.getLayoutList().contains(8))
+            if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                 navController.navigate(R.id.userReportForAllOusFragment2);
@@ -265,7 +264,9 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
             else if (SplashScreenActivity.allData.getLayoutList().contains(4))
@@ -290,7 +291,9 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-            startActivity(new Intent(requireActivity(), MapsActivity.class));
+//            startActivity(new Intent(requireActivity(), MapsActivity.class));
+            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(11))

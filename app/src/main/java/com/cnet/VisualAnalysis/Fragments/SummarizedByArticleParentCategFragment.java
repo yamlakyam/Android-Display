@@ -34,7 +34,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByParentArticleRow;
-import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -159,11 +158,12 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByParentArticlePause) {
                 } else if (index == tablesToDisplay.size() + 1) {
-//                    NavController navController = NavHostFragment.findNavController(fragment);
-//                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
-//                    SecondActivity secondActivity=new SecondActivity();
-//                    secondActivity.navigations(fragment);
-                    navigate(fragment);
+
+                    if (summByParentArticlePaused) {
+                        handleRowAnimationThread.interrupt();
+                    } else {
+                        navigate(fragment);
+                    }
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
@@ -256,7 +256,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8))
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                 navController.navigate(R.id.userReportForAllOusFragment2);
@@ -267,7 +267,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
         }
@@ -281,7 +283,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
             if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
             else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+
             else if (SplashScreenActivity.allData.getLayoutList().contains(12))
                 navController.navigate(R.id.peakHourReportFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(11))

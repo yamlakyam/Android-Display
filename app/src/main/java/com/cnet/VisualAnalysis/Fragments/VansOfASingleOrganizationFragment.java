@@ -1,6 +1,8 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,15 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
@@ -28,7 +37,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
-public class VansOfASingleOrganizationFragment extends Fragment {
+public class VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.KeyPress {
 
     ScrollView scrollVanListTable;
     TableLayout vanListTableLayout;
@@ -38,9 +47,27 @@ public class VansOfASingleOrganizationFragment extends Fragment {
     Fragment fragment;
     TextView OrgHeaderTextView;
 
+    LinearLayout vanListKeyPad;
+    ImageView vanListleftArrow;
+    ImageView vanListplayPause;
+    ImageView vanListrightArrow;
+
+
     int salesOutLateCountSum, allLineItemCountSum = 0;
     double totalPriceSum = 0;
+    public static boolean vanListPaused;
 
+    @Override
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (!SecondActivity.pausedstate()) {
+            vanListPaused = false;
+        } else {
+            vanListPaused = true;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +77,13 @@ public class VansOfASingleOrganizationFragment extends Fragment {
         vanListTableLayout = view.findViewById(R.id.vanListTableLayout);
         OrgHeaderTextView = view.findViewById(R.id.OrgHeaderTextView);
         fragment = this;
+        vanListKeyPad = view.findViewById(R.id.vanListKeyPad);
+        vanListleftArrow = view.findViewById(R.id.vanListleftArrow);
+        vanListplayPause = view.findViewById(R.id.vanListplayPause);
+        vanListrightArrow = view.findViewById(R.id.vanListrightArrow);
+
+        keyPadControl(vanListPaused);
+
         return view;
     }
 
@@ -79,19 +113,15 @@ public class VansOfASingleOrganizationFragment extends Fragment {
                 }
 
                 if (index == tablesToDisplay.size()) {
-//                    drawLastRow();
                     drawSumOfLastRow();
                     UtilityFunctionsForActivity1.scrollRows(scrollVanListTable);
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (fragment != null) {
-//                        NavController navController = NavHostFragment.findNavController(fragment);
-//                        navController.navigate(R.id.vsmCardFragment);
-
-//                        if (peakHourForAllPaused) {
-//                            handleRowAnimationThread.interrupt();
-//                        } else {
-//                            navigate(fragment);
-//                        }
+                        if (vanListPaused) {
+                            handleRowAnimationThread.interrupt();
+                        } else {
+                            navigate(fragment);
+                        }
                     }
 
                 } else if (index < tablesToDisplay.size()) {
@@ -105,6 +135,63 @@ public class VansOfASingleOrganizationFragment extends Fragment {
         handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
         handleRowAnimationThread.start();
     }
+
+    public void navigate(Fragment fragment) {
+        NavController navController = NavHostFragment.findNavController(fragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            if (SplashScreenActivity.allData.getLayoutList().contains(5))
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                navController.navigate(R.id.branchSummaryFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                navController.navigate(R.id.userReportForAllOusFragment2);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                navController.navigate(R.id.peakHourReportFragment);
+            }
+        }
+
+    }
+
+    public void navigateLeft(Fragment fragment) {
+
+        NavController navController = NavHostFragment.findNavController(fragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                navController.navigate(R.id.userReportForAllOusFragment2);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                navController.navigate(R.id.branchSummaryFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+        }
+
+    }
+
 
     private void sumofLastRow(VsmTableDataForSingleVan vsmTableDataForSingleVan) {
         salesOutLateCountSum = salesOutLateCountSum + vsmTableDataForSingleVan.getSalesOutLateCount();
@@ -168,4 +255,45 @@ public class VansOfASingleOrganizationFragment extends Fragment {
 
     }
 
+    @Override
+    public void centerKey() {
+        vanListPaused = !vanListPaused;
+
+        if (!vanListPaused) {
+            SecondActivity.playAll();
+            navigate(fragment);
+        } else {
+            SecondActivity.pauseAll();
+        }
+        keyPadControl(vanListPaused);
+    }
+
+    @Override
+    public void leftKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigateLeft(fragment);
+    }
+
+    @Override
+    public void rightKey() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        navigate(fragment);
+
+    }
+
+    public void keyPadControl(boolean paused) {
+        if (paused) {
+            vanListplayPause.setImageResource(R.drawable.ic_play_button__2_);
+            vanListplayPause.setImageTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireActivity(), R.color.playbacksForeground)));
+            vanListKeyPad.setVisibility(View.VISIBLE);
+
+        } else {
+            vanListKeyPad.setVisibility(View.GONE);
+        }
+    }
 }

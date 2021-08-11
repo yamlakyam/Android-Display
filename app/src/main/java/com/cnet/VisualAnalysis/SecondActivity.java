@@ -28,6 +28,7 @@ import com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment;
 import com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment;
 import com.cnet.VisualAnalysis.Fragments.UserReportForAllOusFragment;
 import com.cnet.VisualAnalysis.Fragments.UserReportForEachOuFragment;
+import com.cnet.VisualAnalysis.Fragments.VansOfASingleOrganizationFragment;
 
 public class SecondActivity extends AppCompatActivity {
 
@@ -1057,9 +1058,11 @@ public class SecondActivity extends AppCompatActivity {
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = true;
         UserReportForAllOusFragment.userReportForAllPaused = true;
         UserReportForEachOuFragment.userReportForEachPaused = true;
+        VansOfASingleOrganizationFragment.vanListPaused = true;
+
     }
 
-    public static void playAll(){
+    public static void playAll() {
         BranchSummaryFragment.branchSummaryPaused = false;
         PeakHourReportForAllOusFragment.peakHourForAllPaused = false;
         PeakHourReportFragment.peakHourForEachPaused = false;
@@ -1070,6 +1073,7 @@ public class SecondActivity extends AppCompatActivity {
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = false;
         UserReportForAllOusFragment.userReportForAllPaused = false;
         UserReportForEachOuFragment.userReportForEachPaused = false;
+        VansOfASingleOrganizationFragment.vanListPaused = false;
     }
 
     public static boolean pausedstate() {
