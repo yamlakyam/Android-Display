@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -80,6 +82,9 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.i("lastXdays", "onCreate: ");
+
         if (!SecondActivity.pausedstate()) {
             summaryOfLAstXdaysPaused = false;
         } else {
@@ -129,14 +134,18 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+
+
+        if (SplashScreenActivity.allData.getDashBoardData() != null) {
 
             int days = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size();
             summaryOfLast30DaysTitle.setText("Summary of Last " + days + " days");
             summaryOfLast30DaysTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
             scrollingLastMonthText.append(" " + days + " days");
             summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
+            Log.i("initfrag", "before: ");
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+            Log.i("initfrag", "after: ");
         }
     }
 
@@ -149,6 +158,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData, seconds, startingIndex);
 //        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart, "Summarized by last 30 days");
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last " + days + "  days");
+//        UtilityFunctionsForActivity2.drawStackedBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last " + days + "  days");
     }
 
     @SuppressLint("HandlerLeak")
@@ -291,8 +301,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//            startActivity(new Intent(requireActivity(), MapsActivity.class));
-            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+//            navController.navigate(R.id.vansOfASingleOrganizationFragment);
 
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);

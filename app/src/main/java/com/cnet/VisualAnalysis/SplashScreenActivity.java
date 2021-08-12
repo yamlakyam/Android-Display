@@ -119,7 +119,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     }
 
     @SuppressLint("HardwareIds")
-    public String getDeviceId(Context context) {
+    public  String getDeviceId(Context context) {
 //        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 //        String imei = telephonyManager.getDeviceId();
 //        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);

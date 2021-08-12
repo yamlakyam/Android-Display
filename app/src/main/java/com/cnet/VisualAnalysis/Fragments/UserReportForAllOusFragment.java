@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -28,6 +29,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.PieChartData;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -255,8 +257,8 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//            startActivity(new Intent(requireActivity(), MapsActivity.class));
-            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+//            navController.navigate(R.id.vansOfASingleOrganizationFragment);
 
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);

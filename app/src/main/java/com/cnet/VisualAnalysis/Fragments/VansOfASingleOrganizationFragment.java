@@ -137,9 +137,13 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
     }
 
     public void navigate() {
-        startActivity(new Intent(requireActivity(), MapsActivity.class));
+        if (getActivity() != null && fragment.isAdded()) {
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
+        }
 
     }
+
 
     public void navigateLeft(Fragment fragment) {
 

@@ -145,6 +145,53 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
+    public static void drawStackedBarChart(BarChartData barChartData, BarChart barChart, String label) {
+        barChart.getDescription().setEnabled(false);
+        barChart.setDrawGridBackground(false);
+        barChart.getXAxis().setCenterAxisLabels(true);
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawAxisLine(false);
+        barChart.getAxisRight().setDrawLabels(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.setPinchZoom(false);
+        barChart.getXAxis().setGranularity(1f);
+        barChart.getXAxis().setCenterAxisLabels(false);
+        barChart.getXAxis().setLabelCount(barChartData.x.length);
+
+//        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(barChartData.legends));
+//        barChart.getXAxis().setLabelRotationAngle(-45);
+//        barChart.getXAxis().setLabelCount(barChartData.legends.length);
+
+        ArrayList<BarEntry> barChartEntries = new ArrayList<BarEntry>();
+        for (int i = 0; i < barChartData.x.length; i++) {
+            barChartEntries.add(new BarEntry(1, barChartData.y[i]));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(barChartEntries, label);
+        barDataSet.setForm(Legend.LegendForm.CIRCLE);
+
+        BarData barData = new BarData(barDataSet);
+
+        barChart.setData(barData);
+        barChart.setVisibleXRangeMaximum(barChartEntries.size());
+        barChart.setExtraBottomOffset(15f);
+
+        barDataSet.setColor(Color.parseColor("#27adb9"));
+        barDataSet.setDrawValues(false);
+
+        barChart.animateXY(3000, 3000);
+        barChart.getAxisRight().setDrawLabels(false);
+
+        barChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
+        barChart.getXAxis().setTextColor(Color.parseColor("#f6f8fb"));
+        barChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
+        barChart.getDescription().setTextColor(Color.parseColor("#f6f8fb"));
+
+    }
+
+
     public static void drawLineChart(LineChartData lineChartData, LineChart lineChart, String label) {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
 
