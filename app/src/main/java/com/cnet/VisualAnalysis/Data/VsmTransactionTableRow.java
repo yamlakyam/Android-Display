@@ -9,7 +9,6 @@ public class VsmTransactionTableRow {
     private double subTotal;
     private double VAT;
     private double totalSales;
-
     private double latitude;
     private double longitude;
 
@@ -26,8 +25,8 @@ public class VsmTransactionTableRow {
         this.subTotal = subTotal;
         this.VAT = VAT;
         this.totalSales = totalSales;
-        this.latitude=latitude;
-        this.longitude=longitude;
+        this.latitude = latitude;
+        this.longitude = longitude;
 
     }
 

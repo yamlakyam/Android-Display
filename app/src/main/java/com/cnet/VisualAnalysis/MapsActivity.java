@@ -10,8 +10,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cnet.VisualAnalysis.Data.VsmTransactionTableRow;
+import com.cnet.VisualAnalysis.Fragments.UserReportForEachOuFragment;
+import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
+import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,10 +54,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng loc8 = new LatLng(9.005130, 38.696251);
     //LatLng loc6 = new LatLng(11.512322,37.402954);
 
+    public static ArrayList<VsmTransactionTableRow> eachTransactionsInaVan;
+    public static Handler animationHandler;
+    public static Handler changeDataHandler;
+    public HandleRowAnimationThread handleRowAnimationThread;
+    public HandleDataChangeThread handleDataChangeThread;
+
+
     public static ArrayList<LatLng> locations = new ArrayList<LatLng>();
+
 
     public static Handler transactionsInVanHandler;
     public static Handler vanHandler;
+
 
     public ArrayList<String> place_names = new ArrayList<>();
     public ArrayList<String> time_list = new ArrayList<>();
@@ -70,7 +84,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     NumberFormat numberFormat = NumberFormat.getInstance();
 
     public SupportMapFragment mapFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,11 +171,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        addLocations();
+//        addLocations();
 
         if (!mapPaused) {
             Log.i("map", "not paused");
-            drawMap(googleMap);
+//            drawMap(googleMap);
+            drawAllVansMarkers(0, googleMap);
         }
 
     }
@@ -187,7 +201,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     locations.clear();
                     startActivity(new Intent(MapsActivity.this, SecondActivity.class));
                 } else if (index < MapsActivity.locations.size() - 1) {
-                    drawMarkerWithInfo(googleMap, builder, index);
+//                    drawMarkerWithInfo(googleMap, builder, index);
                     vanNameText.setText(currentVan_list.get(index));
                     parameter1.setText(numberFormat.format(sales_outlet_count.get(index)));
                     parameter2.setText(numberFormat.format(line_item_count.get(index)));
@@ -202,8 +216,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, int index) {
-        LatLng loc = locations.get(index);
+    //    private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, int index) {
+    private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, LatLng loc, ArrayList<VsmTransactionTableRow> vsmTransactionTableRows, int index) {
+//        LatLng loc = locations.get(index);
         MarkerOptions marker = new MarkerOptions().position(loc);
         Marker mMarker = googleMap.addMarker(marker);
         builder.include(marker.getPosition());
@@ -226,20 +241,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
                 TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-                String place_name = place_names.get(index);
+//                String place_name = place_names.get(index);
+                String place_name = vsmTransactionTableRows.get(index).getOutlet();
                 if (place_name.length() > 21) {
                     place_name = place_names.get(index).substring(0, 21) + "...";
                 }
                 nameTextView.setText(place_name);
                 TextView timeTextView = (TextView) view.findViewById(R.id.timeTextView);
-                timeTextView.setText(UtilityFunctionsForActivity1.timeElapsed(UtilityFunctionsForActivity1.formatTime(time_list.get(index)), Calendar.getInstance().getTime()));
+//                timeTextView.setText(UtilityFunctionsForActivity1.timeElapsed(UtilityFunctionsForActivity1.formatTime(time_list.get(index)), Calendar.getInstance().getTime()));
+                timeTextView.setText(UtilityFunctionsForActivity1.timeElapsed(UtilityFunctionsForActivity1.formatTime(vsmTransactionTableRows.get(index).getDateNtime()), Calendar.getInstance().getTime()));
                 TextView grandTotalText = (TextView) view.findViewById(R.id.grandTotalText);
-                grandTotalText.setText(numberFormat.format(Math.round(grandTotal_list.get(index) * 100.0) / 100.0));
+//                grandTotalText.setText(numberFormat.format(Math.round(grandTotal_list.get(index) * 100.0) / 100.0));
+                grandTotalText.setText(numberFormat.format(Math.round(vsmTransactionTableRows.get(index).getTotalSales() * 100.0) / 100.0));
                 TextView itemCountText = (TextView) view.findViewById(R.id.itemCountText);
-                itemCountText.setText(numberFormat.format(itemCount_list.get(index)));
+//                itemCountText.setText(numberFormat.format(itemCount_list.get(index)));
+                itemCountText.setText(numberFormat.format(vsmTransactionTableRows.get(index).getItemCount()));
                 TextView voucherTextView = (TextView) view.findViewById(R.id.voucherTextView);
-                voucherTextView.setText(voucher_No.get(index));
-
+//                voucherTextView.setText(voucher_No.get(index));
+                voucherTextView.setText(vsmTransactionTableRows.get(index).getVoucherNo());
                 return view;
             }
         });
@@ -354,7 +373,82 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }
 
     }
+
+    @SuppressLint("HandlerLeak")
+    public void drawMarkerInVan(int vanIndex, GoogleMap googleMap) {
+
+//        if (userReportTableLayout != null) {
+//            userReportTableLayout.removeAllViews();
+//        }
+        eachTransactionsInaVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows();
+
+        animationHandler = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                String message = (String) msg.obj;
+                int index = 0;
+                if (message != null) {
+                    index = Integer.parseInt(message);
+                }
+
+                if (index == eachTransactionsInaVan.size()) {
+//                    drawLastRow();
+//                    UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
+                } else if (index == eachTransactionsInaVan.size() + 1 && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() - 1) {
+
+//                    if (userReportForEachPaused) {
+//                        handleRowAnimationThread.interrupt();
+//                    } else {
+//                        navigate(fragment);
+//                    }
+
+                } else if (index < eachTransactionsInaVan.size()) {
+//                    grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
+//                    UtilityFunctionsForActivity1.drawUserReportForEachOu(tablesToDisplay, getContext(), userReportTableLayout, index);
+//                    UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
+                    double latitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.get(index).getLatitude();
+                    double longitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.get(index).getLongitude();
+                    LatLng loc = new LatLng(latitude, longitude);
+
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    ArrayList<VsmTransactionTableRow> vsmTransactionTableRows = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows;
+                    drawMarkerWithInfo(googleMap, builder, loc, vsmTransactionTableRows, index);
+
+                }
+            }
+        };
+        handleRowAnimationThread = new HandleRowAnimationThread(eachTransactionsInaVan.size(), UserReportForEachOuFragment.animationHandler, 200, mapFragment, 0);
+        handleRowAnimationThread.start();
+    }
+
+    @SuppressLint("HandlerLeak")
+    public void drawAllVansMarkers(int startingIndex, GoogleMap googleMap) {
+        changeDataHandler = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                String message = (String) msg.obj;
+                int index = 0;
+                if (message != null) {
+                    index = Integer.parseInt(message);
+//                    distributorIndex = index;
+                }
+//                inflateTable(index);
+//                setDistributorHeader(index);
+                drawMarkerInVan(index, googleMap);
+                vanNameText.setText(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(index).nameOfVan);
+                parameter1.setText(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(index).salesOutLateCount);
+                parameter2.setText(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(index).allLineItemCount);
+                parameter3.setText(numberFormat.format(Math.round(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(index).totalPrice * 100.0) / 100.0));
+            }
+        };
+
+        float secondsToWait = Float.parseFloat(SplashScreenActivity.allData.getTransitionTimeInMinutes());
+        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size(), (int) secondsToWait, startingIndex);
+        handleDataChangeThread.start();
+
+    }
 }
+
 
 class MarkerThread extends Thread {
 

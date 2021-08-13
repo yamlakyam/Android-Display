@@ -3,6 +3,8 @@ package com.cnet.VisualAnalysis;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     TextView loadingTextView;
     public Handler handler;
     boolean isFirstRefresh;
+    VideoView videoView;
 
 
     @Override
@@ -40,49 +44,26 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
         progressBarCircular = findViewById(R.id.progressBarCircular);
         loadingTextView = findViewById(R.id.loadingTextView);
-
-//        Handler handler = new Handler();
-//
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                VolleyHttp http = new VolleyHttp(getApplicationContext());
-//                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
-//                        SplashScreenActivity.this);
-//                handler.postDelayed(this, 2000);
-//            }
-//        };
-//        handler.post(runnable);
+        videoView = findViewById(R.id.videoView);
 
 
-//        @SuppressLint("HandlerLeak")
-//        Handler handler = new Handler() {
-//            @Override
-//            public void handleMessage(@NonNull Message msg) {
-//                super.handleMessage(msg);
-//                String message = (String) msg.obj;
-//                int index = Integer.parseInt(message);
-//
-//                if (index == 0) {
-//                    isFirstRefresh = true;
-//                }
         VolleyHttp http = new VolleyHttp(getApplicationContext());
 //        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
 //                SplashScreenActivity.this);
         http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + "cc70a81e8233444a",
                 SplashScreenActivity.this);
 
-//                Log.i("request", "request made");
-//
-//            }
-//        };
-//        if (allData != null) {
-//            HandleDataRefreshThread handleDataRefreshThread = new HandleDataRefreshThread(handler, Integer.parseInt(allData.getTransitionTimeInMinutes()));
-//            handleDataRefreshThread.start();
-//        } else {
-//            HandleDataRefreshThread handleDataRefreshThread = new HandleDataRefreshThread(handler, 30);
-//            handleDataRefreshThread.start();
-//        }
+
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.anim_video);
+        videoView.setVideoURI(uri);
+        videoView.start();
+
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                videoView.start();
+            }
+        });
+
 
     }
 
@@ -92,6 +73,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 //        Log.i("TAG", "onSuccess: ");
         progressBarCircular.setVisibility(View.GONE);
         loadingTextView.setVisibility(View.GONE);
+        videoView.stopPlayback();
 
         AllDataParser allDataParser = new AllDataParser(jsonObject);
 

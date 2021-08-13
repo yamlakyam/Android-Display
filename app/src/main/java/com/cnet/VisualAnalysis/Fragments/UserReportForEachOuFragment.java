@@ -131,8 +131,6 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                         pieChart, "User Report");
                 userReportTitle.setText("User Report For " + SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).org);
                 userReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
-
-
             }
         };
 
@@ -143,7 +141,6 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         handleDataChangeThread.start();
 
     }
-
 
     @SuppressLint("HandlerLeak")
     public void inflateTable(int dataIndex) {
@@ -245,11 +242,10 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
-
         }
     }
 
@@ -258,7 +254,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
         if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
             navController.navigate(R.id.userReportForAllOusFragment2);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
             navController.navigate(R.id.branchSummaryFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);
@@ -295,9 +291,15 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
     @Override
     public void centerKey() {
+
+
         userReportForEachPaused = !userReportForEachPaused;
 //        SecondActivity.firstCenterKeyPause = userReportForEachPaused;
-
+        if (userReportForEachPaused) {
+            if (handleDataChangeThread != null) {
+                handleDataChangeThread.interrupt();
+            }
+        }
         if (!userReportForEachPaused) {
             if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
                 navigate(fragment);
@@ -343,6 +345,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             inflateAllTables(branchIndex + 1);
         }
     }
+
 
     public void keyPadControl(boolean paused) {
         if (paused) {

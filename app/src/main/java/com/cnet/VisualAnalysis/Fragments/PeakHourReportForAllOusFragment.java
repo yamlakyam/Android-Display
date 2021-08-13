@@ -241,7 +241,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             SecondActivity.playAll();
             navigate(fragment);
         } else {
-//            SecondActivity.pauseAll();
+            SecondActivity.pauseAll();
         }
         keyPadControl(peakHourForAllPaused);
 

@@ -52,20 +52,19 @@ public class DashBoardDataParser {
         try {
             JSONObject rootJSON = jsonArray.getJSONObject(0);
 
-            dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));
-            dashBoardData.setSummarizedByParentArticleData(summarizedByParentArticleParser(rootJSON));
-            dashBoardData.setSummarizedByChildArticleData(summarizedByChildArticleParser(rootJSON));
-            dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
-            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
-            dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
+            parseAllDashBoardDataCatching(dashBoardData, rootJSON);
 
-            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
-            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
-            dashBoardData.setFigureReportDataforEachBranch(figureReportDataParser(rootJSON));
-            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
-            dashBoardData.setFigureReportDataforAllBranch(figureReportAllTogetherOuDataParser(rootJSON));
-//            dashBoardData.setAllFigureReportData(filteredFigureReportDataParser(parseFilteredFigureReport(rootJSON)));
-//            parseFilteredFigureReport(rootJSON);
+//            dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));
+//            dashBoardData.setSummarizedByParentArticleData(summarizedByParentArticleParser(rootJSON));
+//            dashBoardData.setSummarizedByChildArticleData(summarizedByChildArticleParser(rootJSON));
+//            dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
+//            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
+//            dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
+//            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
+//            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
+//            dashBoardData.setFigureReportDataforEachBranch(figureReportDataParser(rootJSON));
+//            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
+//            dashBoardData.setFigureReportDataforAllBranch(figureReportAllTogetherOuDataParser(rootJSON));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -597,6 +596,63 @@ public class DashBoardDataParser {
         return figureReportDataArrayList;
     }
 
+    public void parseAllDashBoardDataCatching(DashBoardData dashBoardData, JSONObject rootJSON) {
+        try {
+            dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummarizedByParentArticleData(summarizedByParentArticleParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummarizedByChildArticleData(summarizedByChildArticleParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setFigureReportDataforEachBranch(figureReportDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setFigureReportDataforAllBranch(figureReportAllTogetherOuDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

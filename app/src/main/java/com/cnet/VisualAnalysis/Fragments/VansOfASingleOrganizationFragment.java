@@ -290,21 +290,4 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
         }
     }
 
-    public void sortVans() {
-        Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
-            @Override
-            public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
-                return getSortOrder(o1.nameOfVan) - getSortOrder(o2.getNameOfVan());
-            }
-        });
-    }
-
-    int getSortOrder(String s) {
-        Matcher m = p.matcher(s);
-        if (!m.matches()) return 0;
-        int major = Integer.parseInt(m.group(1));
-        int minor = m.group(2).isEmpty() ? 0 : m.group(2).charAt(0);
-        return (major << 8) | minor;
-    }
-
 }
