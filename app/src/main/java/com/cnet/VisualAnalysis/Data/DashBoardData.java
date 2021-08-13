@@ -16,8 +16,8 @@ public class DashBoardData {
     ArrayList<UserReportTableRow> userReportForAllBranch;
 
     ArrayList<FigureReportData> figureReportDataforEachBranch;
-    ArrayList<FigureReportDataElements> figureReportDataforAllBranch;
-
+    //    ArrayList<FigureReportDataElements> figureReportDataforAllBranch;
+    PeakHourReportForAllOus peakHourReportForAllOus;
 
 
     public SummarizedByArticleData getSummarizedByArticleData() {
@@ -100,12 +100,21 @@ public class DashBoardData {
         this.userReportForAllBranch = userReportForAllBranch;
     }
 
-    public ArrayList<FigureReportDataElements> getFigureReportDataforAllBranch() {
-        return figureReportDataforAllBranch;
+//    public ArrayList<FigureReportDataElements> getFigureReportDataforAllBranch() {
+//        return figureReportDataforAllBranch;
+//    }
+//
+//    public void setFigureReportDataforAllBranch(ArrayList<FigureReportDataElements> figureReportDataforAllBranch) {
+//        this.figureReportDataforAllBranch = figureReportDataforAllBranch;
+//    }
+
+
+    public PeakHourReportForAllOus getPeakHourReportForAllOus() {
+        return peakHourReportForAllOus;
     }
 
-    public void setFigureReportDataforAllBranch(ArrayList<FigureReportDataElements> figureReportDataforAllBranch) {
-        this.figureReportDataforAllBranch = figureReportDataforAllBranch;
+    public void setPeakHourReportForAllOus(PeakHourReportForAllOus peakHourReportForAllOus) {
+        this.peakHourReportForAllOus = peakHourReportForAllOus;
     }
 }
 

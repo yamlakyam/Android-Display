@@ -3,6 +3,8 @@ package com.cnet.VisualAnalysis;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -10,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
@@ -27,85 +29,70 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
     public static AllData allData;
     public static String myAndroidDeviceId;
-
+    //
     ProgressBar progressBarCircular;
     TextView loadingTextView;
     public Handler handler;
     boolean isFirstRefresh;
+    VideoView videoView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+//        videoView = findViewById(R.id.videoView);
+//        String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.animation_vid;
+//        Uri uri = Uri.parse(videoPath);
+//        videoView.setVideoURI(uri);
+//
+//        videoView.start();
+//        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.setLooping(true);
+//            }
+//        });
+
+
+//        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                videoView.start();
+//            }
+//        });
+
 
         progressBarCircular = findViewById(R.id.progressBarCircular);
         loadingTextView = findViewById(R.id.loadingTextView);
 
-//        Handler handler = new Handler();
-//
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                VolleyHttp http = new VolleyHttp(getApplicationContext());
-//                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
-//                        SplashScreenActivity.this);
-//                handler.postDelayed(this, 2000);
-//            }
-//        };
-//        handler.post(runnable);
-
-
-//        @SuppressLint("HandlerLeak")
-//        Handler handler = new Handler() {
-//            @Override
-//            public void handleMessage(@NonNull Message msg) {
-//                super.handleMessage(msg);
-//                String message = (String) msg.obj;
-//                int index = Integer.parseInt(message);
-//
-//                if (index == 0) {
-//                    isFirstRefresh = true;
-//                }
         VolleyHttp http = new VolleyHttp(getApplicationContext());
-        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+//                SplashScreenActivity.this);
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + "cc70a81e8233444a",
                 SplashScreenActivity.this);
-
-//                Log.i("request", "request made");
-//
-//            }
-//        };
-//        if (allData != null) {
-//            HandleDataRefreshThread handleDataRefreshThread = new HandleDataRefreshThread(handler, Integer.parseInt(allData.getTransitionTimeInMinutes()));
-//            handleDataRefreshThread.start();
-//        } else {
-//            HandleDataRefreshThread handleDataRefreshThread = new HandleDataRefreshThread(handler, 30);
-//            handleDataRefreshThread.start();
-//        }
-
     }
 
     @Override
     public void onSuccess(JSONObject jsonObject) {
+//        videoView.stopPlayback();
+//        videoView.setVisibility(View.GONE);
 
-//        Log.i("TAG", "onSuccess: ");
         progressBarCircular.setVisibility(View.GONE);
         loadingTextView.setVisibility(View.GONE);
+        Log.i("Splash Screen", "onSuccess: ");
 
         AllDataParser allDataParser = new AllDataParser(jsonObject);
 
         try {
             allData = allDataParser.parseAllData();
 
-//            if (isFirstRefresh) {
             if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0) {
-//                Log.i("user report", allData.getDashBoardData().getUserReportForAllOus() + "");
-//                Log.i("report", DashBoardDataParser.userReportDataParser(jsonObject) + "");
                 startActivity(new Intent(SplashScreenActivity.this, SecondActivity.class));
             } else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
             }
-//            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -119,10 +106,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     }
 
     @SuppressLint("HardwareIds")
-    public  String getDeviceId(Context context) {
-//        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-//        String imei = telephonyManager.getDeviceId();
-//        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+    public String getDeviceId(Context context) {
 
         myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return myAndroidDeviceId;

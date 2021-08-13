@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,12 +83,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             branchSummaryPaused = true;
         }
 
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -103,7 +96,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
 
         branchSummaryTableLayout = view.findViewById(R.id.branchSummaryTableLayout);
-//        branchSummaryProgressBar = view.findViewById(R.id.branchSummaryProgressBar);
         scrollBranchSummaryTable = view.findViewById(R.id.scrollBranchSummaryTable);
         pChartBranchSummary = view.findViewById(R.id.pChartBranchSummary);
         scrollingBranchText = view.findViewById(R.id.scrollingBranchText);
@@ -161,7 +153,9 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                 } else if (index == tablesToDisplay.size() + 1) {
 //                    startActivity(new Intent(requireActivity(), MapsActivity.class));
                     if (branchSummaryPaused) {
-                        handleRowAnimationThread.interrupt();
+                        if (handleRowAnimationThread != null) {
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }
@@ -257,7 +251,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                Log.i("activity", activity + "");
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
                 navController.navigate(R.id.vansOfASingleOrganizationFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(3))

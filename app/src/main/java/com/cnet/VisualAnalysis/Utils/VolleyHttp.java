@@ -28,7 +28,8 @@ public class VolleyHttp {
     }
 
     public void makeGetRequest(String url, GetRequest request) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = null;
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             //                Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
@@ -55,6 +56,11 @@ public class VolleyHttp {
                 1000000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(jsonObjectRequest);
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+            requestQueue.add(jsonObjectRequest);
+        }
+
     }
 }

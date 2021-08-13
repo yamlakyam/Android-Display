@@ -23,15 +23,15 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
+import com.cnet.VisualAnalysis.Data.PeakHourReportForAllOus;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
-
-import java.util.ArrayList;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.github.mikephil.charting.charts.LineChart;
 
 public class PeakHourReportForAllOusFragment extends Fragment implements SecondActivity.KeyPress {
 
@@ -41,12 +41,14 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     DigitalClock digitalClock;
     public static Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
-    private ArrayList<FigureReportDataElements> tablesToDisplay;
+    //    private ArrayList<FigureReportDataElements> tablesToDisplay;
+    private PeakHourReportForAllOus tablesToDisplay;
     Fragment fragment;
     ImageView peakHrAllleftArrow;
     ImageView peakHrAllrightArrow;
     ImageView peakHrAllplaypause;
     LinearLayout linearLayout;
+    LineChart peakHourReportForAllLineChart;
 
     public static boolean peakHourForAllPaused;
 
@@ -78,6 +80,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         linearLayout = view.findViewById(R.id.peakHrForAllKeypad);
         scrollingPeakHourForAllText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
+        peakHourReportForAllLineChart = view.findViewById(R.id.peakHourReportForAllLineChart);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
 
@@ -89,7 +92,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null) {
+//        if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null) {
+        if (SplashScreenActivity.allData.getDashBoardData().getPeakHourReportForAllOus() != null) {
             inflateTable();
         }
     }
@@ -100,7 +104,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         if (peakHourReportForAllTableLayout != null) {
             peakHourReportForAllTableLayout.removeAllViews();
         }
-        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+//        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getPeakHourReportForAllOus();
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -110,29 +115,38 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                     index = Integer.parseInt(message);
                 }
 
-                if (index == tablesToDisplay.size()) {
+//                if (index == tablesToDisplay.size()) {
+                if (index == tablesToDisplay.getFigureReportDataElements().size()) {
 //                    drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
-                } else if (index == tablesToDisplay.size() + 1) {
+//                } else if (index == tablesToDisplay.size() + 1) {
+                } else if (index == tablesToDisplay.getFigureReportDataElements().size() + 1) {
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
                         if (peakHourForAllPaused) {
-                            handleRowAnimationThread.interrupt();
+                            if (handleRowAnimationThread != null) {
+                                handleRowAnimationThread.interrupt();
+                            }
                         } else {
                             navigate(fragment);
                         }
                     }
 
-                } else if (index < tablesToDisplay.size()) {
-                    grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
-                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(tablesToDisplay, getContext(), peakHourReportForAllTableLayout, index);
+//                } else if (index < tablesToDisplay.size()) {
+                } else if (index < tablesToDisplay.getFigureReportDataElements().size()) {
+//                    grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
+                    grandTotalSum = grandTotalSum + tablesToDisplay.getFigureReportDataElements().get(index).grandTotal;
+//                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(tablesToDisplay, getContext(), peakHourReportForAllTableLayout, index);
+                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(tablesToDisplay.getFigureReportDataElements(), getContext(), peakHourReportForAllTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
+                    UtilityFunctionsForActivity2.drawLineChart(tablesToDisplay.lineChartData, peakHourReportForAllLineChart, "peak hour report for all Ous");
                 }
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
+//        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.getFigureReportDataElements().size(), animationHandler, 200, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -155,7 +169,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
@@ -170,7 +184,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             navController.navigate(R.id.userReportForEachOusFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
             navController.navigate(R.id.userReportForAllOusFragment2);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
             navController.navigate(R.id.branchSummaryFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);
@@ -195,7 +209,10 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     @Override
     public void onStop() {
         super.onStop();
-        handleRowAnimationThread.interrupt();
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+
+        }
     }
 
     @Override

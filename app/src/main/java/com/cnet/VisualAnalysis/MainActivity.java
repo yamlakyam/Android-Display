@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("back");
         if (name != null) {
-            Log.i("Message", name);
+
             if (name.equals("pressed")) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                     setHomeFragment(R.id.vsmTransactionFragment);

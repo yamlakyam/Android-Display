@@ -82,16 +82,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         } else {
             summByParentArticlePaused = true;
         }
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
 
-//        if (SecondActivity.dashBoardData == null) {
-//            VolleyHttp http = new VolleyHttp(getContext());
-//            http.makeGetRequest(Constants.allDataWithConfigurationURL, this);
-//        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -161,7 +152,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 } else if (index == tablesToDisplay.size() + 1) {
 
                     if (summByParentArticlePaused) {
-                        handleRowAnimationThread.interrupt();
+                        if(handleRowAnimationThread!=null){
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }

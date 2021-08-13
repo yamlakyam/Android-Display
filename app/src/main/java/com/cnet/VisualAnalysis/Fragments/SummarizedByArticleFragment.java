@@ -88,11 +88,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             summByarticlePaused = true;
         }
 
-        SecondActivity.interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
     }
 
 
@@ -161,7 +156,9 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (getContext() != null) {
                         if (summByarticlePaused) {
-                            handleRowAnimationThread.interrupt();
+                            if (handleRowAnimationThread != null) {
+                                handleRowAnimationThread.interrupt();
+                            }
                         } else {
                             navigate(fragment);
                         }
@@ -196,7 +193,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
                 navController.navigate(R.id.branchSummaryFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                 navController.navigate(R.id.userReportForAllOusFragment2);

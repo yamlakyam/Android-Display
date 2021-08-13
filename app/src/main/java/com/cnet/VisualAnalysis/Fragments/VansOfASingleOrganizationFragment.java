@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DigitalClock;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -51,6 +53,8 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
     ImageView vanListleftArrow;
     ImageView vanListplayPause;
     ImageView vanListrightArrow;
+    DigitalClock digitalClock;
+    TextView scrollingVanListText;
 
 
     int salesOutLateCountSum, allLineItemCountSum = 0;
@@ -81,6 +85,10 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
         vanListleftArrow = view.findViewById(R.id.vanListleftArrow);
         vanListplayPause = view.findViewById(R.id.vanListplayPause);
         vanListrightArrow = view.findViewById(R.id.vanListrightArrow);
+        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        scrollingVanListText = view.findViewById(R.id.scrollingVanListText);
+        scrollingVanListText.setSelected(true);
 
         keyPadControl(vanListPaused);
 

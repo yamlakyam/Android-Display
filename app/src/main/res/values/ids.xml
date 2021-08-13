@@ -11,4 +11,9 @@
     <item name="tVSIcount" type="id" />
     <item name="tdistributor" type="id" />
     <item name="tVsN" type="id" />
+    <item name="cnetlogoSplash" type="id" />
+    <item name="highlightText2" type="id" />
+    <item name="loadingTextView" type="id" />
+    <item name="progressBarCircular" type="id" />
+    <item name="progressBarSplashScreen" type="id" />
 </resources>
