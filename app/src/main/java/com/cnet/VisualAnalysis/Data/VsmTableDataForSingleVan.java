@@ -10,6 +10,7 @@ public class VsmTableDataForSingleVan {
     public int allLineItemCount;
     public double totalPrice;
 
+
     public VsmTableDataForSingleVan(String nameOfVan, ArrayList<VsmTransactionTableRow> tableRows, int salesOutLateCount,
                                     String lastActive, int allLineItemCount, double totalPrice) {
         this.nameOfVan = nameOfVan;

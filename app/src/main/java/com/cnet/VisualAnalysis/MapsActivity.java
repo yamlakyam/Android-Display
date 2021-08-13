@@ -65,6 +65,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public ArrayList<Integer> sales_outlet_count = new ArrayList<>();
     public ArrayList<Integer> line_item_count = new ArrayList<>();
     public ArrayList<Double> grand_total = new ArrayList<>();
+    public ArrayList<String> voucher_No = new ArrayList<>();
 
     NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -135,12 +136,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Double grandTotal = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTotalPrice();
                     grand_total.add(grandTotal);
 
+                    String voucherNo = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).getTableRows().get(j).getVoucherNo();
+                    voucher_No.add(voucherNo);
                 }
-
             }
-
         }
-
     }
 
     @Override
@@ -185,17 +185,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    markerThread.interrupt();
                     place_names.clear();
                     locations.clear();
-//                    startActivity(new Intent(MapsActivity.this, MainActivity.class));
                     startActivity(new Intent(MapsActivity.this, SecondActivity.class));
                 } else if (index < MapsActivity.locations.size() - 1) {
                     drawMarkerWithInfo(googleMap, builder, index);
-//                    Log.i("marker", "drawn ");
                     vanNameText.setText(currentVan_list.get(index));
                     parameter1.setText(numberFormat.format(sales_outlet_count.get(index)));
                     parameter2.setText(numberFormat.format(line_item_count.get(index)));
                     parameter3.setText(numberFormat.format(Math.round(grand_total.get(index) * 100.0) / 100.0));
                 }
-
             }
         };
 
@@ -206,8 +203,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, int index) {
-
-
         LatLng loc = locations.get(index);
         MarkerOptions marker = new MarkerOptions().position(loc);
         Marker mMarker = googleMap.addMarker(marker);
@@ -242,12 +237,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 grandTotalText.setText(numberFormat.format(Math.round(grandTotal_list.get(index) * 100.0) / 100.0));
                 TextView itemCountText = (TextView) view.findViewById(R.id.itemCountText);
                 itemCountText.setText(numberFormat.format(itemCount_list.get(index)));
+                TextView voucherTextView = (TextView) view.findViewById(R.id.voucherTextView);
+                voucherTextView.setText(voucher_No.get(index));
 
                 return view;
             }
         });
         mMarker.showInfoWindow();
     }
+
+    private void clearMarker(GoogleMap googleMap, int index) {
+
+        LatLng loc = locations.get(index);
+        MarkerOptions marker = new MarkerOptions().position(loc);
+        Marker mMarker = googleMap.addMarker(marker);
+        mMarker.remove();
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -315,15 +321,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (markerThread != null) {
             markerThread.interrupt();
         }
-        if (transactionIndex == 0) {
-            Intent intent = new Intent(MapsActivity.this, SecondActivity.class);
-            intent.putExtra("left", "pressed");
-            startActivity(intent);
-        } else {
-//                drawMarkerWithInfo(mapFragment.getMap(), new LatLngBounds.Builder(), transactionIndex - 1);
-            transactionIndex = transactionIndex - 1;
-            drawMap(mapFragment.getMap());
-        }
+
+        Intent intent = new Intent(MapsActivity.this, SecondActivity.class);
+        intent.putExtra("left", "pressed");
+        startActivity(intent);
+
+
+//        if (transactionIndex == 0) {
+//            Intent intent = new Intent(MapsActivity.this, SecondActivity.class);
+//            intent.putExtra("left", "pressed");
+//            startActivity(intent);
+//        } else {
+////                drawMarkerWithInfo(mapFragment.getMap(), new LatLngBounds.Builder(), transactionIndex - 1);
+//            transactionIndex = transactionIndex - 1;
+//            drawMap(mapFragment.getMap());
+//        }
 
     }
 
@@ -332,12 +344,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             markerThread.interrupt();
         }
 
-        if (transactionIndex == locations.size() - 1) {
-            startActivity(new Intent(MapsActivity.this, SecondActivity.class));
-        } else {
-            transactionIndex = transactionIndex + 1;
-            drawMap(mapFragment.getMap());
-        }
+        startActivity(new Intent(MapsActivity.this, SecondActivity.class));
+
+//        if (transactionIndex == locations.size() - 1) {
+//            startActivity(new Intent(MapsActivity.this, SecondActivity.class));
+//        } else {
+//            transactionIndex = transactionIndex + 1;
+//            drawMap(mapFragment.getMap());
+//        }
 
     }
 }
@@ -392,6 +406,7 @@ class VansThread extends Thread {
                 Message msg = MapsActivity.vanHandler.obtainMessage();
                 msg.obj = "" + i;
                 MapsActivity.vanHandler.sendMessage(msg);
+
                 int salesInAvan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(i).tableRows.size();
                 try {
                     Thread.sleep(salesInAvan * 1000);

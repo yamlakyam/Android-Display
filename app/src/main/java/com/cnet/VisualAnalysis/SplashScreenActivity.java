@@ -27,7 +27,6 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
     public static AllData allData;
     public static String myAndroidDeviceId;
-
     ProgressBar progressBarCircular;
     TextView loadingTextView;
     public Handler handler;
@@ -68,7 +67,9 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 //                    isFirstRefresh = true;
 //                }
         VolleyHttp http = new VolleyHttp(getApplicationContext());
-        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
+//                SplashScreenActivity.this);
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + "cc70a81e8233444a",
                 SplashScreenActivity.this);
 
 //                Log.i("request", "request made");
@@ -119,7 +120,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     }
 
     @SuppressLint("HardwareIds")
-    public  String getDeviceId(Context context) {
+    public String getDeviceId(Context context) {
 //        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 //        String imei = telephonyManager.getDeviceId();
 //        myAndroidDeviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);

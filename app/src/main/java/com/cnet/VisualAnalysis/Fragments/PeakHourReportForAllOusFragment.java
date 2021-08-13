@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
+import com.cnet.VisualAnalysis.Data.LineChartData;
 import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.github.mikephil.charting.charts.LineChart;
 
 import java.util.ArrayList;
 
@@ -47,6 +51,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     ImageView peakHrAllrightArrow;
     ImageView peakHrAllplaypause;
     LinearLayout linearLayout;
+    LineChart peakHourReportForAllLineChart;
 
     public static boolean peakHourForAllPaused;
 
@@ -78,6 +83,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         linearLayout = view.findViewById(R.id.peakHrForAllKeypad);
         scrollingPeakHourForAllText.setSelected(true);
         digitalClock = view.findViewById(R.id.digitalClock);
+        peakHourReportForAllLineChart = view.findViewById(R.id.peakHourReportForAllLineChart);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
 
@@ -91,6 +97,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         super.onResume();
         if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null) {
             inflateTable();
+            drawLineChartForAllPeakHourReport();
         }
     }
 
@@ -136,9 +143,37 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         handleRowAnimationThread.start();
     }
 
+//    public ArrayList<FigureReportDataElements> sortPeakHourByTime() {
+//        ArrayList<FigureReportDataElements> figureReportDataElements = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+//        ArrayList<FigureReportDataElements> sortedFigureReportDataElements = new ArrayList<>();
+//        for (int i = 0; i < figureReportDataElements.size(); i++) {
+//            Collections.sort(figureReportDataElements, new Comparator<FigureReportDataElements>() {
+//                @Override
+//                public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
+//                    o1.dateNTime
+//                    return 0;
+//                }
+//            });
+//        }
+//    }
+
+    public void drawLineChartForAllPeakHourReport() {
+        float[] x = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
+        float[] y = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
+        String[] label = new String[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
+        for (int i = 0; i < SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size(); i++) {
+            x[i] = i + 1;
+            y[i] = (float) SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).grandTotal;
+            label[i] = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).dateNTime;
+        }
+        LineChartData lineChartData = new LineChartData(x, y, label);
+        UtilityFunctionsForActivity2.drawLineChart(lineChartData, peakHourReportForAllLineChart, "peak Hour Report for all");
+    }
+
 
     public void navigate(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
+        Log.i("TAG", SplashScreenActivity.allData.getLayoutList() + "");
         if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
             if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
@@ -155,7 +190,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
@@ -170,7 +205,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             navController.navigate(R.id.userReportForEachOusFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
             navController.navigate(R.id.userReportForAllOusFragment2);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
             navController.navigate(R.id.branchSummaryFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -138,7 +137,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 VolleyHttp http = new VolleyHttp(getApplicationContext());
                 http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
                         SecondActivity.this);
-                handler.postDelayed(this, 2000);
+                handler.postDelayed(this, 600000);
             }
         };
         handler.post(runnable);
@@ -197,7 +196,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             frgamentId = R.id.peakHourReportFragment;
         } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
             frgamentId = R.id.vansOfASingleOrganizationFragment;
-
+//        int frgamentId = R.id.peakHourReportForAllOusFragment;
 
         return frgamentId;
     }

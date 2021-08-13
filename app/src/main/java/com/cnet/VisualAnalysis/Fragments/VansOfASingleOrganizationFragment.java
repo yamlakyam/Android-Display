@@ -35,6 +35,10 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.KeyPress {
@@ -56,6 +60,8 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
     int salesOutLateCountSum, allLineItemCountSum = 0;
     double totalPriceSum = 0;
     public static boolean vanListPaused;
+
+    Pattern p = Pattern.compile("^([0-9]+)([a-z]?)$");
 
     @Override
 
@@ -102,6 +108,13 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
             vanListTableLayout.removeAllViews();
         }
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
+        Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
+            @Override
+            public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
+                return Integer.parseInt(o1.nameOfVan.substring(3)) < Integer.parseInt(o2.nameOfVan.substring(3)) ? -1 : 0;
+            }
+        });
+
         OrgHeaderTextView.setText(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getNameOfDistributor());
         animationHandler = new Handler() {
             @Override
@@ -191,7 +204,6 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
             TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
             TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
 
-
             NumberFormat numberFormat = NumberFormat.getInstance();
             singleOrgVansSerialNumberTV.setText("");
             singleOrgVansVSITV.setText("Total Amount");
@@ -277,4 +289,22 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
             vanListKeyPad.setVisibility(View.GONE);
         }
     }
+
+    public void sortVans() {
+        Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
+            @Override
+            public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
+                return getSortOrder(o1.nameOfVan) - getSortOrder(o2.getNameOfVan());
+            }
+        });
+    }
+
+    int getSortOrder(String s) {
+        Matcher m = p.matcher(s);
+        if (!m.matches()) return 0;
+        int major = Integer.parseInt(m.group(1));
+        int minor = m.group(2).isEmpty() ? 0 : m.group(2).charAt(0);
+        return (major << 8) | minor;
+    }
+
 }
