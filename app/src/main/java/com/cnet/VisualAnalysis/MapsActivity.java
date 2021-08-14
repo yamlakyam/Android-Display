@@ -280,30 +280,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (markerThread != null) {
             markerThread.interrupt();
         }
-//        Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-//        intent.putExtra("back", "pressed");
-//        startActivity(intent);
+
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        markerThread.interrupt();
-//
-//        switch (keyCode) {
-//            case KeyEvent.KEYCODE_DPAD_CENTER:
-//                Log.i("center", "onKeyDown: ");
-//                mapPaused = !mapPaused;
-//                break;
-//            case KeyEvent.KEYCODE_DPAD_LEFT:
-//                leftKeyMapNavigation();
-//                break;
-//            case KeyEvent.KEYCODE_DPAD_RIGHT:
-//                rightKeyMapNavigation();
-//                break;
-//        }
-//
-//        return super.onKeyDown(keyCode, event);
-//    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
