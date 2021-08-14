@@ -206,7 +206,9 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 //                        navController.navigate(R.id.vsmCardFragment);
 
                         if (peakHourForEachPaused) {
-                            handleRowAnimationThread.interrupt();
+                            if (handleRowAnimationThread != null) {
+                                handleRowAnimationThread.interrupt();
+                            }
                         } else {
                             navigate(fragment);
                         }
@@ -241,7 +243,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                 navController.navigate(R.id.summaryOfLastSixMonthsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
@@ -261,7 +263,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             navController.navigate(R.id.userReportForEachOusFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(9))
             navController.navigate(R.id.userReportForAllOusFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);
@@ -360,12 +362,16 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     public void centerKey() {
         peakHourForEachPaused = !peakHourForEachPaused;
 //        SecondActivity.firstCenterKeyPause = peakHourForEachPaused;
+        if (peakHourForEachPaused) {
+            if (handleDataChangeThread != null) {
+                handleDataChangeThread.interrupt();
+            }
+        }
 
         if (!peakHourForEachPaused) {
             if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
                 navigate(fragment);
                 SecondActivity.playAll();
-
             } else {
                 drawAllPeakTimeLineCharts(branchIndex + 1, 0);
             }

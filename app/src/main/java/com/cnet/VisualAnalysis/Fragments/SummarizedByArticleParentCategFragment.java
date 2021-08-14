@@ -161,7 +161,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 } else if (index == tablesToDisplay.size() + 1) {
 
                     if (summByParentArticlePaused) {
-                        handleRowAnimationThread.interrupt();
+                        if (handleRowAnimationThread != null) {
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }

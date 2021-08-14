@@ -166,7 +166,9 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast6MonsPause) {
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (summaryOfLAstXmonthPaused) {
-                        handleRowAnimationThread.interrupt();
+                        if(handleRowAnimationThread!=null){
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }

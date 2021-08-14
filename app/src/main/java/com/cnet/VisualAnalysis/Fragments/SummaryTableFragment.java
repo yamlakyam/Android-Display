@@ -269,7 +269,9 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
     @Override
     public void centerKey() {
         Log.i("centerKey", "summary");
-        handleRowAnimationThread.interrupt();
+        if(handleRowAnimationThread!=null){
+            handleRowAnimationThread.interrupt();
+        }
         MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
 
 
@@ -284,7 +286,9 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
     public void leftKey() {
         Log.i("leftKey", "summary");
 
-        handleRowAnimationThread.interrupt();
+        if(handleRowAnimationThread!=null){
+            handleRowAnimationThread.interrupt();
+        }
 
         if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
             startActivity(new Intent(requireActivity(), MapsActivity.class));
@@ -300,8 +304,9 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
     public void rightKey() {
 
         Log.i("rightKey", "summary");
-
-        handleRowAnimationThread.interrupt();
+        if(handleRowAnimationThread!=null){
+            handleRowAnimationThread.interrupt();
+        }
         navController = NavHostFragment.findNavController(fragment);
         navController.navigate(R.id.distributorTableFragment);
     }

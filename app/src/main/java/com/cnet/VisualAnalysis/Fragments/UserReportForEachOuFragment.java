@@ -165,7 +165,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
 
                     if (userReportForEachPaused) {
-                        handleRowAnimationThread.interrupt();
+                        if(handleRowAnimationThread!=null){
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }

@@ -34,6 +34,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -194,10 +195,12 @@ public class UtilityFunctionsForActivity2 {
 
     public static void drawLineChart(LineChartData lineChartData, LineChart lineChart, String label) {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
+        ArrayList<String> formattedXLabels = new ArrayList<>();
 
         if (lineChartData != null) {
             for (int i = 0; i < lineChartData.x.length; i++) {
                 dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
+                formattedXLabels.add(lineChartData.legends[i]);
             }
 
             LineDataSet lineDataSet = new LineDataSet(dataVals, label);
@@ -229,6 +232,8 @@ public class UtilityFunctionsForActivity2 {
             lineChart.getXAxis().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
+            lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(formattedXLabels));
+
         }
 
     }

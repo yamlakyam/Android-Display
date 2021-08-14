@@ -139,7 +139,9 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
                         if (userReportForAllPaused) {
-                            handleRowAnimationThread.interrupt();
+                            if(handleRowAnimationThread!=null){
+                                handleRowAnimationThread.interrupt();
+                            }
                         } else {
                             navigate(fragment);
                         }
@@ -271,7 +273,9 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     @Override
     public void onStop() {
         super.onStop();
-        handleRowAnimationThread.interrupt();
+        if(handleRowAnimationThread!=null){
+            handleRowAnimationThread.interrupt();
+        }
     }
 
     @Override

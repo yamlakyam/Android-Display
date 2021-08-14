@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,7 +196,7 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler, 100, this,0);
+        handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler, 100, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -353,13 +352,13 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
     //
     @Override
     public void centerKey() {
-        if(handleDistDataChangeThread!=null){
+        if (handleDistDataChangeThread != null) {
             handleDistDataChangeThread.interrupt();
         }
-        if(handleVanDataChangeThread!=null){
+        if (handleVanDataChangeThread != null) {
             handleVanDataChangeThread.interrupt();
         }
-        if(handleRowAnimationThread!=null){
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
         MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
@@ -413,9 +412,15 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
     public void rightKey() {
         Log.i("rightKey", "vsmTransaction");
 
-        handleDistDataChangeThread.interrupt();
-        handleVanDataChangeThread.interrupt();
-        handleRowAnimationThread.interrupt();
+        if (handleDistDataChangeThread != null) {
+            handleDistDataChangeThread.interrupt();
+        }
+        if (handleVanDataChangeThread != null) {
+            handleVanDataChangeThread.interrupt();
+        }
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
 
         ArrayList<VsmTableForSingleDistributor> allOrgData = new ArrayList<>();
         if (SplashScreenActivity.allData != null)

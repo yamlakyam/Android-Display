@@ -27,7 +27,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#ccffffff"
+            android:background="@android:color/transparent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
                         android:id="@+id/driverNameText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="Abebe Kebede"
                         android:textColor="@color/black"
@@ -228,6 +228,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:paddingStart="16dp"
                         android:paddingRight="16dp">
@@ -332,6 +333,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:paddingStart="16dp"
                         android:paddingRight="16dp">
@@ -436,6 +438,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:paddingStart="16dp"
                         android:paddingRight="16dp">

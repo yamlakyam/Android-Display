@@ -188,7 +188,9 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 //                    secondActivity.navigations(fragment);
 
                     if (summaryOfLAstXdaysPaused) {
-                        handleRowAnimationThread.interrupt();
+                        if (handleRowAnimationThread != null) {
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }

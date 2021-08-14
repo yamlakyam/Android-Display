@@ -108,6 +108,12 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             peakHourReportForAllTableLayout.removeAllViews();
         }
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+//        Collections.sort(tablesToDisplay, new Comparator<FigureReportDataElements>() {
+//            @Override
+//            public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
+//                return UtilityFunctionsForActivity1.formatTime(o1.dateNTime).compareTo(UtilityFunctionsForActivity1.formatTime(o2.dateNTime));
+//            }
+//        });
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -125,7 +131,9 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
                         if (peakHourForAllPaused) {
-                            handleRowAnimationThread.interrupt();
+                            if (handleRowAnimationThread != null) {
+                                handleRowAnimationThread.interrupt();
+                            }
                         } else {
                             navigate(fragment);
                         }
@@ -230,7 +238,9 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     @Override
     public void onStop() {
         super.onStop();
-        handleRowAnimationThread.interrupt();
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
     }
 
     @Override

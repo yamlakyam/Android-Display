@@ -131,7 +131,9 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (fragment != null) {
                         if (vanListPaused) {
-                            handleRowAnimationThread.interrupt();
+                            if(handleRowAnimationThread!=null){
+                                handleRowAnimationThread.interrupt();
+                            }
                         } else {
                             navigate();
                         }

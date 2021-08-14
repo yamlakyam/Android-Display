@@ -145,7 +145,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
-
                 String message = (String) msg.obj;
                 int index = 0;
                 if (message != null) {
