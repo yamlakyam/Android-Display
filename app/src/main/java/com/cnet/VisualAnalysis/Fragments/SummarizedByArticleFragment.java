@@ -88,11 +88,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             summByarticlePaused = true;
         }
 
-        SecondActivity.interrupThreads(SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
     }
 
 
@@ -125,7 +120,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         sumByArticleKeyPad = view.findViewById(R.id.sumByArticleKeyPad);
 
         keyPadControl(summByarticlePaused);
-
         backTraverse();
         return view;
     }
@@ -133,7 +127,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData.getDashBoardData() != null) {
             articleSummaryProgressBar.setVisibility(View.GONE);
             constraintLayout.setVisibility(View.VISIBLE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);

@@ -182,10 +182,6 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
                     UtilityFunctionsForActivity1.scrollRows(scrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast30DaysPause) {
                 } else if (index == tablesToDisplay.size() + 1) {
-//                    NavController navController = NavHostFragment.findNavController(fragment);
-//                    navController.navigate(R.id.branchSummaryFragment);
-//                    SecondActivity secondActivity = new SecondActivity();
-//                    secondActivity.navigations(fragment);
 
                     if (summaryOfLAstXdaysPaused) {
                         if (handleRowAnimationThread != null) {

@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/advent_pro_thin"
                 android:gravity="start"
-                android:text="Summary Type"
+                android:text="User Name"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
 

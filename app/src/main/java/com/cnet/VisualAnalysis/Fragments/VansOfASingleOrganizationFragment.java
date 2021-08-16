@@ -37,7 +37,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -108,6 +107,8 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
             vanListTableLayout.removeAllViews();
         }
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
+
+
         Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
             @Override
             public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
@@ -131,7 +132,7 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (fragment != null) {
                         if (vanListPaused) {
-                            if(handleRowAnimationThread!=null){
+                            if (handleRowAnimationThread != null) {
                                 handleRowAnimationThread.interrupt();
                             }
                         } else {
@@ -153,10 +154,12 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
 
     public void navigate() {
         if (getActivity() != null && fragment.isAdded()) {
-            startActivity(new Intent(requireActivity(), MapsActivity.class));
-
+            try {
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
 
@@ -195,51 +198,52 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
     }
 
     private void drawSumOfLastRow() {
-        View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_vans_of_single_org, null, false);
+        if (getContext() != null) {
+            View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_vans_of_single_org, null, false);
 
-        if (tableElements != null) {
-            TextView singleOrgVansSerialNumberTV = tableElements.findViewById(R.id.singleOrgVansSerialNumberTV);
-            TextView singleOrgVansVSITV = tableElements.findViewById(R.id.singleOrgVansVSITV);
-            TextView singleOrgVansProspectTV = tableElements.findViewById(R.id.singleOrgVansProspectTV);
-            TextView singleOrgVansEndTimeTV = tableElements.findViewById(R.id.singleOrgVansEndTimeTV);
-            TextView singleOrgVansSalesOutletTV = tableElements.findViewById(R.id.singleOrgVansSalesOutletTV);
-            TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
-            TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
+            if (tableElements != null) {
+                TextView singleOrgVansSerialNumberTV = tableElements.findViewById(R.id.singleOrgVansSerialNumberTV);
+                TextView singleOrgVansVSITV = tableElements.findViewById(R.id.singleOrgVansVSITV);
+                TextView singleOrgVansProspectTV = tableElements.findViewById(R.id.singleOrgVansProspectTV);
+                TextView singleOrgVansEndTimeTV = tableElements.findViewById(R.id.singleOrgVansEndTimeTV);
+                TextView singleOrgVansSalesOutletTV = tableElements.findViewById(R.id.singleOrgVansSalesOutletTV);
+                TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
+                TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
 
-            NumberFormat numberFormat = NumberFormat.getInstance();
-            singleOrgVansSerialNumberTV.setText("");
-            singleOrgVansVSITV.setText("Total Amount");
-            singleOrgVansVSITV.setTypeface(Typeface.DEFAULT_BOLD);
-            singleOrgVansVSITV.setTextSize(25f);
-            singleOrgVansProspectTV.setText(String.valueOf(1));
-            singleOrgVansProspectTV.setTypeface(Typeface.DEFAULT_BOLD);
-            singleOrgVansProspectTV.setTextSize(25f);
-            singleOrgVansEndTimeTV.setText("");
-            singleOrgVansSalesOutletTV.setText(numberFormat.format(salesOutLateCountSum));
-            singleOrgVansSalesOutletTV.setTypeface(Typeface.DEFAULT_BOLD);
-            singleOrgVansSalesOutletTV.setTextSize(25f);
-            singleOrgVansQuantityCountTV.setText(numberFormat.format(allLineItemCountSum));
-            singleOrgVansQuantityCountTV.setTypeface(Typeface.DEFAULT_BOLD);
-            singleOrgVansQuantityCountTV.setTextSize(25f);
-            singleOrgVansTotalSalesTV.setText(numberFormat.format(Math.round(totalPriceSum * 100.0) / 100.0));
-            singleOrgVansTotalSalesTV.setTypeface(Typeface.DEFAULT_BOLD);
-            singleOrgVansTotalSalesTV.setTextSize(25f);
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                singleOrgVansSerialNumberTV.setText("");
+                singleOrgVansVSITV.setText("Total Amount");
+                singleOrgVansVSITV.setTypeface(Typeface.DEFAULT_BOLD);
+                singleOrgVansVSITV.setTextSize(25f);
+                singleOrgVansProspectTV.setText(String.valueOf(1));
+                singleOrgVansProspectTV.setTypeface(Typeface.DEFAULT_BOLD);
+                singleOrgVansProspectTV.setTextSize(25f);
+                singleOrgVansEndTimeTV.setText("");
+                singleOrgVansSalesOutletTV.setText(numberFormat.format(salesOutLateCountSum));
+                singleOrgVansSalesOutletTV.setTypeface(Typeface.DEFAULT_BOLD);
+                singleOrgVansSalesOutletTV.setTextSize(25f);
+                singleOrgVansQuantityCountTV.setText(numberFormat.format(allLineItemCountSum));
+                singleOrgVansQuantityCountTV.setTypeface(Typeface.DEFAULT_BOLD);
+                singleOrgVansQuantityCountTV.setTextSize(25f);
+                singleOrgVansTotalSalesTV.setText(numberFormat.format(Math.round(totalPriceSum * 100.0) / 100.0));
+                singleOrgVansTotalSalesTV.setTypeface(Typeface.DEFAULT_BOLD);
+                singleOrgVansTotalSalesTV.setTextSize(25f);
 
-            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
-            singleOrgVansVSITV.startAnimation(animation);
-            singleOrgVansProspectTV.startAnimation(animation);
-            singleOrgVansSalesOutletTV.startAnimation(animation);
-            singleOrgVansQuantityCountTV.startAnimation(animation);
-            singleOrgVansTotalSalesTV.startAnimation(animation);
+                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+                singleOrgVansVSITV.startAnimation(animation);
+                singleOrgVansProspectTV.startAnimation(animation);
+                singleOrgVansSalesOutletTV.startAnimation(animation);
+                singleOrgVansQuantityCountTV.startAnimation(animation);
+                singleOrgVansTotalSalesTV.startAnimation(animation);
 
-            tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
+                tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
 
-            if (vanListTableLayout != null) {
-                vanListTableLayout.addView(tableElements);
+                if (vanListTableLayout != null) {
+                    vanListTableLayout.addView(tableElements);
+                }
+                UtilityFunctionsForActivity1.animate(vanListTableLayout, tableElements);
             }
-            UtilityFunctionsForActivity1.animate(vanListTableLayout, tableElements);
         }
-
     }
 
     public void resetSumOfLastRow() {

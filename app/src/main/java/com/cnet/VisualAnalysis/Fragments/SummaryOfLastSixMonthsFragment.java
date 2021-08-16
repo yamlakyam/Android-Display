@@ -136,7 +136,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData.getDashBoardData() != null) {
             int months = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size();
             SummaryOfLast6MonthsTitle.setText("Summary of Last " + months + " Months");
             SummaryOfLast6MonthsTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));

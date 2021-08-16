@@ -514,8 +514,9 @@ public class UtilityFunctionsForActivity1 {
         return parsed;
     }
 
+
     public static Date peakHourFormatter(String dateTime) {
-        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy HH:mmaa");
+        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy HH:mma");
 
         Date parsed = null;
         try {

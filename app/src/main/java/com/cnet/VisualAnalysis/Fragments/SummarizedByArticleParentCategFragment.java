@@ -82,11 +82,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         } else {
             summByParentArticlePaused = true;
         }
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
+
 
 //        if (SecondActivity.dashBoardData == null) {
 //            VolleyHttp http = new VolleyHttp(getContext());
@@ -130,7 +126,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     public void onResume() {
         super.onResume();
 
-        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData.getDashBoardData() != null ) {
             summarizedByParentArticleFrameLayout.setVisibility(View.GONE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }

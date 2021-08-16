@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -41,6 +42,9 @@ import org.json.JSONObject;
 
 public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
+    public int refreshTime = 600000;
+    String updateFail = "Failed updating";
+
     @Override
     public void onSuccess(JSONObject jsonObject) throws JSONException {
 
@@ -51,7 +55,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     @Override
     public void onFailure(VolleyError error) {
-
+        Toast.makeText(this, updateFail, Toast.LENGTH_LONG);
     }
 
     public interface KeyPress {
@@ -130,14 +134,17 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         Handler handler = new Handler();
-
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 VolleyHttp http = new VolleyHttp(getApplicationContext());
-                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
-                        SecondActivity.this);
-                handler.postDelayed(this, 600000);
+                try {
+                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
+                            SecondActivity.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                handler.postDelayed(this, refreshTime);
             }
         };
         handler.post(runnable);
@@ -222,6 +229,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                     SummarizedByArticleParentCategFragment.isInflatingTable = false;
                     SummarizedByArticleChildCategFragment.isInflatingTable = false;
                     SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+                    BranchSummaryFragment.isInflatingTable = false;
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.leftKey();
@@ -233,6 +241,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                     SummarizedByArticleParentCategFragment.isInflatingTable = false;
                     SummarizedByArticleChildCategFragment.isInflatingTable = false;
                     SummaryOfLastSixMonthsFragment.isInflatingTable = false;
+                    BranchSummaryFragment.isInflatingTable = false;
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.rightKey();

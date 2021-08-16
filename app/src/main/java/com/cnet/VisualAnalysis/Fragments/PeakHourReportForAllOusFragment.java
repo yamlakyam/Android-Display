@@ -64,7 +64,6 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             peakHourForAllPaused = false;
         } else {
             peakHourForAllPaused = true;
-
         }
     }
 
@@ -72,7 +71,6 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peak_hour_report_for_all_ous, container, false);
-
 
         peakHourReportForAllTableLayout = view.findViewById(R.id.peakHourReportForAllTableLayout);
         peakHourReportScrollView = view.findViewById(R.id.peakHourReportScrollView);
@@ -108,6 +106,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             peakHourReportForAllTableLayout.removeAllViews();
         }
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+
 //        Collections.sort(tablesToDisplay, new Comparator<FigureReportDataElements>() {
 //            @Override
 //            public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
@@ -169,6 +168,14 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         float[] x = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
         float[] y = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
         String[] label = new String[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
+
+//        Collections.sort(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch(), new Comparator<FigureReportDataElements>() {
+//            @Override
+//            public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
+//                return UtilityFunctionsForActivity1.peakHourFormatter(o1.getDateNTime()).compareTo(UtilityFunctionsForActivity1.formatTime(o2.getDateNTime()));
+//            }
+//        });
+
         for (int i = 0; i < SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size(); i++) {
             x[i] = i + 1;
             y[i] = (float) SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).grandTotal;

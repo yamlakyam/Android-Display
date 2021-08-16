@@ -291,7 +291,6 @@ public class DashBoardDataParser {
                 xValues[i] = i + 1;
                 yValues[i] = (float) branchSummaryAtInedx.getDouble("grandTotal");
                 legends[i] = branchSummaryAtInedx.getString("org");
-
             }
 
             PieChartData pieChartData = new PieChartData(yValues, legends);
@@ -619,6 +618,8 @@ public class DashBoardDataParser {
         }
         try {
             dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
+//            dashBoardData.setSummaryOfLast30DaysData(new SummaryOfLast30DaysData(new BarChartData(new float[0], new float[0], new String[0]), new ArrayList<SummaryOfLast30DaysRow>()));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

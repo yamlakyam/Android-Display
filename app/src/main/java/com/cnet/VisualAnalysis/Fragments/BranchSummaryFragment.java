@@ -84,12 +84,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             branchSummaryPaused = true;
         }
 
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread);
-
+        Log.i("TAG", "onCreate: ");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -131,8 +126,9 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData() != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData.getDashBoardData() != null ) {
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+            Log.i("TAG", SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() + "");
         }
     }
 
@@ -160,7 +156,9 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                 } else if (index == tablesToDisplay.size() + 1) {
 //                    startActivity(new Intent(requireActivity(), MapsActivity.class));
                     if (branchSummaryPaused) {
-                        handleRowAnimationThread.interrupt();
+                        if (handleRowAnimationThread != null) {
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }
@@ -316,7 +314,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             SecondActivity.playAll();
             navigate(fragment);
         } else {
-//            SecondActivity.pauseAll();
+            SecondActivity.pauseAll();
         }
         keyPadControl(branchSummaryPaused);
 

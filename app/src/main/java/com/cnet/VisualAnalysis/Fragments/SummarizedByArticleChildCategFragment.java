@@ -127,7 +127,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     public void onResume() {
         super.onResume();
 
-        if (SplashScreenActivity.allData != null && !isInflatingTable) {
+        if (SplashScreenActivity.allData != null ) {
             summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
 

@@ -112,7 +112,7 @@ public class UtilityFunctionsForActivity2 {
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.setPinchZoom(false);
         barChart.getXAxis().setGranularity(1f);
-        barChart.getXAxis().setCenterAxisLabels(false);
+//        barChart.getXAxis().setCenterAxisLabels(false);
         barChart.getXAxis().setLabelCount(barChartData.x.length);
 
 //        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(barChartData.legends));
@@ -208,7 +208,6 @@ public class UtilityFunctionsForActivity2 {
             lineData.addDataSet(lineDataSet);
             lineChart.setData(lineData);
 
-
             lineChart.getAxisLeft().setDrawLabels(true);
             lineChart.getAxisRight().setDrawGridLines(false);
             lineChart.getAxisLeft().setDrawGridLines(false);
@@ -234,6 +233,12 @@ public class UtilityFunctionsForActivity2 {
             lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(formattedXLabels));
             lineChart.getXAxis().setLabelRotationAngle(-45);
+            lineChart.getXAxis().setLabelCount(lineChartData.legends.length, true);
+            lineChart.getXAxis().setGranularity(1f);
+            lineChart.getXAxis().setCenterAxisLabels(false);
+            lineChart.setExtraOffsets(7f, 7f, 7f, 7f);
+//            lineChart.setPinchZoom(false);
+//            lineChart.getXAxis().setAxisMaximum(dataVals.get(lineChartData.x.length - 1).getX() + 0.1f);
 
         }
 

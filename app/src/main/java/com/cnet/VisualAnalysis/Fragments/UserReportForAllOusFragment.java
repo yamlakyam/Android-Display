@@ -290,7 +290,6 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         }
         keyPadControl(userReportForAllPaused);
 
-
     }
 
     @Override
