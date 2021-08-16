@@ -44,7 +44,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     boolean mapPaused = false;
 
     GoogleMap gmap;
-
     public static ArrayList<VsmTransactionTableRow> eachTransactionsInaVan;
     public static Handler animationHandler;
     public static Handler changeDataHandler;
@@ -52,25 +51,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public HandleVanChangeThread handleDataChangeThread;
 
 
-    public static ArrayList<LatLng> locations = new ArrayList<LatLng>();
-
-
-    public static Handler transactionsInVanHandler;
-    public static Handler vanHandler;
-
-
-    public ArrayList<String> place_names = new ArrayList<>();
-    public ArrayList<String> time_list = new ArrayList<>();
-
-    public ArrayList<Double> grandTotal_list = new ArrayList<>();
-    public ArrayList<Integer> itemCount_list = new ArrayList<>();
-
-    public ArrayList<String> currentVan_list = new ArrayList<>();
-    public ArrayList<String> last_active = new ArrayList<>();
-    public ArrayList<Integer> sales_outlet_count = new ArrayList<>();
-    public ArrayList<Integer> line_item_count = new ArrayList<>();
     public ArrayList<Double> grand_total = new ArrayList<>();
-    public ArrayList<String> voucher_No = new ArrayList<>();
 
     NumberFormat numberFormat = NumberFormat.getInstance();
 
@@ -99,12 +80,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onStop() {
         super.onStop();
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
+        }
+        if (handleDataChangeThread != null) {
+            handleDataChangeThread.interrupt();
+        }
 
-//        if (markerThread != null) {
-//            markerThread.interrupt();
-//        }
-//        place_names.clear();
-//        locations.clear();
     }
 
     @SuppressLint("HandlerLeak")
@@ -120,7 +102,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
-
 
     //    private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, int index) {
     private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, LatLng loc, ArrayList<VsmTransactionTableRow> vsmTransactionTableRows, int index) {
@@ -147,23 +128,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
                 TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-//                String place_name = place_names.get(index);
+
                 String place_name = vsmTransactionTableRows.get(index).getOutlet();
                 if (place_name.length() > 21) {
                     place_name = vsmTransactionTableRows.get(index).getOutlet().substring(0, 21) + "...";
                 }
                 nameTextView.setText(place_name);
                 TextView timeTextView = (TextView) view.findViewById(R.id.timeTextView);
-//                timeTextView.setText(UtilityFunctionsForActivity1.timeElapsed(UtilityFunctionsForActivity1.formatTime(time_list.get(index)), Calendar.getInstance().getTime()));
                 timeTextView.setText(UtilityFunctionsForActivity1.timeElapsed(UtilityFunctionsForActivity1.formatTime(vsmTransactionTableRows.get(index).getDateNtime()), Calendar.getInstance().getTime()));
                 TextView grandTotalText = (TextView) view.findViewById(R.id.grandTotalText);
-//                grandTotalText.setText(numberFormat.format(Math.round(grandTotal_list.get(index) * 100.0) / 100.0));
                 grandTotalText.setText(numberFormat.format(Math.round(vsmTransactionTableRows.get(index).getTotalSales() * 100.0) / 100.0));
                 TextView itemCountText = (TextView) view.findViewById(R.id.itemCountText);
-//                itemCountText.setText(numberFormat.format(itemCount_list.get(index)));
                 itemCountText.setText(numberFormat.format(vsmTransactionTableRows.get(index).getItemCount()));
                 TextView voucherTextView = (TextView) view.findViewById(R.id.voucherTextView);
-//                voucherTextView.setText(voucher_No.get(index));
                 voucherTextView.setText(vsmTransactionTableRows.get(index).getVoucherNo());
                 return view;
             }
@@ -174,7 +151,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
 
     }
 
@@ -197,7 +173,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     if (!mapPaused) {
                         drawAllVansMarkers(currentVanIndex, gmap);
-
                     }
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -254,11 +229,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @SuppressLint("HandlerLeak")
     public void drawMarkerInVan(int vanIndex, GoogleMap googleMap) {
 
-//        if (userReportTableLayout != null) {
-//            userReportTableLayout.removeAllViews();
-//        }
-        eachTransactionsInaVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows;
-        Log.i("transactions", eachTransactionsInaVan + "");
+
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -270,26 +241,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     index = Integer.parseInt(message);
                 }
 
-                if (index == eachTransactionsInaVan.size()) {
-//                    drawLastRow();
-//                    UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
-                } else if (index == eachTransactionsInaVan.size() + 1) {
+                if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.size() + 1) {
 
-                } else if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() + 1 && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() - 1) {
-
+                } else if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() - 1) {
                     startActivity(new Intent(MapsActivity.this, SecondActivity.class));
-//                    if (userReportForEachPaused) {
-//                        handleRowAnimationThread.interrupt();
-//                    } else {
-//                        navigate(fragment);
-//                    }
 
                 } else if (index < SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size()) {
-//                    grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
-//                    UtilityFunctionsForActivity1.drawUserReportForEachOu(tablesToDisplay, getContext(), userReportTableLayout, index);
-//                    UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
-                    VsmTransactionTableRow vsmTableDataForSingleVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().get(index);
-
 
                     double latitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.get(index).getLatitude();
                     double longitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.get(index).getLongitude();
@@ -302,7 +259,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         };
-        handleRowAnimationThread = new HandleRowAnimationThread(eachTransactionsInaVan.size(), animationHandler, 1000, mapFragment, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size(),
+                animationHandler, 1000, mapFragment, 0);
         handleRowAnimationThread.start();
     }
 

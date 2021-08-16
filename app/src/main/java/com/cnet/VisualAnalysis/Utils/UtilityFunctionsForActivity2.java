@@ -233,6 +233,7 @@ public class UtilityFunctionsForActivity2 {
             lineChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(formattedXLabels));
+            lineChart.getXAxis().setLabelRotationAngle(-45);
 
         }
 

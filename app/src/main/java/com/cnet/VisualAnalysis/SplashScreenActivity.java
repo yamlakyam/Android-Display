@@ -48,18 +48,26 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
 
         VolleyHttp http = new VolleyHttp(getApplicationContext());
-//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
-//                SplashScreenActivity.this);
-        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + "cc70a81e8233444a",
+        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
                 SplashScreenActivity.this);
+//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + "cc70a81e8233444a",
+//                SplashScreenActivity.this);
 
 
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.anim_video);
         videoView.setVideoURI(uri);
-        videoView.start();
+//        videoView.start();
 
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            public void onCompletion(MediaPlayer mp) {
+//        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            public void onCompletion(MediaPlayer mp) {
+//                videoView.start();
+//            }
+//        });
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
                 videoView.start();
             }
         });
