@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -12,8 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
@@ -56,13 +59,6 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.anim_video);
         videoView.setVideoURI(uri);
-//        videoView.start();
-
-//        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//            public void onCompletion(MediaPlayer mp) {
-//                videoView.start();
-//            }
-//        });
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -73,6 +69,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSuccess(JSONObject jsonObject) {
 
@@ -90,7 +87,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
             } else if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
             }
-//            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,11 +98,12 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         progressBarCircular.setVisibility(View.GONE);
         loadingTextView.setText(R.string.volley_error);
         Log.i("error", error + "");
+//        videoView.stopPlayback();
+        Toast.makeText(this, "Connection not available, Restart the app", Toast.LENGTH_LONG).show();
     }
 
     @SuppressLint("HardwareIds")
     public String getDeviceId(Context context) {
-
         myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return myAndroidDeviceId;
     }

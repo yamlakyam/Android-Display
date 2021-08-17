@@ -207,7 +207,6 @@ public class UtilityFunctionsForActivity2 {
             LineData lineData = new LineData();
             lineData.addDataSet(lineDataSet);
             lineChart.setData(lineData);
-
             lineChart.getAxisLeft().setDrawLabels(true);
             lineChart.getAxisRight().setDrawGridLines(false);
             lineChart.getAxisLeft().setDrawGridLines(false);
@@ -232,18 +231,15 @@ public class UtilityFunctionsForActivity2 {
             lineChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(formattedXLabels));
-            lineChart.getXAxis().setLabelRotationAngle(-45);
+//            lineChart.getXAxis().setLabelRotationAngle(-45);
             lineChart.getXAxis().setLabelCount(lineChartData.legends.length, true);
-            lineChart.getXAxis().setGranularity(1f);
+//            lineChart.getXAxis().setGranularity(1f);
             lineChart.getXAxis().setCenterAxisLabels(false);
-            lineChart.setExtraOffsets(7f, 7f, 7f, 7f);
+//            lineChart.setExtraOffsets(7f, 7f, 7f, 7f);
 //            lineChart.setPinchZoom(false);
 //            lineChart.getXAxis().setAxisMaximum(dataVals.get(lineChartData.x.length - 1).getX() + 0.1f);
-
         }
-
     }
-
 
     public static void drawSummaryByArticleTable(
             ArrayList<SummarizedByArticleTableRow> summarizedByArticleDataRows,
@@ -294,7 +290,6 @@ public class UtilityFunctionsForActivity2 {
 //        AnimatorSet anim = (AnimatorSet ) AnimatorInflater.loadAnimator(context, R.animator.blink_2);
 //        anim.setTarget(tableRowProperty5);
 //        anim.start();
-
 
             summarizedByArticleTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByArticleTableLayout, tableElements);

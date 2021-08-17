@@ -121,8 +121,6 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
                     NavController navController = NavHostFragment.findNavController(fragment);
 
                     if (SplashScreenActivity.allData.getLayoutList().size() > 0) {
-
-                        Log.i("first index", SplashScreenActivity.allData.getLayoutList().get(0) + "");
                         if (SplashScreenActivity.allData.getLayoutList().contains(0)) {
                             navController.navigate(R.id.distributorTableFragment);
                         } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {

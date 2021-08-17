@@ -57,4 +57,9 @@
         android:name="com.cnet.VisualAnalysis.Fragments.VansOfASingleOrganizationFragment"
         android:label="fragment_vans_of_a_single_organization"
         tools:layout="@layout/fragment_vans_of_a_single_organization" />
+    <fragment
+        android:id="@+id/animationVideoFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.AnimationVideoFragment"
+        android:label="fragment_animation_video"
+        tools:layout="@layout/fragment_animation_video" />
 </navigation>

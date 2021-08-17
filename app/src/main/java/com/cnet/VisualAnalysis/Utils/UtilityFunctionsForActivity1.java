@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class UtilityFunctionsForActivity1 {
 
@@ -516,7 +517,7 @@ public class UtilityFunctionsForActivity1 {
 
 
     public static Date peakHourFormatter(String dateTime) {
-        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy HH:mma");
+        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);
 
         Date parsed = null;
         try {
@@ -525,7 +526,6 @@ public class UtilityFunctionsForActivity1 {
             e.printStackTrace();
         }
         return parsed;
-
     }
 
     public static String timeElapsed(Date startDate, Date endDate) {

@@ -45,7 +45,6 @@ public class AllDataParser {
         for (int i = 0; i < layoutLists.length(); i++) {
             fragmentsToBeDisplayed.add(layoutLists.getInt(i));
         }
-
         return fragmentsToBeDisplayed;
     }
 }

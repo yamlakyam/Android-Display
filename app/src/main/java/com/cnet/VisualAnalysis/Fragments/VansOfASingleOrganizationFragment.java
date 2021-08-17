@@ -40,7 +40,8 @@ import java.util.Comparator;
 import java.util.regex.Pattern;
 
 
-public class VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.KeyPress {
+public class
+VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.KeyPress {
 
     ScrollView scrollVanListTable;
     TableLayout vanListTableLayout;
@@ -55,12 +56,9 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
     ImageView vanListplayPause;
     ImageView vanListrightArrow;
 
-
     int salesOutLateCountSum, allLineItemCountSum = 0;
     double totalPriceSum = 0;
     public static boolean vanListPaused;
-
-    Pattern p = Pattern.compile("^([0-9]+)([a-z]?)$");
 
     @Override
 
@@ -108,13 +106,16 @@ public class VansOfASingleOrganizationFragment extends Fragment implements Secon
         }
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
 
-
-        Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
-            @Override
-            public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
-                return Integer.parseInt(o1.nameOfVan.substring(3)) < Integer.parseInt(o2.nameOfVan.substring(3)) ? -1 : 0;
-            }
-        });
+        try {
+            Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
+                @Override
+                public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
+                    return Integer.parseInt(o1.nameOfVan.substring(3)) < Integer.parseInt(o2.nameOfVan.substring(3)) ? -1 : 0;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         OrgHeaderTextView.setText(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getNameOfDistributor());
         animationHandler = new Handler() {

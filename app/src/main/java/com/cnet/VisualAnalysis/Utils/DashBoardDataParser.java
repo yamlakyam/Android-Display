@@ -42,7 +42,6 @@ public class DashBoardDataParser {
     private static final String TAG_summarized_by_article_child_cate_list = "summarizedByArticleChildCategory";
     private static final String TAG_summarized_by_article_parent_cate_list = "summarizedByArticleParentCategory";
 
-
     public DashBoardDataParser(JSONArray jsonArray) {
         this.jsonArray = jsonArray;
     }
@@ -390,7 +389,7 @@ public class DashBoardDataParser {
                             singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
                     figureReportDataElementsArrayList.add(figureReportDataElements);
 
-                    xValues[j] = j + 1;
+                    xValues[j] = j ;
                     yValues[j] = (float) singleFigureReportObject.getDouble("grandTotal");
                     legends[j] = singleFigureReportObject.getString("summaryType");
 

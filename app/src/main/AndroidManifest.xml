@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VisualAnalysis">
-<!--        <activity android:name=".SplashScreenActivity"></activity>-->
+        <activity android:name=".VideoActivity"></activity>
+        <!-- <activity android:name=".SplashScreenActivity"></activity> -->
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -36,7 +37,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity
             android:name=".MainActivity"
             android:noHistory="true" />
