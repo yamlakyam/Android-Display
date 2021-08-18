@@ -92,12 +92,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
         }
 
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
-
 
     }
 

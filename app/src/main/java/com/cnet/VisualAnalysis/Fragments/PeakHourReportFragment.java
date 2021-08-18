@@ -199,7 +199,8 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
-                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
+//                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
+                } else if (index == tablesToDisplay.size() + 1 && dataIndex == getallFigureReportSize(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch()) - 1) {
                     if (fragment != null) {
 
                         if (peakHourForEachPaused) {
@@ -367,7 +368,8 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             }
         }
         if (!peakHourForEachPaused) {
-            if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
+//            if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
+            if (branchIndex == getallFigureReportSize(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch())-1) {
                 navigate(fragment);
                 SecondActivity.playAll();
             } else {
@@ -377,7 +379,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             SecondActivity.pauseAll();
         }
         keyPadControl(peakHourForEachPaused);
-
     }
 
     @Override

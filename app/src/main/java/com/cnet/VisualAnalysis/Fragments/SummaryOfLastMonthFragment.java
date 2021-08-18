@@ -92,11 +92,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
             summaryOfLAstXdaysPaused = true;
 
         }
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
+
     }
 
 

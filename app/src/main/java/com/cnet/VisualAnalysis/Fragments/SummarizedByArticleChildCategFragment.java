@@ -84,11 +84,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
 
         }
 
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
 
     }
 
