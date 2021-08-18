@@ -177,7 +177,7 @@ public class UtilityFunctionsForActivity1 {
 
                 userReportSN.setText(String.valueOf(index + 1));
                 userReportSummaryType.setText(row.getSummaryType());
-                userReportGrandTotal.setText(String.valueOf(row.grandTotal));
+                userReportGrandTotal.setText(String.valueOf(Math.round(row.grandTotal * 100.0) / 100.0));
                 userReportPercentage.setText(numberFormat.format(percentage) + "%");
 
 

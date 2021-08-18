@@ -36,7 +36,6 @@ import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
@@ -218,34 +217,36 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     }
 
     public void navigate(Fragment fragment) {
-        Intent intent = new Intent(getActivity(), VideoActivity.class);
-        intent.putExtra("from", 9);
-        startActivity(intent);
-//        NavController navController = NavHostFragment.findNavController(fragment);
-//        if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
-//            if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-//                navController.navigate(R.id.userReportForEachOusFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
-//                navController.navigate(R.id.peakHourReportForAllOusFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-//                navController.navigate(R.id.peakHourReportFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-////                startActivity(new Intent(requireActivity(), MapsActivity.class));
-//                navController.navigate(R.id.vansOfASingleOrganizationFragment);
-//
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
-//                navController.navigate(R.id.summarizedByArticleFragment2);
-//            else if (SplashScreenActivity.allData.getLayoutList().contains(4))
-//                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-//            else if (SplashScreenActivity.allData.getLayoutList().contains(5))
-//                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-//            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
-//                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
-//                navController.navigate(R.id.summaryOfLastMonthFragment);
-//            else if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-//                navController.navigate(R.id.branchSummaryFragment);
-//        }
+
+//        Intent intent = new Intent(getActivity(), VideoActivity.class);
+//        intent.putExtra("from", 9);
+//        startActivity(intent);
+
+        NavController navController = NavHostFragment.findNavController(fragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                navController.navigate(R.id.peakHourReportFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+                navController.navigate(R.id.summarizedByArticleFragment2);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                navController.navigate(R.id.branchSummaryFragment);
+        }
     }
 
     public void navigateLeft(Fragment fragment) {

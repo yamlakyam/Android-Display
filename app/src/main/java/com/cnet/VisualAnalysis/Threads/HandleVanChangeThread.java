@@ -29,8 +29,6 @@ public class HandleVanChangeThread extends Thread {
             changeDataHandler.sendMessage(message);
             try {
                 Thread.sleep(vsmTableDataForSingleVan.get(i).tableRows.size() * 1000 + 2000);
-
-
             } catch (InterruptedException e) {
 
                 e.printStackTrace();

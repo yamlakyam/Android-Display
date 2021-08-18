@@ -25,10 +25,12 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -42,7 +44,6 @@ import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -130,6 +131,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -186,41 +188,41 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
 
     public void navigate(Fragment fragment) {
-
-        Intent intent = new Intent(getActivity(), VideoActivity.class);
-        intent.putExtra("from", 3);
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
-
-//        NavController navController = NavHostFragment.findNavController(fragment);
-//        navController.navigate(R.id.animationVideoFragment);
-
-
-//        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
-//            if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
-//                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
-//                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
-//                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
-//                navController.navigate(R.id.summaryOfLastMonthFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
-//                navController.navigate(R.id.branchSummaryFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
-//                navController.navigate(R.id.userReportForAllOusFragment2);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-//                navController.navigate(R.id.userReportForEachOusFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
-//                navController.navigate(R.id.peakHourReportForAllOusFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-//                navController.navigate(R.id.peakHourReportFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-////                startActivity(new Intent(requireActivity(), MapsActivity.class));
-//                navController.navigate(R.id.vansOfASingleOrganizationFragment);
-//            }
 //
-//        }
+//        Intent intent = new Intent(getActivity(), VideoActivity.class);
+//        intent.putExtra("from", 3);
+//        startActivity(intent);
+//        getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+//        NavOptions.Builder navBuilder = new NavOptions.Builder();
+//        navBuilder.setEnterAnim(R.anim.slide_in_bottom).setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_bottom).setPopExitAnim(R.anim.slide_out_bottom);
+
+        NavController navController = NavHostFragment.findNavController(fragment);
+
+        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                navController.navigate(R.id.summarizedByArticleChildCategFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                navController.navigate(R.id.summaryOfLastMonthFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+                navController.navigate(R.id.branchSummaryFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                navController.navigate(R.id.userReportForAllOusFragment2);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                navController.navigate(R.id.peakHourReportForAllOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                navController.navigate(R.id.peakHourReportFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            }
+
+        }
     }
 
     public void naviagteLeft(Fragment fragment) {
