@@ -25,7 +25,6 @@ public class HandleDataChangeThread extends Thread {
             changeDataHandler.sendMessage(message);
             try {
                 Thread.sleep(numberOfSeconds * 1000);
-
             } catch (InterruptedException e) {
 
                 e.printStackTrace();

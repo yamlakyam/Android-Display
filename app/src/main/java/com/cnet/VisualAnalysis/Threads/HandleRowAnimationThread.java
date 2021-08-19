@@ -6,14 +6,8 @@ import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
-import com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment;
-import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment;
-import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleFragment;
-import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment;
-import com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment;
-import com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment;
-import com.cnet.VisualAnalysis.Fragments.SummaryTableFragment;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
+import com.google.android.gms.maps.SupportMapFragment;
 
 
 public class HandleRowAnimationThread extends Thread {
@@ -46,10 +40,9 @@ public class HandleRowAnimationThread extends Thread {
                     Thread.sleep(3000);
 
                 } else if (i == rows) {
-//                    lastRowAnimationSleep();
-                    Thread.sleep(5000);
-                } else if (i == rows - 1) {
-                    Thread.sleep(3000);
+                    Log.i("last row", "run: ");
+                    lastRowAnimationSleep();
+//                    Thread.sleep(5000);
                 } else {
                     Thread.sleep(numberOfSeconds);
                 }
@@ -61,23 +54,17 @@ public class HandleRowAnimationThread extends Thread {
     }
 
     public void lastRowAnimationSleep() throws InterruptedException {
-        SummarizedByArticleFragment.isInflatingTable = false;
-        SummarizedByArticleChildCategFragment.isInflatingTable = false;
-        SummarizedByArticleParentCategFragment.isInflatingTable = false;
-        SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-        SummaryOfLastMonthFragment.isInflatingTable = false;
-        BranchSummaryFragment.isInflatingTable = false;
         if (SplashScreenActivity.allData != null) {
 
-            if (fragment instanceof SummaryTableFragment) {
+            if (fragment instanceof SupportMapFragment) {
+                Thread.sleep(5000);
+            } else {
                 int secondsToWait = Integer.parseInt(SplashScreenActivity.allData.getTransitionTimeInMinutes()) - (rows * (numberOfSeconds / 1000));
                 Log.i("SECONDS ", secondsToWait + "");
                 if (secondsToWait < 0) {
                     secondsToWait = rows * (numberOfSeconds / 1000) + 5000;
                 }
                 Thread.sleep(secondsToWait * 1000);
-            } else {
-                Thread.sleep(5000);
             }
 
         } else {

@@ -368,7 +368,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         }
         if (!peakHourForEachPaused) {
 //            if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
-            if (branchIndex == getallFigureReportSize(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch())-1) {
+            if (branchIndex == getallFigureReportSize(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch()) - 1) {
                 navigate(fragment);
                 SecondActivity.playAll();
             } else {
@@ -404,7 +404,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
-        if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() - 1) {
+        if (branchIndex == getallFigureReportSize(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch()) - 1) {
             navigate(fragment);
         } else {
             drawAllPeakTimeLineCharts(branchIndex + 1, 0);

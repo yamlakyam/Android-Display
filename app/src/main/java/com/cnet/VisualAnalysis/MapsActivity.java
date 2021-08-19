@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -178,9 +179,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     rightKeyMapNavigation();
                     break;
             }
-
         }
-
         return super.dispatchKeyEvent(event);
     }
 
@@ -237,6 +236,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() - 1) {
+                    Log.i("reset", "handleMessage: ");
+                    currentLocationIndex = 0;
+                }
+                if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size()) {
+                    Log.i("reset-last", "handleMessage: ");
                     currentLocationIndex = 0;
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() - 1) {
@@ -279,22 +283,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         @Override
                         public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
                             return Integer.parseInt(o1.nameOfVan.substring(3)) < Integer.parseInt(o2.nameOfVan.substring(3)) ? -1 : 0;
-
                         }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
+                Log.i("current loc-0", currentLocationIndex + "");
                 drawMarkerInVan(index, googleMap, locIndex);
                 vanNameText.setText(vansToDisplay.get(index).nameOfVan);
                 parameter1.setText(numberFormat.format(vansToDisplay.get(index).salesOutLateCount));
                 parameter2.setText(numberFormat.format(vansToDisplay.get(index).allLineItemCount));
                 parameter3.setText(numberFormat.format(Math.round(vansToDisplay.get(index).totalPrice * 100.0) / 100.0));
+                Log.i("current loc-1", currentLocationIndex + "");
 
                 if (currentLocationIndex == 0) {
+                    Log.i("resetted", "handleMessage: ");
                     googleMap.clear();
                 }
+
             }
         };
         ArrayList<VsmTableDataForSingleVan> vsmTableDatasForSingleVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
