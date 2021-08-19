@@ -236,11 +236,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() - 1) {
-                    Log.i("reset", "handleMessage: ");
                     currentLocationIndex = 0;
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size()) {
-                    Log.i("reset-last", "handleMessage: ");
                     currentLocationIndex = 0;
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() - 1) {
@@ -289,16 +287,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     e.printStackTrace();
                 }
 
-                Log.i("current loc-0", currentLocationIndex + "");
                 drawMarkerInVan(index, googleMap, locIndex);
                 vanNameText.setText(vansToDisplay.get(index).nameOfVan);
                 parameter1.setText(numberFormat.format(vansToDisplay.get(index).salesOutLateCount));
                 parameter2.setText(numberFormat.format(vansToDisplay.get(index).allLineItemCount));
                 parameter3.setText(numberFormat.format(Math.round(vansToDisplay.get(index).totalPrice * 100.0) / 100.0));
-                Log.i("current loc-1", currentLocationIndex + "");
 
+                Log.i("currentloc", currentLocationIndex + "");
                 if (currentLocationIndex == 0) {
-                    Log.i("resetted", "handleMessage: ");
                     googleMap.clear();
                 }
 

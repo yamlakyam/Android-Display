@@ -109,7 +109,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     public void onResume() {
         super.onResume();
 
-        if (SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null) {
+        if (SplashScreenActivity.allData != null) {
             inflateTable();
             drawPieChartForAllUsers();
         }
@@ -139,7 +139,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
                         if (userReportForAllPaused) {
-                            if(handleRowAnimationThread!=null){
+                            if (handleRowAnimationThread != null) {
                                 handleRowAnimationThread.interrupt();
                             }
                         } else {
@@ -251,7 +251,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
     public void navigateLeft(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
-        if (SplashScreenActivity.allData.getLayoutList().contains(8)&& SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+        if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);
@@ -278,7 +278,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     @Override
     public void onStop() {
         super.onStop();
-        if(handleRowAnimationThread!=null){
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
     }

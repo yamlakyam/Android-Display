@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,7 +49,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
         AllDataParser allDataParser = new AllDataParser(jsonObject);
         SplashScreenActivity.allData = allDataParser.parseAllData();
-        Log.i("updated", "onSuccess: ");
     }
 
     @Override
@@ -101,9 +99,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         Intent intent = getIntent();
         String name = intent.getStringExtra("left");
         if (name != null) {
-            Log.i("Message", name);
             if (name.equals("pressed")) {
-                if(SplashScreenActivity.allData!=null){
+                if (SplashScreenActivity.allData != null) {
                     if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                         setHomeFragment(R.id.vansOfASingleOrganizationFragment);
                     } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
@@ -135,7 +132,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         ///////////////////////
         int fragId = intent.getIntExtra("fromVideo", 0);
         if (fragId == 3) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
@@ -160,7 +157,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 4) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
@@ -185,7 +182,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 5) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
@@ -210,7 +207,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 6) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
@@ -235,7 +232,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 7) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
@@ -260,7 +257,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 8) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
@@ -285,7 +282,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 9) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
@@ -310,7 +307,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 10) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
@@ -335,7 +332,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 11) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
@@ -360,7 +357,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 12) {
-            if(SplashScreenActivity.allData!=null){
+            if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     setHomeFragment(R.id.vansOfASingleOrganizationFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
@@ -388,8 +385,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             startActivity(new Intent(SecondActivity.this, MapsActivity.class));
         }
         //////////////////////
-
-        Log.i("host activty", "onCreate: ");
 
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -441,7 +436,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     public int mappedFragment() {
         int frgamentId = R.id.branchSummaryFragment;
-        if(SplashScreenActivity.allData!=null){
+        if (SplashScreenActivity.allData != null) {
             if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                 frgamentId = R.id.summarizedByArticleFragment2;
             } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {

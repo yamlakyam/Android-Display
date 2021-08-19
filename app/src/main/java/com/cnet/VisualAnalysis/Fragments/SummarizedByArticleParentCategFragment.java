@@ -131,7 +131,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     public void onResume() {
         super.onResume();
 
-        if (SplashScreenActivity.allData.getDashBoardData() != null) {
+        if (SplashScreenActivity.allData != null) {
             summarizedByParentArticleFrameLayout.setVisibility(View.GONE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }

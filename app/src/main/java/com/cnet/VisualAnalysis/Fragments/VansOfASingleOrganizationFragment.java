@@ -37,7 +37,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.regex.Pattern;
 
 
 public class
@@ -61,7 +60,6 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
     public static boolean vanListPaused;
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -84,16 +82,14 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
         vanListleftArrow = view.findViewById(R.id.vanListleftArrow);
         vanListplayPause = view.findViewById(R.id.vanListplayPause);
         vanListrightArrow = view.findViewById(R.id.vanListrightArrow);
-
         keyPadControl(vanListPaused);
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor() != null) {
+        if (SplashScreenActivity.allData != null) {
             inflateTable();
         }
     }

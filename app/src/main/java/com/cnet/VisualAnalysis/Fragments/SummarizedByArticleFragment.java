@@ -133,7 +133,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData() != null) {
+        if (SplashScreenActivity.allData != null) {
             articleSummaryProgressBar.setVisibility(View.GONE);
             constraintLayout.setVisibility(View.VISIBLE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);

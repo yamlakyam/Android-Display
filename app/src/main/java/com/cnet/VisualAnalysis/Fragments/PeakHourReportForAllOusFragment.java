@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.LineChart;
 
 import java.util.ArrayList;
@@ -94,7 +92,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null) {
+        if (SplashScreenActivity.allData != null) {
             inflateTable();
             drawLineChartForAllPeakHourReport();
         }
@@ -186,7 +184,6 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 //        startActivity(intent);
 
         NavController navController = NavHostFragment.findNavController(fragment);
-        Log.i("TAG", SplashScreenActivity.allData.getLayoutList() + "");
         if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
             if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);

@@ -109,7 +109,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     public void onResume() {
         super.onResume();
 
-        if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null) {
+        if (SplashScreenActivity.allData != null) {
 //            distributorTableProgressBar.setVisibility(View.GONE);
             inflateAllTables(0);
         }

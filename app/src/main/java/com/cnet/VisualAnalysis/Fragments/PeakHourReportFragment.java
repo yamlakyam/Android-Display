@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +66,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     ImageView peakHrEachrightArrow;
     ImageView peakHrEachplaypause;
     LinearLayout peakHrEachKeyPad;
+    NavController navController;
 
 
     private ArrayList<FigureReportDataElements> tablesToDisplay;
@@ -85,8 +85,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         }
 
         int count = getallFigureReportSize(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch());
-        Log.i("non-null_count", count + "");
-
 
     }
 
@@ -125,7 +123,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 //        Log.i("formatted time", UtilityFunctionsForActivity1.peakHourFormatter("May  3 2021  8:00PM")+"");
 //        Log.i("formatted time", UtilityFunctionsForActivity1.peakHourFormatter("May  3 2021  8:00PM").compareTo(Calendar.getInstance().getTime())+"");
 
-        if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null) {
+        if (SplashScreenActivity.allData != null) {
             drawAllPeakTimeLineCharts(0, 0);
         }
         Date parsedDate = convertToTime(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(0).figureReportDataElementsArrayList.get(0).dateNTime);
@@ -230,7 +228,11 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 //        intent.putExtra("from", 12);
 //        startActivity(intent);
 
-        NavController navController = NavHostFragment.findNavController(fragment);
+        try {
+            navController = NavHostFragment.findNavController(fragment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
             if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));

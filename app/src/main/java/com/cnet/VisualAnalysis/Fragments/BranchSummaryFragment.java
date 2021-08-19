@@ -84,7 +84,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             branchSummaryPaused = true;
         }
 
-        Log.i("TAG", "onCreate: ");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -126,7 +125,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     @Override
     public void onResume() {
         super.onResume();
-        if (SplashScreenActivity.allData.getDashBoardData() != null) {
+        if (SplashScreenActivity.allData != null) {
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
 //            Log.i("TAG", SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() + "");
         }
@@ -261,7 +260,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                Log.i("activity", activity + "");
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
                 navController.navigate(R.id.vansOfASingleOrganizationFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
