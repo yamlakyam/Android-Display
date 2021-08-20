@@ -57,7 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 //                SplashScreenActivity.this);
 
 
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.anim_video);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logo_animation);
         videoView.setVideoURI(uri);
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {

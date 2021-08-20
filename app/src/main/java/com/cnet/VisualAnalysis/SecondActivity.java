@@ -471,31 +471,33 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         if (getCurrentFragment() instanceof KeyPress)
             keyPress = (KeyPress) getCurrentFragment();
 
+        if (SplashScreenActivity.allData != null) {
+            if (SplashScreenActivity.allData.isEnableNavigation()) {
+                navController = NavHostFragment.findNavController(getCurrentFragment());
+                switch (keyCode) {
 
-        if (SplashScreenActivity.allData.isEnableNavigation()) {
-            navController = NavHostFragment.findNavController(getCurrentFragment());
-            switch (keyCode) {
+                    case KeyEvent.KEYCODE_DPAD_CENTER:
+                        if (getCurrentFragment() instanceof KeyPress) {
+                            keyPress.centerKey();
+                        }
+                        break;
+                    case KeyEvent.KEYCODE_DPAD_LEFT:
 
-                case KeyEvent.KEYCODE_DPAD_CENTER:
-                    if (getCurrentFragment() instanceof KeyPress) {
-                        keyPress.centerKey();
-                    }
-                    break;
-                case KeyEvent.KEYCODE_DPAD_LEFT:
+                        if (getCurrentFragment() instanceof KeyPress)
+                            keyPress.leftKey();
 
-                    if (getCurrentFragment() instanceof KeyPress)
-                        keyPress.leftKey();
-
-                    break;
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
-
-
-                    if (getCurrentFragment() instanceof KeyPress)
-                        keyPress.rightKey();
+                        break;
+                    case KeyEvent.KEYCODE_DPAD_RIGHT:
 
 
-                    break;
+                        if (getCurrentFragment() instanceof KeyPress)
+                            keyPress.rightKey();
+
+
+                        break;
+                }
             }
+
         }
         return super.onKeyDown(keyCode, event);
     }

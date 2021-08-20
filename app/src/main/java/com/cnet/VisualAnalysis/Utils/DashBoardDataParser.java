@@ -1,5 +1,9 @@
 package com.cnet.VisualAnalysis.Utils;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
@@ -31,6 +35,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DashBoardDataParser {
 
@@ -46,6 +52,7 @@ public class DashBoardDataParser {
         this.jsonArray = jsonArray;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public DashBoardData parseDashBoardData() {
         DashBoardData dashBoardData = new DashBoardData();
         try {
@@ -300,9 +307,7 @@ public class DashBoardDataParser {
     }
 
     public static ArrayList<UserReportDataForSingleOu> userReportForEachOuDataParser(JSONObject jsonObject) throws JSONException {
-//        Log.i("json obj",jsonObject+"");
 
-//        Log.i("jsonArray", jsonObject.has("orgUnitSales") + "");
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
         ArrayList<UserReportDataForSingleOu> userReportDataForSingleOuArrayList = new ArrayList<>();
         if (summaryOfBranchArray.length() > 0) {
@@ -389,7 +394,7 @@ public class DashBoardDataParser {
                             singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
                     figureReportDataElementsArrayList.add(figureReportDataElements);
 
-                    xValues[j] = j ;
+                    xValues[j] = j;
                     yValues[j] = (float) singleFigureReportObject.getDouble("grandTotal");
                     legends[j] = singleFigureReportObject.getString("summaryType");
 
@@ -446,26 +451,25 @@ public class DashBoardDataParser {
                             org);
                     figureReportTableRowArrayList.add(figureReportDataElements);
 
-//                if (summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType").equals(
-//                        summaryOfBranchArray.getJSONObject(i - 1).getJSONArray("figureReport").getJSONObject(j).getString("summaryType")
-//                )) {
-//                    grandTotalSum = grandTotalSum + summaryOfBranchArray.getJSONObject(i - 1).getJSONArray("figureReport").getJSONObject(j).getDouble("grandTotal");
-//                    xValues[i] = j + 1;
-//                    yValues[j] = (float) grandTotalSum;
-//                    legends[j] = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType");
-//                } else {
-//                    xValues[j] = j + 1;
-//                    yValues[j] = (float) figureReportDatForEach.getJSONObject(j).getDouble("grandTotal");
-//                    legends[j] = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType");
-//                }
-
 
                 }
             }
-
+//            Log.i("DISTINICT TIMES",distinictDates(figureReportTableRowArrayList).toString());
             return figureReportTableRowArrayList;
         }
         return new ArrayList<FigureReportDataElements>();
+    }
+
+
+    public static ArrayList<String> distinictDates(ArrayList<FigureReportDataElements> figureReportDataElements) {
+        ArrayList<String> dates = new ArrayList<>();
+        for (FigureReportDataElements figure : figureReportDataElements) {
+            dates.add(figure.dateNTime);
+        }
+        Set<String> set = new HashSet<>(dates);
+        dates.clear();
+        dates.addAll(set);
+        return dates;
     }
 
     public static ArrayList<ArrayList<FigureReportDataElements>> parseFilteredFigureReport(JSONObject jsonObject) throws JSONException {
@@ -548,7 +552,8 @@ public class DashBoardDataParser {
                             singleTransactionObject.getDouble("vat"),
                             singleTransactionObject.getDouble("grandTotal"),
                             singleTransactionObject.getDouble("latitude"),
-                            singleTransactionObject.getDouble("longitude"));
+                            singleTransactionObject.getDouble("longitude"),
+                            singleTransactionObject.getString("username"));
 
                     singleTransactionOfaVan.add(vsmTransactionTableRow);
                 }
@@ -594,6 +599,7 @@ public class DashBoardDataParser {
         return figureReportDataArrayList;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void parseAllDashBoardDataCatching(DashBoardData dashBoardData, JSONObject rootJSON) {
         try {
             dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));

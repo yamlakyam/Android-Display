@@ -53,8 +53,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     TextView userReportTitle;
     TextView scrollingUserReportForEachText;
     DigitalClock digitalClock;
-    public  Handler animationHandler;
-    public  Handler changeDataHandler;
+    public Handler animationHandler;
+    public Handler changeDataHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
     public HandleDataChangeThread handleDataChangeThread;
     private ArrayList<UserReportTableRow> tablesToDisplay;
@@ -70,6 +70,10 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
     double grandTotalSum;
     public static boolean userReportForEachPaused;
+
+    ArrayList<UserReportDataForSingleOu> allVansUserReport;
+    ArrayList<UserReportDataForSingleOu> tablesToDisplay2;
+    ArrayList<UserReportDataForSingleOu> userReportDataForSingleOus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +115,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
         if (SplashScreenActivity.allData != null) {
 //            distributorTableProgressBar.setVisibility(View.GONE);
+            userReportDataForSingleOus = userReportData(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch());
             inflateAllTables(0);
         }
     }
@@ -129,11 +134,14 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     branchIndex = index;
                 }
 
-                if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).userReportTableRowArrayList.size() > 0) {
+//                if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).userReportTableRowArrayList.size() > 0) {
+//                if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index) != null) {
+                if (userReportDataForSingleOus.get(index) != null) {
                     inflateTable(index);
-                    UtilityFunctionsForActivity2.drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).pieChartData,
-                            pieChart, "User Report");
-                    userReportTitle.setText("User Report For " + SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).org);
+//                    UtilityFunctionsForActivity2.drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).pieChartData, pieChart, "User Report");
+                    UtilityFunctionsForActivity2.drawPieChart(userReportDataForSingleOus.get(index).pieChartData, pieChart, "User Report");
+//                    userReportTitle.setText("User Report For " + SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).org);
+                    userReportTitle.setText("User Report For " + userReportDataForSingleOus.get(index).org);
                     userReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
                 }
 
@@ -143,7 +151,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         float secondsToWait = Float.parseFloat(SplashScreenActivity.allData.getTransitionTimeInMinutes());
 
 //        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size(), (int) secondsToWait, startingIndex);
-        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size(), (int) secondsToWait, startingIndex);
+//        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size(), (int) secondsToWait, startingIndex);
+        handleDataChangeThread = new HandleDataChangeThread(changeDataHandler, userReportDataForSingleOus.size(), (int) secondsToWait, startingIndex);
         handleDataChangeThread.start();
 
     }
@@ -154,8 +163,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         if (userReportTableLayout != null) {
             userReportTableLayout.removeAllViews();
         }
-        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(dataIndex).userReportTableRowArrayList;
-
+//        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(dataIndex).userReportTableRowArrayList;
+        tablesToDisplay = userReportDataForSingleOus.get(dataIndex).userReportTableRowArrayList;
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -169,8 +178,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
-                } else if (index == tablesToDisplay.size() + 1 && dataIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
-
+//                } else if (index == tablesToDisplay.size() + 1 && dataIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
+                } else if (index == tablesToDisplay.size() + 1 && dataIndex == getallUserReportSize(userReportDataForSingleOus) - 1) {
                     if (userReportForEachPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
@@ -183,6 +192,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
                     UtilityFunctionsForActivity1.drawUserReportForEachOu(tablesToDisplay, getContext(), userReportTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
+
                 }
             }
         };
@@ -318,7 +328,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             }
         }
         if (!userReportForEachPaused) {
-            if (branchIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
+//            if (branchIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
+            if (branchIndex == getallUserReportSize(userReportDataForSingleOus) - 1) {
                 navigate(fragment);
                 SecondActivity.playAll();
 
@@ -357,7 +368,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         }
 
 //        if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
-        if (branchIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
+//        if (branchIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
+        if (branchIndex == getallUserReportSize(userReportDataForSingleOus) - 1) {
             navigate(fragment);
         } else {
             inflateAllTables(branchIndex + 1);
@@ -386,4 +398,13 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         return count;
     }
 
+    public ArrayList<UserReportDataForSingleOu> userReportData(ArrayList<UserReportDataForSingleOu> userReportData) {
+        tablesToDisplay2 = new ArrayList<>();
+        for (UserReportDataForSingleOu userRepData : userReportData) {
+            if (userRepData.userReportTableRowArrayList.size() > 0) {
+                tablesToDisplay2.add(userRepData);
+            }
+        }
+        return tablesToDisplay2;
+    }
 }

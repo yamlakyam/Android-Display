@@ -200,7 +200,9 @@ public class UtilityFunctionsForActivity2 {
         if (lineChartData != null) {
             for (int i = 0; i < lineChartData.x.length; i++) {
                 dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
-                formattedXLabels.add(lineChartData.legends[i]);
+
+                String xLabelAtIndex = UtilityFunctionsForActivity1.formatHourNmin(lineChartData.legends[i]);
+                formattedXLabels.add(xLabelAtIndex);
             }
 
             LineDataSet lineDataSet = new LineDataSet(dataVals, label);
@@ -213,7 +215,7 @@ public class UtilityFunctionsForActivity2 {
             lineChart.getAxisRight().setDrawAxisLine(false);
             lineChart.getAxisRight().setDrawLabels(false);
             lineChart.getDescription().setEnabled(false);
-            lineChart.getXAxis().setDrawAxisLine(false);
+            lineChart.getXAxis().setDrawAxisLine(true);
             lineChart.getXAxis().setDrawGridLines(false);
             lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
             lineChart.setDrawGridBackground(false);
@@ -230,8 +232,12 @@ public class UtilityFunctionsForActivity2 {
             lineChart.getXAxis().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
             lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
-            lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(formattedXLabels));
-//            lineChart.getXAxis().setLabelRotationAngle(-45);
+            try {
+                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(formattedXLabels));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            lineChart.getXAxis().setLabelRotationAngle(-45);
             lineChart.getXAxis().setLabelCount(lineChartData.legends.length, true);
 //            lineChart.getXAxis().setGranularity(1f);
             lineChart.getXAxis().setCenterAxisLabels(false);

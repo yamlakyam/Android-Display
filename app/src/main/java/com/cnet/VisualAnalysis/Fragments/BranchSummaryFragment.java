@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +46,8 @@ import com.github.mikephil.charting.charts.PieChart;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 public class BranchSummaryFragment extends Fragment implements SecondActivity.KeyPress {
@@ -180,6 +181,19 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 //        branchSummaryProgressBar.setVisibility(View.GONE);
 
         DashBoardData dashBoardData = dashBoardDataParam;
+
+        ArrayList<BranchSummaryTableRow> branchSummaryTableRows = dashBoardData.getBranchSummaryData().getBranchSummaryTableRows();
+        try {
+            Collections.sort(branchSummaryTableRows, new Comparator<BranchSummaryTableRow>() {
+                @Override
+                public int compare(BranchSummaryTableRow o1, BranchSummaryTableRow o2) {
+                    return Integer.parseInt(o1.getBranch().substring(3)) < Integer.parseInt(o2.getBranch().substring(3)) ? -1 : 0;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds, startingRowIndex);
         UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(), pChartBranchSummary, "Branch summary");
 
@@ -223,7 +237,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty3.setTextSize(16f);
         tableRowProperty4.setText("");
-        tableRowProperty5.setText(numberFormat.format(grandTotal));
+        tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
         tableRowProperty5.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty5.setTextSize(16f);
 

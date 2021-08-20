@@ -38,6 +38,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     int width;
     TextView vanNameText;
+    TextView driverNameText;
     TextView parameter1;
     TextView parameter2;
     TextView parameter3;
@@ -67,6 +68,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         vanNameText = findViewById(R.id.vanNameText);
+        driverNameText = findViewById(R.id.driverNameText);
         parameter1 = findViewById(R.id.parameter1);
         parameter2 = findViewById(R.id.parameter2);
         parameter3 = findViewById(R.id.parameter3);
@@ -128,6 +130,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
                 TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
 
+
                 String place_name = vsmTransactionTableRows.get(index).getOutlet();
                 if (place_name.length() > 21) {
                     place_name = vsmTransactionTableRows.get(index).getOutlet().substring(0, 21) + "...";
@@ -141,6 +144,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 itemCountText.setText(numberFormat.format(vsmTransactionTableRows.get(index).getItemCount()));
                 TextView voucherTextView = (TextView) view.findViewById(R.id.voucherTextView);
                 voucherTextView.setText(vsmTransactionTableRows.get(index).getVoucherNo());
+                driverNameText.setText(vsmTransactionTableRows.get(index).getUsername());
                 return view;
             }
         });

@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +31,14 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.LineChart;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PeakHourReportForAllOusFragment extends Fragment implements SecondActivity.KeyPress {
 
@@ -42,9 +46,10 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     ScrollView peakHourReportScrollView;
     TextView scrollingPeakHourForAllText;
     DigitalClock digitalClock;
-    public  Handler animationHandler;
+    public Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
     private ArrayList<FigureReportDataElements> tablesToDisplay;
+    ArrayList<FigureReportDataElements> mergedFigureData;
     Fragment fragment;
     ImageView peakHrAllleftArrow;
     ImageView peakHrAllrightArrow;
@@ -103,14 +108,56 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         if (peakHourReportForAllTableLayout != null) {
             peakHourReportForAllTableLayout.removeAllViews();
         }
-        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
 
-//        Collections.sort(tablesToDisplay, new Comparator<FigureReportDataElements>() {
-//            @Override
-//            public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
-//                return UtilityFunctionsForActivity1.formatTime(o1.dateNTime).compareTo(UtilityFunctionsForActivity1.formatTime(o2.dateNTime));
-//            }
-//        });
+        //////////////////////////////
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+        ArrayList<String> distinctDates = DashBoardDataParser.distinictDates(tablesToDisplay);
+        Collections.sort(distinctDates, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return UtilityFunctionsForActivity1.peakHourFormatter(o1).compareTo(UtilityFunctionsForActivity1.peakHourFormatter(o2));
+            }
+        });
+
+        ArrayList<ArrayList<Integer>> indexesForDates = new ArrayList<>();
+
+        Log.i("DISTINCT DATES", distinctDates.toString());
+        for (int i = 0; i < distinctDates.size(); i++) {
+            ArrayList<Integer> indexForThisDate = new ArrayList<>();
+            for (int j = 0; j < tablesToDisplay.size(); j++) {
+                if (tablesToDisplay.get(j).dateNTime.equals(distinctDates.get(i))) {
+                    indexForThisDate.add(j);
+                }
+            }
+            indexesForDates.add(indexForThisDate);
+        }
+
+        Log.i("DATES ", indexesForDates.toString());
+
+        ArrayList<Double> merged = new ArrayList<>();
+        mergedFigureData = new ArrayList<>();
+
+        for (int i = 0; i < indexesForDates.size(); i++) {
+            ArrayList<Integer> indexesAtSingleTime = indexesForDates.get(i);
+            double grandTotal = 0.0;
+            String dateTime = "";
+            int count = 0;
+            String org = "";
+//            FigureReportDataElements figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, org);
+            FigureReportDataElements figureReportDataElements = null;
+            for (int j = 0; j < indexesAtSingleTime.size(); j++) {
+                grandTotal += tablesToDisplay.get(j).grandTotal;
+                dateTime = tablesToDisplay.get(j).dateNTime;
+                count += tablesToDisplay.get(j).totalCount;
+
+                figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, "");
+
+            }
+            merged.add(grandTotal);
+            mergedFigureData.add(figureReportDataElements);
+        }
+/////////////////////////////////////
+
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -119,11 +166,12 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                 if (message != null) {
                     index = Integer.parseInt(message);
                 }
-
-                if (index == tablesToDisplay.size()) {
+//                if (index == tablesToDisplay.size()) {
+                if (index == mergedFigureData.size()) {
 //                    drawLastRow();
                     UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
-                } else if (index == tablesToDisplay.size() + 1) {
+//                } else if (index == tablesToDisplay.size() + 1) {
+                } else if (index == mergedFigureData.size() + 1) {
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
 //                        navController.navigate(R.id.vsmCardFragment);
@@ -136,46 +184,94 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                         }
                     }
 
-                } else if (index < tablesToDisplay.size()) {
-                    grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
-                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(tablesToDisplay, getContext(), peakHourReportForAllTableLayout, index);
+//                } else if (index < tablesToDisplay.size()) {
+                } else if (index < mergedFigureData.size()) {
+//                    grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
+                    grandTotalSum = grandTotalSum + mergedFigureData.get(index).grandTotal;
+//                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(tablesToDisplay, getContext(), peakHourReportForAllTableLayout, index);
+                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(mergedFigureData, getContext(), peakHourReportForAllTableLayout, index);
                     UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
                 }
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
+//        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(mergedFigureData.size(), animationHandler, 200, this, 0);
         handleRowAnimationThread.start();
     }
 
-//    public ArrayList<FigureReportDataElements> sortPeakHourByTime() {
-//        ArrayList<FigureReportDataElements> figureReportDataElements = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
-//        ArrayList<FigureReportDataElements> sortedFigureReportDataElements = new ArrayList<>();
-//        for (int i = 0; i < figureReportDataElements.size(); i++) {
-//            Collections.sort(figureReportDataElements, new Comparator<FigureReportDataElements>() {
-//                @Override
-//                public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
-//                    o1.dateNTime
-//                    return 0;
-//                }
-//            });
-//        }
-//    }
 
     public void drawLineChartForAllPeakHourReport() {
-        float[] x = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
-        float[] y = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
-        String[] label = new String[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
 
-        for (int i = 0; i < SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size(); i++) {
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+        ArrayList<String> distinctDates = DashBoardDataParser.distinictDates(tablesToDisplay);
+        Collections.sort(distinctDates, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return UtilityFunctionsForActivity1.peakHourFormatter(o1).compareTo(UtilityFunctionsForActivity1.peakHourFormatter(o2));
+            }
+        });
+
+        ArrayList<ArrayList<Integer>> indexesForDates = new ArrayList<>();
+
+        Log.i("DISTINCT DATES", distinctDates.toString());
+        for (int i = 0; i < distinctDates.size(); i++) {
+            ArrayList<Integer> indexForThisDate = new ArrayList<>();
+            for (int j = 0; j < tablesToDisplay.size(); j++) {
+                if (tablesToDisplay.get(j).dateNTime.equals(distinctDates.get(i))) {
+                    indexForThisDate.add(j);
+                }
+            }
+            indexesForDates.add(indexForThisDate);
+        }
+
+        Log.i("DATES ", indexesForDates.toString());
+
+        ArrayList<Double> merged = new ArrayList<>();
+        ArrayList<FigureReportDataElements> mergedFigureData = new ArrayList<>();
+
+        for (int i = 0; i < indexesForDates.size(); i++) {
+            ArrayList<Integer> indexesAtSingleTime = indexesForDates.get(i);
+            double grandTotal = 0.0;
+            String dateTime = "";
+            int count = 0;
+            String org = "";
+//            FigureReportDataElements figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, org);
+            FigureReportDataElements figureReportDataElements = null;
+            for (int j = 0; j < indexesAtSingleTime.size(); j++) {
+                grandTotal += tablesToDisplay.get(j).grandTotal;
+                dateTime = tablesToDisplay.get(j).dateNTime;
+                count += tablesToDisplay.get(j).totalCount;
+
+                figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, "");
+
+            }
+            merged.add(grandTotal);
+            mergedFigureData.add(figureReportDataElements);
+        }
+
+        Log.i("GRAND TOTAL", merged.toString());
+        Log.i("ALL DATA", mergedFigureData.toString());
+
+//        float[] x = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
+        float[] x = new float[merged.size()];
+//        float[] y = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
+        float[] y = new float[merged.size()];
+//        String[] label = new String[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
+        String[] label = new String[merged.size()];
+
+        for (int i = 0; i < merged.size(); i++) {
             x[i] = i;
-            y[i] = (float) SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).grandTotal;
-            label[i] = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).dateNTime;
+//            y[i] = (float) SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).grandTotal;
+            y[i] = Float.parseFloat(merged.get(i).toString());
+//            label[i] = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).dateNTime;
+            String timeAtThisIndex = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(indexesForDates.get(i).get(0)).dateNTime;
+//            label[i] = UtilityFunctionsForActivity1.formatHourNmin(timeAtThisIndex);
+            label[i] = timeAtThisIndex;
         }
         LineChartData lineChartData = new LineChartData(x, y, label);
         UtilityFunctionsForActivity2.drawLineChart(lineChartData, peakHourReportForAllLineChart, "peak Hour Report for all");
     }
-
 
     public void navigate(Fragment fragment) {
 //        Intent intent = new Intent(getActivity(), VideoActivity.class);

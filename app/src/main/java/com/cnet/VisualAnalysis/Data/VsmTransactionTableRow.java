@@ -11,12 +11,13 @@ public class VsmTransactionTableRow {
     private double totalSales;
     private double latitude;
     private double longitude;
+    private String username;
 
     public VsmTransactionTableRow(String voucherNo, String outlet,
                                   String TIN, String dateNtime,
                                   int itemCount, double subTotal,
                                   double VAT, double totalSales,
-                                  double latitude, double longitude) {
+                                  double latitude, double longitude, String username) {
         this.voucherNo = voucherNo;
         this.outlet = outlet;
         this.TIN = TIN;
@@ -27,6 +28,7 @@ public class VsmTransactionTableRow {
         this.totalSales = totalSales;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.username = username;
 
     }
 
@@ -109,5 +111,13 @@ public class VsmTransactionTableRow {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

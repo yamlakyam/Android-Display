@@ -218,7 +218,7 @@ public class UtilityFunctionsForActivity1 {
                 peakHourReportSN.setText(String.valueOf(index + 1));
                 peakHourReportSummaryType.setText(row.dateNTime);
                 peakHourReportTotalCount.setText(String.valueOf(row.totalCount));
-                peakHourReportGrandTotal.setText(numberFormat.format(row.getGrandTotal()));
+                peakHourReportGrandTotal.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
 
                 if (peakHourReportTableLayout != null) {
                     peakHourReportTableLayout.addView(tableElements);
@@ -291,12 +291,11 @@ public class UtilityFunctionsForActivity1 {
 
 
                 NumberFormat numberFormat = NumberFormat.getInstance();
-
                 peakHourReportForAllSN.setText(String.valueOf(index + 1));
                 peakHourReportForAllTime.setText(row.getDateNTime());
                 peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
                 peakHourReportForAllBranchName.setText(row.getOrg());
-                peakHourReportForAllGrandTotal.setText(numberFormat.format(row.grandTotal));
+                peakHourReportForAllGrandTotal.setText(numberFormat.format(Math.round(row.grandTotal * 100.0) / 100.0));
 
                 if (peakHourReportTableLayout != null) {
                     peakHourReportTableLayout.addView(tableElements);
@@ -407,7 +406,7 @@ public class UtilityFunctionsForActivity1 {
                     tableRowForSingleVan.getDouble("vat"),
                     tableRowForSingleVan.getDouble("grandTotal"),
                     tableRowForSingleVan.getDouble("latitude"),
-                    tableRowForSingleVan.getDouble("longitude")
+                    tableRowForSingleVan.getDouble("longitude"),tableRowForSingleVan.getString("username")
             ));
         }
         return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan, salesOutLateCount,
@@ -503,6 +502,23 @@ public class UtilityFunctionsForActivity1 {
         }
         return formattedTime;
     }
+
+    public static String formatHourNmin(String lastActive) {
+        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);
+        SimpleDateFormat output = new SimpleDateFormat("hh:mmaa");
+
+        Date parsed = null;
+        String formattedTime = null;
+        try {
+            parsed = input.parse(lastActive);
+            formattedTime = output.format(parsed);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedTime;
+    }
+
 
     public static Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

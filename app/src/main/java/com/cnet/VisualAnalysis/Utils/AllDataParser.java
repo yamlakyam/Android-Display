@@ -21,7 +21,7 @@ public class AllDataParser {
 //        allData.setLayoutList(layoutListParser(jsonObject));
 
         ArrayList<Integer> layoutList = new ArrayList<Integer>();
-        layoutList.addAll(Arrays.asList(1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
+        layoutList.addAll(Arrays.asList(1, 3, 4, 5, 6, 7, 8, 11, 12, 13));
         allData.setLayoutList(layoutList);
 
         if (jsonObject.has("consolidationObjectData") && !jsonObject.isNull("consolidationObjectData") && jsonObject.getJSONArray("consolidationObjectData").length() > 0) {
