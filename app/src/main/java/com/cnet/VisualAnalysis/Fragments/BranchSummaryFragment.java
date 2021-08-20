@@ -66,9 +66,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     ImageView brancright;
     LinearLayout linearLayout;
 
-    public static HandleRowAnimationThread handleRowAnimationThread;
+    public HandleRowAnimationThread handleRowAnimationThread;
 
-    public static boolean isInflatingTable;
     int totalQuantity = 0;
     double grandTotal = 0;
 
@@ -178,7 +177,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds, int startingRowIndex) {
-        isInflatingTable = true;
 //        branchSummaryProgressBar.setVisibility(View.GONE);
 
         DashBoardData dashBoardData = dashBoardDataParam;

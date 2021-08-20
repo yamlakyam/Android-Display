@@ -52,7 +52,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     PieChart pieChart;
     ScrollView userReportForAllScrollView;
     DigitalClock digitalClock;
-    public static Handler animationHandler;
+    public Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
 
     private ArrayList<UserReportTableRow> tablesToDisplay;

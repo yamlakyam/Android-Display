@@ -483,23 +483,12 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:
 
-                    SummarizedByArticleFragment.isInflatingTable = false;
-                    SummarizedByArticleParentCategFragment.isInflatingTable = false;
-                    SummarizedByArticleChildCategFragment.isInflatingTable = false;
-                    SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-                    BranchSummaryFragment.isInflatingTable = false;
-
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.leftKey();
 
                     break;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
 
-                    SummarizedByArticleFragment.isInflatingTable = false;
-                    SummarizedByArticleParentCategFragment.isInflatingTable = false;
-                    SummarizedByArticleChildCategFragment.isInflatingTable = false;
-                    SummaryOfLastSixMonthsFragment.isInflatingTable = false;
-                    BranchSummaryFragment.isInflatingTable = false;
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.rightKey();

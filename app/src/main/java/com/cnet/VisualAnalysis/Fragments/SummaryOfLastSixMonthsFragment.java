@@ -69,10 +69,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     ImageView sumLastXMonthrightArrow;
     ImageView sumLastXMonthplayPause;
 
-    public static HandleRowAnimationThread handleRowAnimationThread;
-    public static boolean isInflatingTable;
+    public HandleRowAnimationThread handleRowAnimationThread;
     double totalAmount = 0;
-
     public static boolean summaryOfLAstXmonthPaused;
 
     public SummaryOfLastSixMonthsFragment() {
@@ -182,7 +180,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
-        isInflatingTable = true;
 
         DashBoardData dashBoardData = dashBoardDataParam;
 

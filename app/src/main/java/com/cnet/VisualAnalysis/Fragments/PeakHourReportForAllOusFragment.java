@@ -42,7 +42,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     ScrollView peakHourReportScrollView;
     TextView scrollingPeakHourForAllText;
     DigitalClock digitalClock;
-    public static Handler animationHandler;
+    public  Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
     private ArrayList<FigureReportDataElements> tablesToDisplay;
     Fragment fragment;
@@ -53,7 +53,6 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     LineChart peakHourReportForAllLineChart;
 
     public static boolean peakHourForAllPaused;
-
     double grandTotalSum;
 
     @Override

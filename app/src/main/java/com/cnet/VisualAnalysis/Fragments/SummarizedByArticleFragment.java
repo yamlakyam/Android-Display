@@ -70,8 +70,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     ImageView summarticlerightArrow;
 
     DigitalClock digitalClock;
-    public static HandleRowAnimationThread handleRowAnimationThread;
-    public static boolean isInflatingTable = false;
+    public  HandleRowAnimationThread handleRowAnimationThread;
     public static boolean summByarticlePaused;
 
     double totalUnitAmount = 0;
@@ -313,7 +312,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
     private void initFragment(DashBoardData dashBoardDataParam, int seconds) {
 
-        isInflatingTable = true;
         DashBoardData dashBoardData = dashBoardDataParam;
 
         inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);

@@ -49,8 +49,8 @@ import java.util.Locale;
 
 public class PeakHourReportFragment extends Fragment implements SecondActivity.KeyPress {
 
-    public static Handler animationHandler;
-    public static Handler changeDataHandler;
+    public  Handler animationHandler;
+    public  Handler changeDataHandler;
     public HandleDataChangeThread handleDataChangeThread;
     public HandleRowAnimationThread handleRowAnimationThread;
     public LineChart lineChart;
@@ -126,7 +126,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (SplashScreenActivity.allData != null) {
             drawAllPeakTimeLineCharts(0, 0);
         }
-        Date parsedDate = convertToTime(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(0).figureReportDataElementsArrayList.get(0).dateNTime);
 
     }
 

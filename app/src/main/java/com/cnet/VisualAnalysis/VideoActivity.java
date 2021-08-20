@@ -18,7 +18,7 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
 
         videoView = findViewById(R.id.lastVideo);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.anim_video);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logo_animation);
         videoView.setVideoURI(uri);
         videoView.start();
 

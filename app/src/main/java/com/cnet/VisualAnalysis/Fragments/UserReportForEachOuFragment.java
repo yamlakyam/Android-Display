@@ -53,8 +53,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     TextView userReportTitle;
     TextView scrollingUserReportForEachText;
     DigitalClock digitalClock;
-    public static Handler animationHandler;
-    public static Handler changeDataHandler;
+    public  Handler animationHandler;
+    public  Handler changeDataHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
     public HandleDataChangeThread handleDataChangeThread;
     private ArrayList<UserReportTableRow> tablesToDisplay;
@@ -187,7 +187,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), UserReportForEachOuFragment.animationHandler, 200, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
         handleRowAnimationThread.start();
     }
 

@@ -45,7 +45,7 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
     ScrollView scrollVanListTable;
     TableLayout vanListTableLayout;
     ArrayList<VsmTableDataForSingleVan> tablesToDisplay;
-    public static Handler animationHandler;
+    public Handler animationHandler;
     HandleRowAnimationThread handleRowAnimationThread;
     Fragment fragment;
     TextView OrgHeaderTextView;

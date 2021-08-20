@@ -67,10 +67,9 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     ImageView sumChildArticleplayPause;
     ImageView sumChildArticlerightArrow;
 
-    public static HandleRowAnimationThread handleRowAnimationThread;
+    public HandleRowAnimationThread handleRowAnimationThread;
 
     double grandTotal = 0;
-    public static boolean isInflatingTable;
     public static boolean summByChildArticlePaused;
 
     @Override
@@ -131,7 +130,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     }
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds) {
-        isInflatingTable = true;
 
         DashBoardData dashBoardData = dashBoardDataParam;
 

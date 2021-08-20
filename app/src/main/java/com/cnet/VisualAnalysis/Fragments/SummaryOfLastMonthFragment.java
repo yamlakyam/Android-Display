@@ -69,9 +69,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     ImageView sumLastXDayrightArrow;
 
 
-    public static HandleRowAnimationThread handleRowAnimationThread;
+    public HandleRowAnimationThread handleRowAnimationThread;
 
-    public static boolean isInflatingTable;
     public double totalAmount = 0;
 
     public SummaryOfLastMonthFragment() {
@@ -141,7 +140,6 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     }
 
     public void initFragment(DashBoardData dashBoardDataParam, int seconds, int startingIndex) {
-        isInflatingTable = true;
         int days = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size();
 
 
