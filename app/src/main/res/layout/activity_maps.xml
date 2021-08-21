@@ -39,34 +39,48 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
-                app:cardBackgroundColor="#ccffffff">
+                app:cardBackgroundColor="#7f383838"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="#FFFFFF"
+                app:strokeWidth="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"></LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.google.android.material.imageview.ShapeableImageView
+                    <LinearLayout
                         android:id="@+id/driverImage"
                         android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_height="120dp"
                         android:layout_marginTop="5dp"
-                        app:layout_constraintEnd_toStartOf="@+id/dividerLine"
+                        android:gravity="center"
+                        android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                        app:srcCompat="@drawable/ic_taxi_driver">
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    </com.google.android.material.imageview.ShapeableImageView>
+
+                        <ImageView
+                            android:id="@+id/imageView15"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center|center_horizontal"
+                            app:srcCompat="@drawable/driver_profile" />
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/driverNameText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
                         android:text="Driver Name"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
+                        app:layout_constraintEnd_toEndOf="@+id/driverImage"
                         app:layout_constraintStart_toStartOf="@+id/driverImage"
                         app:layout_constraintTop_toBottomOf="@+id/driverImage" />
 
@@ -86,32 +100,32 @@
                         android:id="@+id/driverStatusText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:text="Status: Delivered"
-                        android:textColor="@color/black"
-                        app:layout_constraintStart_toStartOf="@+id/driverImage"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="@+id/driverNameText"
+                        app:layout_constraintStart_toStartOf="@+id/driverNameText"
                         app:layout_constraintTop_toBottomOf="@+id/driverPhoneNumber" />
 
                     <View
-                        android:id="@+id/dividerLine"
-                        android:layout_width="1dp"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="32dp"
-                        android:background="@color/cardBackgroundDark1"
-                        app:layout_constraintEnd_toStartOf="@+id/vanImage"
+                        android:id="@+id/view2"
+                        android:layout_width="2dp"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/driverImage"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/driverImage" />
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/vanImage"
                         android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_height="120dp"
                         android:layout_marginTop="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/dividerLine"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                        app:srcCompat="@drawable/ic_truck">
+                        app:srcCompat="@drawable/vehicle_profile">
 
                     </com.google.android.material.imageview.ShapeableImageView>
 
@@ -119,12 +133,11 @@
                         android:id="@+id/vanNameText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="8dp"
                         android:gravity="right"
                         android:text="TextView"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="17sp"
+                        app:layout_constraintEnd_toEndOf="@+id/vanImage"
                         app:layout_constraintStart_toStartOf="@+id/vanImage"
                         app:layout_constraintTop_toBottomOf="@+id/vanImage" />
 
@@ -132,11 +145,12 @@
                         android:id="@+id/plateNumberText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
                         android:text="3 AA 12345"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="@+id/vanImage"
+                        app:layout_constraintEnd_toEndOf="@+id/vanNameText"
+                        app:layout_constraintStart_toStartOf="@+id/vanNameText"
                         app:layout_constraintTop_toBottomOf="@+id/vanNameText" />
 
 
@@ -144,10 +158,12 @@
                         android:id="@+id/vanModelText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="Toyota Proace 2020"
-                        android:textColor="@color/black"
-                        app:layout_constraintStart_toStartOf="@+id/vanImage"
+                        android:layout_marginBottom="8dp"
+                        android:text="Toyota Proace "
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/plateNumberText
+"
                         app:layout_constraintTop_toBottomOf="@+id/plateNumberText" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -157,9 +173,12 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
-                app:cardBackgroundColor="#ccffffff">
+                app:cardBackgroundColor="#7f383838"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="#FFFFFF"
+                app:strokeWidth="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -181,7 +200,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Total Outlets"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -191,7 +210,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="50"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -210,7 +229,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Line Items"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -220,7 +239,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="25"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -240,7 +259,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Grand Total"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -250,7 +269,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="50%"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -262,9 +281,12 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
-                app:cardBackgroundColor="#ccffffff">
+                app:cardBackgroundColor="#7f383838"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="#FFFFFF"
+                app:strokeWidth="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -286,7 +308,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Total Customer"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -296,7 +318,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="50"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -315,7 +337,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Customer Visited"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -325,7 +347,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="25"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -345,7 +367,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Achievement"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -355,7 +377,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="50%"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -367,9 +389,12 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
-                app:cardBackgroundColor="#ccffffff">
+                app:cardBackgroundColor="#7f383838"
+                app:cardCornerRadius="10dp"
+                app:strokeColor="#FFFFFF"
+                app:strokeWidth="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -391,7 +416,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Target Sale"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -401,7 +426,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="100"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -420,7 +445,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Customer Visited"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -430,7 +455,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="75"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -450,7 +475,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Achievement"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
 
                         <TextView
@@ -460,7 +485,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="75%"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
 

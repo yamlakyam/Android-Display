@@ -109,55 +109,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             peakHourReportForAllTableLayout.removeAllViews();
         }
 
-        //////////////////////////////
-        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
-        ArrayList<String> distinctDates = DashBoardDataParser.distinictDates(tablesToDisplay);
-        Collections.sort(distinctDates, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return UtilityFunctionsForActivity1.peakHourFormatter(o1).compareTo(UtilityFunctionsForActivity1.peakHourFormatter(o2));
-            }
-        });
-
-        ArrayList<ArrayList<Integer>> indexesForDates = new ArrayList<>();
-
-        Log.i("DISTINCT DATES", distinctDates.toString());
-        for (int i = 0; i < distinctDates.size(); i++) {
-            ArrayList<Integer> indexForThisDate = new ArrayList<>();
-            for (int j = 0; j < tablesToDisplay.size(); j++) {
-                if (tablesToDisplay.get(j).dateNTime.equals(distinctDates.get(i))) {
-                    indexForThisDate.add(j);
-                }
-            }
-            indexesForDates.add(indexForThisDate);
-        }
-
-        Log.i("DATES ", indexesForDates.toString());
-
-        ArrayList<Double> merged = new ArrayList<>();
-        mergedFigureData = new ArrayList<>();
-
-        for (int i = 0; i < indexesForDates.size(); i++) {
-            ArrayList<Integer> indexesAtSingleTime = indexesForDates.get(i);
-            double grandTotal = 0.0;
-            String dateTime = "";
-            int count = 0;
-            String org = "";
-//            FigureReportDataElements figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, org);
-            FigureReportDataElements figureReportDataElements = null;
-            for (int j = 0; j < indexesAtSingleTime.size(); j++) {
-                grandTotal += tablesToDisplay.get(j).grandTotal;
-                dateTime = tablesToDisplay.get(j).dateNTime;
-                count += tablesToDisplay.get(j).totalCount;
-
-                figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, "");
-
-            }
-            merged.add(grandTotal);
-            mergedFigureData.add(figureReportDataElements);
-        }
-/////////////////////////////////////
-
+        dataofTheSameHour();
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -325,11 +277,56 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
             startActivity(new Intent(requireActivity(), MapsActivity.class));
 //            navController.navigate(R.id.vansOfASingleOrganizationFragment);
-
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
+    }
 
+    public void dataofTheSameHour() {
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
+        ArrayList<String> distinctDates = DashBoardDataParser.distinictDates(tablesToDisplay);
+        Collections.sort(distinctDates, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return UtilityFunctionsForActivity1.peakHourFormatter(o1).compareTo(UtilityFunctionsForActivity1.peakHourFormatter(o2));
+            }
+        });
 
+        ArrayList<ArrayList<Integer>> indexesForDates = new ArrayList<>();
+        Log.i("DISTINCT DATES", distinctDates.toString());
+        for (int i = 0; i < distinctDates.size(); i++) {
+            ArrayList<Integer> indexForThisDate = new ArrayList<>();
+            for (int j = 0; j < tablesToDisplay.size(); j++) {
+                if (tablesToDisplay.get(j).dateNTime.equals(distinctDates.get(i))) {
+                    indexForThisDate.add(j);
+                }
+            }
+            indexesForDates.add(indexForThisDate);
+        }
+
+        Log.i("DATES ", indexesForDates.toString());
+
+        ArrayList<Double> merged = new ArrayList<>();
+        mergedFigureData = new ArrayList<>();
+
+        for (int i = 0; i < indexesForDates.size(); i++) {
+            ArrayList<Integer> indexesAtSingleTime = indexesForDates.get(i);
+            double grandTotal = 0.0;
+            String dateTime = "";
+            int count = 0;
+            String org = "";
+//            FigureReportDataElements figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, org);
+            FigureReportDataElements figureReportDataElements = null;
+            for (int j = 0; j < indexesAtSingleTime.size(); j++) {
+                grandTotal += tablesToDisplay.get(j).grandTotal;
+                dateTime = distinctDates.get(j);
+                count += tablesToDisplay.get(j).totalCount;
+
+                figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, "");
+
+            }
+            merged.add(grandTotal);
+            mergedFigureData.add(figureReportDataElements);
+        }
     }
 
     @Override

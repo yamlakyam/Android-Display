@@ -42,7 +42,7 @@ public class UtilityFunctionsForActivity1 {
 
             tableData.add(
                     new SummaryTableRow(
-                            table.getString("organizationName"),
+                         table.getString("organizationName"),
                             formatTimeToString(table.getString("startTimeStamp")),
                             formatTimeToString(table.getString("endTimeStamp")),
                             table.getInt("vsiCount"),
