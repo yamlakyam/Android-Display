@@ -55,6 +55,8 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
     ImageView vanListplayPause;
     ImageView vanListrightArrow;
 
+    String headerCriteriaTitle = "Organization Unit Report For ";
+
     int salesOutLateCountSum, allLineItemCountSum = 0;
     double totalPriceSum = 0;
     public static boolean vanListPaused;
@@ -94,7 +96,7 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
         }
     }
 
-    @SuppressLint("HandlerLeak")
+    @SuppressLint({"HandlerLeak", "SetTextI18n"})
     public void inflateTable() {
         resetSumOfLastRow();
         if (vanListTableLayout != null) {
@@ -106,14 +108,15 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
             Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
                 @Override
                 public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
-                    return Integer.parseInt(o1.nameOfVan.substring(3)) < Integer.parseInt(o2.nameOfVan.substring(3)) ? -1 : 0;
+//                    return Integer.parseInt(o1.nameOfVan.substring(3)) < Integer.parseInt(o2.nameOfVan.substring(3)) ? -1 : 0;
+                    return o1.totalPrice > o2.totalPrice ? -1 : 0;
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        OrgHeaderTextView.setText(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getNameOfDistributor());
+        OrgHeaderTextView.setText(headerCriteriaTitle + SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getNameOfDistributor());
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {

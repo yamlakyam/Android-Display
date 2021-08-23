@@ -187,7 +187,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             Collections.sort(branchSummaryTableRows, new Comparator<BranchSummaryTableRow>() {
                 @Override
                 public int compare(BranchSummaryTableRow o1, BranchSummaryTableRow o2) {
-                    return Integer.parseInt(o1.getBranch().substring(3)) < Integer.parseInt(o2.getBranch().substring(3)) ? -1 : 0;
+//                    return Integer.parseInt(o1.getBranch().substring(3)) < Integer.parseInt(o2.getBranch().substring(3)) ? -1 : 0;
+                    return o1.getGrandTotal() > o2.getGrandTotal() ? 1 : 0;
                 }
             });
         } catch (Exception e) {

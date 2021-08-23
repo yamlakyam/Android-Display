@@ -191,21 +191,25 @@ public class UtilityFunctionsForActivity2 {
     }
 
 
-    public static void drawLineChart(LineChartData lineChartData, LineChart lineChart, String label) {
-        ArrayList<Entry> dataVals = new ArrayList<Entry>();
+    public static void drawLineChart(LineChartData lineChartData1, LineChartData lineChartData2, LineChart lineChart, String label) {
+        ArrayList<Entry> dataVals1 = new ArrayList<Entry>();
+        ArrayList<Entry> dataVals2 = new ArrayList<Entry>();
         ArrayList<String> formattedXLabels = new ArrayList<>();
 
-        if (lineChartData != null) {
-            for (int i = 0; i < lineChartData.x.length; i++) {
-                dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
+        if (lineChartData1 != null) {
+            for (int i = 0; i < lineChartData1.x.length; i++) {
+                dataVals1.add(new Entry(lineChartData1.x[i], lineChartData1.y[i]));
+                dataVals2.add(new Entry(lineChartData2.x[i], lineChartData2.y[i]));
 
-                String xLabelAtIndex = new UtilityFunctionsForActivity1().formatHourNmin(lineChartData.legends[i]);
+                String xLabelAtIndex = new UtilityFunctionsForActivity1().formatHourNmin(lineChartData1.legends[i]);
                 formattedXLabels.add(xLabelAtIndex);
             }
 
-            LineDataSet lineDataSet = new LineDataSet(dataVals, label);
+            LineDataSet lineDataSet1 = new LineDataSet(dataVals1, label);
+            LineDataSet lineDataSet2 = new LineDataSet(dataVals2, label);
             LineData lineData = new LineData();
-            lineData.addDataSet(lineDataSet);
+            lineData.addDataSet(lineDataSet1);
+            lineData.addDataSet(lineDataSet2);
             lineChart.setData(lineData);
             lineChart.getAxisLeft().setDrawLabels(true);
             lineChart.getAxisRight().setDrawGridLines(false);
@@ -220,10 +224,14 @@ public class UtilityFunctionsForActivity2 {
             lineChart.getAxisLeft().setDrawGridLines(false);
             lineChart.getXAxis().setGranularity(1f);
             lineChart.getXAxis().setCenterAxisLabels(false);
-            lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            lineDataSet.setDrawValues(false);
-            lineDataSet.setColors(Color.parseColor("#5b79e7"));
-            lineDataSet.setDrawCircles(false);
+            lineDataSet1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            lineDataSet1.setDrawValues(false);
+            lineDataSet1.setColors(Color.parseColor("#5b79e7"));
+            lineDataSet1.setDrawCircles(false);
+            lineDataSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            lineDataSet2.setDrawValues(false);
+            lineDataSet2.setColors(Color.parseColor("#27adb9"));
+            lineDataSet2.setDrawCircles(false);
             lineChart.setExtraBottomOffset(15f);
             lineChart.setExtraTopOffset(15f);
             lineChart.animateX(500, Easing.EaseInCubic);
@@ -236,7 +244,7 @@ public class UtilityFunctionsForActivity2 {
                 e.printStackTrace();
             }
             lineChart.getXAxis().setLabelRotationAngle(-45);
-            lineChart.getXAxis().setLabelCount(lineChartData.legends.length, true);
+            lineChart.getXAxis().setLabelCount(lineChartData1.legends.length, true);
 //            lineChart.getXAxis().setGranularity(1f);
             lineChart.getXAxis().setCenterAxisLabels(false);
 //            lineChart.setExtraOffsets(7f, 7f, 7f, 7f);

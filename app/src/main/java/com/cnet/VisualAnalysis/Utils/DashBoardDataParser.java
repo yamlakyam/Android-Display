@@ -383,7 +383,8 @@ public class DashBoardDataParser {
                 ArrayList<FigureReportDataElements> figureReportDataElementsFiltered = new ArrayList<>();
 
                 float[] xValues = new float[figureReportArray.length()];
-                float[] yValues = new float[figureReportArray.length()];
+                float[] yValues1 = new float[figureReportArray.length()];
+                float[] yValues2 = new float[figureReportArray.length()];
                 String[] legends = new String[figureReportArray.length()];
 
                 int count = 0;
@@ -395,7 +396,8 @@ public class DashBoardDataParser {
                     figureReportDataElementsArrayList.add(figureReportDataElements);
 
                     xValues[j] = j;
-                    yValues[j] = (float) singleFigureReportObject.getDouble("grandTotal");
+                    yValues1[j] = (float) singleFigureReportObject.getDouble("grandTotal");
+                    yValues2[j] = (float) singleFigureReportObject.getInt("totalCount");
                     legends[j] = singleFigureReportObject.getString("summaryType");
 
 //                if (PeakHourReportFragment.convertToTime(singleFigureReportObject.getString("summaryType")).getMonth() == Calendar.MAY
@@ -414,8 +416,9 @@ public class DashBoardDataParser {
 //                legends[k] = figureReportDataElementsFiltered.get(k).dateNTime;
 //            }
 
-                LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
-                FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData, org);
+                LineChartData lineChartData1 = new LineChartData(xValues, yValues1, legends);
+                LineChartData lineChartData2 = new LineChartData(xValues, yValues2, legends);
+                FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData1, lineChartData2, org);
                 figureReportDataArrayList.add(figureReportData);
 
 //            LineChartData lineChartDataFiltered = new LineChartData(xValues, yValues, legends);
@@ -568,35 +571,6 @@ public class DashBoardDataParser {
             return vsmTableForSingleDistributor;
         }
         return new VsmTableForSingleDistributor(new ArrayList<VsmTableDataForSingleVan>(), "");
-    }
-
-    public static ArrayList<FigureReportData> filteredFigureReportDataParser(ArrayList<ArrayList<FigureReportDataElements>> filteredUserReport) {
-
-        ArrayList<FigureReportData> figureReportDataArrayList = new ArrayList<>();
-        for (int i = 0; i < filteredUserReport.size(); i++) {
-
-            ArrayList<FigureReportDataElements> figureReportDataElementsArrayList = new ArrayList<>();
-
-            float[] xValues = new float[filteredUserReport.get(i).size()];
-            float[] yValues = new float[filteredUserReport.get(i).size()];
-            String[] legends = new String[filteredUserReport.get(i).size()];
-
-            for (int j = 0; j < filteredUserReport.get(i).size(); j++) {
-                FigureReportDataElements figureReportDataElements = new FigureReportDataElements(filteredUserReport.get(i).get(j).dateNTime,
-                        filteredUserReport.get(i).get(j).totalCount, filteredUserReport.get(i).get(j).grandTotal, filteredUserReport.get(i).get(j).org);
-                figureReportDataElementsArrayList.add(figureReportDataElements);
-
-                xValues[j] = j + 1;
-                yValues[j] = (float) filteredUserReport.get(i).get(j).grandTotal;
-                legends[j] = filteredUserReport.get(i).get(j).dateNTime;
-            }
-
-            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
-            FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData, figureReportDataElementsArrayList.get(i).org);
-            figureReportDataArrayList.add(figureReportData);
-
-        }
-        return figureReportDataArrayList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

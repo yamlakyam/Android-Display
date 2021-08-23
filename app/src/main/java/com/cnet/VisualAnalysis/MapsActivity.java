@@ -116,13 +116,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public View getInfoWindow(Marker marker) {
                 return null;
             }
-
             @Override
             public View getInfoContents(Marker marker) {
 
                 View view = getLayoutInflater().inflate(R.layout.custom_pop_up, null);
                 TextView nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-
 
                 String place_name = vsmTransactionTableRows.get(index).getOutlet();
                 if (place_name.length() > 21) {

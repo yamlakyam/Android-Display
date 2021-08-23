@@ -216,7 +216,7 @@ public class UtilityFunctionsForActivity1 {
                 NumberFormat numberFormat = NumberFormat.getInstance();
 
                 peakHourReportSN.setText(String.valueOf(index + 1));
-                peakHourReportSummaryType.setText(row.dateNTime);
+                peakHourReportSummaryType.setText(formatHourNmin(row.dateNTime));
                 peakHourReportTotalCount.setText(String.valueOf(row.totalCount));
                 peakHourReportGrandTotal.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
 
@@ -225,9 +225,7 @@ public class UtilityFunctionsForActivity1 {
                 }
                 animate(peakHourReportTableLayout, tableElements);
             }
-
         }
-
     }
 
     public void drawUserReportForAllOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
@@ -290,7 +288,7 @@ public class UtilityFunctionsForActivity1 {
 
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 peakHourReportForAllSN.setText(String.valueOf(index + 1));
-                peakHourReportForAllTime.setText(row.getDateNTime());
+                peakHourReportForAllTime.setText(formatHourNmin(row.getDateNTime()));
                 peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
 
                 peakHourReportForAllGrandTotal.setText(numberFormat.format(Math.round(row.grandTotal * 100.0) / 100.0));

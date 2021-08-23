@@ -124,10 +124,8 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (SplashScreenActivity.allData != null) {
             figureReportData = figureData(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch());
             Log.i("max rows", maxRowNo(figureReportData) + "");
-            ;
             drawAllPeakTimeLineCharts(0, 0);
         }
-
     }
 
     @SuppressLint("HandlerLeak")
@@ -148,7 +146,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                     if (figureReportData.get(index).figureReportDataElementsArrayList.size() > 0) {
                         Log.i("not null", "handleMessage: ");
 //                        UtilityFunctionsForActivity2.drawLineChart(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(index).lineChartData, lineChart, "Peak Hour Report");
-                        UtilityFunctionsForActivity2.drawLineChart(figureReportData.get(index).lineChartData, lineChart, "Peak Hour Report");
+                        UtilityFunctionsForActivity2.drawLineChart(figureReportData.get(index).lineChartData1, figureReportData.get(index).lineChartData2, lineChart, "Peak Hour Report");
 //                        peakHourReportTitle.setText("Peak Hour Report for " + SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(index).org);
                         peakHourReportTitle.setText("Peak Hour Report for " + figureReportData.get(index).org);
                         peakHourReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
@@ -391,6 +389,8 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             if (peakHourForEachPaused) {
                 drawAllPeakTimeLineCharts(branchIndex - 1, 0);
                 handleDataChangeThread.interrupt();
+            } else {
+                drawAllPeakTimeLineCharts(branchIndex - 1, 0);
             }
         }
 

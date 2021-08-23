@@ -216,23 +216,30 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         Log.i("ALL DATA", mergedFigureData.toString());
 
 //        float[] x = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
-        float[] x = new float[merged.size()];
+        float[] x1 = new float[merged.size()];
+        float[] x2 = new float[merged.size()];
 //        float[] y = new float[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
-        float[] y = new float[merged.size()];
+        float[] y1 = new float[merged.size()];
+        float[] y2 = new float[merged.size()];
 //        String[] label = new String[SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size()];
-        String[] label = new String[merged.size()];
+        String[] label1 = new String[merged.size()];
+        String[] label2 = new String[merged.size()];
 
         for (int i = 0; i < merged.size(); i++) {
-            x[i] = i;
-//            y[i] = (float) SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).grandTotal;
-            y[i] = Float.parseFloat(merged.get(i).toString());
-//            label[i] = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(i).dateNTime;
+
+            x1[i] = i;
+            y1[i] = (float) mergedFigureData.get(i).getTotalCount();
             String timeAtThisIndex = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(indexesForDates.get(i).get(0)).dateNTime;
-//            label[i] = UtilityFunctionsForActivity1.formatHourNmin(timeAtThisIndex);
-            label[i] = timeAtThisIndex;
+            label1[i] = timeAtThisIndex;
+
+            x2[i] = i;
+            y2[i] = Float.parseFloat(merged.get(i).toString());
+            String timeAtThisIndex2 = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(indexesForDates.get(i).get(0)).dateNTime;
+            label1[i] = timeAtThisIndex2;
         }
-        LineChartData lineChartData = new LineChartData(x, y, label);
-        UtilityFunctionsForActivity2.drawLineChart(lineChartData, peakHourReportForAllLineChart, "peak Hour Report for all");
+        LineChartData lineChartData1 = new LineChartData(x1, y1, label1);
+        LineChartData lineChartData2 = new LineChartData(x2, y2, label2);
+        UtilityFunctionsForActivity2.drawLineChart(lineChartData1, lineChartData2, peakHourReportForAllLineChart, "peak Hour Report for all");
     }
 
     public void navigate(Fragment fragment) {
