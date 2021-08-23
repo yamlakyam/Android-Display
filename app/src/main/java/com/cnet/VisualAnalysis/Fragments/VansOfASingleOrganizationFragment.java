@@ -125,7 +125,7 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
 
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollVanListTable);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollVanListTable);
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (fragment != null) {
                         if (vanListPaused) {
@@ -139,8 +139,8 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
 
                 } else if (index < tablesToDisplay.size()) {
                     sumofLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity1.drawVansOfSingleOrgTable(tablesToDisplay, getContext(), vanListTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(scrollVanListTable);
+                    new UtilityFunctionsForActivity1().drawVansOfSingleOrgTable(tablesToDisplay, getContext(), vanListTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollVanListTable);
                 }
             }
         };
@@ -238,7 +238,7 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
                 if (vanListTableLayout != null) {
                     vanListTableLayout.addView(tableElements);
                 }
-                UtilityFunctionsForActivity1.animate(vanListTableLayout, tableElements);
+                new UtilityFunctionsForActivity1().animate(vanListTableLayout, tableElements);
             }
         }
     }

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +108,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
 
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollDistributorTable);
                 } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size() - 1) {
                     if (fragment != null) {
                         NavController navController = NavHostFragment.findNavController(fragment);
@@ -118,13 +117,13 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
 
                 } else if (index < tablesToDisplay.size()) {
                     lastRowSummation(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity1.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
+                    new UtilityFunctionsForActivity1().drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollDistributorTable);
                 }
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200, this,0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200, this, 0);
         handleRowAnimationThread.start();
     }
 
@@ -227,7 +226,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         if (distributorTableLayout != null) {
             distributorTableLayout.addView(tableElements);
-            UtilityFunctionsForActivity2.animateBottomToTop(distributorTableLayout, tableElements);
+            new UtilityFunctionsForActivity2().animateBottomToTop(distributorTableLayout, tableElements);
 
         }
 
@@ -280,7 +279,6 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         }
 
 
-
     }
 
     @Override
@@ -322,7 +320,6 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         }
 
     }
-
 
 
 }

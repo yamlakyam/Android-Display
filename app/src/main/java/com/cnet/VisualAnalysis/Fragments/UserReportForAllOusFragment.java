@@ -133,7 +133,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
-                    UtilityFunctionsForActivity1.scrollRows(userReportForAllScrollView);
+                    new UtilityFunctionsForActivity1().scrollRows(userReportForAllScrollView);
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (fragment != null) {
 //                        NavController navController = NavHostFragment.findNavController(fragment);
@@ -149,8 +149,8 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
                 } else if (index < tablesToDisplay.size()) {
                     grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
-                    UtilityFunctionsForActivity1.drawUserReportForAllOu(tablesToDisplay, getContext(), userReportForAllTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(userReportForAllScrollView);
+                    new UtilityFunctionsForActivity1().drawUserReportForAllOu(tablesToDisplay, getContext(), userReportForAllTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(userReportForAllScrollView);
                 }
             }
         };
@@ -197,14 +197,13 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
         if (userReportForAllTableLayout != null) {
             userReportForAllTableLayout.addView(tableElements);
-            UtilityFunctionsForActivity2.animateBottomToTop(userReportForAllTableLayout, tableElements);
+            new UtilityFunctionsForActivity2().animateBottomToTop(userReportForAllTableLayout, tableElements);
 
         }
-
     }
 
-    private void drawPieChartForAllUsers() {
 
+    private void drawPieChartForAllUsers() {
         float[] x = new float[SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size()];
         String[] label = new String[SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size()];
         for (int i = 0; i < SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size(); i++) {
@@ -212,7 +211,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
             label[i] = SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().get(i).summaryType;
         }
         PieChartData pieChartData = new PieChartData(x, label);
-        UtilityFunctionsForActivity2.drawPieChart(pieChartData, pieChart, "User Report For All Organizations");
+        new UtilityFunctionsForActivity2().drawPieChart(pieChartData, pieChart, "User Report For All Organizations");
 
     }
 

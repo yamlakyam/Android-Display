@@ -121,7 +121,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 //                if (index == tablesToDisplay.size()) {
                 if (index == mergedFigureData.size()) {
 //                    drawLastRow();
-                    UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
+                    new UtilityFunctionsForActivity1().scrollRows(peakHourReportScrollView);
 //                } else if (index == tablesToDisplay.size() + 1) {
                 } else if (index == mergedFigureData.size() + 1) {
                     if (fragment != null) {
@@ -141,8 +141,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 //                    grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
                     grandTotalSum = grandTotalSum + mergedFigureData.get(index).grandTotal;
 //                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(tablesToDisplay, getContext(), peakHourReportForAllTableLayout, index);
-                    UtilityFunctionsForActivity1.drawPeakHourReportForAllOus(mergedFigureData, getContext(), peakHourReportForAllTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(peakHourReportScrollView);
+                    new UtilityFunctionsForActivity1().drawPeakHourReportForAllOus(mergedFigureData, getContext(), peakHourReportForAllTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(peakHourReportScrollView);
                 }
             }
         };
@@ -157,10 +157,12 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
         ArrayList<String> distinctDates = DashBoardDataParser.distinictDates(tablesToDisplay);
+
+        Log.i("distinctDates", distinctDates + "");
         Collections.sort(distinctDates, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                return UtilityFunctionsForActivity1.peakHourFormatter(o1).compareTo(UtilityFunctionsForActivity1.peakHourFormatter(o2));
+                return new UtilityFunctionsForActivity1().peakHourFormatter(o1).compareTo(new UtilityFunctionsForActivity1().peakHourFormatter(o2));
             }
         });
 
@@ -191,13 +193,21 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 //            FigureReportDataElements figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, org);
             FigureReportDataElements figureReportDataElements = null;
             for (int j = 0; j < indexesAtSingleTime.size(); j++) {
-                grandTotal += tablesToDisplay.get(j).grandTotal;
-                dateTime = tablesToDisplay.get(j).dateNTime;
-                count += tablesToDisplay.get(j).totalCount;
 
+                grandTotal += tablesToDisplay.get(indexesForDates.get(i).get(j)).grandTotal;
+                dateTime = tablesToDisplay.get(indexesForDates.get(i).get(j)).dateNTime;
+                count += tablesToDisplay.get(indexesForDates.get(i).get(j)).totalCount;
+                String time = tablesToDisplay.get(indexesForDates.get(i).get(j)).dateNTime;
+                Log.i("time", time + "");
+
+//                Log.i("dateTime", dateTime + "");
                 figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, "");
 
             }
+//            Log.i("dateTime", dateTime + "");
+            Log.i("count", count + "");
+            Log.i("grandTotal", grandTotal + "");
+
             merged.add(grandTotal);
             mergedFigureData.add(figureReportDataElements);
         }
@@ -287,7 +297,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         Collections.sort(distinctDates, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                return UtilityFunctionsForActivity1.peakHourFormatter(o1).compareTo(UtilityFunctionsForActivity1.peakHourFormatter(o2));
+                return new UtilityFunctionsForActivity1().peakHourFormatter(o1).compareTo(new UtilityFunctionsForActivity1().peakHourFormatter(o2));
             }
         });
 
@@ -317,9 +327,9 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 //            FigureReportDataElements figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, org);
             FigureReportDataElements figureReportDataElements = null;
             for (int j = 0; j < indexesAtSingleTime.size(); j++) {
-                grandTotal += tablesToDisplay.get(j).grandTotal;
-                dateTime = distinctDates.get(j);
-                count += tablesToDisplay.get(j).totalCount;
+                grandTotal += tablesToDisplay.get(indexesForDates.get(i).get(j)).grandTotal;
+                dateTime = tablesToDisplay.get(indexesForDates.get(i).get(j)).dateNTime;
+                count += tablesToDisplay.get(indexesForDates.get(i).get(j)).totalCount;
 
                 figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, "");
 

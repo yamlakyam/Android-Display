@@ -168,7 +168,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
                 if (index == tablesToDisplay.size()) {
                     drawLastTotalRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast30DaysPause) {
                 } else if (index == tablesToDisplay.size() + 1) {
 
@@ -182,8 +182,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity2.drawSummaryOfLast30Days(tablesToDisplay, getContext(), summaryOfLast30DaysTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                    new UtilityFunctionsForActivity2().drawSummaryOfLast30Days(tablesToDisplay, getContext(), summaryOfLast30DaysTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollView);
                 }
 
             }
@@ -231,7 +231,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         tableRowProperty3.startAnimation(animation);
 
         summaryOfLast30DaysTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity1.animate(summaryOfLast30DaysTableLayout, tableElements);
+        new UtilityFunctionsForActivity1().animate(summaryOfLast30DaysTableLayout, tableElements);
     }
 
 

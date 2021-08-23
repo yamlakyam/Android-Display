@@ -26,7 +26,6 @@ public class HandleDataChangeThread extends Thread {
             try {
                 Thread.sleep(numberOfSeconds * 1000);
             } catch (InterruptedException e) {
-
                 e.printStackTrace();
                 return;
             }

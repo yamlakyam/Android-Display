@@ -3,8 +3,6 @@ package com.cnet.VisualAnalysis;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,22 +30,17 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
     public static AllData allData;
     public static String myAndroidDeviceId;
-    ProgressBar progressBarCircular;
-    TextView loadingTextView;
     public Handler handler;
-    boolean isFirstRefresh;
-    VideoView videoView;
-
+    TextView loadingStatusText;
+    String connFailMessage = "Connection not available, Restart the app";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+//        setContentView(R.layout.activity_splash_screen);
+        setContentView(R.layout.splash_screen);
 
-        progressBarCircular = findViewById(R.id.progressBarCircular);
-        loadingTextView = findViewById(R.id.loadingTextView);
-        videoView = findViewById(R.id.videoView);
-
+        loadingStatusText = findViewById(R.id.loadingStatusText);
 
         VolleyHttp http = new VolleyHttp(getApplicationContext());
         http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
@@ -57,7 +49,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 //                SplashScreenActivity.this);
 
 
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logo_animation);
+       /* Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logo_animation);
         videoView.setVideoURI(uri);
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -67,19 +59,17 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
                 mp.start();
             }
         });
+
+        */
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSuccess(JSONObject jsonObject) {
 
-        progressBarCircular.setVisibility(View.GONE);
-        loadingTextView.setVisibility(View.GONE);
-        videoView.stopPlayback();
-
-        AllDataParser allDataParser = new AllDataParser(jsonObject);
 
         try {
+            AllDataParser allDataParser = new AllDataParser(jsonObject);
             allData = allDataParser.parseAllData();
 
             if (jsonObject.has("dashBoardData") && !jsonObject.isNull("dashBoardData") && jsonObject.getJSONArray("dashBoardData").length() > 0) {
@@ -95,11 +85,11 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
     @Override
     public void onFailure(VolleyError error) {
-        progressBarCircular.setVisibility(View.GONE);
-        loadingTextView.setText(R.string.volley_error);
+//        progressBarCircular.setVisibility(View.GONE);
+//        loadingTextView.setText(R.string.volley_error);
         Log.i("error", error + "");
-//        videoView.stopPlayback();
         Toast.makeText(this, "Connection not available, Restart the app", Toast.LENGTH_LONG).show();
+        loadingStatusText.setText(connFailMessage);
     }
 
     @SuppressLint("HardwareIds")

@@ -41,10 +41,8 @@ import java.util.ArrayList;
 
 public class UtilityFunctionsForActivity2 {
 
-    public static void drawPieChart(PieChartData pieChartData, PieChart piechart, String label) {
+    public void drawPieChart(PieChartData pieChartData, PieChart piechart, String label) {
         piechart.setDrawSliceText(true);// to draw the labels
-
-
         piechart.animateX(3000, Easing.EaseInOutCirc);
         piechart.setDrawHoleEnabled(false);
         piechart.getDescription().setTextColor(Color.parseColor("#f6f8fb"));
@@ -201,7 +199,7 @@ public class UtilityFunctionsForActivity2 {
             for (int i = 0; i < lineChartData.x.length; i++) {
                 dataVals.add(new Entry(lineChartData.x[i], lineChartData.y[i]));
 
-                String xLabelAtIndex = UtilityFunctionsForActivity1.formatHourNmin(lineChartData.legends[i]);
+                String xLabelAtIndex = new UtilityFunctionsForActivity1().formatHourNmin(lineChartData.legends[i]);
                 formattedXLabels.add(xLabelAtIndex);
             }
 
@@ -247,7 +245,7 @@ public class UtilityFunctionsForActivity2 {
         }
     }
 
-    public static void drawSummaryByArticleTable(
+    public void drawSummaryByArticleTable(
             ArrayList<SummarizedByArticleTableRow> summarizedByArticleDataRows,
             Context context,
             TableLayout summarizedByArticleTableLayout,
@@ -304,9 +302,9 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-    public static void drawSummaryByParentArticleTable(ArrayList<SummarizedByParentArticleRow> summarizedByParentArticleRows,
-                                                       Context context,
-                                                       TableLayout summarizedByParentArticleTableLayout, int index) {
+    public void drawSummaryByParentArticleTable(ArrayList<SummarizedByParentArticleRow> summarizedByParentArticleRows,
+                                                Context context,
+                                                TableLayout summarizedByParentArticleTableLayout, int index) {
 
         SummarizedByParentArticleRow row = summarizedByParentArticleRows.get(index);
 
@@ -355,9 +353,9 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-    public static void drawSummaryByChildArticleTable(ArrayList<SummarizedByChildArticleRow> summarizedByChildArticleRows,
-                                                      Context context,
-                                                      TableLayout summarizedByChildArticleTableLayout, int index) {
+    public void drawSummaryByChildArticleTable(ArrayList<SummarizedByChildArticleRow> summarizedByChildArticleRows,
+                                               Context context,
+                                               TableLayout summarizedByChildArticleTableLayout, int index) {
 
         SummarizedByChildArticleRow row = summarizedByChildArticleRows.get(index);
 
@@ -407,10 +405,9 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-
-    public static void drawSummaryOfLast30Days(ArrayList<SummaryOfLast30DaysRow> summaryOfLast30DaysRows,
-                                               Context context,
-                                               TableLayout summarizedByLast30DaysTableLayout, int index) {
+    public void drawSummaryOfLast30Days(ArrayList<SummaryOfLast30DaysRow> summaryOfLast30DaysRows,
+                                        Context context,
+                                        TableLayout summarizedByLast30DaysTableLayout, int index) {
 
 
         SummaryOfLast30DaysRow row = summaryOfLast30DaysRows.get(index);
@@ -431,7 +428,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(row.getName());
             tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateToString(row.getDateTime()));
+            tableRowProperty4.setText(new UtilityFunctionsForActivity1().formatDateToString(row.getDateTime()));
 
 
             summarizedByLast30DaysTableLayout.addView(tableElements);
@@ -442,9 +439,9 @@ public class UtilityFunctionsForActivity2 {
     }
 
 
-    public static void drawSummaryOfLAst6Months(ArrayList<SummaryOfLast6MonthsRow> summaryOfLast6MonthsRows,
-                                                Context context,
-                                                TableLayout summarizedByLast6MonthsTableLayout, int index, double total) {
+    public void drawSummaryOfLAst6Months(ArrayList<SummaryOfLast6MonthsRow> summaryOfLast6MonthsRows,
+                                         Context context,
+                                         TableLayout summarizedByLast6MonthsTableLayout, int index, double total) {
 
         SummaryOfLast6MonthsRow row = summaryOfLast6MonthsRows.get(index);
         if (context != null) {
@@ -462,7 +459,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(row.getName());
             tableRowProperty3.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-            tableRowProperty4.setText(UtilityFunctionsForActivity1.formatDateToString(row.getDateTime()));
+            tableRowProperty4.setText(new UtilityFunctionsForActivity1().formatDateToString(row.getDateTime()));
 
             summarizedByLast6MonthsTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByLast6MonthsTableLayout, tableElements);
@@ -471,9 +468,9 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-    public static void drawBranchSummary(ArrayList<BranchSummaryTableRow> branchSummaryTableRows,
-                                         Context context,
-                                         TableLayout branchSummaryTableLayout, int index) {
+    public void drawBranchSummary(ArrayList<BranchSummaryTableRow> branchSummaryTableRows,
+                                  Context context,
+                                  TableLayout branchSummaryTableLayout, int index) {
 
         BranchSummaryTableRow row = branchSummaryTableRows.get(index);
 
@@ -515,7 +512,7 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-    public static void animateBottomToTop(View container, View child) {
+    public void animateBottomToTop(View container, View child) {
         Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.bottom_to_top);
         child.startAnimation(animation);
     }

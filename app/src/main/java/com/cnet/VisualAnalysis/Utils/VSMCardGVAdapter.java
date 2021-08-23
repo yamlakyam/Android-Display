@@ -53,10 +53,10 @@ public class VSMCardGVAdapter extends ArrayAdapter<VSMCard> {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
 
-        Date lastActive = UtilityFunctionsForActivity1.formatTime(vsmCard.getLastSeen());
+        Date lastActive = new UtilityFunctionsForActivity1().formatTime(vsmCard.getLastSeen());
         Date currentTime = Calendar.getInstance().getTime();
 
-        String formattedLastActive = UtilityFunctionsForActivity1.timeElapsed(lastActive, currentTime);
+        String formattedLastActive = new UtilityFunctionsForActivity1().timeElapsed(lastActive, currentTime);
 
         vsmName.setText(vsmCard.getVsi());
         vsmOutlet.setText(String.valueOf(vsmCard.getSalesOutLateCount()));

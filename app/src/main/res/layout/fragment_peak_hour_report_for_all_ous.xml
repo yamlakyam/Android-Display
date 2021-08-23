@@ -188,7 +188,7 @@
 
             <TextView
                 android:id="@+id/peakHourReportForAllHeader1"
-                android:layout_width="120dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/advent_pro_thin"
                 android:gravity="start"
@@ -203,16 +203,6 @@
                 android:fontFamily="@font/advent_pro_thin"
                 android:gravity="end"
                 android:text="Total Count"
-                android:textColor="#ffffff"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/peakHourReportForAllHeader5"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
-                android:gravity="end"
-                android:text="Branch"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
 

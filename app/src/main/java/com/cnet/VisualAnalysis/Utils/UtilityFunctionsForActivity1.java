@@ -34,7 +34,7 @@ import java.util.Locale;
 
 public class UtilityFunctionsForActivity1 {
 
-    public static ArrayList<SummaryTableRow> summaryTableParser(JSONArray tableInJson) throws JSONException {
+    public ArrayList<SummaryTableRow> summaryTableParser(JSONArray tableInJson) throws JSONException {
         ArrayList<SummaryTableRow> tableData = new ArrayList<>();
 
         for (int i = 0; i < tableInJson.length(); i++) {
@@ -42,7 +42,7 @@ public class UtilityFunctionsForActivity1 {
 
             tableData.add(
                     new SummaryTableRow(
-                         table.getString("organizationName"),
+                            table.getString("organizationName"),
                             formatTimeToString(table.getString("startTimeStamp")),
                             formatTimeToString(table.getString("endTimeStamp")),
                             table.getInt("vsiCount"),
@@ -59,7 +59,7 @@ public class UtilityFunctionsForActivity1 {
         return tableData;
     }
 
-    public static void drawSummaryTable(ArrayList<SummaryTableRow> summaryTableRows, Context context, TableLayout summaryTableLayout, int index) {
+    public void drawSummaryTable(ArrayList<SummaryTableRow> summaryTableRows, Context context, TableLayout summaryTableLayout, int index) {
 
         SummaryTableRow row = summaryTableRows.get(index);
 
@@ -101,7 +101,7 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void drawDistributorTable(ArrayList<DistributorTableRow> distributorTableRows, Context context, TableLayout distributorTableLayout, int index) {
+    public void drawDistributorTable(ArrayList<DistributorTableRow> distributorTableRows, Context context, TableLayout distributorTableLayout, int index) {
         if (distributorTableRows != null) {
             DistributorTableRow row = distributorTableRows.get(index);
 
@@ -150,7 +150,7 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void drawUserReportForEachOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
+    public void drawUserReportForEachOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
         if (userReportTableRows != null) {
             UserReportTableRow row = userReportTableRows.get(index);
 
@@ -190,7 +190,7 @@ public class UtilityFunctionsForActivity1 {
         }
     }
 
-    public static void drawPeakHourReportForEachOu(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
+    public void drawPeakHourReportForEachOu(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
         if (figureReportDataElements != null) {
             FigureReportDataElements row = figureReportDataElements.get(index);
 
@@ -230,7 +230,7 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void drawUserReportForAllOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
+    public void drawUserReportForAllOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
         if (userReportTableRows != null) {
             UserReportTableRow row = userReportTableRows.get(index);
 
@@ -272,7 +272,7 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void drawPeakHourReportForAllOus(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
+    public void drawPeakHourReportForAllOus(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
         if (figureReportDataElements != null) {
             FigureReportDataElements row = figureReportDataElements.get(index);
 
@@ -286,15 +286,13 @@ public class UtilityFunctionsForActivity1 {
                 TextView peakHourReportForAllSN = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty1);
                 TextView peakHourReportForAllTime = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty2);
                 TextView peakHourReportForAllTotalCount = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty3);
-                TextView peakHourReportForAllBranchName = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty4);
                 TextView peakHourReportForAllGrandTotal = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty5);
-
 
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 peakHourReportForAllSN.setText(String.valueOf(index + 1));
                 peakHourReportForAllTime.setText(row.getDateNTime());
                 peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
-                peakHourReportForAllBranchName.setText(row.getOrg());
+
                 peakHourReportForAllGrandTotal.setText(numberFormat.format(Math.round(row.grandTotal * 100.0) / 100.0));
 
                 if (peakHourReportTableLayout != null) {
@@ -307,7 +305,7 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void drawVansOfSingleOrgTable(ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleVanArrayList, Context context, TableLayout vanListTableLayout, int index) {
+    public void drawVansOfSingleOrgTable(ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleVanArrayList, Context context, TableLayout vanListTableLayout, int index) {
         if (vsmTableDataForSingleVanArrayList != null) {
             VsmTableDataForSingleVan row = vsmTableDataForSingleVanArrayList.get(index);
 
@@ -346,14 +344,14 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public static void animate(View container, View child) {
+    public void animate(View container, View child) {
         if (container != null) {
             Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
             child.startAnimation(animation);
         }
     }
 
-    public static void scrollRows(ScrollView scrollView) {
+    public void scrollRows(ScrollView scrollView) {
 
         if (scrollView != null) {
             scrollView.post(new Runnable() {
@@ -364,16 +362,15 @@ public class UtilityFunctionsForActivity1 {
             });
         }
 
-
     }
 
-    public static void drawVSMCard(int index, Context context, GridView VSMcardGridView) throws JSONException {
+    public void drawVSMCard(int index, Context context, GridView VSMcardGridView) throws JSONException {
 
         VSMCardGVAdapter adapter = new VSMCardGVAdapter(context, SplashScreenActivity.allData.getFmcgData().getVsmCards().get(index));
         VSMcardGridView.setAdapter(adapter);
     }
 
-    public static VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
+    public VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
         JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
         String nameOfVan = tableDataObjectForSingleVanInJson.getString("van");
         int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
@@ -406,14 +403,14 @@ public class UtilityFunctionsForActivity1 {
                     tableRowForSingleVan.getDouble("vat"),
                     tableRowForSingleVan.getDouble("grandTotal"),
                     tableRowForSingleVan.getDouble("latitude"),
-                    tableRowForSingleVan.getDouble("longitude"),tableRowForSingleVan.getString("username")
+                    tableRowForSingleVan.getDouble("longitude"), tableRowForSingleVan.getString("username")
             ));
         }
         return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan, salesOutLateCount,
                 lastActive, allLineItemCount, totalPrice);
     }
 
-    public static void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
+    public void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
         ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();
         VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
         ArrayList<VsmTransactionTableRow> rows = vsmTableDataForSingleVan.getTableRows();
@@ -455,7 +452,7 @@ public class UtilityFunctionsForActivity1 {
         }
     }
 
-    public static String formatTimeToString(String lastActive) {
+    public String formatTimeToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("HH:mm:ss");
 
@@ -471,7 +468,7 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-    public static String formatDateTimeToString(String lastActive) {
+    public String formatDateTimeToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
@@ -487,7 +484,7 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-    public static String formatDateToString(String lastActive) {
+    public String formatDateToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
 
@@ -503,7 +500,7 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-    public static String formatHourNmin(String lastActive) {
+    public String formatHourNmin(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);
         SimpleDateFormat output = new SimpleDateFormat("hh:mmaa");
 
@@ -520,7 +517,7 @@ public class UtilityFunctionsForActivity1 {
     }
 
 
-    public static Date formatTime(String lastActive) {
+    public Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsed = null;
         try {
@@ -532,7 +529,7 @@ public class UtilityFunctionsForActivity1 {
     }
 
 
-    public static Date peakHourFormatter(String dateTime) {
+    public Date peakHourFormatter(String dateTime) {
         SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);
 
         Date parsed = null;
@@ -544,7 +541,7 @@ public class UtilityFunctionsForActivity1 {
         return parsed;
     }
 
-    public static String timeElapsed(Date startDate, Date endDate) {
+    public String timeElapsed(Date startDate, Date endDate) {
         long difference = endDate.getTime() - startDate.getTime();
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;

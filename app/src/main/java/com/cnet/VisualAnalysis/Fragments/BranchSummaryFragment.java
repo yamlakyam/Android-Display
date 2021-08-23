@@ -149,7 +149,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
                 if (index == tablesToDisplay.size()) {
                     drawLastBranchSummaryRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollBranchSummaryTable);
 
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfBranchPause) {
                 } else if (index == tablesToDisplay.size() + 1) {
@@ -164,8 +164,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity2.drawBranchSummary(tablesToDisplay, getContext(), branchSummaryTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(scrollBranchSummaryTable);
+                    new UtilityFunctionsForActivity2().drawBranchSummary(tablesToDisplay, getContext(), branchSummaryTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollBranchSummaryTable);
                 }
 
             }
@@ -195,7 +195,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         }
 
         inflateTable(dashBoardData.getBranchSummaryData().getBranchSummaryTableRows(), seconds, startingRowIndex);
-        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(), pChartBranchSummary, "Branch summary");
+        new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getBranchSummaryData().getPieChartData(), pChartBranchSummary, "Branch summary");
 
     }
 
@@ -250,7 +250,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         tableRowProperty5.startAnimation(animation);
 
         branchSummaryTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity2.animateBottomToTop(branchSummaryTableLayout, tableElements);
+        new UtilityFunctionsForActivity2().animateBottomToTop(branchSummaryTableLayout, tableElements);
     }
 
     public void navigate(Fragment fragment) {

@@ -41,7 +41,6 @@ import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 
@@ -136,7 +135,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         if (dashBoardData.getSummarizedByChildArticleData() != null) {
             inflateTable(dashBoardData.getSummarizedByChildArticleData().getTableData(), seconds);
             UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByChildArticleData().getBarChartData(), barChart, "Summarized by Article Child Category");
-            UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
+            new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
         }
 
     }
@@ -169,8 +168,8 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
                     }
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity2.drawSummaryByChildArticleTable(tablesToDisplay, getContext(), summaryByChildArticleTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(summarizedByChildArticleScrollView);
+                    new UtilityFunctionsForActivity2().drawSummaryByChildArticleTable(tablesToDisplay, getContext(), summaryByChildArticleTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(summarizedByChildArticleScrollView);
                 }
 
             }
@@ -214,7 +213,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         tableRowProperty3.startAnimation(animation);
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summaryByChildArticleTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity1.animate(summaryByChildArticleTableLayout, tableElements);
+        new UtilityFunctionsForActivity1().animate(summaryByChildArticleTableLayout, tableElements);
     }
 
     public void backTraverse(Fragment fragment, int id) {

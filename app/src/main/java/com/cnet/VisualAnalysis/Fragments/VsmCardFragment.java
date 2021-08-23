@@ -102,7 +102,7 @@ public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
                             navController.navigate(R.id.summaryTableFragment);
                         }
                     } else {
-                        UtilityFunctionsForActivity1.drawVSMCard(index, getContext(), vsmCardGridLayout);
+                       new UtilityFunctionsForActivity1().drawVSMCard(index, getContext(), vsmCardGridLayout);
                     }
 
                 } catch (JSONException e) {

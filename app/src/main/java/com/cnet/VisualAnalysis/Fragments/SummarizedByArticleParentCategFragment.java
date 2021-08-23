@@ -155,7 +155,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 }
                 if (index == tablesToDisplay.size()) {
                     drawLastArticleParentRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollView);
 
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByParentArticlePause) {
                 } else if (index == tablesToDisplay.size() + 1) {
@@ -170,8 +170,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity2.drawSummaryByParentArticleTable(tablesToDisplay, getContext(), summarizedByParentArticleTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                    new UtilityFunctionsForActivity2().drawSummaryByParentArticleTable(tablesToDisplay, getContext(), summarizedByParentArticleTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollView);
                 }
             }
         };
@@ -192,7 +192,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData(), seconds);
 
                 UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
-                UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+                new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
             }
         }
     }
@@ -232,7 +232,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         tableRowProperty3.startAnimation(animation);
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summarizedByParentArticleTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity1.animate(summarizedByParentArticleTableLayout, tableElements);
+        new UtilityFunctionsForActivity1().animate(summarizedByParentArticleTableLayout, tableElements);
 
     }
 

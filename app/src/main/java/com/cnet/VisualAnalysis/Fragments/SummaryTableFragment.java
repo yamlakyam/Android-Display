@@ -3,14 +3,12 @@ package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -116,7 +113,7 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
                 tablesToDisplay = tableRows;
                 if (index == tablesToDisplay.size()) {
                     drawSumOfLastRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollSummaryTable);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollSummaryTable);
                 } else if (index == tablesToDisplay.size() + 1) {
                     NavController navController = NavHostFragment.findNavController(fragment);
 
@@ -131,15 +128,15 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
                     }
                 } else {
                     sumofLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity1.drawSummaryTable(tablesToDisplay, getContext(), summaryTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(scrollSummaryTable);
+                    new UtilityFunctionsForActivity1().drawSummaryTable(tablesToDisplay, getContext(), summaryTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollSummaryTable);
                 }
 
             }
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200, this,0);
+        handleRowAnimationThread = new HandleRowAnimationThread(respSize, SummaryTableFragment.changeTodoHandler, 200, this, 0);
         handleRowAnimationThread.start();
 
     }
@@ -230,7 +227,7 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summaryTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity1.animate(summaryTableLayout, tableElements);
+        new UtilityFunctionsForActivity1().animate(summaryTableLayout, tableElements);
     }
 
     public void backTraverse() {
@@ -267,13 +264,13 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
     @Override
     public void centerKey() {
         Log.i("centerKey", "summary");
-        if(handleRowAnimationThread!=null){
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
         MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
 
 
-        if(!MainActivity.secondCenterKeyPause){
+        if (!MainActivity.secondCenterKeyPause) {
             navController = NavHostFragment.findNavController(fragment);
             navController.navigate(R.id.distributorTableFragment);
         }
@@ -284,7 +281,7 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
     public void leftKey() {
         Log.i("leftKey", "summary");
 
-        if(handleRowAnimationThread!=null){
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
 
@@ -302,7 +299,7 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
     public void rightKey() {
 
         Log.i("rightKey", "summary");
-        if(handleRowAnimationThread!=null){
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
         navController = NavHostFragment.findNavController(fragment);

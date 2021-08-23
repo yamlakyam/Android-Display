@@ -139,7 +139,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 if (userReportDataForSingleOus.get(index) != null) {
                     inflateTable(index);
 //                    UtilityFunctionsForActivity2.drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).pieChartData, pieChart, "User Report");
-                    UtilityFunctionsForActivity2.drawPieChart(userReportDataForSingleOus.get(index).pieChartData, pieChart, "User Report");
+                    new UtilityFunctionsForActivity2().drawPieChart(userReportDataForSingleOus.get(index).pieChartData, pieChart, "User Report");
 //                    userReportTitle.setText("User Report For " + SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).org);
                     userReportTitle.setText("User Report For " + userReportDataForSingleOus.get(index).org);
                     userReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
@@ -176,7 +176,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
-                    UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
+                    new UtilityFunctionsForActivity1().scrollRows(userReportScrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
 //                } else if (index == tablesToDisplay.size() + 1 && dataIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
                 } else if (index == tablesToDisplay.size() + 1 && dataIndex == getallUserReportSize(userReportDataForSingleOus) - 1) {
@@ -190,8 +190,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
                 } else if (index < tablesToDisplay.size()) {
                     grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
-                    UtilityFunctionsForActivity1.drawUserReportForEachOu(tablesToDisplay, getContext(), userReportTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(userReportScrollView);
+                    new UtilityFunctionsForActivity1().drawUserReportForEachOu(tablesToDisplay, getContext(), userReportTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(userReportScrollView);
 
                 }
             }
@@ -233,7 +233,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
         if (userReportTableLayout != null) {
             userReportTableLayout.addView(tableElements);
-            UtilityFunctionsForActivity2.animateBottomToTop(userReportTableLayout, tableElements);
+            new UtilityFunctionsForActivity2().animateBottomToTop(userReportTableLayout, tableElements);
 
         }
 

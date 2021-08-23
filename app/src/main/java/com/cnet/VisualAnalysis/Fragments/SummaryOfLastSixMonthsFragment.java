@@ -154,7 +154,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
                 if (index == tablesToDisplay.size()) {
                     drawLast6MonsTotalRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast6MonsPause) {
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (summaryOfLAstXmonthPaused) {
@@ -166,8 +166,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
                     }
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity2.drawSummaryOfLAst6Months(tablesToDisplay, getContext(), summaryOfLast6MonthsTableLayout, index, totalAmount);
-                    UtilityFunctionsForActivity1.scrollRows(scrollView);
+                    new UtilityFunctionsForActivity2().drawSummaryOfLAst6Months(tablesToDisplay, getContext(), summaryOfLast6MonthsTableLayout, index, totalAmount);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollView);
                 }
 
             }
@@ -185,7 +185,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
         inflateTable(dashBoardData.getSummaryOfLast6MonthsData().getTableData(), seconds);
         UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast6MonthsData().getBarChartData(), barChart, "Summarized by last 6 months");
-        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), pieChart, "Summarized by last 6 months");
+        new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), pieChart, "Summarized by last 6 months");
 
     }
 
@@ -225,7 +225,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
         tableRowProperty3.startAnimation(animation);
         summaryOfLast6MonthsTableLayout.addView(tableElements);
-        UtilityFunctionsForActivity1.animate(summaryOfLast6MonthsTableLayout, tableElements);
+        new UtilityFunctionsForActivity1().animate(summaryOfLast6MonthsTableLayout, tableElements);
     }
 
 

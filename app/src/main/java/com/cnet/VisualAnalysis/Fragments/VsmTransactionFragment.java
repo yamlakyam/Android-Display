@@ -176,7 +176,7 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
                 }
                 if (index == allRows) {
                     drawLastRow();
-                    UtilityFunctionsForActivity1.scrollRows(scrollVSMtable);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollVSMtable);
                 } else if (index == allRows + 1 &&
                         vanIndex == allOrgData.get(distributorIndex).getAllVansData().size() - 1 &&
                         distributorIndex == allOrgData.size() - 1) {
@@ -189,8 +189,8 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
                     }
                 } else if (index < allRows) {
                     lastRowSummation(allOrgData, vanIndex, distributorIndex, index);
-                    UtilityFunctionsForActivity1.drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index);
-                    UtilityFunctionsForActivity1.scrollRows(scrollVSMtable);
+                    new UtilityFunctionsForActivity1().drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index);
+                    new UtilityFunctionsForActivity1().scrollRows(scrollVSMtable);
                 }
 
             }
@@ -265,7 +265,7 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
             if (vsmTransactionTableLayout != null) {
                 vsmTransactionTableLayout.addView(tableElements);
             }
-            UtilityFunctionsForActivity1.animate(vsmTransactionTableLayout, tableElements);
+            new UtilityFunctionsForActivity1().animate(vsmTransactionTableLayout, tableElements);
         }
 
     }

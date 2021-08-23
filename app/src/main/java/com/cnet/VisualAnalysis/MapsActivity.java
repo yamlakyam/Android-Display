@@ -72,8 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         parameter1 = findViewById(R.id.parameter1);
         parameter2 = findViewById(R.id.parameter2);
         parameter3 = findViewById(R.id.parameter3);
-        mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this::onMapReady);
         }
@@ -88,25 +87,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (handleDataChangeThread != null) {
             handleDataChangeThread.interrupt();
         }
-
     }
 
     @SuppressLint("HandlerLeak")
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//        addLocations();
         gmap = googleMap;
         if (!mapPaused) {
-//            drawMap(googleMap);
             drawAllVansMarkers(0, googleMap, 0);
         }
-
     }
 
-    //    private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, int index) {
     private void drawMarkerWithInfo(GoogleMap googleMap, LatLngBounds.Builder builder, LatLng loc, ArrayList<VsmTransactionTableRow> vsmTransactionTableRows, int index) {
-//        LatLng loc = locations.get(index);
         MarkerOptions marker = new MarkerOptions().position(loc);
         Marker mMarker = googleMap.addMarker(marker);
         builder.include(marker.getPosition());
@@ -137,7 +130,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 nameTextView.setText(place_name);
                 TextView timeTextView = (TextView) view.findViewById(R.id.timeTextView);
-                timeTextView.setText(UtilityFunctionsForActivity1.timeElapsed(UtilityFunctionsForActivity1.formatTime(vsmTransactionTableRows.get(index).getDateNtime()), Calendar.getInstance().getTime()));
+                timeTextView.setText(new UtilityFunctionsForActivity1().timeElapsed(new UtilityFunctionsForActivity1().formatTime(vsmTransactionTableRows.get(index).getDateNtime()), Calendar.getInstance().getTime()));
                 TextView grandTotalText = (TextView) view.findViewById(R.id.grandTotalText);
                 grandTotalText.setText(numberFormat.format(Math.round(vsmTransactionTableRows.get(index).getTotalSales() * 100.0) / 100.0));
                 TextView itemCountText = (TextView) view.findViewById(R.id.itemCountText);
@@ -227,11 +220,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @SuppressLint("HandlerLeak")
     public void drawMarkerInVan(int vanIndex, GoogleMap googleMap, int locIndex) {
-
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
-
                 String message = (String) msg.obj;
                 int index = 0;
                 if (message != null) {
@@ -301,7 +292,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (currentLocationIndex == 0) {
                     googleMap.clear();
                 }
-
             }
         };
         ArrayList<VsmTableDataForSingleVan> vsmTableDatasForSingleVan = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();

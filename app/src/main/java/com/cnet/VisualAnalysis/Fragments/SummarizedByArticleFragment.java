@@ -70,7 +70,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     ImageView summarticlerightArrow;
 
     DigitalClock digitalClock;
-    public  HandleRowAnimationThread handleRowAnimationThread;
+    public HandleRowAnimationThread handleRowAnimationThread;
     public static boolean summByarticlePaused;
 
     double totalUnitAmount = 0;
@@ -155,7 +155,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                 }
                 if (index == tablesToDisplay.size()) {
                     drawLastArticleSummaryTotalRow();
-                    UtilityFunctionsForActivity1.scrollRows(summByArticleScrollView);
+                    new UtilityFunctionsForActivity1().scrollRows(summByArticleScrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryByArticlePause) {
                 } else if (index == tablesToDisplay.size() + 1) {
                     if (getContext() != null) {
@@ -171,8 +171,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    UtilityFunctionsForActivity2.drawSummaryByArticleTable(tablesToDisplay, getContext(), summarizedByArticleTableLayout, index);
-                    UtilityFunctionsForActivity1.scrollRows(summByArticleScrollView);
+                    new UtilityFunctionsForActivity2().drawSummaryByArticleTable(tablesToDisplay, getContext(), summarizedByArticleTableLayout, index);
+                    new UtilityFunctionsForActivity1().scrollRows(summByArticleScrollView);
                 }
 
             }
@@ -304,7 +304,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             tableRowProperty4.startAnimation(animation);
 
             summarizedByArticleTableLayout.addView(tableElements);
-            UtilityFunctionsForActivity1.animate(summarizedByArticleTableLayout, tableElements);
+            new UtilityFunctionsForActivity1().animate(summarizedByArticleTableLayout, tableElements);
         }
 
     }
@@ -317,7 +317,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);
 //        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
 //        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle, "Summarized by Article");
-        UtilityFunctionsForActivity2.drawPieChart(dashBoardData.getSummarizedByArticleData().pieChartData, pChartSumByArticle, "Summarized by Article");
+        new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByArticleData().pieChartData, pChartSumByArticle, "Summarized by Article");
     }
 
     public void backTraverse() {
