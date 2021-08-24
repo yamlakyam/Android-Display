@@ -35,7 +35,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
-import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -227,8 +226,9 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
 
             if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
 //                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+                navController.navigate(R.id.mapsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(12))
                 navController.navigate(R.id.peakHourReportFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(11))

@@ -98,7 +98,6 @@ public class UtilityFunctionsForActivity1 {
             animate(summaryTableLayout, tableElements);
         }
 
-
     }
 
     public void drawDistributorTable(ArrayList<DistributorTableRow> distributorTableRows, Context context, TableLayout distributorTableLayout, int index) {

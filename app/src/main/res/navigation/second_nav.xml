@@ -164,6 +164,11 @@
         tools:layout="@layout/fragment_animation_video">
 
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.cnet.VisualAnalysis.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 
 
 </navigation>

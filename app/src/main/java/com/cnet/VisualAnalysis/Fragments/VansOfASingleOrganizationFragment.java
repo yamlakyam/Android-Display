@@ -1,7 +1,6 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -26,7 +25,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
-import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -153,9 +151,12 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
     }
 
     public void navigate() {
+        NavController navController = NavHostFragment.findNavController(fragment);
         if (getActivity() != null && fragment.isAdded()) {
             try {
-                startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.mapsFragment);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -185,8 +186,8 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-            startActivity(new Intent(requireActivity(), MapsActivity.class));
-
+//            startActivity(new Intent(requireActivity(), MapsActivity.class));
+            navController.navigate(R.id.mapsFragment);
 
     }
 

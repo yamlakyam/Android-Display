@@ -1,7 +1,6 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,7 +25,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.Data.LineChartData;
-import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -292,8 +290,9 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-            startActivity(new Intent(requireActivity(), MapsActivity.class));
+//            startActivity(new Intent(requireActivity(), MapsActivity.class));
 //            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            navController.navigate(R.id.mapsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
     }

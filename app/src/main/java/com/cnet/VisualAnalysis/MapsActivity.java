@@ -46,7 +46,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     int currentLocationIndex = 0;
 
     boolean mapPaused = false;
-
     public ArrayList<VsmTableDataForSingleVan> vansToDisplay;
 
     GoogleMap gmap;
@@ -116,6 +115,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public View getInfoWindow(Marker marker) {
                 return null;
             }
+
             @Override
             public View getInfoContents(Marker marker) {
 
