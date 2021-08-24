@@ -21,7 +21,6 @@ public class VideoActivity extends AppCompatActivity {
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logo_animation);
         videoView.setVideoURI(uri);
         videoView.start();
-
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {

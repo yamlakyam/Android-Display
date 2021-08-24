@@ -1,4 +1,4 @@
-package com.cnet.VisualAnalysis;
+package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,9 +17,12 @@ import androidx.fragment.app.Fragment;
 
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
 import com.cnet.VisualAnalysis.Data.VsmTransactionTableRow;
+import com.cnet.VisualAnalysis.R;
+import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Threads.HandleVanChangeThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
+import com.cnet.VisualAnalysis.VideoActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,7 +40,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MapsFragment extends Fragment {
-
     int width;
     TextView vanNameText;
     TextView driverNameText;
@@ -79,7 +81,6 @@ public class MapsFragment extends Fragment {
 
     @SuppressLint("HandlerLeak")
     public void drawAllVansMarkers(int startingIndex, GoogleMap googleMap, int locIndex) {
-
         changeDataHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -140,8 +141,8 @@ public class MapsFragment extends Fragment {
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() - 1) {
 //                    startActivity(new Intent(MapsActivity.this, SecondActivity.class));
-                    startActivity(new Intent(requireActivity(), SecondActivity.class));
-//                    startActivity(new Intent(MapsActivity.this, VideoActivity.class));
+//                    startActivity(new Intent(requireActivity(), SecondActivity.class));
+                    startActivity(new Intent(requireActivity(), VideoActivity.class));
                 } else if (index < SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size()) {
 
                     double latitude = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.get(index).getLatitude();
