@@ -107,7 +107,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         summByArticleScrollView = view.findViewById(R.id.summByArticleScrollView);
         articleSummaryProgressBar = view.findViewById(R.id.articleSummaryProgressBar);
         constraintLayout = view.findViewById(R.id.constraintLayout);
-        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock = view.findViewById(R.id.articleSummary_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         summarizedByArticleTextView = view.findViewById(R.id.summarizedByArticleTextView);
         summarizedByArticleTextView.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
@@ -178,19 +178,12 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
     }
 
 
     public void navigate(Fragment fragment) {
-//
-//        Intent intent = new Intent(getActivity(), VideoActivity.class);
-//        intent.putExtra("from", 3);
-//        startActivity(intent);
-//        getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
-//        NavOptions.Builder navBuilder = new NavOptions.Builder();
-//        navBuilder.setEnterAnim(R.anim.slide_in_bottom).setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_bottom).setPopExitAnim(R.anim.slide_out_bottom);
 
         NavController navController = NavHostFragment.findNavController(fragment);
 
@@ -207,17 +200,18 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                 navController.navigate(R.id.branchSummaryFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
                 navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+//                navController.navigate(R.id.mapsFragment);
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                navController.navigate(R.id.userReportForEachOusFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 navController.navigate(R.id.peakHourReportFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+                navController.navigate(R.id.mapsFragment);
             }
-
         }
     }
 
@@ -225,19 +219,21 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
 
-            if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                navController.navigate(R.id.userReportForEachOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
 //                navController.navigate(R.id.vansOfASingleOrganizationFragment);
                 navController.navigate(R.id.mapsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
-                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(11))
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);

@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-
 public class
 VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.KeyPress {
 
@@ -146,36 +145,45 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200);
         handleRowAnimationThread.start();
     }
 
     public void navigate() {
         NavController navController = NavHostFragment.findNavController(fragment);
-        if (getActivity() != null && fragment.isAdded()) {
-            try {
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-                navController.navigate(R.id.mapsFragment);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            navController.navigate(R.id.mapsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8))
+            navController.navigate(R.id.branchSummaryFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(9))
+            navController.navigate(R.id.userReportForAllOusFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+            navController.navigate(R.id.peakHourReportForAllOusFragment);
     }
 
 
     public void navigateLeft(Fragment fragment) {
 
         NavController navController = NavHostFragment.findNavController(fragment);
-        if (SplashScreenActivity.allData.getLayoutList().contains(12))
-            navController.navigate(R.id.peakHourReportFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+        if (SplashScreenActivity.allData.getLayoutList().contains(11))
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-            navController.navigate(R.id.userReportForEachOusFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+        else if (SplashScreenActivity.allData.getLayoutList().contains(9))
             navController.navigate(R.id.userReportForAllOusFragment2);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);
@@ -183,12 +191,17 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(5))
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
 //            startActivity(new Intent(requireActivity(), MapsActivity.class));
             navController.navigate(R.id.mapsFragment);
-
     }
 
 
@@ -251,7 +264,6 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
         salesOutLateCountSum = 0;
         allLineItemCountSum = 0;
         totalPriceSum = 0;
-
     }
 
     @Override

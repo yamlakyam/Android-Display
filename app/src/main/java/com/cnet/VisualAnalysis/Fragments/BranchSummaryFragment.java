@@ -108,7 +108,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         linearLayout = view.findViewById(R.id.branchKeypad);
 
         scrollingBranchText.setSelected(true);
-        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock = view.findViewById(R.id.branchSummary_digitalClock);
         branchSummaryHeaderTextView = view.findViewById(R.id.branchSummaryHeaderTextView);
         branchSummaryHeaderTextView.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
@@ -171,7 +171,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this, startingRowIndex);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
     }
 
@@ -255,26 +255,25 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
     public void navigate(Fragment fragment) {
 
-//        Intent intent = new Intent(getActivity(), VideoActivity.class);
-//        intent.putExtra("from", 8);
-//        startActivity(intent);
-
         requireActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
 
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+            else if (SplashScreenActivity.allData.getLayoutList().contains(11))
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-                navController.navigate(R.id.peakHourReportFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
                 navController.navigate(R.id.vansOfASingleOrganizationFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                navController.navigate(R.id.userReportForEachOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.mapsFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
             else if (SplashScreenActivity.allData.getLayoutList().contains(4))
                 navController.navigate(R.id.summarizedByArticleParentCategFragment);
@@ -301,17 +300,19 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//            startActivity(new Intent(requireActivity(), MapsActivity.class));
-//            navController.navigate(R.id.vansOfASingleOrganizationFragment);
-            navController.navigate(R.id.mapsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+//            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            navController.navigate(R.id.mapsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+//            navController.navigate(R.id.mapsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(11))
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-            navController.navigate(R.id.userReportForEachOusFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+        else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
             navController.navigate(R.id.userReportForAllOusFragment2);
         }
     }

@@ -3,6 +3,7 @@ package com.cnet.VisualAnalysis;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -44,6 +46,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     public int refreshTime = 600000;
     String updateFail = "Failed updating";
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccess(JSONObject jsonObject) throws JSONException {
 
@@ -460,8 +463,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                 frgamentId = R.id.vansOfASingleOrganizationFragment;
         }
-
-//        int frgamentId = R.id.peakHourReportForAllOusFragment;
 
         return frgamentId;
     }

@@ -308,7 +308,7 @@
                     android:orientation="horizontal">
 
                     <DigitalClock
-                        android:id="@+id/digitalClock"
+                        android:id="@+id/articleSummary_digitalClock"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/digital_7"

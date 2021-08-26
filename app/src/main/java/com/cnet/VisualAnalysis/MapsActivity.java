@@ -251,7 +251,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         };
         handleRowAnimationThread = new HandleRowAnimationThread(SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size(),
-                animationHandler, 1000, mapFragment, locIndex);
+                animationHandler, 1000);
         handleRowAnimationThread.start();
     }
 
@@ -297,4 +297,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         handleDataChangeThread.start();
 
     }
+
 }

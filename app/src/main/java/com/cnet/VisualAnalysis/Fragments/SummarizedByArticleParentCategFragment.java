@@ -109,7 +109,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         summarizedByParentArticleFrameLayout = view.findViewById(R.id.summarizedByParentArticleFrameLayout);
         scrollingParentText = view.findViewById(R.id.scrollingParentText);
         scrollingParentText.setSelected(true);
-        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock = view.findViewById(R.id.parentArticle_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         articleParentSummaryTitle = view.findViewById(R.id.articleParentSummaryTitle);
         articleParentSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
@@ -169,13 +169,13 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    new UtilityFunctionsForActivity2().drawSummaryByParentArticleTable(tablesToDisplay, getContext(), summarizedByParentArticleTableLayout, index);
+                    new UtilityFunctionsForActivity2().drawSummaryByParentArticleTable(tablesToDisplay, requireActivity().getApplicationContext(), summarizedByParentArticleTableLayout, index);
                     new UtilityFunctionsForActivity1().scrollRows(scrollView);
                 }
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
 
     }
@@ -204,7 +204,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     }
 
     public void drawLastArticleParentRow() {
-        View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        View tableElements = LayoutInflater.from(requireActivity().getApplicationContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
         TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
         TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
         TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
@@ -227,7 +227,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
         tableRowProperty4.setText("");
 
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
+        Animation animation = AnimationUtils.loadAnimation(requireActivity().getApplicationContext(), R.anim.blink);
         tableRowProperty3.startAnimation(animation);
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summarizedByParentArticleTableLayout.addView(tableElements);
@@ -264,18 +264,18 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 navController.navigate(R.id.summaryOfLastMonthFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+            else if (SplashScreenActivity.allData.getLayoutList().contains(11))
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                navController.navigate(R.id.userReportForEachOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
                 navController.navigate(R.id.peakHourReportFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
-                navController.navigate(R.id.vansOfASingleOrganizationFragment);
-
+//                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+                navController.navigate(R.id.mapsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
         }
@@ -288,19 +288,21 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
             if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                navController.navigate(R.id.userReportForEachOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(1))
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
 //                navController.navigate(R.id.vansOfASingleOrganizationFragment);
                 navController.navigate(R.id.mapsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
-                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                navController.navigate(R.id.vansOfASingleOrganizationFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(11))
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);

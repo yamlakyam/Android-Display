@@ -81,7 +81,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         peakHrAllrightArrow = view.findViewById(R.id.peakHrAllrightArrow);
         linearLayout = view.findViewById(R.id.peakHrForAllKeypad);
         scrollingPeakHourForAllText.setSelected(true);
-        digitalClock = view.findViewById(R.id.digitalClock);
+        digitalClock = view.findViewById(R.id.peakHourAll_digitalClock);
         peakHourReportForAllLineChart = view.findViewById(R.id.peakHourReportForAllLineChart);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
@@ -146,7 +146,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         };
 
 //        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200, this, 0);
-        handleRowAnimationThread = new HandleRowAnimationThread(mergedFigureData.size(), animationHandler, 200, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(mergedFigureData.size(), animationHandler, 200);
         handleRowAnimationThread.start();
     }
 
@@ -247,12 +247,17 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-                navController.navigate(R.id.peakHourReportFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(1))
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
                 navController.navigate(R.id.vansOfASingleOrganizationFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                navController.navigate(R.id.userReportForEachOusFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+                navController.navigate(R.id.mapsFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
             else if (SplashScreenActivity.allData.getLayoutList().contains(4))
                 navController.navigate(R.id.summarizedByArticleParentCategFragment);
@@ -266,20 +271,17 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9))
                 navController.navigate(R.id.userReportForAllOusFragment2);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
-                navController.navigate(R.id.userReportForEachOusFragment);
+
         }
     }
 
     public void navigateLeft(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
-        if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-            navController.navigate(R.id.userReportForEachOusFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+        if (SplashScreenActivity.allData.getLayoutList().contains(9))
             navController.navigate(R.id.userReportForAllOusFragment2);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(6))
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
@@ -289,12 +291,17 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//            startActivity(new Intent(requireActivity(), MapsActivity.class));
-//            navController.navigate(R.id.vansOfASingleOrganizationFragment);
-            navController.navigate(R.id.mapsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+//            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            navController.navigate(R.id.mapsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+//            navController.navigate(R.id.mapsFragment);
+
     }
 
     public void dataofTheSameHour() {

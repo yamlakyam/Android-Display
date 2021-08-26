@@ -276,221 +276,221 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                app:cardBackgroundColor="#7f383838"
-                app:cardCornerRadius="10dp"
-                app:strokeColor="#FFFFFF"
-                app:strokeWidth="3dp">
+            <!--            <com.google.android.material.card.MaterialCardView-->
+            <!--                android:layout_width="300dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginLeft="5dp"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginRight="5dp"-->
+            <!--                app:cardBackgroundColor="#7f383838"-->
+            <!--                app:cardCornerRadius="10dp"-->
+            <!--                app:strokeColor="#FFFFFF"-->
+            <!--                app:strokeWidth="3dp">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:orientation="vertical">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="16dp"
-                        android:paddingRight="16dp">
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:layout_marginTop="10dp"-->
+            <!--                        android:layout_marginRight="10dp"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingStart="16dp"-->
+            <!--                        android:paddingRight="16dp">-->
 
-                        <TextView
-                            android:id="@+id/attribute4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Total Customer"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/attribute4"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:text="Total Customer"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
 
-                        <TextView
-                            android:id="@+id/parameter4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="50"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/parameter4"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:gravity="right"-->
+            <!--                            android:text="50"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
+            <!--                    </LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="16dp"
-                        android:paddingRight="16dp">
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:layout_marginTop="10dp"-->
+            <!--                        android:layout_marginRight="10dp"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingStart="16dp"-->
+            <!--                        android:paddingRight="16dp">-->
 
-                        <TextView
-                            android:id="@+id/attribute5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Customer Visited"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/attribute5"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:text="Customer Visited"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
 
-                        <TextView
-                            android:id="@+id/parameter5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="25"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/parameter5"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:gravity="right"-->
+            <!--                            android:text="25"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
+            <!--                    </LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="16dp"
-                        android:paddingRight="16dp">
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:layout_marginTop="10dp"-->
+            <!--                        android:layout_marginRight="10dp"-->
+            <!--                        android:layout_marginBottom="10dp"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingStart="16dp"-->
+            <!--                        android:paddingRight="16dp">-->
 
-                        <TextView
-                            android:id="@+id/attribute6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Achievement"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/attribute6"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:text="Achievement"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
 
-                        <TextView
-                            android:id="@+id/parameter6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="50%"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/parameter6"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:gravity="right"-->
+            <!--                            android:text="50%"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
+            <!--                    </LinearLayout>-->
 
-                </LinearLayout>
+            <!--                </LinearLayout>-->
 
-            </com.google.android.material.card.MaterialCardView>
+            <!--            </com.google.android.material.card.MaterialCardView>-->
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                app:cardBackgroundColor="#7f383838"
-                app:cardCornerRadius="10dp"
-                app:strokeColor="#FFFFFF"
-                app:strokeWidth="3dp">
+            <!--            <com.google.android.material.card.MaterialCardView-->
+            <!--                android:layout_width="300dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginLeft="5dp"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginRight="5dp"-->
+            <!--                app:cardBackgroundColor="#7f383838"-->
+            <!--                app:cardCornerRadius="10dp"-->
+            <!--                app:strokeColor="#FFFFFF"-->
+            <!--                app:strokeWidth="3dp">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:orientation="vertical">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="16dp"
-                        android:paddingRight="16dp">
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:layout_marginTop="10dp"-->
+            <!--                        android:layout_marginRight="10dp"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingStart="16dp"-->
+            <!--                        android:paddingRight="16dp">-->
 
-                        <TextView
-                            android:id="@+id/attribute7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Target Sale"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/attribute7"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:text="Target Sale"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
 
-                        <TextView
-                            android:id="@+id/parameter7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="100"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/parameter7"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:gravity="right"-->
+            <!--                            android:text="100"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
+            <!--                    </LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="16dp"
-                        android:paddingRight="16dp">
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:layout_marginTop="10dp"-->
+            <!--                        android:layout_marginRight="10dp"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingStart="16dp"-->
+            <!--                        android:paddingRight="16dp">-->
 
-                        <TextView
-                            android:id="@+id/attribute8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Customer Visited"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/attribute8"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:text="Customer Visited"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
 
-                        <TextView
-                            android:id="@+id/parameter8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="75"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/parameter8"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:gravity="right"-->
+            <!--                            android:text="75"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
+            <!--                    </LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="16dp"
-                        android:paddingRight="16dp">
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:layout_marginTop="10dp"-->
+            <!--                        android:layout_marginRight="10dp"-->
+            <!--                        android:layout_marginBottom="10dp"-->
+            <!--                        android:orientation="horizontal"-->
+            <!--                        android:paddingStart="16dp"-->
+            <!--                        android:paddingRight="16dp">-->
 
-                        <TextView
-                            android:id="@+id/attribute9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Achievement"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/attribute9"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:text="Achievement"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
 
-                        <TextView
-                            android:id="@+id/parameter9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="75%"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+            <!--                        <TextView-->
+            <!--                            android:id="@+id/parameter9"-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:layout_weight="1"-->
+            <!--                            android:gravity="right"-->
+            <!--                            android:text="75%"-->
+            <!--                            android:textColor="@color/white"-->
+            <!--                            android:textSize="16sp" />-->
+            <!--                    </LinearLayout>-->
 
-                </LinearLayout>
+            <!--                </LinearLayout>-->
 
-            </com.google.android.material.card.MaterialCardView>
+            <!--            </com.google.android.material.card.MaterialCardView>-->
 
         </LinearLayout>
 

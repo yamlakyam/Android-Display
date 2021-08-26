@@ -196,7 +196,7 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler, 100, this, 0);
+        handleRowAnimationThread = new HandleRowAnimationThread(allRows, VsmTransactionFragment.animationHandler, 100);
         handleRowAnimationThread.start();
     }
 
