@@ -22,7 +22,6 @@ import com.cnet.VisualAnalysis.Data.VsmTransactionTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Threads.HandleVanChangeThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.VideoActivity;
 import com.google.android.gms.maps.CameraUpdate;
@@ -58,10 +57,9 @@ public class MapsFragment extends Fragment {
     public Handler animationHandler;
     public Handler changeDataHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
-    public HandleVanChangeThread handleDataChangeThread;
+//    public HandleVanChangeThread handleDataChangeThread;
 
     NavController navController;
-
     NumberFormat numberFormat = NumberFormat.getInstance();
 
     public SupportMapFragment mapFragment;
@@ -125,7 +123,6 @@ public class MapsFragment extends Fragment {
 
     public void drawAll(GoogleMap googleMap) {
 
-
         Bundle bundleRecieved = getArguments();
         /*if (bundleRecieved != null) {
             int nextVanNo = bundleRecieved.getInt("nextVanNo", 0);
@@ -143,36 +140,141 @@ public class MapsFragment extends Fragment {
             drawMarkerInVan(0, googleMap, locIndex);
         }
          */
-        if (bundleRecieved != null) {
+        if (SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor() != null) {
+            if (bundleRecieved != null) {
+                ArrayList<Integer> currentVanIndexInList = new ArrayList<>();
 
-            ArrayList<VsmTableDataForSingleVan> allVans = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
+                ArrayList<VsmTableDataForSingleVan> allVans = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
+                int indexOfThisVan = 0;
 
-            int indexOfThisVan = 0;
-            String vanName = bundleRecieved.getString("currentVan");
-            Log.i("vanName", vanName);
-            for (int i = 0; i < allVans.size(); i++) {
-                if (allVans.get(i).nameOfVan.equals(vanName)) {
-                    indexOfThisVan = i;
+                if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                    if (bundleRecieved.getString("vanNameFromPeakReportToMap") != null) {
+                        int receivdVanIndex = bundleRecieved.getInt("vanIndexFromPeakReportToMap", 0);
+                        String vanName = bundleRecieved.getString("vanNameFromPeakReportToMap");
+                        for (int i = 0; i < allVans.size(); i++) {
+                            if (allVans.get(i).nameOfVan.equals(vanName)) {
+                                indexOfThisVan = i;
+                                currentVanIndexInList.add(indexOfThisVan);
+                            }
+                        }
+                        if (currentVanIndexInList.size() == 0) {
+                            if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                                Bundle bundeToUserReport = new Bundle();
+                                vanIndex = receivdVanIndex + 1;
+                                bundeToUserReport.putInt("vanIndex", vanIndex);
+                                navController = NavHostFragment.findNavController(mapFragment);
+                                navController.navigate(R.id.userReportForEachOusFragment, bundeToUserReport);
+                            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                                Bundle bundeToUserReport = new Bundle();
+                                vanIndex = receivdVanIndex + 1;
+                                bundeToUserReport.putInt("vanIndex", vanIndex);
+                                navController = NavHostFragment.findNavController(mapFragment);
+                                navController.navigate(R.id.peakHourReportFragment, bundeToUserReport);
+                            }
+                        } else {
+                            Log.i("indexOfThisVan", indexOfThisVan + "");
+                            if (indexOfThisVan == allVans.size()) {
+                                Log.i("last van", "time to naviagte");
+                                startActivity(new Intent(requireActivity(), VideoActivity.class));
+
+                            } else if (indexOfThisVan < allVans.size()) {
+                                drawMarkerInVan(indexOfThisVan, googleMap);
+                                drawLeftPane(googleMap, indexOfThisVan);
+                            }
+                        }
+                    } else {
+
+                    }
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                    if (bundleRecieved.getString("vanNameFromUserReportToPeakH") != null) {
+                        int receivdVanIndex = bundleRecieved.getInt("vanIndexFromUserReportToPeakH", 0);
+                        String vanName = bundleRecieved.getString("vanNameFromUserReportToPeakH");
+                        for (int i = 0; i < allVans.size(); i++) {
+                            if (allVans.get(i).nameOfVan.equals(vanName)) {
+                                indexOfThisVan = i;
+                                currentVanIndexInList.add(indexOfThisVan);
+                            }
+                        }
+                        if (currentVanIndexInList.size() == 0) {
+                            if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                                Bundle bundeToUserReport = new Bundle();
+                                vanIndex = receivdVanIndex + 1;
+                                bundeToUserReport.putInt("vanIndex", vanIndex);
+                                navController = NavHostFragment.findNavController(mapFragment);
+                                navController.navigate(R.id.userReportForEachOusFragment, bundeToUserReport);
+                            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                                Bundle bundeToUserReport = new Bundle();
+                                vanIndex = receivdVanIndex + 1;
+                                bundeToUserReport.putInt("vanIndex", vanIndex);
+                                navController = NavHostFragment.findNavController(mapFragment);
+                                navController.navigate(R.id.peakHourReportFragment, bundeToUserReport);
+                            }
+                        } else {
+                            Log.i("indexOfThisVan", indexOfThisVan + "");
+                            if (indexOfThisVan == allVans.size()) {
+                                Log.i("last van", "time to naviagte");
+                                startActivity(new Intent(requireActivity(), VideoActivity.class));
+                            } else if (indexOfThisVan < allVans.size()) {
+                                drawMarkerInVan(indexOfThisVan, googleMap);
+                                drawLeftPane(googleMap, indexOfThisVan);
+                            }
+                        }
+                    }
                 }
-            }
-            Log.i("indexOfThisVan", indexOfThisVan + "");
-            if (indexOfThisVan == allVans.size()) {
-                Log.i("last van", "time to naviagte");
 
-//                NavController navController = NavHostFragment.findNavController(mapFragment);
-//                navController.navigate(R.id.peakHourReportFragment, nextIndexBundl
-                startActivity(new Intent(requireActivity(), VideoActivity.class));
 
-            } else if (indexOfThisVan < allVans.size()) {
-                Log.i("indexOfThisVan-2", indexOfThisVan + "");
+//                if (currentVanIndex.size() == 0) {
+//                    Log.i("no van for this index","");
+//
+//                    vanIndex = vanIndex + 1;
+//                    Bundle nextIndexBundle = new Bundle();
+//                    nextIndexBundle.putInt("vanIndex", vanIndex);
+//
+//                    navController = NavHostFragment.findNavController(mapFragment);
+//                    if (SplashScreenActivity.allData.getLayoutList().contains(10))
+//                        navController.navigate(R.id.userReportForEachOusFragment, nextIndexBundle);
+//                    else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+//                        navController.navigate(R.id.peakHourReportFragment, nextIndexBundle);
+//                } else {
 
-                drawMarkerInVan(indexOfThisVan, googleMap);
-                drawLeftPane(googleMap, indexOfThisVan);
+//                }
+
+            } else {
+                drawMarkerInVan(0, googleMap);
+                drawLeftPane(googleMap, 0);
+
+
+//                Bundle receivedBundle = getArguments();
+//                int vanIndex = receivedBundle.getInt("vanIndex", 0);
+//                vanIndex = vanIndex + 1;
+//                Bundle nextIndexBundle = new Bundle();
+//                nextIndexBundle.putInt("vanIndex", vanIndex);
+//                navController = NavHostFragment.findNavController(mapFragment);
+//                if (SplashScreenActivity.allData.getLayoutList().contains(10))
+//                    navController.navigate(R.id.userReportForEachOusFragment, nextIndexBundle);
+//                else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+//                    navController.navigate(R.id.peakHourReportFragment);
             }
         } else {
-
-            drawMarkerInVan(0, googleMap);
-            drawLeftPane(googleMap, 0);
+//            if (bundleRecieved != null) {
+//                int vanIndex = bundleRecieved.getInt("vanIndex", 0);
+//                vanIndex = vanIndex + 1;
+//                Bundle nextIndexBundle = new Bundle();
+//                nextIndexBundle.putInt("vanIndex", vanIndex);
+//
+//                navController = NavHostFragment.findNavController(mapFragment);
+//
+//                if (vanIndex == SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size()) {
+//                    navigate();
+//                } else {
+//
+//                }
+//
+//                if (SplashScreenActivity.allData.getLayoutList().contains(10))
+//                    navController.navigate(R.id.userReportForEachOusFragment, nextIndexBundle);
+//                else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+//                    navController.navigate(R.id.peakHourReportFragment, nextIndexBundle);
+//            }
         }
     }
 
@@ -225,13 +327,26 @@ public class MapsFragment extends Fragment {
 //                    bundle.putString("currentVan", SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).nameOfVan);
 //                    bundle.putInt("VanNo", vanIndex);
                     Bundle receivedBundle = getArguments();
-                    int vanIndex = receivedBundle.getInt("vanIndex", 0);
-                    vanIndex = vanIndex + 1;
-                    Bundle nextIndexBundle = new Bundle();
-                    nextIndexBundle.putInt("vanIndex", vanIndex);
 
-                    navController = NavHostFragment.findNavController(mapFragment);
-                    navController.navigate(R.id.userReportForEachOusFragment, nextIndexBundle);
+                    if (receivedBundle != null) {
+                        Integer indexFromUserReport = receivedBundle.getInt("vanIndexFromUserReportToMap");
+                        Integer indexFromPeakHour = receivedBundle.getInt("vanIndexFromPeakReportToMap");
+
+                        Bundle nextIndexBundle = new Bundle();
+                        if (indexFromPeakHour != null) {
+                            indexFromPeakHour = indexFromPeakHour + 1;
+                            nextIndexBundle.putInt("vanIndex", indexFromPeakHour);
+                        } else if (indexFromUserReport != null) {
+                            indexFromUserReport = indexFromUserReport + 1;
+                            nextIndexBundle.putInt("vanIndex", indexFromUserReport);
+                        }
+                        navController = NavHostFragment.findNavController(mapFragment);
+                        if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                            navController.navigate(R.id.userReportForEachOusFragment, nextIndexBundle);
+                        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                            navController.navigate(R.id.peakHourReportFragment, nextIndexBundle);
+                    }
+
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).getTableRows().size() && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() - 1) {
 //                    startActivity(new Intent(MapsActivity.this, SecondActivity.class));
@@ -263,7 +378,6 @@ public class MapsFragment extends Fragment {
         int padding = (int) (width * 0.15); // offset from edges of the map 10% of screen
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);//to draw markers at a time including all the previous ones
 //        googleMap.animateCamera(cu, 1000, null);
-
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 
         googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -291,12 +405,43 @@ public class MapsFragment extends Fragment {
                 itemCountText.setText(numberFormat.format(vsmTransactionTableRows.get(index).getItemCount()));
                 TextView voucherTextView = (TextView) view.findViewById(R.id.voucherTextView);
                 voucherTextView.setText(vsmTransactionTableRows.get(index).getVoucherNo());
-                driverNameText.setText(vsmTransactionTableRows.get(index).getUsername());
+                if (driverNameText != null) {
+                    driverNameText.setText(vsmTransactionTableRows.get(index).getUsername());
+                }
                 return view;
             }
         });
         mMarker.showInfoWindow();
     }
+
+    public void navigate() {
+        Bundle nextIndexBundle = new Bundle();
+        nextIndexBundle.putInt("vanIndex", 0);
+        NavController navController = NavHostFragment.findNavController(mapFragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8))
+            navController.navigate(R.id.branchSummaryFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(9))
+            navController.navigate(R.id.userReportForAllOusFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(11))
+            navController.navigate(R.id.peakHourReportForAllOusFragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment, nextIndexBundle);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment, nextIndexBundle);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            navController.navigate(R.id.mapsFragment);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -334,7 +479,6 @@ public class MapsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-
         if (gmap != null) {
             gmap.clear();
         }
@@ -347,5 +491,8 @@ public class MapsFragment extends Fragment {
         parameter2 = null;
         parameter3 = null;
         view = null;
+        if (handleRowAnimationThread != null) {
+            Log.i("isThreadAlive", handleRowAnimationThread.isAlive() + "");
+        }
     }
 }

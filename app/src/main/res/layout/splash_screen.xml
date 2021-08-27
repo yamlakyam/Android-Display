@@ -153,10 +153,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminateTint="#ec1d23 "
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/loadingStatusText"
-                tools:layout_editor_absoluteY="316dp" />
+                app:layout_constraintStart_toEndOf="@+id/loadingStatusText"
+                app:layout_constraintTop_toTopOf="@+id/loadingStatusText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

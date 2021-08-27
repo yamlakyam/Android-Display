@@ -99,54 +99,60 @@ VansOfASingleOrganizationFragment extends Fragment implements SecondActivity.Key
         if (vanListTableLayout != null) {
             vanListTableLayout.removeAllViews();
         }
-        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
+        if (SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor() != null) {
+            tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData();
 
-        try {
-            Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
-                @Override
-                public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
+            try {
+                Collections.sort(tablesToDisplay, new Comparator<VsmTableDataForSingleVan>() {
+                    @Override
+                    public int compare(VsmTableDataForSingleVan o1, VsmTableDataForSingleVan o2) {
 //                    return Integer.parseInt(o1.nameOfVan.substring(3)) < Integer.parseInt(o2.nameOfVan.substring(3)) ? -1 : 0;
-                    return o1.totalPrice > o2.totalPrice ? -1 : 0;
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                        return o1.totalPrice > o2.totalPrice ? -1 : 0;
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        OrgHeaderTextView.setText(headerCriteriaTitle + SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getNameOfDistributor());
-        animationHandler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                String message = (String) msg.obj;
-                int index = 0;
-                if (message != null) {
-                    index = Integer.parseInt(message);
-                }
-
-                if (index == tablesToDisplay.size()) {
-                    drawSumOfLastRow();
-                    new UtilityFunctionsForActivity1().scrollRows(scrollVanListTable);
-                } else if (index == tablesToDisplay.size() + 1) {
-                    if (fragment != null) {
-                        if (vanListPaused) {
-                            if (handleRowAnimationThread != null) {
-                                handleRowAnimationThread.interrupt();
-                            }
-                        } else {
-                            navigate();
-                        }
+            OrgHeaderTextView.setText(headerCriteriaTitle + SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getNameOfDistributor());
+            animationHandler = new Handler() {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    String message = (String) msg.obj;
+                    int index = 0;
+                    if (message != null) {
+                        index = Integer.parseInt(message);
                     }
 
-                } else if (index < tablesToDisplay.size()) {
-                    sumofLastRow(tablesToDisplay.get(index));
-                    new UtilityFunctionsForActivity1().drawVansOfSingleOrgTable(tablesToDisplay, getContext(), vanListTableLayout, index);
-                    new UtilityFunctionsForActivity1().scrollRows(scrollVanListTable);
-                }
-            }
-        };
+                    if (index == tablesToDisplay.size()) {
+                        drawSumOfLastRow();
+                        new UtilityFunctionsForActivity1().scrollRows(scrollVanListTable);
+                    } else if (index == tablesToDisplay.size() + 1) {
+                        if (fragment != null) {
+                            if (vanListPaused) {
+                                if (handleRowAnimationThread != null) {
+                                    handleRowAnimationThread.interrupt();
+                                }
+                            } else {
+                                navigate();
+                            }
+                        }
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200);
-        handleRowAnimationThread.start();
+                    } else if (index < tablesToDisplay.size()) {
+                        sumofLastRow(tablesToDisplay.get(index));
+                        new UtilityFunctionsForActivity1().drawVansOfSingleOrgTable(tablesToDisplay, getContext(), vanListTableLayout, index);
+                        new UtilityFunctionsForActivity1().scrollRows(scrollVanListTable);
+                    }
+                }
+            };
+
+            handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200);
+            handleRowAnimationThread.start();
+        } else {
+            navigate();
+        }
+
+
     }
 
     public void navigate() {

@@ -246,33 +246,33 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 //        startActivity(intent);
 
         NavController navController = NavHostFragment.findNavController(fragment);
-        if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-                navController.navigate(R.id.vansOfASingleOrganizationFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
-                navController.navigate(R.id.userReportForEachOusFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
-                navController.navigate(R.id.peakHourReportFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-                navController.navigate(R.id.mapsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(3))
-                navController.navigate(R.id.summarizedByArticleFragment2);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(4))
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(5))
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(6))
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(7))
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-                navController.navigate(R.id.branchSummaryFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(9))
-                navController.navigate(R.id.userReportForAllOusFragment2);
 
-        }
+        if (SplashScreenActivity.allData.getLayoutList().contains(1))
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            navController.navigate(R.id.vansOfASingleOrganizationFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+            navController.navigate(R.id.peakHourReportFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+//                startActivity(new Intent(requireActivity(), MapsActivity.class));
+            navController.navigate(R.id.mapsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3))
+            navController.navigate(R.id.summarizedByArticleFragment2);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4))
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+            navController.navigate(R.id.branchSummaryFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(9))
+            navController.navigate(R.id.userReportForAllOusFragment2);
+
+
     }
 
     public void navigateLeft(Fragment fragment) {

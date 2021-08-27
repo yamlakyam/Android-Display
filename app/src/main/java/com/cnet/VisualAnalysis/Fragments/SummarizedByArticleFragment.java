@@ -187,32 +187,31 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
         NavController navController = NavHostFragment.findNavController(fragment);
 
-        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
-                navController.navigate(R.id.branchSummaryFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
-                navController.navigate(R.id.userReportForAllOusFragment2);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
-                navController.navigate(R.id.peakHourReportForAllOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+        if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+            navController.navigate(R.id.summaryOfLastMonthFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+            navController.navigate(R.id.branchSummaryFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            navController.navigate(R.id.userReportForAllOusFragment2);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+            navController.navigate(R.id.peakHourReportForAllOusFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            navController.navigate(R.id.vansOfASingleOrganizationFragment);
 //                navController.navigate(R.id.mapsFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-                navController.navigate(R.id.userReportForEachOusFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-                navController.navigate(R.id.peakHourReportFragment);
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                navController.navigate(R.id.mapsFragment);
-            }
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+            navController.navigate(R.id.userReportForEachOusFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+            navController.navigate(R.id.peakHourReportFragment);
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+            navController.navigate(R.id.mapsFragment);
         }
+
     }
 
     public void naviagteLeft(Fragment fragment) {

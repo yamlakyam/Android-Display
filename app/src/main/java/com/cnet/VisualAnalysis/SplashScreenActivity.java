@@ -33,6 +33,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     public Handler handler;
     TextView loadingStatusText;
     String connFailMessage = "Connection not available, Restart the app";
+    ProgressBar splashProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         setContentView(R.layout.splash_screen);
 
         loadingStatusText = findViewById(R.id.loadingStatusText);
+        splashProgressBar = findViewById(R.id.splashProgressBar);
 
         VolleyHttp http = new VolleyHttp(getApplicationContext());
         http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
@@ -90,6 +92,7 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         Log.i("error", error + "");
         Toast.makeText(this, "Connection not available, Restart the app", Toast.LENGTH_LONG).show();
         loadingStatusText.setText(connFailMessage);
+        splashProgressBar.setVisibility(View.GONE);
     }
 
     @SuppressLint("HardwareIds")

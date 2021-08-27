@@ -92,12 +92,10 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         setContentView(R.layout.activity_second);
         setHomeFragment();
 
-
         leftArrow = findViewById(R.id.leftArrow);
         playPause = findViewById(R.id.playPause);
         rightArrow = findViewById(R.id.rightArrow);
         playPauseKeyPad = findViewById(R.id.playPauseKeyPad);
-
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("left");
