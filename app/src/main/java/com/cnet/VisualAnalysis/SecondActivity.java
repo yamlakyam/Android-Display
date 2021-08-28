@@ -33,7 +33,6 @@ import com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment;
 import com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment;
 import com.cnet.VisualAnalysis.Fragments.UserReportForAllOusFragment;
 import com.cnet.VisualAnalysis.Fragments.UserReportForEachOuFragment;
-import com.cnet.VisualAnalysis.Fragments.VansOfASingleOrganizationFragment;
 import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
@@ -78,10 +77,11 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     ImageView rightArrow;
     LinearLayout playPauseKeyPad;
 
-    public static Context context;
+    public Context context;
 
 
     KeyPress keyPress;
+    public static int vanIndex = 0;
 
 
     @Override
@@ -103,7 +103,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             if (name.equals("pressed")) {
                 if (SplashScreenActivity.allData != null) {
                     if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                        setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                        setHomeFragment(R.id.mapsFragment);
                     } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                         setHomeFragment(R.id.peakHourReportFragment);
                     } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
@@ -153,7 +153,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 }
             }
 
@@ -176,7 +176,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 }
@@ -199,7 +199,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -222,7 +222,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -245,7 +245,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -268,7 +268,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -291,7 +291,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -314,7 +314,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -337,7 +337,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -360,7 +360,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         } else if (fragId == 12) {
             if (SplashScreenActivity.allData != null) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    setHomeFragment(R.id.vansOfASingleOrganizationFragment);
+                    setHomeFragment(R.id.mapsFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
@@ -383,7 +383,30 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
 
         } else if (fragId == 1) {
-            startActivity(new Intent(SecondActivity.this, MapsActivity.class));
+//            startActivity(new Intent(SecondActivity.this, MapsActivity.class));
+            if (SplashScreenActivity.allData != null) {
+                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                    setHomeFragment(R.id.mapsFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                    setHomeFragment(R.id.summarizedByArticleFragment2);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                    setHomeFragment(R.id.summaryOfLastMonthFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                    setHomeFragment(R.id.branchSummaryFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                    setHomeFragment(R.id.userReportForAllOusFragment2);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                    setHomeFragment(R.id.userReportForEachOusFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
+                }
+            }
         }
         //////////////////////
 
@@ -404,7 +427,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
         };
         handler.post(runnable);
-
     }
 
     public void setHomeFragment() {
@@ -459,7 +481,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                 frgamentId = R.id.peakHourReportFragment;
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                frgamentId = R.id.vansOfASingleOrganizationFragment;
+                frgamentId = R.id.mapsFragment;
         }
 
         return frgamentId;
@@ -523,7 +545,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = true;
         UserReportForAllOusFragment.userReportForAllPaused = true;
         UserReportForEachOuFragment.userReportForEachPaused = true;
-        VansOfASingleOrganizationFragment.vanListPaused = true;
+//        VansOfASingleOrganizationFragment.vanListPaused = true;
 
     }
 
@@ -538,7 +560,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = false;
         UserReportForAllOusFragment.userReportForAllPaused = false;
         UserReportForEachOuFragment.userReportForEachPaused = false;
-        VansOfASingleOrganizationFragment.vanListPaused = false;
+//        VansOfASingleOrganizationFragment.vanListPaused = false;
     }
 
     public static boolean pausedstate() {

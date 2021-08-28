@@ -26,7 +26,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
 import com.cnet.VisualAnalysis.MainActivity;
-import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
@@ -182,7 +181,7 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
                         distributorIndex == allOrgData.size() - 1) {
 
                     if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                        startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                        startActivity(new Intent(requireActivity(), MapsActivity.class));
                     } else {
                         NavController navController = NavHostFragment.findNavController(fragment);
                         navController.navigate(R.id.summaryTableFragment);
@@ -453,7 +452,7 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
             }
             if (vanIndex == SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors().get(distributorIndex).getAllVansData().size() - 1) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                    startActivity(new Intent(requireActivity(), MapsActivity.class));
                 }
             }
         }

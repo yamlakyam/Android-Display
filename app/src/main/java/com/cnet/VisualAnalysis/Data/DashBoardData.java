@@ -10,7 +10,6 @@ public class DashBoardData {
     SummaryOfLast6MonthsData summaryOfLast6MonthsData;
     SummaryOfLast30DaysData summaryOfLast30DaysData;
     BranchSummaryData branchSummaryData;
-    VsmTableForSingleDistributor vsmTableForSingleDistributor;
 
     ArrayList<UserReportDataForSingleOu> userReportForEachBranch;
     ArrayList<UserReportTableRow> userReportForAllBranch;
@@ -18,6 +17,7 @@ public class DashBoardData {
     ArrayList<FigureReportData> figureReportDataforEachBranch;
     ArrayList<FigureReportDataElements> figureReportDataforAllBranch;
 
+    ArrayList<VoucherDataForVan> voucherDataForVans;
 
 
     public SummarizedByArticleData getSummarizedByArticleData() {
@@ -68,13 +68,6 @@ public class DashBoardData {
         this.branchSummaryData = branchSummaryData;
     }
 
-    public VsmTableForSingleDistributor getVsmTableForSingleDistributor() {
-        return vsmTableForSingleDistributor;
-    }
-
-    public void setVsmTableForSingleDistributor(VsmTableForSingleDistributor vsmTableForSingleDistributor) {
-        this.vsmTableForSingleDistributor = vsmTableForSingleDistributor;
-    }
 
     public ArrayList<UserReportDataForSingleOu> getUserReportForEachBranch() {
         return userReportForEachBranch;
@@ -107,6 +100,16 @@ public class DashBoardData {
     public void setFigureReportDataforAllBranch(ArrayList<FigureReportDataElements> figureReportDataforAllBranch) {
         this.figureReportDataforAllBranch = figureReportDataforAllBranch;
     }
+
+    public void setVoucherDataForVans(ArrayList<VoucherDataForVan> voucherDataForVans) {
+        this.voucherDataForVans = voucherDataForVans;
+    }
+
+    public ArrayList<VoucherDataForVan> getVoucherDataForVans() {
+        return voucherDataForVans;
+    }
+
+
 }
 
 

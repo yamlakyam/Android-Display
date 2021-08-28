@@ -210,6 +210,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             navController.navigate(R.id.peakHourReportFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
             navController.navigate(R.id.mapsFragment);
+        }else{
+
         }
 
     }

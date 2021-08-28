@@ -302,44 +302,44 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public void drawVansOfSingleOrgTable(ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleVanArrayList, Context context, TableLayout vanListTableLayout, int index) {
-        if (vsmTableDataForSingleVanArrayList != null) {
-            VsmTableDataForSingleVan row = vsmTableDataForSingleVanArrayList.get(index);
-
-            View tableElements = null;
-            try {
-                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vans_of_single_org, null, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (tableElements != null) {
-                TextView singleOrgVansSerialNumberTV = tableElements.findViewById(R.id.singleOrgVansSerialNumberTV);
-                TextView singleOrgVansVSITV = tableElements.findViewById(R.id.singleOrgVansVSITV);
-                TextView singleOrgVansProspectTV = tableElements.findViewById(R.id.singleOrgVansProspectTV);
-                TextView singleOrgVansEndTimeTV = tableElements.findViewById(R.id.singleOrgVansEndTimeTV);
-                TextView singleOrgVansSalesOutletTV = tableElements.findViewById(R.id.singleOrgVansSalesOutletTV);
-                TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
-                TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
-
-
-                NumberFormat numberFormat = NumberFormat.getInstance();
-                singleOrgVansSerialNumberTV.setText(String.valueOf(index + 1));
-                singleOrgVansVSITV.setText(row.nameOfVan);
-                singleOrgVansProspectTV.setText(String.valueOf(1));
-                singleOrgVansEndTimeTV.setText(formatDateTimeToString(row.getLastActive()));
-                singleOrgVansSalesOutletTV.setText(numberFormat.format(row.salesOutLateCount));
-                singleOrgVansQuantityCountTV.setText(numberFormat.format(row.allLineItemCount));
-                singleOrgVansTotalSalesTV.setText(numberFormat.format(Math.round(row.totalPrice * 100.0) / 100.0));
-
-                if (vanListTableLayout != null) {
-                    vanListTableLayout.addView(tableElements);
-                }
-                animate(vanListTableLayout, tableElements);
-            }
-
-        }
-
-    }
+//    public void drawVansOfSingleOrgTable(ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleVanArrayList, Context context, TableLayout vanListTableLayout, int index) {
+//        if (vsmTableDataForSingleVanArrayList != null) {
+//            VsmTableDataForSingleVan row = vsmTableDataForSingleVanArrayList.get(index);
+//
+//            View tableElements = null;
+//            try {
+//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vans_of_single_org, null, false);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            if (tableElements != null) {
+//                TextView singleOrgVansSerialNumberTV = tableElements.findViewById(R.id.singleOrgVansSerialNumberTV);
+//                TextView singleOrgVansVSITV = tableElements.findViewById(R.id.singleOrgVansVSITV);
+//                TextView singleOrgVansProspectTV = tableElements.findViewById(R.id.singleOrgVansProspectTV);
+//                TextView singleOrgVansEndTimeTV = tableElements.findViewById(R.id.singleOrgVansEndTimeTV);
+//                TextView singleOrgVansSalesOutletTV = tableElements.findViewById(R.id.singleOrgVansSalesOutletTV);
+//                TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
+//                TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
+//
+//
+//                NumberFormat numberFormat = NumberFormat.getInstance();
+//                singleOrgVansSerialNumberTV.setText(String.valueOf(index + 1));
+//                singleOrgVansVSITV.setText(row.nameOfVan);
+//                singleOrgVansProspectTV.setText(String.valueOf(1));
+//                singleOrgVansEndTimeTV.setText(formatDateTimeToString(row.getLastActive()));
+//                singleOrgVansSalesOutletTV.setText(numberFormat.format(row.salesOutLateCount));
+//                singleOrgVansQuantityCountTV.setText(numberFormat.format(row.allLineItemCount));
+//                singleOrgVansTotalSalesTV.setText(numberFormat.format(Math.round(row.totalPrice * 100.0) / 100.0));
+//
+//                if (vanListTableLayout != null) {
+//                    vanListTableLayout.addView(tableElements);
+//                }
+//                animate(vanListTableLayout, tableElements);
+//            }
+//
+//        }
+//
+//    }
 
     public void animate(View container, View child) {
         if (container != null) {
@@ -367,45 +367,45 @@ public class UtilityFunctionsForActivity1 {
         VSMcardGridView.setAdapter(adapter);
     }
 
-    public VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
-        JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
-        String nameOfVan = tableDataObjectForSingleVanInJson.getString("van");
-        int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
-        String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
-        int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
-        double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
-        ArrayList<VsmTransactionTableRow> vsmTableForSingleVan = new ArrayList<>();
-        for (int k = 0; k < tableRowsForSingleVan.length(); k++) {
-            JSONObject tableRowForSingleVan = tableRowsForSingleVan.getJSONObject(k);
-
-            String formattedOutlet;
-            String formattedTIN;
-            if (tableRowForSingleVan.getString("outlates").length() > 15) {
-                formattedOutlet = tableRowForSingleVan.getString("outlates").substring(0, 12) + "...";
-            } else
-                formattedOutlet = tableRowForSingleVan.getString("outlates");
-
-            if (tableRowForSingleVan.getString("tin").length() == 0) {
-                formattedTIN = "- - - - - - - - - - -";
-            } else {
-                formattedTIN = tableRowForSingleVan.getString("tin");
-            }
-            vsmTableForSingleVan.add(new VsmTransactionTableRow(
-                    tableRowForSingleVan.getString("voucherNo"),
-                    formattedOutlet,
-                    formattedTIN,
-                    tableRowForSingleVan.getString("dateAndTime"),
-                    tableRowForSingleVan.getInt("itemCount"),
-                    tableRowForSingleVan.getDouble("subTotal"),
-                    tableRowForSingleVan.getDouble("vat"),
-                    tableRowForSingleVan.getDouble("grandTotal"),
-                    tableRowForSingleVan.getDouble("latitude"),
-                    tableRowForSingleVan.getDouble("longitude"), tableRowForSingleVan.getString("username")
-            ));
-        }
-        return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan, salesOutLateCount,
-                lastActive, allLineItemCount, totalPrice);
-    }
+//    public VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
+//        JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
+//        String nameOfVan = tableDataObjectForSingleVanInJson.getString("van");
+//        int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
+//        String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
+//        int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
+//        double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
+//        ArrayList<VsmTransactionTableRow> vsmTableForSingleVan = new ArrayList<>();
+//        for (int k = 0; k < tableRowsForSingleVan.length(); k++) {
+//            JSONObject tableRowForSingleVan = tableRowsForSingleVan.getJSONObject(k);
+//
+//            String formattedOutlet;
+//            String formattedTIN;
+//            if (tableRowForSingleVan.getString("outlates").length() > 15) {
+//                formattedOutlet = tableRowForSingleVan.getString("outlates").substring(0, 12) + "...";
+//            } else
+//                formattedOutlet = tableRowForSingleVan.getString("outlates");
+//
+//            if (tableRowForSingleVan.getString("tin").length() == 0) {
+//                formattedTIN = "- - - - - - - - - - -";
+//            } else {
+//                formattedTIN = tableRowForSingleVan.getString("tin");
+//            }
+//            vsmTableForSingleVan.add(new VsmTransactionTableRow(
+//                    tableRowForSingleVan.getString("voucherNo"),
+//                    formattedOutlet,
+//                    formattedTIN,
+//                    tableRowForSingleVan.getString("dateAndTime"),
+//                    tableRowForSingleVan.getInt("itemCount"),
+//                    tableRowForSingleVan.getDouble("subTotal"),
+//                    tableRowForSingleVan.getDouble("vat"),
+//                    tableRowForSingleVan.getDouble("grandTotal"),
+//                    tableRowForSingleVan.getDouble("latitude"),
+//                    tableRowForSingleVan.getDouble("longitude"), tableRowForSingleVan.getString("username")
+//            ));
+//        }
+//        return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan, salesOutLateCount,
+//                lastActive, allLineItemCount, totalPrice);
+//    }
 
     public void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
         ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();

@@ -1,12 +1,10 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.MainActivity;
-import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleDataChangeThread;
@@ -94,7 +91,7 @@ public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
                             if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                                 navController.navigate(R.id.vsmTransactionFragment);
                             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                                startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                                startActivity(new Intent(requireActivity(), MapsActivity.class));
                             } else {
                                 navController.navigate(R.id.summaryTableFragment);
                             }
@@ -102,7 +99,7 @@ public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
                             navController.navigate(R.id.summaryTableFragment);
                         }
                     } else {
-                       new UtilityFunctionsForActivity1().drawVSMCard(index, getContext(), vsmCardGridLayout);
+                        new UtilityFunctionsForActivity1().drawVSMCard(index, getContext(), vsmCardGridLayout);
                     }
 
                 } catch (JSONException e) {
@@ -179,7 +176,7 @@ public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
                 if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                     navController.navigate(R.id.vsmTransactionFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                    startActivity(new Intent(requireActivity(), MapsActivity.class));
                 } else {
                     navController.navigate(R.id.summaryTableFragment);
                 }
@@ -207,7 +204,7 @@ public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
                 if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                     navController.navigate(R.id.vsmTransactionFragment);
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                    startActivity(new Intent(requireActivity(), MapsActivity.class));
                 } else {
                     navController.navigate(R.id.summaryTableFragment);
                 }

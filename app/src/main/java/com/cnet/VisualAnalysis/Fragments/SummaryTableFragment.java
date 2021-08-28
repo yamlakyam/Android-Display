@@ -27,7 +27,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
 import com.cnet.VisualAnalysis.MainActivity;
-import com.cnet.VisualAnalysis.MapsActivity;
+//import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
@@ -121,7 +121,7 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
                         if (SplashScreenActivity.allData.getLayoutList().contains(0)) {
                             navController.navigate(R.id.distributorTableFragment);
                         } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-                            startActivity(new Intent(requireActivity(), MapsActivity.class));
+//                            startActivity(new Intent(requireActivity(), MapsActivity.class));
                         } else if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                             navController.navigate(R.id.vsmTransactionFragment);
                         }
@@ -286,7 +286,7 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
         }
 
         if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-            startActivity(new Intent(requireActivity(), MapsActivity.class));
+//            startActivity(new Intent(requireActivity(), MapsActivity.class));
         } else if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
             navController = NavHostFragment.findNavController(fragment);
             navController.navigate(R.id.vsmTransactionFragment);

@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -24,17 +25,14 @@ import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast6MonthsRow;
 import com.cnet.VisualAnalysis.Data.UserReportDataForSingleOu;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
-import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
-import com.cnet.VisualAnalysis.Data.VsmTableForSingleDistributor;
-import com.cnet.VisualAnalysis.Data.VsmTransactionTableRow;
-import com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment;
+import com.cnet.VisualAnalysis.Data.VoucherData;
+import com.cnet.VisualAnalysis.Data.VoucherDataForVan;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -458,103 +456,116 @@ public class DashBoardDataParser {
         return dates;
     }
 
-    public static ArrayList<ArrayList<FigureReportDataElements>> parseFilteredFigureReport(JSONObject jsonObject) throws JSONException {
+//    public static ArrayList<VoucherDataForVan> voucherParser(JSONObject jsonObject) throws JSONException {
+//
+//        JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
+//        ArrayList<VoucherDataForVan> voucherDataForVanList = new ArrayList<>();
+////        if (summaryOfBranchArray.length() > 0) {
+//        for (int i = 0; i < summaryOfBranchArray.length(); i++) {
+//
+//            JSONArray voucherArray = summaryOfBranchArray.getJSONObject(i).getJSONArray("vouchers");
+////            Log.i("voucherArray", voucherArray + "");
+//            String org = summaryOfBranchArray.getJSONObject(i).getString("org");
+//            ArrayList<VoucherData> voucherDataList = new ArrayList<>();
+//
+//            for (int j = 0; j < voucherArray.length(); j++) {
+//                JSONObject voucherForVan = voucherArray.getJSONObject(j);
+//                VoucherData voucherData = new VoucherData(voucherForVan.getString("voucherNo"), "",
+//                        voucherForVan.getDouble("grandTotal"), voucherForVan.getDouble("latitude"), voucherForVan.getDouble("longitude"),
+//                        voucherForVan.getDouble("taxAmount"), voucherForVan.getString("tin"), voucherForVan.getString("dateAndTime"),
+//                        voucherForVan.getDouble("subTotal"), voucherForVan.getString("username"), voucherForVan.getInt("itemCount"));
+//                voucherDataList.add(voucherData);
+//            }
+//
+//            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataList);
+//            voucherDataForVanList.add(voucherDataForVan);
+//
+//        }
+//        return voucherDataForVanList;
+//    }
+
+
+    public ArrayList<VoucherDataForVan> voucherParser(JSONObject jsonObject) throws JSONException {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
-        ArrayList<FigureReportData> figureReportDataArrayListFiltered = new ArrayList<>();
-
-        ArrayList<ArrayList<FigureReportDataElements>> allFigureReportDataElementsFiltered = new ArrayList<>();
-
+        ArrayList<VoucherDataForVan> voucherDataForVanList = new ArrayList<>();
         for (int i = 0; i < summaryOfBranchArray.length(); i++) {
+            Log.i("size", summaryOfBranchArray.length() + "");
 
+            JSONArray vouchers = summaryOfBranchArray.getJSONObject(i).getJSONArray("vouchers");
             String org = summaryOfBranchArray.getJSONObject(i).getString("org");
 
-            JSONArray figureReportArray = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport");
-            ArrayList<FigureReportDataElements> figureReportDataElementsFiltered = new ArrayList<>();
+            Log.i("vouchers", vouchers + "");
+            ArrayList<VoucherData> voucherDataArrayList = new ArrayList<>();
+            for (int j = 0; j < vouchers.length(); j++) {
+                JSONObject voucherObject = vouchers.getJSONObject(j);
 
-            float[] xValues = new float[figureReportArray.length()];
-            float[] yValues = new float[figureReportArray.length()];
-            String[] legends = new String[figureReportArray.length()];
-
-            int count = 0;
-            for (int j = 0; j < figureReportArray.length(); j++) {
-                JSONObject singleFigureReportObject = figureReportArray.getJSONObject(j);
-
-//                FigureReportDataElements figureReportDataElements = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
-//                        singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"));
-//                figureReportDataElementsArrayList.add(figureReportDataElements);
-
-//                xValues[j] = j + 1;
-//                yValues[j] = (float) singleFigureReportObject.getDouble("grandTotal");
-//                legends[j] = singleFigureReportObject.getString("summaryType");
-//                x_legends[j] = UtilityFunctionsForActivity1.peakHourFormatter(singleFigureReportObject.getString("summaryType"));
-
-                if (new PeakHourReportFragment().convertToTime(singleFigureReportObject.getString("summaryType")).getMonth() == Calendar.MAY
-                ) {
-
-                    FigureReportDataElements figureReportDataElementsFilterd = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
-                            singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
-                    figureReportDataElementsFiltered.add(figureReportDataElementsFilterd);
-
-                }
-            }
-
-            allFigureReportDataElementsFiltered.add(figureReportDataElementsFiltered);
-        }
-        return allFigureReportDataElementsFiltered;
-    }
-
-    public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
-        JSONArray vsmTransactionArray = jsonObject.getJSONArray("getSalesDataToDisplayOnVsmTable");
-        if (vsmTransactionArray.length() > 0) {
-            JSONObject vsmTransactionObject = vsmTransactionArray.getJSONObject(0);
-
-//        VsmTableForSingleDistributor dataForAdistributor = new VsmTableForSingleDistributor();
-            JSONArray vsmTables = vsmTransactionObject.getJSONArray("vsmTables");
-            String orgName = vsmTransactionObject.getString("orgName");
-
-            ArrayList<VsmTableDataForSingleVan> allVans = new ArrayList<VsmTableDataForSingleVan>();
-
-            for (int i = 0; i < vsmTables.length(); i++) {
-                JSONObject tableDataObjectForSingleVanInJson = vsmTables.getJSONObject(i);
-
-                JSONArray transactionsOfaVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
-                String vanName = tableDataObjectForSingleVanInJson.getString("van");
-                int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
-                String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
-                int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
-                double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
-
-                ArrayList<VsmTransactionTableRow> singleTransactionOfaVan = new ArrayList<VsmTransactionTableRow>();
-                for (int j = 0; j < transactionsOfaVan.length(); j++) {
-                    JSONObject singleTransactionObject = transactionsOfaVan.getJSONObject(j);
-
-                    VsmTransactionTableRow vsmTransactionTableRow = new VsmTransactionTableRow(
-                            singleTransactionObject.getString("voucherNo"),
-                            singleTransactionObject.getString("outlates"),
-                            singleTransactionObject.getString("tin"),
-                            singleTransactionObject.getString("dateAndTime"),
-                            (int) singleTransactionObject.getDouble("itemCount"),
-                            singleTransactionObject.getDouble("subTotal"),
-                            singleTransactionObject.getDouble("vat"),
-                            singleTransactionObject.getDouble("grandTotal"),
-                            singleTransactionObject.getDouble("latitude"),
-                            singleTransactionObject.getDouble("longitude"),
-                            singleTransactionObject.getString("username"));
-
-                    singleTransactionOfaVan.add(vsmTransactionTableRow);
-                }
-
-                VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan, salesOutLateCount,
-                        lastActive, allLineItemCount, totalPrice);
-                allVans.add(vsmTableDataForSingleVan);
+                VoucherData voucherData = new VoucherData(voucherObject.getString("voucherNo"), "v", voucherObject.getDouble("grandTotal"),
+                        voucherObject.getDouble("latitude"), voucherObject.getDouble("longitude"), voucherObject.getDouble("taxAmount"),
+                        voucherObject.getString("tin"), voucherObject.getString("dateAndTime"), voucherObject.getDouble("subTotal"),
+                        voucherObject.getString("username"), voucherObject.getInt("itemCount"));
+                voucherDataArrayList.add(voucherData);
 
             }
-
-            VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(allVans, orgName);
-            return vsmTableForSingleDistributor;
+            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList);
+            voucherDataForVanList.add(voucherDataForVan);
         }
-        return new VsmTableForSingleDistributor(new ArrayList<VsmTableDataForSingleVan>(), "");
+        Log.i("please", voucherDataForVanList + "");
+        return voucherDataForVanList;
     }
+
+
+//    public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
+//        JSONArray vsmTransactionArray = jsonObject.getJSONArray("getSalesDataToDisplayOnVsmTable");
+//        if (vsmTransactionArray.length() > 0) {
+//            JSONObject vsmTransactionObject = vsmTransactionArray.getJSONObject(0);
+//
+////        VsmTableForSingleDistributor dataForAdistributor = new VsmTableForSingleDistributor();
+//            JSONArray vsmTables = vsmTransactionObject.getJSONArray("vsmTables");
+//            String orgName = vsmTransactionObject.getString("orgName");
+//
+//            ArrayList<VsmTableDataForSingleVan> allVans = new ArrayList<VsmTableDataForSingleVan>();
+//
+//            for (int i = 0; i < vsmTables.length(); i++) {
+//                JSONObject tableDataObjectForSingleVanInJson = vsmTables.getJSONObject(i);
+//
+//                JSONArray transactionsOfaVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
+//                String vanName = tableDataObjectForSingleVanInJson.getString("van");
+//                int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
+//                String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
+//                int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
+//                double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
+//
+//                ArrayList<VsmTransactionTableRow> singleTransactionOfaVan = new ArrayList<VsmTransactionTableRow>();
+//                for (int j = 0; j < transactionsOfaVan.length(); j++) {
+//                    JSONObject singleTransactionObject = transactionsOfaVan.getJSONObject(j);
+//
+//                    VsmTransactionTableRow vsmTransactionTableRow = new VsmTransactionTableRow(
+//                            singleTransactionObject.getString("voucherNo"),
+//                            singleTransactionObject.getString("outlates"),
+//                            singleTransactionObject.getString("tin"),
+//                            singleTransactionObject.getString("dateAndTime"),
+//                            (int) singleTransactionObject.getDouble("itemCount"),
+//                            singleTransactionObject.getDouble("subTotal"),
+//                            singleTransactionObject.getDouble("vat"),
+//                            singleTransactionObject.getDouble("grandTotal"),
+//                            singleTransactionObject.getDouble("latitude"),
+//                            singleTransactionObject.getDouble("longitude"),
+//                            singleTransactionObject.getString("username"));
+//
+//                    singleTransactionOfaVan.add(vsmTransactionTableRow);
+//                }
+//
+//                VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan, salesOutLateCount,
+//                        lastActive, allLineItemCount, totalPrice);
+//                allVans.add(vsmTableDataForSingleVan);
+//
+//            }
+//
+//            VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(allVans, orgName);
+//            return vsmTableForSingleDistributor;
+//        }
+//        return new VsmTableForSingleDistributor(new ArrayList<VsmTableDataForSingleVan>(), "");
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void parseAllDashBoardDataCatching(DashBoardData dashBoardData, JSONObject rootJSON) {
@@ -591,7 +602,7 @@ public class DashBoardDataParser {
             e.printStackTrace();
         }
         try {
-            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
+            dashBoardData.setVoucherDataForVans(voucherParser(rootJSON));
         } catch (JSONException e) {
             e.printStackTrace();
         }
