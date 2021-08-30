@@ -81,8 +81,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
 
     KeyPress keyPress;
-    public static int vanIndex = 0;
-
+    public static int vanIndex = 13;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

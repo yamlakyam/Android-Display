@@ -80,7 +80,6 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_report_for_all_ous, container, false);
 
-
         userReportForAllTableLayout = view.findViewById(R.id.userReportForAllTableLayout);
         pieChart = view.findViewById(R.id.pchartUserReportForAll);
         userReportForAllScrollView = view.findViewById(R.id.userReportForAllScrollView);
@@ -223,15 +222,11 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
         if (SplashScreenActivity.allData.getLayoutList().contains(11))
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-            navController.navigate(R.id.vansOfASingleOrganizationFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(10))
             navController.navigate(R.id.userReportForEachOusFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
             navController.navigate(R.id.mapsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
@@ -245,6 +240,10 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
             navController.navigate(R.id.summaryOfLastMonthFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
+        else {
+            inflateTable();
+            drawPieChartForAllUsers();
+        }
 
     }
 
@@ -262,18 +261,18 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
-            navController.navigate(R.id.userReportForEachOusFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            navController.navigate(R.id.mapsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//            navController.navigate(R.id.vansOfASingleOrganizationFragment);
-            navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-            navController.navigate(R.id.vansOfASingleOrganizationFragment);
-//            navController.navigate(R.id.mapsFragment);
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+            navController.navigate(R.id.userReportForEachOusFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(11))
             navController.navigate(R.id.peakHourReportForAllOusFragment);
+        else {
+            inflateTable();
+            drawPieChartForAllUsers();
+        }
 
     }
 

@@ -165,7 +165,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                         } else {
                             navigate(fragment);
                         }
-
                     }
 
                 } else if (index < tablesToDisplay.size()) {
@@ -201,17 +200,28 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             navController.navigate(R.id.userReportForAllOusFragment2);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-            navController.navigate(R.id.vansOfASingleOrganizationFragment);
-//                navController.navigate(R.id.mapsFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
             navController.navigate(R.id.userReportForEachOusFragment);
+//            if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0) {
+//                if ((SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(SecondActivity.vanIndex).userReportTableRowArrayList).size() > 0)
+//                    navController.navigate(R.id.userReportForEachOusFragment);
+//                else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+//                    if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0) {
+//                        if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
+//                            navController.navigate(R.id.peakHourReportFragment);
+//                        } else if ()
+//
+//                    }
+//                }
+//            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+//
+//            }
         } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
             navController.navigate(R.id.peakHourReportFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
             navController.navigate(R.id.mapsFragment);
-        }else{
-
+        } else {
+            initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
         }
 
     }
@@ -219,17 +229,12 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     public void naviagteLeft(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
-
-            if (SplashScreenActivity.allData.getLayoutList().contains(10))
-                navController.navigate(R.id.userReportForEachOusFragment);
+            if (SplashScreenActivity.allData.getLayoutList().contains(1))
+                navController.navigate(R.id.mapsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(12))
                 navController.navigate(R.id.peakHourReportFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-//                navController.navigate(R.id.vansOfASingleOrganizationFragment);
-                navController.navigate(R.id.mapsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                navController.navigate(R.id.userReportForEachOusFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(11))
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9))
@@ -244,6 +249,9 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                 navController.navigate(R.id.summarizedByArticleChildCategFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(4))
                 navController.navigate(R.id.summarizedByArticleParentCategFragment);
+            else
+                initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
+
 
         }
 

@@ -1,7 +1,6 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -489,18 +488,18 @@ public class DashBoardDataParser {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
         ArrayList<VoucherDataForVan> voucherDataForVanList = new ArrayList<>();
         for (int i = 0; i < summaryOfBranchArray.length(); i++) {
-            Log.i("size", summaryOfBranchArray.length() + "");
 
             JSONArray vouchers = summaryOfBranchArray.getJSONObject(i).getJSONArray("vouchers");
             String org = summaryOfBranchArray.getJSONObject(i).getString("org");
 
-            Log.i("vouchers", vouchers + "");
             ArrayList<VoucherData> voucherDataArrayList = new ArrayList<>();
             for (int j = 0; j < vouchers.length(); j++) {
+//            for (int j = 0; j < 2; j++) {
                 JSONObject voucherObject = vouchers.getJSONObject(j);
-
-                VoucherData voucherData = new VoucherData(voucherObject.getString("voucherNo"), "v", voucherObject.getDouble("grandTotal"),
-                        voucherObject.getDouble("latitude"), voucherObject.getDouble("longitude"), voucherObject.getDouble("taxAmount"),
+                String outlet = (voucherObject.getString("outlates") == null) ? "- - - - -" : voucherObject.getString("outlates");
+                VoucherData
+                        voucherData = new VoucherData(voucherObject.getString("voucherNo"), outlet, voucherObject.getDouble("grandTotal"),
+                        8.965, 38.756, voucherObject.getDouble("taxAmount"),
                         voucherObject.getString("tin"), voucherObject.getString("dateAndTime"), voucherObject.getDouble("subTotal"),
                         voucherObject.getString("username"), voucherObject.getInt("itemCount"));
                 voucherDataArrayList.add(voucherData);
@@ -509,10 +508,8 @@ public class DashBoardDataParser {
             VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList);
             voucherDataForVanList.add(voucherDataForVan);
         }
-        Log.i("please", voucherDataForVanList + "");
         return voucherDataForVanList;
     }
-
 
 //    public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
 //        JSONArray vsmTransactionArray = jsonObject.getJSONArray("getSalesDataToDisplayOnVsmTable");

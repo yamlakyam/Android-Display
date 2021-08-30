@@ -85,7 +85,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
             summaryOfLAstXmonthPaused = false;
         } else {
             summaryOfLAstXmonthPaused = true;
-
         }
 
 
@@ -97,7 +96,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary_of_last_six_months, container, false);
-
         fragment = this;
         summaryOfLast6MonthsTableLayout = view.findViewById(R.id.summaryOfLast6MonthsTableLayout);
         pieChart = view.findViewById(R.id.pchartsummaryOfLast6Months);
@@ -106,16 +104,13 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         summaryOfLastSixMonthFrameLayout = view.findViewById(R.id.summaryOfLastSixMonthFrameLayout);
         scrollingLast6MonthText = view.findViewById(R.id.scrollingLast6MonthText);
         scrollingLast6MonthText.setSelected(true);
-
         digitalClock = view.findViewById(R.id.lastXmons_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         SummaryOfLast6MonthsTitle = view.findViewById(R.id.SummaryOfLast6MonthsTitle);
-
         sumOfLAstXMonthsKeyPad = view.findViewById(R.id.sumOfLAstXMonthsKeyPad);
         sumLastXMonthleftArrow = view.findViewById(R.id.sumLastXMonthleftArrow);
         sumLastXMonthrightArrow = view.findViewById(R.id.sumLastXMonthrightArrow);
         sumLastXMonthplayPause = view.findViewById(R.id.sumLastXMonthplayPause);
-
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
         keyPadControl(summaryOfLAstXmonthPaused);
@@ -256,14 +251,11 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
             navController.navigate(R.id.userReportForAllOusFragment2);
         else if (SplashScreenActivity.allData.getLayoutList().contains(11))
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-            navController.navigate(R.id.vansOfASingleOrganizationFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(10))
             navController.navigate(R.id.userReportForEachOusFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
             navController.navigate(R.id.mapsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
@@ -271,7 +263,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(5))
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
-
+        else
+            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
 
     }
 
@@ -285,17 +278,14 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
                 navController.navigate(R.id.summarizedByArticleParentCategFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
-                navController.navigate(R.id.userReportForEachOusFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
-                navController.navigate(R.id.peakHourReportFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(1))
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
 //                navController.navigate(R.id.vansOfASingleOrganizationFragment);
                 navController.navigate(R.id.mapsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-                navController.navigate(R.id.vansOfASingleOrganizationFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(12))
+                navController.navigate(R.id.peakHourReportFragment);
+            else if (SplashScreenActivity.allData.getLayoutList().contains(10))
+                navController.navigate(R.id.userReportForEachOusFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(11))
                 navController.navigate(R.id.peakHourReportForAllOusFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(9))
@@ -304,7 +294,8 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
                 navController.navigate(R.id.branchSummaryFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(7))
                 navController.navigate(R.id.summaryOfLastMonthFragment);
-
+            else
+                initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }
 
     }
