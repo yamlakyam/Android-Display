@@ -211,7 +211,6 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
             DashBoardData dashBoardData = SplashScreenActivity.allData.getDashBoardData();
 
-
             int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.EACH_USER_REPORT_INDEX);
             String chartType = "";
             if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {

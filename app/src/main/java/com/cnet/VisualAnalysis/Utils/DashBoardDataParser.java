@@ -452,7 +452,6 @@ public class DashBoardDataParser {
                             org);
                     figureReportTableRowArrayList.add(figureReportDataElements);
 
-
                 }
             }
 //            Log.i("DISTINICT TIMES",distinictDates(figureReportTableRowArrayList).toString());
@@ -517,15 +516,14 @@ public class DashBoardDataParser {
 //            for (int j = 0; j < 2; j++) {
                 JSONObject voucherObject = vouchers.getJSONObject(j);
                 String outlet = (voucherObject.getString("outlates") == null) ? "- - - - -" : voucherObject.getString("outlates");
-                VoucherData
-                        voucherData = new VoucherData(voucherObject.getString("voucherNo"), outlet, voucherObject.getDouble("grandTotal"),
-                        8.965, 38.756, voucherObject.getDouble("taxAmount"),
+                VoucherData voucherData = new VoucherData(voucherObject.getString("voucherNo"), outlet, voucherObject.getDouble("grandTotal"),
+                        voucherObject.getDouble("latitude"), voucherObject.getDouble("longitude"), voucherObject.getDouble("taxAmount"),
                         voucherObject.getString("tin"), voucherObject.getString("dateAndTime"), voucherObject.getDouble("subTotal"),
                         voucherObject.getString("username"), voucherObject.getInt("itemCount"));
                 voucherDataArrayList.add(voucherData);
 
             }
-            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList,grandTotal,countS);
+            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList, grandTotal, countS);
             voucherDataForVanList.add(voucherDataForVan);
         }
         return voucherDataForVanList;

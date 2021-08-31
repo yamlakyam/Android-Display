@@ -79,9 +79,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     public Context context;
 
-
     KeyPress keyPress;
-    public static int vanIndex = 13;
+    public static int vanIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -453,7 +452,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
         NavController navController = navHostFragment.getNavController();
         navController.setGraph(graph);
-
     }
 
     public int mappedFragment() {

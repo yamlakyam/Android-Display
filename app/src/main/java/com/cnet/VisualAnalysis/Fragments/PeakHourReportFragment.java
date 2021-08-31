@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,6 @@ import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.VideoActivity;
-import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
@@ -53,7 +53,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 
     public Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
-    public LineChart lineChart;
     Fragment fragment;
     TextView peakHourReportTitle;
     TextView scrollingPeakText;
@@ -188,12 +187,15 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 
             DashBoardData dashBoardData = SplashScreenActivity.allData.getDashBoardData();
             int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.EACH_PEAK_HOUR_INDEX);
+            Log.i("chartTypeIndex", chartTypeIndex + "");
             String chartType = "";
             if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
                 chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
             } else {
                 chartType = "";
             }
+
+            Log.i("chart", chartType + "");
 
             new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachPeakHour, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getPieChartData(),
                     dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData1, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, "Peak Hour Report", "Total Count");
@@ -249,7 +251,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                             handleRowAnimationThread.interrupt();
                         }
                     } else {
-
                         navigate(fragment);
                     }
                 } else if (index < tablesToDisplay.size()) {
