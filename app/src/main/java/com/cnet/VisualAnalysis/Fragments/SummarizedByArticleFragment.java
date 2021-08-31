@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,11 +40,12 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
     BarChart barChartSumByArticle;
     LineChart lineChartSumByArticle;
-    PieChart pChartSumByArticle;
+
     TableLayout summarizedByArticleTableLayout;
     Handler animationHandler;
     TextView scrollingArticleText;
@@ -76,6 +78,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     int totalQuantity = 0;
 
     Fragment fragment;
+    MaterialCardView pCardSummByArticle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,9 +101,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         fragment = this;
 
 
-        barChartSumByArticle = view.findViewById(R.id.bChartSumByArticle);
-        lineChartSumByArticle = view.findViewById(R.id.lchartsumByArticle);
-        pChartSumByArticle = view.findViewById(R.id.pChartSumByArticle);
+//        pChartSumByArticle = view.findViewById(R.id.pChartSumByArticle);
         summarizedByArticleTableLayout = view.findViewById(R.id.summaryByArticleTableLayout);
         scrollingArticleText = view.findViewById(R.id.scrollingArticleText);
         scrollingArticleText.setSelected(true);
@@ -116,6 +117,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         summarticleplayPause = view.findViewById(R.id.summarticleplayPause);
         summarticleleftArrow = view.findViewById(R.id.summarticleleftArrow);
         sumByArticleKeyPad = view.findViewById(R.id.sumByArticleKeyPad);
+
+        pCardSummByArticle = view.findViewById(R.id.pCardSummByArticle);
 
 //        AnimationVideoFragment animationVideoFragment = new AnimationVideoFragment();
 //        Bundle bundle = new Bundle();
@@ -320,9 +323,40 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         DashBoardData dashBoardData = dashBoardDataParam;
 
         inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);
-//        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByArticleData().getBarChartData(), barChartSumByArticle, "Summarized by Article");
-//        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummarizedByArticleData().getLineChartData(), lineChartSumByArticle, "Summarized by Article");
-        new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByArticleData().pieChartData, pChartSumByArticle, "Summarized by Article");
+
+        int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_ARTICLE_INDEX);
+        Log.i("TAG", chartTypeIndex + "");
+        String chartType = "";
+        if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+            chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+        } else {
+            chartType = "";
+        }
+        Log.i("TAG", chartType + "");
+
+
+        new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticle,
+                dashBoardData.getSummarizedByArticleData().pieChartData, dashBoardData.getSummarizedByArticleData().barChartData,
+                dashBoardData.getSummarizedByArticleData().lineChartData, "Summarized by Article");
+
+//        if (chartType.equals(Constants.DONUT_TYPE)) {
+//            View pieElement = LayoutInflater.from(getContext()).inflate(R.layout.pie_chart_layout, null, false);
+//            pCardSummByArticle.addView(pieElement);
+//            new UtilityFunctionsForActivity2().drawDonutChart(dashBoardData.getSummarizedByArticleData().pieChartData, (PieChart) pieElement, "Summarized by Article");
+//        } else if (chartType.equals(Constants.BAR_TYPE)) {
+//            View barElement = LayoutInflater.from(getContext()).inflate(R.layout.bar_chart_layout, null, false);
+//            pCardSummByArticle.addView(barElement);
+//            new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByArticleData().barChartData, (BarChart) barElement, "Summarized by Article");
+//        } else if (chartType.equals(Constants.LINE_TYPE)) {
+//            View lineElement = LayoutInflater.from(getContext()).inflate(R.layout.line_chart_layout, null, false);
+//            pCardSummByArticle.addView(lineElement);
+//            new UtilityFunctionsForActivity2().drawSingleLineChart(dashBoardData.getSummarizedByArticleData().lineChartData, (LineChart) lineElement, "Summarized by Article");
+//        } else {//default pie chart
+//            View pieElement = LayoutInflater.from(getContext()).inflate(R.layout.pie_chart_layout, null, false);
+//            pCardSummByArticle.addView(pieElement);
+//            new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByArticleData().pieChartData, (PieChart) pieElement, "Summarized by Article");
+//        }
+
     }
 
     public void backTraverse() {

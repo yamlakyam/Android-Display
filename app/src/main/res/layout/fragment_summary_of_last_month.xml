@@ -90,11 +90,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast30Days">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/last30daysLineChart"
-                android:layout_width="match_parent"
-                android:layout_height="308dp"
-                android:layout_gravity="center_horizontal|center_vertical" />
+
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -107,14 +103,10 @@
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toBottomOf="@+id/tCardSummaryOfLast30Days"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/tCardSummaryOfLast30Days"
             app:layout_constraintTop_toTopOf="@+id/lCardSummaryOfLast30Days">
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/last30daysBarChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView

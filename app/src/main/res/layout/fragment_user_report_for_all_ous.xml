@@ -164,6 +164,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cCardAllUserReport"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -176,12 +177,6 @@
         app:layout_constraintStart_toEndOf="@+id/materialCardView10"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView4">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pchartUserReportForAll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </com.github.mikephil.charting.charts.PieChart>
 
     </com.google.android.material.card.MaterialCardView>
 

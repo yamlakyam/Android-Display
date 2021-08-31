@@ -35,6 +35,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -98,7 +99,63 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-    public static void drawBarChart(BarChartData barChartData, BarChart barChart, String label) {
+    public void drawDonutChart(PieChartData pieChartData, PieChart piechart, String label) {
+        piechart.setDrawSliceText(true);// to draw the labels
+        piechart.animateX(3000, Easing.EaseInOutCirc);
+//        piechart.setDrawHoleEnabled(false);
+        piechart.setHoleRadius(75);
+        piechart.setHoleColor(Color.parseColor("#121729"));
+        piechart.getDescription().setTextColor(Color.parseColor("#f6f8fb"));
+        piechart.getDescription().setText(label);
+
+//        piechart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
+//        piechart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
+//        piechart.getLegend().setFormLineDashEffect(new DashPathEffect(new float[] {10f, 5f},0f));
+//        piechart.getLegend().setTextSize(3f);
+        piechart.getLegend().setEnabled(false);
+
+
+        ArrayList<PieEntry> pieChartEntries = new ArrayList<>();
+
+        if (pieChartData != null) {
+            for (int i = 0; i < pieChartData.x.length; i++) {
+                pieChartEntries.add(new PieEntry(pieChartData.x[i], pieChartData.y[i]));
+
+            }
+        }
+        PieDataSet pieDataSet = new PieDataSet(pieChartEntries, "");
+        pieDataSet.setColors(Color.parseColor("#5472e8"), Color.parseColor("#26adb9"),
+                Color.parseColor("#195d57"), Color.parseColor("#acefe8"),
+                Color.parseColor("#08bed6"), Color.parseColor("#1a76ca"),
+                Color.parseColor("#1e81b0"), Color.parseColor("#063970"),
+                Color.parseColor("#21130d"), Color.parseColor("#873e23"),
+                Color.parseColor("#B6D0E2"), Color.parseColor("#96DED1"),
+                Color.parseColor("#4169E1"), Color.parseColor("#87CEEB"),
+                Color.parseColor("#4682B4"), Color.parseColor("#008080"),
+                Color.parseColor("#40E0D0"), Color.parseColor("#40B5AD"),
+                Color.parseColor("#9FE2BF"), Color.parseColor("#0F52BA")
+        );
+
+
+        pieDataSet.setDrawValues(false);
+        pieDataSet.setDrawIcons(true);
+
+        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setValueLinePart1OffsetPercentage(6); //starting of the line from center of the chart offset
+        pieDataSet.setValueLinePart1Length(0.3f);
+        pieDataSet.setValueLinePart2Length(0.4f);
+        pieDataSet.setValueLineColor(Color.parseColor("#FFFFFF"));
+        pieDataSet.setUsingSliceColorAsValueLineColor(true);
+        pieDataSet.setValueTextColor(Color.parseColor("#FFFFFF"));
+        piechart.setExtraOffsets(7f, 5f, 7f, 5f);
+
+        PieData pieData = new PieData(pieDataSet);
+        piechart.setData(pieData);
+
+    }
+
+    public void drawBarChart(BarChartData barChartData, BarChart barChart, String label) {
         barChart.getDescription().setEnabled(false);
         barChart.setDrawGridBackground(false);
         barChart.getXAxis().setCenterAxisLabels(true);
@@ -190,8 +247,7 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-
-    public static void drawLineChart(LineChartData lineChartData1, LineChartData lineChartData2, LineChart lineChart, String label) {
+    public void drawDoubleLineChart(LineChartData lineChartData1, LineChartData lineChartData2, LineChart lineChart, String label1, String label2) {
         ArrayList<Entry> dataVals1 = new ArrayList<Entry>();
         ArrayList<Entry> dataVals2 = new ArrayList<Entry>();
         ArrayList<String> formattedXLabels = new ArrayList<>();
@@ -205,8 +261,8 @@ public class UtilityFunctionsForActivity2 {
                 formattedXLabels.add(xLabelAtIndex);
             }
 
-            LineDataSet lineDataSet1 = new LineDataSet(dataVals1, label);
-            LineDataSet lineDataSet2 = new LineDataSet(dataVals2, label);
+            LineDataSet lineDataSet1 = new LineDataSet(dataVals1, label1);
+            LineDataSet lineDataSet2 = new LineDataSet(dataVals2, label2);
             LineData lineData = new LineData();
             lineData.addDataSet(lineDataSet1);
             lineData.addDataSet(lineDataSet2);
@@ -232,6 +288,60 @@ public class UtilityFunctionsForActivity2 {
             lineDataSet2.setDrawValues(false);
             lineDataSet2.setColors(Color.parseColor("#27adb9"));
             lineDataSet2.setDrawCircles(false);
+            lineChart.setExtraBottomOffset(15f);
+            lineChart.setExtraTopOffset(15f);
+            lineChart.animateX(500, Easing.EaseInCubic);
+            lineChart.getXAxis().setTextColor(Color.parseColor("#f6f8fb"));
+            lineChart.getAxisLeft().setTextColor(Color.parseColor("#f6f8fb"));
+            lineChart.getLegend().setTextColor(Color.parseColor("#f6f8fb"));
+            try {
+                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(formattedXLabels));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            lineChart.getXAxis().setLabelRotationAngle(-45);
+            lineChart.getXAxis().setLabelCount(lineChartData1.legends.length, true);
+//            lineChart.getXAxis().setGranularity(1f);
+            lineChart.getXAxis().setCenterAxisLabels(false);
+//            lineChart.setExtraOffsets(7f, 7f, 7f, 7f);
+//            lineChart.setPinchZoom(false);
+//            lineChart.getXAxis().setAxisMaximum(dataVals.get(lineChartData.x.length - 1).getX() + 0.1f);
+        }
+    }
+
+    public void drawSingleLineChart(LineChartData lineChartData1, LineChart lineChart, String label) {
+        ArrayList<Entry> dataVals1 = new ArrayList<Entry>();
+        ArrayList<String> formattedXLabels = new ArrayList<>();
+
+        if (lineChartData1 != null) {
+            for (int i = 0; i < lineChartData1.x.length; i++) {
+                dataVals1.add(new Entry(lineChartData1.x[i], lineChartData1.y[i]));
+
+                String xLabelAtIndex = lineChartData1.legends[i];
+                formattedXLabels.add(xLabelAtIndex);
+            }
+
+            LineDataSet lineDataSet1 = new LineDataSet(dataVals1, label);
+            LineData lineData = new LineData();
+            lineData.addDataSet(lineDataSet1);
+            lineChart.setData(lineData);
+            lineChart.getAxisLeft().setDrawLabels(true);
+            lineChart.getAxisRight().setDrawGridLines(false);
+            lineChart.getAxisLeft().setDrawGridLines(false);
+            lineChart.getAxisRight().setDrawAxisLine(false);
+            lineChart.getAxisRight().setDrawLabels(false);
+            lineChart.getDescription().setEnabled(false);
+            lineChart.getXAxis().setDrawAxisLine(true);
+            lineChart.getXAxis().setDrawGridLines(false);
+            lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+            lineChart.setDrawGridBackground(false);
+            lineChart.getAxisLeft().setDrawGridLines(false);
+            lineChart.getXAxis().setGranularity(1f);
+            lineChart.getXAxis().setCenterAxisLabels(false);
+            lineDataSet1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            lineDataSet1.setDrawValues(false);
+            lineDataSet1.setColors(Color.parseColor("#5b79e7"));
+            lineDataSet1.setDrawCircles(false);
             lineChart.setExtraBottomOffset(15f);
             lineChart.setExtraTopOffset(15f);
             lineChart.animateX(500, Easing.EaseInCubic);
@@ -446,7 +556,6 @@ public class UtilityFunctionsForActivity2 {
 
     }
 
-
     public void drawSummaryOfLAst6Months(ArrayList<SummaryOfLast6MonthsRow> summaryOfLast6MonthsRows,
                                          Context context,
                                          TableLayout summarizedByLast6MonthsTableLayout, int index, double total) {
@@ -524,4 +633,52 @@ public class UtilityFunctionsForActivity2 {
         Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.bottom_to_top);
         child.startAnimation(animation);
     }
+
+    public void drawChart(Context context, String chartType, MaterialCardView viewHolder, PieChartData pieChartData, BarChartData barChartData, LineChartData lineChartData,
+                          String label) {
+
+        if (chartType.equals(Constants.DONUT_TYPE)) {
+            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+            viewHolder.addView(pieElement);
+            new UtilityFunctionsForActivity2().drawDonutChart(pieChartData, (PieChart) pieElement, label);
+        } else if (chartType.equals(Constants.BAR_TYPE)) {
+            View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
+            viewHolder.addView(barElement);
+            new UtilityFunctionsForActivity2().drawBarChart(barChartData, (BarChart) barElement, label);
+        } else if (chartType.equals(Constants.LINE_TYPE)) {
+            View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
+            viewHolder.addView(lineElement);
+            new UtilityFunctionsForActivity2().drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
+        } else {//default pie chart
+            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+            viewHolder.addView(pieElement);
+            new UtilityFunctionsForActivity2().drawPieChart(pieChartData, (PieChart) pieElement, label);
+        }
+    }
+
+    public void drawChart(Context context, String chartType, MaterialCardView viewHolder, PieChartData pieChartData, BarChartData barChartData, LineChartData lineChartData1,
+                          LineChartData lineChartData2, String label1, String label2) {
+
+        if (chartType.equals(Constants.DONUT_TYPE)) {
+            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+            viewHolder.addView(pieElement);
+            new UtilityFunctionsForActivity2().drawDonutChart(pieChartData, (PieChart) pieElement, label1);
+        } else if (chartType.equals(Constants.BAR_TYPE)) {
+            View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
+            viewHolder.addView(barElement);
+            new UtilityFunctionsForActivity2().drawBarChart(barChartData, (BarChart) barElement, label1);
+        }
+        else if(chartType.equals(Constants.PIE_TYPE)) {//default pie chart
+            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+            viewHolder.addView(pieElement);
+            new UtilityFunctionsForActivity2().drawPieChart(pieChartData, (PieChart) pieElement, label1);
+        }else{//default lineChart
+            View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
+            viewHolder.addView(lineElement);
+//            new UtilityFunctionsForActivity2().drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
+            drawDoubleLineChart(lineChartData1, lineChartData2, (LineChart) lineElement, label1, label2);
+        }
+    }
+
+
 }

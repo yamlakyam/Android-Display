@@ -38,10 +38,10 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -51,8 +51,6 @@ import java.util.Locale;
 public class SummaryOfLastMonthFragment extends Fragment implements SecondActivity.KeyPress {
     TableLayout summaryOfLast30DaysTableLayout;
     Handler animationHandler;
-    LineChart lineChart;
-    BarChart barChart;
     ScrollView scrollView;
     Fragment fragment;
     FrameLayout summaryOfLastMonthFrameLayout;
@@ -66,6 +64,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     ImageView sumLastXDayleftArrow;
     ImageView sumLastXDayplayPause;
     ImageView sumLastXDayrightArrow;
+
+    MaterialCardView bCardSummaryOfLast30Days;
 
 
     public HandleRowAnimationThread handleRowAnimationThread;
@@ -99,9 +99,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
         fragment = this;
         summaryOfLast30DaysTableLayout = view.findViewById(R.id.summaryOfLast30DaysTableLayout);
-        lineChart = view.findViewById(R.id.last30daysLineChart);
         scrollView = view.findViewById(R.id.summaryOfLastMonthScrollView);
-        barChart = view.findViewById(R.id.last30daysBarChart);
         summaryOfLastMonthFrameLayout = view.findViewById(R.id.summaryOfLastMonthFrameLayout);
         scrollingLastMonthText = view.findViewById(R.id.scrollingLastMonthText);
         scrollingLastMonthText.setSelected(true);
@@ -113,6 +111,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         sumLastXDayleftArrow = view.findViewById(R.id.sumLastXDayleftArrow);
         sumLastXDayplayPause = view.findViewById(R.id.sumLastXDayplayPause);
         sumLastXDayrightArrow = view.findViewById(R.id.sumLastXDayrightArrow);
+
+        bCardSummaryOfLast30Days = view.findViewById(R.id.bCardSummaryOfLast30Days);
 
         backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
 
@@ -145,8 +145,23 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         DashBoardData dashBoardData = dashBoardDataParam;
         inflateTable(dashBoardData.getSummaryOfLast30DaysData().tableData, seconds, startingIndex);
 //        UtilityFunctionsForActivity2.drawLineChart(dashBoardData.getSummaryOfLast30DaysData().lineChartData, lineChart, "Summarized by last 30 days");
-        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last " + days + "  days");
+//        new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last " + days + "  days");
 //        UtilityFunctionsForActivity2.drawStackedBarChart(dashBoardData.getSummaryOfLast30DaysData().barChartData, barChart, "Summarized by last " + days + "  days");
+
+        int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_LAST_X_DAYS_INDEX);
+        String chartType = "";
+        if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+            chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+        } else {
+            chartType = "";
+        }
+
+//                new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
+//                new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+        new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, bCardSummaryOfLast30Days,
+                dashBoardData.getSummaryOfLast30DaysData().getPieChartData(), dashBoardData.getSummaryOfLast30DaysData().getBarChartData(),
+                dashBoardData.getSummaryOfLast30DaysData().getLineChartData(), "Summarized by Article parent category");
+
     }
 
     @SuppressLint("HandlerLeak")

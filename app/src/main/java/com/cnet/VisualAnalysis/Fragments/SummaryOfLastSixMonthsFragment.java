@@ -38,10 +38,10 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -54,19 +54,18 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
     TableLayout summaryOfLast6MonthsTableLayout;
     Handler animationHandler;
-    BarChart barChart;
-    PieChart pieChart;
     ScrollView scrollView;
     Fragment fragment;
     FrameLayout summaryOfLastSixMonthFrameLayout;
     TextView scrollingLast6MonthText;
     DigitalClock digitalClock;
     TextView SummaryOfLast6MonthsTitle;
-
     LinearLayout sumOfLAstXMonthsKeyPad;
     ImageView sumLastXMonthleftArrow;
     ImageView sumLastXMonthrightArrow;
     ImageView sumLastXMonthplayPause;
+
+    MaterialCardView pCardSummOfLast6Months;
 
     public HandleRowAnimationThread handleRowAnimationThread;
     double totalAmount = 0;
@@ -98,8 +97,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         View view = inflater.inflate(R.layout.fragment_summary_of_last_six_months, container, false);
         fragment = this;
         summaryOfLast6MonthsTableLayout = view.findViewById(R.id.summaryOfLast6MonthsTableLayout);
-        pieChart = view.findViewById(R.id.pchartsummaryOfLast6Months);
-        barChart = view.findViewById(R.id.bChartSummaryOfLast6Months);
         scrollView = view.findViewById(R.id.summaryOfLast6MonsScrollView);
         summaryOfLastSixMonthFrameLayout = view.findViewById(R.id.summaryOfLastSixMonthFrameLayout);
         scrollingLast6MonthText = view.findViewById(R.id.scrollingLast6MonthText);
@@ -111,6 +108,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         sumLastXMonthleftArrow = view.findViewById(R.id.sumLastXMonthleftArrow);
         sumLastXMonthrightArrow = view.findViewById(R.id.sumLastXMonthrightArrow);
         sumLastXMonthplayPause = view.findViewById(R.id.sumLastXMonthplayPause);
+        pCardSummOfLast6Months = view.findViewById(R.id.pCardSummOfLast6Months);
 
         backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
         keyPadControl(summaryOfLAstXmonthPaused);
@@ -178,8 +176,20 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         DashBoardData dashBoardData = dashBoardDataParam;
 
         inflateTable(dashBoardData.getSummaryOfLast6MonthsData().getTableData(), seconds);
-        UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummaryOfLast6MonthsData().getBarChartData(), barChart, "Summarized by last 6 months");
-        new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), pieChart, "Summarized by last 6 months");
+//        new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummaryOfLast6MonthsData().getBarChartData(), barChart, "Summarized by last 6 months");
+//        new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), pieChart, "Summarized by last 6 months");
+
+        int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_LAST_X_MONTHS_INDEX);
+        String chartType = "";
+        if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+            chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+        } else {
+            chartType = "";
+        }
+
+        new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummOfLast6Months,
+                dashBoardData.getSummaryOfLast6MonthsData().getPieChartData(), dashBoardData.getSummaryOfLast6MonthsData().getBarChartData(),
+                dashBoardData.getSummaryOfLast6MonthsData().getLineChartData(), "Summarized by last 6 months");
 
     }
 

@@ -95,46 +95,6 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/lCardSummByArticle"
-            android:layout_width="400dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:visibility="invisible"
-            app:cardBackgroundColor="@color/cardBackgroundDark1"
-            app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticle">
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lchartsumByArticle"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal|center_vertical" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/bCardSummByArticle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/cardBackgroundDark1"
-            app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
-            app:layout_constraintEnd_toEndOf="@+id/lCardSummByArticle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lCardSummByArticle">
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bChartSumByArticle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="invisible" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
             android:id="@+id/pCardSummByArticle"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -147,14 +107,14 @@
             app:layout_constraintStart_toEndOf="@+id/tCardSummByArticle"
             app:layout_constraintTop_toTopOf="@+id/tCardSummByArticle">
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pChartSumByArticle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="20dp"
-                android:padding="10dp">
+<!--            <com.github.mikephil.charting.charts.PieChart-->
+            <!--                android:id="@+id/pChartSumByArticle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_margin="20dp"-->
+            <!--                android:padding="10dp">-->
 
-            </com.github.mikephil.charting.charts.PieChart>
+            <!--            </com.github.mikephil.charting.charts.PieChart>-->
 
         </com.google.android.material.card.MaterialCardView>
 

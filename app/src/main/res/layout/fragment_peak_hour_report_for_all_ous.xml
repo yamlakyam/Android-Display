@@ -82,13 +82,6 @@
         app:layout_constraintStart_toEndOf="@+id/peakHourReportTableCard"
         app:layout_constraintTop_toBottomOf="@+id/peakHourReportTitleCard">
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/peakHourReportForAllLineChart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </com.github.mikephil.charting.charts.LineChart>
-
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView

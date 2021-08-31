@@ -28,15 +28,18 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -64,6 +67,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     ImageView peakHrEachplaypause;
     LinearLayout peakHrEachKeyPad;
     NavController navController;
+    MaterialCardView cCardEachPeakHour;
 
 
     private ArrayList<FigureReportDataElements> tablesToDisplay;
@@ -89,7 +93,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_peak_hour_report, container, false);
 
-        lineChart = view.findViewById(R.id.peakHourLineChart);
         peakHourReportTitle = view.findViewById(R.id.peakHourReportTitle);
 
         peakHourReportTableLayout = view.findViewById(R.id.peakHourReportTableLayout);
@@ -104,6 +107,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         scrollingPeakText.setSelected(true);
         digitalClock = view.findViewById(R.id.peakHourEach_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        cCardEachPeakHour = view.findViewById(R.id.cCardEachPeakHour);
 
         keyPadControl(peakHourForEachPaused);
 
@@ -179,11 +183,25 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 
     public void drawAllPeakHourReport(int vanIndex) {
         if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(vanIndex) != null) {
-            UtilityFunctionsForActivity2.drawLineChart(SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(vanIndex).lineChartData1,
-                    SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, lineChart, "Peak Hour Report");
+
+            inflateTable(vanIndex);
+
+            DashBoardData dashBoardData = SplashScreenActivity.allData.getDashBoardData();
+            int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.EACH_PEAK_HOUR_INDEX);
+            String chartType = "";
+            if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+                chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+            } else {
+                chartType = "";
+            }
+
+            new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachPeakHour, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getPieChartData(),
+                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData1, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, "Peak Hour Report", "Total Count");
+
+//            new UtilityFunctionsForActivity2().drawDoubleLineChart(dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData1,
+//                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, lineChart, "Peak Hour Report", "Total Count");
             peakHourReportTitle.setText("Peak Hour Report for " + SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(vanIndex).org);
             peakHourReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
-            inflateTable(vanIndex);
         }
 
     }
@@ -231,6 +249,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                             handleRowAnimationThread.interrupt();
                         }
                     } else {
+
                         navigate(fragment);
                     }
                 } else if (index < tablesToDisplay.size()) {

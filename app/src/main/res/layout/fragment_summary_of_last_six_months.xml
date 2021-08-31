@@ -90,11 +90,6 @@
             app:layout_constraintStart_toEndOf="@+id/tCardSummOfLast6Months"
             app:layout_constraintTop_toBottomOf="@+id/titleSummaryOfLast6Months">
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pchartsummaryOfLast6Months"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView

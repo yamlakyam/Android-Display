@@ -6,11 +6,14 @@ public class SummaryOfLast6MonthsData {
     private PieChartData pieChartData;
     private ArrayList<SummaryOfLast6MonthsRow> tableData;
     private BarChartData barChartData;
+    private LineChartData lineChartData;
 
-    public SummaryOfLast6MonthsData(PieChartData pieChartData, ArrayList<SummaryOfLast6MonthsRow> tableData, BarChartData barChartData) {
+    public SummaryOfLast6MonthsData(PieChartData pieChartData, ArrayList<SummaryOfLast6MonthsRow> tableData, BarChartData barChartData,
+                                    LineChartData lineChartData) {
         this.pieChartData = pieChartData;
         this.tableData = tableData;
-        this.barChartData =barChartData;
+        this.barChartData = barChartData;
+        this.lineChartData = lineChartData;
     }
 
     public PieChartData getPieChartData() {
@@ -23,5 +26,9 @@ public class SummaryOfLast6MonthsData {
 
     public BarChartData getBarChartData() {
         return barChartData;
+    }
+
+    public LineChartData getLineChartData() {
+        return lineChartData;
     }
 }

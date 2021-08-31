@@ -26,15 +26,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.cnet.VisualAnalysis.Data.BarChartData;
+import com.cnet.VisualAnalysis.Data.LineChartData;
 import com.cnet.VisualAnalysis.Data.PieChartData;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.PieChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -47,7 +51,6 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     TableLayout userReportForAllTableLayout;
     TextView scrollingUserReportForAllText;
     TextView userReportForAllTitle;
-    PieChart pieChart;
     ScrollView userReportForAllScrollView;
     DigitalClock digitalClock;
     public Handler animationHandler;
@@ -63,6 +66,8 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
     double grandTotalSum;
     public static boolean userReportForAllPaused;
+
+    MaterialCardView cCardAllUserReport;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +86,6 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         View view = inflater.inflate(R.layout.fragment_user_report_for_all_ous, container, false);
 
         userReportForAllTableLayout = view.findViewById(R.id.userReportForAllTableLayout);
-        pieChart = view.findViewById(R.id.pchartUserReportForAll);
         userReportForAllScrollView = view.findViewById(R.id.userReportForAllScrollView);
         scrollingUserReportForAllText = view.findViewById(R.id.scrollingUserReportForAllText);
         scrollingUserReportForAllText.setSelected(true);
@@ -94,6 +98,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         userRepoAllleftArrow = view.findViewById(R.id.userRepoAllleftArrow);
         userRepoAllplayPause = view.findViewById(R.id.userRepoAllplayPause);
         userRepoAllrightArrow = view.findViewById(R.id.userRepoAllrightArrow);
+        cCardAllUserReport = view.findViewById(R.id.cCardAllUserReport);
 
         fragment = this;
 
@@ -202,13 +207,29 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
     private void drawPieChartForAllUsers() {
         float[] x = new float[SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size()];
+        float[] y = new float[SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size()];
         String[] label = new String[SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size()];
         for (int i = 0; i < SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size(); i++) {
-            x[i] = (float) SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().get(i).grandTotal;
+            y[i] = (float) SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().get(i).grandTotal;
+            x[i] = i;
             label[i] = SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().get(i).summaryType;
         }
-        PieChartData pieChartData = new PieChartData(x, label);
-        new UtilityFunctionsForActivity2().drawPieChart(pieChartData, pieChart, "User Report For All Organizations");
+        PieChartData pieChartData = new PieChartData(y, label);
+        BarChartData barChartData = new BarChartData(x, y, label);
+        LineChartData lineChartData = new LineChartData(x, y, label);
+
+//        new UtilityFunctionsForActivity2().drawPieChart(pieChartData, pieChart, "User Report For All Organizations");
+
+        int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.ALL_USER_REPORT_INDEX);
+        String chartType = "";
+        if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+            chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+        } else {
+            chartType = "";
+        }
+
+        new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardAllUserReport,
+                pieChartData, barChartData, lineChartData, "User Report For All Organizations");
 
     }
 

@@ -38,10 +38,12 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -66,6 +68,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     ImageView sumParentArticleleftArrow;
     ImageView sumParentArticleplayPause;
     ImageView sumParentArticlerightArrow;
+
+    MaterialCardView pCardSummByArticleParent;
 
     public HandleRowAnimationThread handleRowAnimationThread;
 
@@ -104,7 +108,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
         summarizedByParentArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
         scrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
-        pieChart = view.findViewById(R.id.pchartsumByArticleParent);
         barChart = view.findViewById(R.id.bChartSumByArticleParent);
         summarizedByParentArticleFrameLayout = view.findViewById(R.id.summarizedByParentArticleFrameLayout);
         scrollingParentText = view.findViewById(R.id.scrollingParentText);
@@ -117,6 +120,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         sumParentArticleleftArrow = view.findViewById(R.id.sumParentArticleleftArrow);
         sumParentArticleplayPause = view.findViewById(R.id.sumParentArticleplayPause);
         sumParentArticlerightArrow = view.findViewById(R.id.sumParentArticlerightArrow);
+
+        pCardSummByArticleParent = view.findViewById(R.id.pCardSummByArticleParent);
 
         backTraverse(fragment, R.id.summarizedByArticleFragment2);
 
@@ -190,8 +195,19 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
             if (dashBoardData.getSummarizedByParentArticleData() != null) {
                 inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData(), seconds);
 
-                UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
-                new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+                int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_parent_ARTICLE_INDEX);
+                String chartType = "";
+                if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+                    chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+                } else {
+                    chartType = "";
+                }
+
+//                new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
+//                new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+                new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticleParent,
+                        dashBoardData.getSummarizedByParentArticleData().getPieChartData(), dashBoardData.getSummarizedByParentArticleData().getBarChartData(),
+                        dashBoardData.getSummarizedByParentArticleData().getLineChartData(), "Summarized by Article parent category");
             }
         }
     }

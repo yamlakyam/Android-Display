@@ -91,12 +91,6 @@
             app:layout_constraintStart_toEndOf="@+id/tCardSummByArticleChild"
             app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticleChild">
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pchartsumByArticleChild"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:padding="20dp" />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView

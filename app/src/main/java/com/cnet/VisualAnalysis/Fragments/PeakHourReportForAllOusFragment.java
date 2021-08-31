@@ -23,16 +23,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.Data.LineChartData;
+import com.cnet.VisualAnalysis.Data.PieChartData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +56,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     ImageView peakHrAllrightArrow;
     ImageView peakHrAllplaypause;
     LinearLayout linearLayout;
-    LineChart peakHourReportForAllLineChart;
+
+    MaterialCardView peakHourReportLineCard;
 
     public static boolean peakHourForAllPaused;
     double grandTotalSum;
@@ -82,8 +86,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         linearLayout = view.findViewById(R.id.peakHrForAllKeypad);
         scrollingPeakHourForAllText.setSelected(true);
         digitalClock = view.findViewById(R.id.peakHourAll_digitalClock);
-        peakHourReportForAllLineChart = view.findViewById(R.id.peakHourReportForAllLineChart);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        peakHourReportLineCard = view.findViewById(R.id.peakHourReportLineCard);
         fragment = this;
 
         keyPadControl(peakHourForAllPaused);
@@ -197,8 +201,6 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                 count += tablesToDisplay.get(indexesForDates.get(i).get(j)).totalCount;
                 String time = tablesToDisplay.get(indexesForDates.get(i).get(j)).dateNTime;
                 Log.i("time", time + "");
-
-//                Log.i("dateTime", dateTime + "");
                 figureReportDataElements = new FigureReportDataElements(dateTime, count, grandTotal, "");
 
             }
@@ -225,19 +227,37 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
 
         for (int i = 0; i < merged.size(); i++) {
 
-            x1[i] = i;
-            y1[i] = (float) mergedFigureData.get(i).getTotalCount();
-            String timeAtThisIndex = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(indexesForDates.get(i).get(0)).dateNTime;
-            label1[i] = timeAtThisIndex;
-
             x2[i] = i;
-            y2[i] = Float.parseFloat(merged.get(i).toString());
+            y2[i] = (float) mergedFigureData.get(i).getTotalCount();
             String timeAtThisIndex2 = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(indexesForDates.get(i).get(0)).dateNTime;
-            label1[i] = timeAtThisIndex2;
+            label2[i] = timeAtThisIndex2;
+
+            x1[i] = i;
+            y1[i] = Float.parseFloat(merged.get(i).toString());
+            String timeAtThisIndex1 = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().get(indexesForDates.get(i).get(0)).dateNTime;
+            label1[i] = timeAtThisIndex1;
         }
         LineChartData lineChartData1 = new LineChartData(x1, y1, label1);
         LineChartData lineChartData2 = new LineChartData(x2, y2, label2);
-        UtilityFunctionsForActivity2.drawLineChart(lineChartData1, lineChartData2, peakHourReportForAllLineChart, "peak Hour Report for all");
+        PieChartData pieChartData = new PieChartData(y1, label1);
+        BarChartData barChartData = new BarChartData(x1, y1, label1);
+
+        int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.ALL_PEAK_HOUR_INDEX);
+//        int chartTypeIndex = 13;
+
+        Log.i("chartTypeIndex", chartTypeIndex + "");
+        Log.i("size", SplashScreenActivity.allData.getLayoutList().size() + "");
+
+        String chartType = "";
+        if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+            chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+        } else {
+            chartType = "";
+        }
+
+        Log.i("chart type", chartType + "");
+//        new UtilityFunctionsForActivity2().drawDoubleLineChart(lineChartData1, lineChartData2, peakHourReportForAllLineChart, "peak Hour Report for all", "Total Count");
+        new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, peakHourReportLineCard, pieChartData, barChartData, lineChartData1, lineChartData2, "peak Hour Report for all", "Total Count");
     }
 
     public void navigate(Fragment fragment) {

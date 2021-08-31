@@ -29,16 +29,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.UserReportDataForSingleOu;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.PieChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -74,6 +77,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
     Context thisContext;
 
+    MaterialCardView cCardEachUserReport;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +95,6 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         View view = inflater.inflate(R.layout.fragment_user_report_for_each_ou, container, false);
 
         userReportTableLayout = view.findViewById(R.id.userReportTableLayout);
-        pieChart = view.findViewById(R.id.pchartUserReport);
         userReportScrollView = view.findViewById(R.id.userReportScrollView);
         userReportTitle = view.findViewById(R.id.userReportTitle);
         scrollingUserReportForEachText = view.findViewById(R.id.scrollingUserReportForEachText);
@@ -102,6 +106,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         userRepEachleftArrow = view.findViewById(R.id.userRepEachleftArrow);
         userRepEachplayPause = view.findViewById(R.id.userRepEachplayPause);
         userRepEachrightArrow = view.findViewById(R.id.userRepEachrightArrow);
+        cCardEachUserReport = view.findViewById(R.id.cCardEachUserReport);
 //        keyPadControl(userReportForEachPaused);
 
         fragment = this;
@@ -202,10 +207,26 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index) != null) {
 
             inflateTable(index);
-            new UtilityFunctionsForActivity2().drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).pieChartData, pieChart, "User Report");
-//            new UtilityFunctionsForActivity2().drawPieChart(userReportDataForSingleOus.get(index).pieChartData, pieChart, "User Report");
+//            new UtilityFunctionsForActivity2().drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).pieChartData, pieChart, "User Report");
+
+            DashBoardData dashBoardData = SplashScreenActivity.allData.getDashBoardData();
+
+
+            int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.EACH_USER_REPORT_INDEX);
+            String chartType = "";
+            if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+                chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+            } else {
+                chartType = "";
+            }
+
+//                new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
+//                new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+            new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachUserReport,
+                    dashBoardData.getUserReportForEachBranch().get(index).getPieChartData(), dashBoardData.getUserReportForEachBranch().get(index).getBarChartData(),
+                    dashBoardData.getUserReportForEachBranch().get(index).getLineChartData(), "User Report");
+
             userReportTitle.setText("User Report For " + SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).org);
-//            userReportTitle.setText("User Report For " + userReportDataForSingleOus.get(index).org);
             userReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
         }
     }

@@ -163,7 +163,9 @@ public class MapsFragment extends Fragment {
 //        parameter1.setText(numberFormat.format(vansToDisplay.get(vanIndex).salesOutLateCount));
 //        parameter1.setText(numberFormat.format(vansToDisplay.get(vanIndex).));
 //        parameter2.setText(numberFormat.format(vansToDisplay.get(vanIndex).allLineItemCount));
+        parameter2.setText(numberFormat.format(vansToDisplay.get(vanIndex).countS));
 //        parameter3.setText(numberFormat.format(Math.round(vansToDisplay.get(vanIndex).totalPrice * 100.0) / 100.0));
+        parameter3.setText(numberFormat.format(Math.round(vansToDisplay.get(vanIndex).grandTotal * 100.0) / 100.0));
 
         if (currentLocationIndex == 0) {
             googleMap.clear();

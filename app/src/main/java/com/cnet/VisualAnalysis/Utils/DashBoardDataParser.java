@@ -112,14 +112,14 @@ public class DashBoardDataParser {
             }
 
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-//        LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
+            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
             PieChartData pieChartData = new PieChartData(yValues, legends);
 
-            SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, pieChartData);
+            SummarizedByArticleData summarizedByArticleData = new SummarizedByArticleData(tableData, barChartData, pieChartData, lineChartData);
             return summarizedByArticleData;
         }
         return new SummarizedByArticleData(new ArrayList<SummarizedByArticleTableRow>(), new BarChartData(new float[0], new float[0], new String[0]),
-                new PieChartData(new float[0], new String[0]));
+                new PieChartData(new float[0], new String[0]), new LineChartData(new float[0], new float[0], new String[0]));
     }
 
     public static SummarizedByParentArticleData summarizedByParentArticleParser(JSONObject jsonObject) throws JSONException {
@@ -152,14 +152,16 @@ public class DashBoardDataParser {
 
             PieChartData pieChartData = new PieChartData(yValues, legends);
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
+            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
 
 
-            SummarizedByParentArticleData summarizedByParentArticleData = new SummarizedByParentArticleData(tableData, barChartData, pieChartData);
+            SummarizedByParentArticleData summarizedByParentArticleData = new SummarizedByParentArticleData(tableData, barChartData, pieChartData, lineChartData);
 
             return summarizedByParentArticleData;
         }
         return new SummarizedByParentArticleData(new ArrayList<SummarizedByParentArticleRow>(), new BarChartData(new float[0],
-                new float[0], new String[0]), new PieChartData(new float[0], new String[0]));
+                new float[0], new String[0]), new PieChartData(new float[0], new String[0]), new LineChartData(new float[0],
+                new float[0], new String[0]));
     }
 
     public static SummarizedByChildArticleData summarizedByChildArticleParser(JSONObject jsonObject) throws JSONException {
@@ -192,13 +194,15 @@ public class DashBoardDataParser {
 
             PieChartData pieChartData = new PieChartData(yValues, legends);
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
+            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
 
 
-            SummarizedByChildArticleData summarizedByChildArticleData = new SummarizedByChildArticleData(tableData, barChartData, pieChartData);
+            SummarizedByChildArticleData summarizedByChildArticleData = new SummarizedByChildArticleData(tableData, barChartData, pieChartData, lineChartData);
 
             return summarizedByChildArticleData;
         }
-        return new SummarizedByChildArticleData(new ArrayList<SummarizedByChildArticleRow>(), new BarChartData(new float[0], new float[0], new String[0]), new PieChartData(new float[0], new String[0]));
+        return new SummarizedByChildArticleData(new ArrayList<SummarizedByChildArticleRow>(), new BarChartData(new float[0], new float[0], new String[0]), new PieChartData(new float[0], new String[0])
+                , new LineChartData(new float[0], new float[0], new String[0]));
     }
 
     public static SummaryOfLast6MonthsData last6MonthsDataParser(JSONObject jsonObject) throws JSONException {
@@ -219,7 +223,8 @@ public class DashBoardDataParser {
                         last6MonsSummaryAtInedx.getString("dateTime")
                 );
                 tableData.add(summaryOfLast6MonthsRow);
-                xValues[i] = i + 1;
+//                xValues[i] = i + 1;
+                xValues[i] = i;
                 yValues[i] = (float) last6MonsSummaryAtInedx.getDouble("amount");
                 legends[i] = last6MonsSummaryAtInedx.getString("name");
 
@@ -227,12 +232,14 @@ public class DashBoardDataParser {
 
             PieChartData pieChartData = new PieChartData(yValues, legends);
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
+            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
 
-            SummaryOfLast6MonthsData summaryOfLast6MonthsData = new SummaryOfLast6MonthsData(pieChartData, tableData, barChartData);
+            SummaryOfLast6MonthsData summaryOfLast6MonthsData = new SummaryOfLast6MonthsData(pieChartData, tableData, barChartData, lineChartData);
 
             return summaryOfLast6MonthsData;
         }
-        return new SummaryOfLast6MonthsData(new PieChartData(new float[0], new String[0]), new ArrayList<SummaryOfLast6MonthsRow>(), new BarChartData(new float[0], new float[0], new String[0]));
+        return new SummaryOfLast6MonthsData(new PieChartData(new float[0], new String[0]), new ArrayList<SummaryOfLast6MonthsRow>(), new BarChartData(new float[0], new float[0], new String[0]),
+                new LineChartData(new float[0], new float[0], new String[0]));
 
     }
 
@@ -254,7 +261,8 @@ public class DashBoardDataParser {
                 );
 
                 tableData.add(summaryOfLast30DaysRow);
-                xValues[i] = i + 1;
+//                xValues[i] = i + 1;
+                xValues[i] = i;
                 yValues[i] = (float) summaryAtIndex.getDouble("amount");
                 legends[i] = summaryAtIndex.getString("name");
 
@@ -263,11 +271,14 @@ public class DashBoardDataParser {
 
 //        LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-            SummaryOfLast30DaysData summaryOfLast30DaysData = new SummaryOfLast30DaysData(barChartData, tableData);
+            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
+            PieChartData pieChartData = new PieChartData(yValues, legends);
+            SummaryOfLast30DaysData summaryOfLast30DaysData = new SummaryOfLast30DaysData(barChartData, tableData, lineChartData, pieChartData);
 
             return summaryOfLast30DaysData;
         }
-        return new SummaryOfLast30DaysData(new BarChartData(new float[0], new float[0], new String[0]), new ArrayList<SummaryOfLast30DaysRow>());
+        return new SummaryOfLast30DaysData(new BarChartData(new float[0], new float[0], new String[0]), new ArrayList<SummaryOfLast30DaysRow>(),
+                new LineChartData(new float[0], new float[0], new String[0]), new PieChartData(new float[0], new String[0]));
     }
 
     public static BranchSummaryData branchSummaryParser(JSONObject jsonObject) throws JSONException {
@@ -325,13 +336,17 @@ public class DashBoardDataParser {
                             userReportForSingleOu.getDouble("totalTaxAmt"), userReportForSingleOu.getDouble("grandTotal"), org);
                     userReportTableRowArrayList.add(userReportTableRow);
 
-                    xValues[j] = j + 1;
+//                    xValues[j] = j + 1;
+                    xValues[j] = j;
                     yValues[j] = (float) userReportForSingleOu.getDouble("grandTotal");
                     legends[j] = userReportForSingleOu.getString("summaryType");
                 }
 
                 PieChartData pieChartData = new PieChartData(yValues, legends);
-                UserReportDataForSingleOu userReportDataForSingleOu = new UserReportDataForSingleOu(userReportTableRowArrayList, pieChartData, org);
+                LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
+                BarChartData barChartData = new BarChartData(xValues, yValues, legends);
+                UserReportDataForSingleOu userReportDataForSingleOu = new UserReportDataForSingleOu(userReportTableRowArrayList, pieChartData, org,
+                        lineChartData, barChartData);
                 userReportDataForSingleOuArrayList.add(userReportDataForSingleOu);
             }
             return userReportDataForSingleOuArrayList;
@@ -402,7 +417,10 @@ public class DashBoardDataParser {
 
                 LineChartData lineChartData1 = new LineChartData(xValues, yValues1, legends);
                 LineChartData lineChartData2 = new LineChartData(xValues, yValues2, legends);
-                FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData1, lineChartData2, org, totalForThisOrg);
+                PieChartData pieChartData = new PieChartData(yValues1, legends);
+                BarChartData barChartData = new BarChartData(xValues, yValues1, legends);
+                FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData1, lineChartData2, org,
+                        totalForThisOrg, pieChartData, barChartData);
                 figureReportDataArrayList.add(figureReportData);
 
             }
@@ -491,6 +509,8 @@ public class DashBoardDataParser {
 
             JSONArray vouchers = summaryOfBranchArray.getJSONObject(i).getJSONArray("vouchers");
             String org = summaryOfBranchArray.getJSONObject(i).getString("org");
+            double grandTotal = summaryOfBranchArray.getJSONObject(i).getDouble("grandTotal");
+            int countS = summaryOfBranchArray.getJSONObject(i).getInt("countS");
 
             ArrayList<VoucherData> voucherDataArrayList = new ArrayList<>();
             for (int j = 0; j < vouchers.length(); j++) {
@@ -505,7 +525,7 @@ public class DashBoardDataParser {
                 voucherDataArrayList.add(voucherData);
 
             }
-            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList);
+            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList,grandTotal,countS);
             voucherDataForVanList.add(voucherDataForVan);
         }
         return voucherDataForVanList;

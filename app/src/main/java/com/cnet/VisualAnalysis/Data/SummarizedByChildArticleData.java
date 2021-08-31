@@ -1,19 +1,18 @@
 package com.cnet.VisualAnalysis.Data;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
-
 import java.util.ArrayList;
 
 public class SummarizedByChildArticleData {
     private ArrayList<SummarizedByChildArticleRow> tableData;
     private BarChartData barChartData;
     private PieChartData pieChartData;
+    private LineChartData lineChartData;
 
-    public SummarizedByChildArticleData(ArrayList<SummarizedByChildArticleRow> tableData, BarChartData barChartData, PieChartData pieChartData) {
+    public SummarizedByChildArticleData(ArrayList<SummarizedByChildArticleRow> tableData, BarChartData barChartData, PieChartData pieChartData, LineChartData lineChartData) {
         this.tableData = tableData;
         this.barChartData = barChartData;
         this.pieChartData = pieChartData;
+        this.lineChartData = lineChartData;
     }
 
     public ArrayList<SummarizedByChildArticleRow> getTableData() {
@@ -26,5 +25,9 @@ public class SummarizedByChildArticleData {
 
     public PieChartData getPieChartData() {
         return pieChartData;
+    }
+
+    public LineChartData getLineChartData() {
+        return lineChartData;
     }
 }

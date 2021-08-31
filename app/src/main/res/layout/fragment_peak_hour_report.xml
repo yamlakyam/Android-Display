@@ -70,24 +70,19 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView6"
+        android:id="@+id/cCardEachPeakHour"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/cardBackgroundDark1"
         app:layout_constraintBottom_toTopOf="@+id/materialCardView7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/materialCardView8"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView5">
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/peakHourLineChart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </com.github.mikephil.charting.charts.LineChart>
 
     </com.google.android.material.card.MaterialCardView>
 

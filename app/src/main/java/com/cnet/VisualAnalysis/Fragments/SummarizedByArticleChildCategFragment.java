@@ -38,10 +38,10 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -53,8 +53,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     TableLayout summaryByChildArticleTableLayout;
     ScrollView summarizedByChildArticleScrollView;
     Handler animationHandler;
-    BarChart barChart;
-    PieChart pieChart;
     Fragment fragment;
     FrameLayout summarizedByChildArticleFrameLayout;
     TextView scrollingChildText;
@@ -64,6 +62,8 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     ImageView sumChildArticleleftArrow;
     ImageView sumChildArticleplayPause;
     ImageView sumChildArticlerightArrow;
+
+    MaterialCardView pCardSummByArticleChild;
 
     public HandleRowAnimationThread handleRowAnimationThread;
 
@@ -93,8 +93,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         fragment = this;
         summaryByChildArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
         summarizedByChildArticleScrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
-        pieChart = view.findViewById(R.id.pchartsumByArticleChild);
-        barChart = view.findViewById(R.id.bChartSumByArticleChild);
         summarizedByChildArticleFrameLayout = view.findViewById(R.id.summarizedByChildArticleFrameLayout);
         scrollingChildText = view.findViewById(R.id.scrollingChildText);
         scrollingChildText.setSelected(true);
@@ -107,6 +105,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         sumChildArticlerightArrow = view.findViewById(R.id.sumChildArticlerightArrow);
         sumChildArticleplayPause = view.findViewById(R.id.sumChildArticleplayPause);
         sumByChildKeyPad = view.findViewById(R.id.sumByChildKeyPad);
+        pCardSummByArticleChild = view.findViewById(R.id.pCardSummByArticleChild);
 
         backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
         keyPadControl(summByChildArticlePaused);
@@ -132,8 +131,21 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
 
         if (dashBoardData.getSummarizedByChildArticleData() != null) {
             inflateTable(dashBoardData.getSummarizedByChildArticleData().getTableData(), seconds);
-            UtilityFunctionsForActivity2.drawBarChart(dashBoardData.getSummarizedByChildArticleData().getBarChartData(), barChart, "Summarized by Article Child Category");
-            new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
+
+            int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_CHILD_ARTICLE_INDEX);
+            String chartType = "";
+            if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+                chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+            } else {
+                chartType = "";
+            }
+
+            new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticleChild,
+                    dashBoardData.getSummarizedByChildArticleData().getPieChartData(), dashBoardData.getSummarizedByChildArticleData().getBarChartData(),
+                    dashBoardData.getSummarizedByChildArticleData().getLineChartData(), "Summarized by Article Child Category");
+
+//            new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByChildArticleData().getBarChartData(), barChart, "Summarized by Article Child Category");
+//            new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByChildArticleData().getPieChartData(), pieChart, "Summarized by Article Child Category");
         }
 
     }
