@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -100,6 +101,9 @@ public class DashBoardDataParser {
                         summaryOfArticleAtInedx.getDouble("totalDiscount"),
                         summaryOfArticleAtInedx.getDouble("taxAmount")
                 );
+
+                Log.i("quantities", summaryOfArticleAtInedx.getDouble("quantity") + "");
+
                 double grandTotal = summaryOfArticleAtInedx.getDouble("totalAmount") +
                         summaryOfArticleAtInedx.getDouble("totalServCharge") +
                         summaryOfArticleAtInedx.getDouble("taxAmount");

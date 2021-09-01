@@ -38,6 +38,7 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.github.mikephil.charting.charts.PieChart;
@@ -109,7 +110,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         scrollingBranchText.setSelected(true);
         digitalClock = view.findViewById(R.id.branchSummary_digitalClock);
         branchSummaryHeaderTextView = view.findViewById(R.id.branchSummaryHeaderTextView);
-        branchSummaryHeaderTextView.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        branchSummaryHeaderTextView.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
 
@@ -312,8 +313,10 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     @Override
     public void onStop() {
         super.onStop();
-        if (handleRowAnimationThread != null)
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+        }
     }
 
     @Override

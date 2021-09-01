@@ -36,7 +36,10 @@ public class HandleRowAnimationThread extends Thread {
                 } else if (i == rows) {
                     Log.i("last row", "run: ");
 //                    lastRowAnimationSleep();
+                    Thread.sleep(3000);
+                } else if (i == rows-1) {
                     Thread.sleep(5000);
+
                 } else {
                     Thread.sleep(numberOfSeconds);
                 }

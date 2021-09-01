@@ -513,7 +513,6 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-
     public Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsed = null;

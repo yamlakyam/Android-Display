@@ -370,6 +370,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         super.onStop();
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
         }
     }
 

@@ -99,7 +99,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         digitalClock = view.findViewById(R.id.childArticle_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         articleChildSummaryTitle = view.findViewById(R.id.articleChildSummaryTitle);
-        articleChildSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        articleChildSummaryTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
         sumChildArticleleftArrow = view.findViewById(R.id.sumChildArticleleftArrow);
         sumChildArticlerightArrow = view.findViewById(R.id.sumChildArticlerightArrow);
@@ -209,17 +209,17 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
 
 
         tableRowProperty1.setText("");
-        tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setText("Grand Total");
         tableRowProperty2.setTextSize(16f);
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(16f);
-        tableRowProperty4.setText("");
+        tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
+        tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty4.setTextSize(16f);
+        tableRowProperty3.setText("");
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
         tableRowProperty2.startAnimation(animation);
-        tableRowProperty3.startAnimation(animation);
+        tableRowProperty4.startAnimation(animation);
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summaryByChildArticleTableLayout.addView(tableElements);
         new UtilityFunctionsForActivity1().animate(summaryByChildArticleTableLayout, tableElements);
@@ -296,8 +296,12 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     @Override
     public void onStop() {
         super.onStop();
-        if (handleRowAnimationThread != null)
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+        }
+
+
     }
 
     @Override

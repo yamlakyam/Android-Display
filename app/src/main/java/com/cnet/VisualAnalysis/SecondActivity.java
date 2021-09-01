@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -36,6 +37,7 @@ import com.cnet.VisualAnalysis.Fragments.UserReportForEachOuFragment;
 import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
+import com.gu.toolargetool.TooLargeTool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,6 +85,13 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     public static int vanIndex = 0;
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Clear the Activity's bundle of the subsidiary fragments' bundles.
+        outState.clear();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -90,6 +99,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         setContentView(R.layout.activity_second);
         setHomeFragment();
 
+//        TooLargeTool.startLogging(SecondActivity.this);
         leftArrow = findViewById(R.id.leftArrow);
         playPause = findViewById(R.id.playPause);
         rightArrow = findViewById(R.id.rightArrow);
@@ -124,11 +134,9 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                         setHomeFragment(R.id.summarizedByArticleFragment2);
                     }
                 }
-
             }
         }
 
-        ///////////////////////
         int fragId = intent.getIntExtra("fromVideo", 0);
         if (fragId == 3) {
             if (SplashScreenActivity.allData != null) {

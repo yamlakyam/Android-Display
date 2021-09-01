@@ -167,8 +167,9 @@ public class UtilityFunctionsForActivity2 {
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.setPinchZoom(false);
         barChart.getXAxis().setGranularity(1f);
-//        barChart.getXAxis().setCenterAxisLabels(false);
+        barChart.getXAxis().setCenterAxisLabels(true);
         barChart.getXAxis().setLabelCount(barChartData.x.length);
+//        barChart.getXAxis().setAxisMinimum(0f);
 
 //        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(barChartData.legends));
 //        barChart.getXAxis().setLabelRotationAngle(-45);
@@ -400,18 +401,11 @@ public class UtilityFunctionsForActivity2 {
             }
 
 
-            tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty1.setText(numberFormat.format(index + 1));
             tableRowProperty2.setText(formattedArticleName);
-            tableRowProperty3.setText(String.valueOf(row.getQuantity()));
+            tableRowProperty3.setText(numberFormat.format(row.getQuantity()));
             tableRowProperty4.setText(numberFormat.format(Math.round(row.getAvgAmount() * 100.0) / 100.0));
             tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-
-//        Animation animation = AnimationUtils.loadAnimation(context, R.anim.blink);
-//        tableRowProperty5.startAnimation(animation);
-
-//        AnimatorSet anim = (AnimatorSet ) AnimatorInflater.loadAnimator(context, R.animator.blink_2);
-//        anim.setTarget(tableRowProperty5);
-//        anim.start();
 
             summarizedByArticleTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByArticleTableLayout, tableElements);
@@ -460,9 +454,8 @@ public class UtilityFunctionsForActivity2 {
 
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
-            tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
-
+            tableRowProperty3.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
+            tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
 
             summarizedByParentArticleTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByParentArticleTableLayout, tableElements);
@@ -512,8 +505,8 @@ public class UtilityFunctionsForActivity2 {
 
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
-            tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty4.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
+            tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
+            tableRowProperty3.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
 
 
             summarizedByChildArticleTableLayout.addView(tableElements);
@@ -667,12 +660,11 @@ public class UtilityFunctionsForActivity2 {
             View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
             viewHolder.addView(barElement);
             new UtilityFunctionsForActivity2().drawBarChart(barChartData, (BarChart) barElement, label1);
-        }
-        else if(chartType.equals(Constants.PIE_TYPE)) {//default pie chart
+        } else if (chartType.equals(Constants.PIE_TYPE)) {//default pie chart
             View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
             viewHolder.addView(pieElement);
             new UtilityFunctionsForActivity2().drawPieChart(pieChartData, (PieChart) pieElement, label1);
-        }else{//default lineChart
+        } else {//default lineChart
             View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
             viewHolder.addView(lineElement);
 //            new UtilityFunctionsForActivity2().drawSingleLineChart(lineChartData, (LineChart) lineElement, label);

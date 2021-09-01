@@ -30,7 +30,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
-import com.cnet.VisualAnalysis.Data.UserReportDataForSingleOu;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
@@ -72,8 +71,6 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
     double grandTotalSum;
     public static boolean userReportForEachPaused;
-
-    ArrayList<UserReportDataForSingleOu> userReportDataForSingleOus;
 
     Context thisContext;
 
@@ -124,28 +121,28 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     }
 
     private void drawAvailableReportFromUserReport(int vanIndex) {
-        if (vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
-            if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(vanIndex).userReportTableRowArrayList.size() > 0) {
+        if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
+            if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(SecondActivity.vanIndex).userReportTableRowArrayList.size() > 0) {
 //                drawUserReport(SecondActivity.vanIndex);
                 Log.i("User Report drawn", "drawAvailableReportFromUserReport: ");
-                drawAllUserReport(vanIndex);
+                drawAllUserReport(SecondActivity.vanIndex);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
 //                navController.navigate(R.id.peakHourReportFragment);
                 if (!userReportForEachPaused) {
-                    navigateToPeakHourFromUserReport(vanIndex);
+                    navigateToPeakHourFromUserReport(SecondActivity.vanIndex);
                 }
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
 //                navController.navigate(R.id.mapsFragment);
                 Log.i("navigated", "to map");
                 if (!userReportForEachPaused) {
-                    navigateToMapFromUserReport(vanIndex);
+                    navigateToMapFromUserReport(SecondActivity.vanIndex);
                 }
 
             } else {
-                vanIndex++;
-                if (vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
+                SecondActivity.vanIndex++;
+                if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
                     Log.i("iterating", "drawAvailableReportFromUserReport: ");
-                    drawAvailableReportFromUserReport(vanIndex);
+                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 }
             }
         } else {
@@ -158,28 +155,25 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0) {
 
-            if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(vanIndex).figureReportDataElementsArrayList.size() > 0) {
+            if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
 
                 navController.navigate(R.id.peakHourReportFragment);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                 if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0) {
 
-                    if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size() > 0) {
+                    if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
                         navController.navigate(R.id.mapsFragment);
                     } else {
-                        vanIndex = vanIndex + 1;
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
-                        drawAvailableReportFromUserReport(vanIndex);
+                        drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                     }
                 } else {
-                    vanIndex = vanIndex + 1;
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
-                    drawAvailableReportFromUserReport(vanIndex);
+                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 }
             } else {
-                vanIndex = vanIndex + 1;
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
-                drawAvailableReportFromUserReport(vanIndex);
+                drawAvailableReportFromUserReport(SecondActivity.vanIndex);
             }
 
         }
@@ -190,10 +184,10 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 //        if (SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().size() > 0) {
         if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0) {
 //            if (SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.size() > 0) {
-            if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size() > 0) {
+            if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
                 navController.navigate(R.id.mapsFragment);
             } else {
-                vanIndex = vanIndex + 1;
+
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 drawAvailableReportFromUserReport(SecondActivity.vanIndex);
             }
@@ -226,7 +220,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     dashBoardData.getUserReportForEachBranch().get(index).getLineChartData(), "User Report");
 
             userReportTitle.setText("User Report For " + SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).org);
-            userReportTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+            userReportTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
         }
     }
 
@@ -236,6 +230,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         grandTotalSum = 0;
         if (userReportTableLayout != null) {
             userReportTableLayout.removeAllViews();
+        }
+        if (cCardEachUserReport != null) {
+            cCardEachUserReport.removeAllViews();
         }
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(dataIndex).userReportTableRowArrayList;
 //        tablesToDisplay = userReportDataForSingleOus.get(dataIndex).userReportTableRowArrayList;
@@ -297,7 +294,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         numberFormat.setGroupingUsed(true);
 
         userReportSN.setText("");
-        userReportSummaryType.setText("Total Amount");
+        userReportSummaryType.setText("Grand Total");
         userReportSummaryType.setTypeface(Typeface.DEFAULT_BOLD);
         userReportSummaryType.setTextSize(16f);
 
@@ -386,6 +383,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         super.onStop();
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
         }
     }
 

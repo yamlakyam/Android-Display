@@ -123,7 +123,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         if (SplashScreenActivity.allData != null) {
             int months = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size();
             SummaryOfLast6MonthsTitle.setText("Summary of Last " + months + " Months");
-            SummaryOfLast6MonthsTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+            SummaryOfLast6MonthsTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
             scrollingLast6MonthText.append(" " + months + " months");
             summaryOfLastSixMonthFrameLayout.setVisibility(View.GONE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
@@ -213,7 +213,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         numberFormat.setGroupingUsed(true);
 
         tableRowProperty1.setText("");
-        tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setText("Grand Total");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty2.setTextSize(16f);
 
@@ -314,8 +314,11 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     @Override
     public void onStop() {
         super.onStop();
-        if (handleRowAnimationThread != null)
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
+        }
     }
 
     @Override

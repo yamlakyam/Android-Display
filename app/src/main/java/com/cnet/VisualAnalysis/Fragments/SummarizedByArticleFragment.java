@@ -43,8 +43,6 @@ import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
@@ -53,9 +51,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class SummarizedByArticleFragment extends Fragment implements SecondActivity.KeyPress {
-
-    BarChart barChartSumByArticle;
-    LineChart lineChartSumByArticle;
 
     TableLayout summarizedByArticleTableLayout;
     Handler animationHandler;
@@ -76,6 +71,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
     double totalUnitAmount = 0;
     int totalQuantity = 0;
+    double totalAmount = 0;
 
     Fragment fragment;
     MaterialCardView pCardSummByArticle;
@@ -100,8 +96,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         View view = inflater.inflate(R.layout.fragment_summarized_by_article, container, false);
         fragment = this;
 
-
-//        pChartSumByArticle = view.findViewById(R.id.pChartSumByArticle);
         summarizedByArticleTableLayout = view.findViewById(R.id.summaryByArticleTableLayout);
         scrollingArticleText = view.findViewById(R.id.scrollingArticleText);
         scrollingArticleText.setSelected(true);
@@ -111,7 +105,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         digitalClock = view.findViewById(R.id.articleSummary_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         summarizedByArticleTextView = view.findViewById(R.id.summarizedByArticleTextView);
-        summarizedByArticleTextView.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        summarizedByArticleTextView.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
         summarticlerightArrow = view.findViewById(R.id.summarticlerightArrow);
         summarticleplayPause = view.findViewById(R.id.summarticleplayPause);
@@ -119,11 +113,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         sumByArticleKeyPad = view.findViewById(R.id.sumByArticleKeyPad);
 
         pCardSummByArticle = view.findViewById(R.id.pCardSummByArticle);
-
-//        AnimationVideoFragment animationVideoFragment = new AnimationVideoFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("nav_from", 3);
-//        animationVideoFragment.setArguments(bundle);
 
         keyPadControl(summByarticlePaused);
         backTraverse();
@@ -146,6 +135,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     private void inflateTable(ArrayList<SummarizedByArticleTableRow> tablesToDisplay, int seconds) {
         totalQuantity = 0;
         totalUnitAmount = 0;
+        totalAmount = 0;
         summarizedByArticleTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @Override
@@ -205,20 +195,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             navController.navigate(R.id.peakHourReportForAllOusFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
             navController.navigate(R.id.userReportForEachOusFragment);
-//            if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0) {
-//                if ((SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(SecondActivity.vanIndex).userReportTableRowArrayList).size() > 0)
-//                    navController.navigate(R.id.userReportForEachOusFragment);
-//                else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-//                    if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0) {
-//                        if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
-//                            navController.navigate(R.id.peakHourReportFragment);
-//                        } else if ()
-//
-//                    }
-//                }
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-//
-//            }
+
         } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
             navController.navigate(R.id.peakHourReportFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
@@ -255,23 +232,22 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             else
                 initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
 
-
         }
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (handleRowAnimationThread != null)
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+        }
     }
 
     public void totalLastRow(SummarizedByArticleTableRow row) {
-
         totalQuantity = totalQuantity + row.getQuantity();
         totalUnitAmount = totalUnitAmount + row.getAvgAmount();
-
+        totalAmount = totalAmount + row.getTotalAmount();
     }
 
     public void drawLastArticleSummaryTotalRow() {
@@ -287,29 +263,29 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setGroupingUsed(true);
 
-
             tableRowProperty1.setText("");
-            tableRowProperty2.setText("Total Amount");
+            tableRowProperty2.setText("Grand Total");
             tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
             tableRowProperty2.setTextSize(16f);
-
 
             tableRowProperty3.setText(numberFormat.format(totalQuantity));
             tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
             tableRowProperty3.setTextSize(16f);
 
-
             tableRowProperty4.setText(numberFormat.format(Math.round(totalUnitAmount * 100.0) / 100.0));
             tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
             tableRowProperty4.setTextSize(16f);
 
+            tableRowProperty5.setText(numberFormat.format(Math.round(totalAmount * 100.0) / 100.0));
+            tableRowProperty5.setTypeface(Typeface.DEFAULT_BOLD);
+            tableRowProperty5.setTextSize(16f);
 
-            tableRowProperty5.setText("");
             tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
 
             Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink);
             tableRowProperty3.startAnimation(animation);
             tableRowProperty4.startAnimation(animation);
+            tableRowProperty5.startAnimation(animation);
 
             summarizedByArticleTableLayout.addView(tableElements);
             new UtilityFunctionsForActivity1().animate(summarizedByArticleTableLayout, tableElements);
@@ -338,25 +314,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticle,
                 dashBoardData.getSummarizedByArticleData().pieChartData, dashBoardData.getSummarizedByArticleData().barChartData,
                 dashBoardData.getSummarizedByArticleData().lineChartData, "Summarized by Article");
-
-//        if (chartType.equals(Constants.DONUT_TYPE)) {
-//            View pieElement = LayoutInflater.from(getContext()).inflate(R.layout.pie_chart_layout, null, false);
-//            pCardSummByArticle.addView(pieElement);
-//            new UtilityFunctionsForActivity2().drawDonutChart(dashBoardData.getSummarizedByArticleData().pieChartData, (PieChart) pieElement, "Summarized by Article");
-//        } else if (chartType.equals(Constants.BAR_TYPE)) {
-//            View barElement = LayoutInflater.from(getContext()).inflate(R.layout.bar_chart_layout, null, false);
-//            pCardSummByArticle.addView(barElement);
-//            new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByArticleData().barChartData, (BarChart) barElement, "Summarized by Article");
-//        } else if (chartType.equals(Constants.LINE_TYPE)) {
-//            View lineElement = LayoutInflater.from(getContext()).inflate(R.layout.line_chart_layout, null, false);
-//            pCardSummByArticle.addView(lineElement);
-//            new UtilityFunctionsForActivity2().drawSingleLineChart(dashBoardData.getSummarizedByArticleData().lineChartData, (LineChart) lineElement, "Summarized by Article");
-//        } else {//default pie chart
-//            View pieElement = LayoutInflater.from(getContext()).inflate(R.layout.pie_chart_layout, null, false);
-//            pCardSummByArticle.addView(pieElement);
-//            new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByArticleData().pieChartData, (PieChart) pieElement, "Summarized by Article");
-//        }
-
     }
 
     public void backTraverse() {

@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/advent_pro_thin"
                     android:gravity="end"
-                    android:text="Grand Total"
+                    android:text="Percentage"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
@@ -169,7 +169,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/advent_pro_thin"
                     android:gravity="end"
-                    android:text="Percentage"
+                    android:text="Grand Total"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 

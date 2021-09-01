@@ -37,7 +37,6 @@ import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
-import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
@@ -92,7 +91,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         digitalClock = view.findViewById(R.id.userReportAll_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         userReportForAllTitle = view.findViewById(R.id.userReportForAllTitle);
-        userReportForAllTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        userReportForAllTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
         allUserRepKeyPad = view.findViewById(R.id.allUserRepKeyPad);
         userRepoAllleftArrow = view.findViewById(R.id.userRepoAllleftArrow);
@@ -174,7 +173,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         numberFormat.setGroupingUsed(true);
 
         userReportForAllSN.setText("");
-        userReportForAllUserName.setText("Total Amount");
+        userReportForAllUserName.setText("Grand Total");
         userReportForAllUserName.setTypeface(Typeface.DEFAULT_BOLD);
         userReportForAllUserName.setTextSize(16f);
 
@@ -302,6 +301,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         super.onStop();
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
         }
     }
 

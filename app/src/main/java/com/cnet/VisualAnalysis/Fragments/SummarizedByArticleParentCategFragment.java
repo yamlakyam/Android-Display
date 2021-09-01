@@ -115,7 +115,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         digitalClock = view.findViewById(R.id.parentArticle_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         articleParentSummaryTitle = view.findViewById(R.id.articleParentSummaryTitle);
-        articleParentSummaryTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        articleParentSummaryTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
         sumByParentKeyPad = view.findViewById(R.id.sumByParentKeyPad);
         sumParentArticleleftArrow = view.findViewById(R.id.sumParentArticleleftArrow);
         sumParentArticleplayPause = view.findViewById(R.id.sumParentArticleplayPause);
@@ -229,22 +229,20 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
 
-
         tableRowProperty1.setText("");
-        tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setText("Grand Total");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty2.setTextSize(16f);
 
+        tableRowProperty3.setText("");
 
-        tableRowProperty3.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty3.setTextSize(16f);
-
-
-        tableRowProperty4.setText("");
+        tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
+        tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty4.setTextSize(16f);
 
         Animation animation = AnimationUtils.loadAnimation(requireActivity().getApplicationContext(), R.anim.blink);
-        tableRowProperty3.startAnimation(animation);
+        tableRowProperty2.startAnimation(animation);
+        tableRowProperty4.startAnimation(animation);
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summarizedByParentArticleTableLayout.addView(tableElements);
         new UtilityFunctionsForActivity1().animate(summarizedByParentArticleTableLayout, tableElements);
@@ -263,11 +261,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
     public void navigate(Fragment fragment) {
 
-//        Intent intent = new Intent(getActivity(), VideoActivity.class);
-//        intent.putExtra("from", 4);
-//        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(requireContext(), R.anim.slide_in_bottom, R.anim.slide_out_bottom).toBundle();
-//
-//        startActivity(intent,bundle);
         requireActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
 
         NavController navController = NavHostFragment.findNavController(fragment);
@@ -288,8 +281,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         else if (SplashScreenActivity.allData.getLayoutList().contains(12))
             navController.navigate(R.id.peakHourReportFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-//                navController.navigate(R.id.vansOfASingleOrganizationFragment);
             navController.navigate(R.id.mapsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(3))
             navController.navigate(R.id.summarizedByArticleFragment2);
@@ -305,8 +296,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
             if (SplashScreenActivity.allData.getLayoutList().contains(3))
                 navController.navigate(R.id.summarizedByArticleFragment2);
             else if (SplashScreenActivity.allData.getLayoutList().contains(1))
-//                startActivity(new Intent(requireActivity(), MapsActivity.class));
-//                navController.navigate(R.id.vansOfASingleOrganizationFragment);
                 navController.navigate(R.id.mapsFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(12))
                 navController.navigate(R.id.peakHourReportFragment);
@@ -334,15 +323,16 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     @Override
     public void onStop() {
         super.onStop();
-        if (handleRowAnimationThread != null)
+        if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+        }
+
     }
 
     @Override
     public void centerKey() {
         summByParentArticlePaused = !summByParentArticlePaused;
-//        SecondActivity.firstCenterKeyPause = summByParentArticlePaused;
-
         if (!summByParentArticlePaused) {
             SecondActivity.playAll();
             navigate(fragment);

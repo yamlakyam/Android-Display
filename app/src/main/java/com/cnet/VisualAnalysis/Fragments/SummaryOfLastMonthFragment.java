@@ -131,7 +131,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
             int days = SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size();
             summaryOfLast30DaysTitle.setText("Summary of Last " + days + " days");
-            summaryOfLast30DaysTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+            summaryOfLast30DaysTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
             scrollingLastMonthText.append(" " + days + " days");
             summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
@@ -227,7 +227,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
 
         tableRowProperty1.setText("");
-        tableRowProperty2.setText("Total Amount");
+        tableRowProperty2.setText("Grand Total");
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty2.setTextSize(16f);
 
@@ -323,8 +323,11 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     @Override
     public void onStop() {
         super.onStop();
-        if (handleRowAnimationThread != null)
+        if (handleRowAnimationThread != null){
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+        }
+
     }
 
     @Override

@@ -32,4 +32,6 @@ public class Constants {
     public static final int EACH_PEAK_HOUR_INDEX = 12;
     public static final int MAP_INDEX = 1;
 
+    public static final String dateCriteriaFormat = "EEE, MMM dd, yyyy";
+
 }
