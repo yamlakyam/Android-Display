@@ -32,6 +32,7 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
+import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -203,7 +204,8 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
         totalQuantityTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalQuantityTextView.setTextSize(25f);
 
-        totalSalesTextView.setText(numberFormat.format(Math.round(sumOfTotalSales * 100.0) / 100.0));
+//        totalSalesTextView.setText(numberFormat.format(Math.round(sumOfTotalSales * 100.0) / 100.0));
+        totalSalesTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(sumOfTotalSales));
         totalSalesTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalSalesTextView.setTextSize(25f);
 

@@ -127,22 +127,24 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 Log.i("User Report drawn", "drawAvailableReportFromUserReport: ");
                 drawAllUserReport(SecondActivity.vanIndex);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-//                navController.navigate(R.id.peakHourReportFragment);
-                if (!userReportForEachPaused) {
-                    navigateToPeakHourFromUserReport(SecondActivity.vanIndex);
-                }
+//                if (!userReportForEachPaused) {
+                navigateToPeakHourFromUserReport(SecondActivity.vanIndex);
+//                }
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
 //                navController.navigate(R.id.mapsFragment);
                 Log.i("navigated", "to map");
-                if (!userReportForEachPaused) {
-                    navigateToMapFromUserReport(SecondActivity.vanIndex);
-                }
+//                if (!userReportForEachPaused) {
+                navigateToMapFromUserReport(SecondActivity.vanIndex);
+//                }
 
             } else {
-                SecondActivity.vanIndex++;
+                SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
                     Log.i("iterating", "drawAvailableReportFromUserReport: ");
                     drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                } else {
+                    SecondActivity.vanIndex = 0;
+                    startActivity(new Intent(requireActivity(), VideoActivity.class));
                 }
             }
         } else {
@@ -204,14 +206,19 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 //            new UtilityFunctionsForActivity2().drawPieChart(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(index).pieChartData, pieChart, "User Report");
 
             DashBoardData dashBoardData = SplashScreenActivity.allData.getDashBoardData();
-
-            int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.EACH_USER_REPORT_INDEX);
             String chartType = "";
-            if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
-                chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+            if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.EACH_USER_REPORT_INDEX);
+
+                if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
+                    chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+                } else {
+                    chartType = "";
+                }
             } else {
                 chartType = "";
             }
+
 
 //                new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
 //                new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
@@ -257,7 +264,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                         }
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
-                        navigate(fragment);
+                        navigateToNextReport();
                     }
                 }
                 if (index == tablesToDisplay.size() + 1) {
@@ -267,7 +274,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                             handleRowAnimationThread.interrupt();
                         }
                     } else {
-                        navigate(fragment);
+                        navigateToNextReport();
                     }
                 } else if (index < tablesToDisplay.size()) {
                     grandTotalSum = grandTotalSum + tablesToDisplay.get(index).grandTotal;
@@ -319,6 +326,97 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         }
     }
 
+    public void navigateToNextReport() {
+        navController = NavHostFragment.findNavController(fragment);
+        if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size()) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
+                    navController.navigate(R.id.peakHourReportFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+
+                    if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
+                        navController.navigate(R.id.mapsFragment);
+                    } else {
+                        SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                        drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    }
+                } else {
+                    SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                }
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
+                    navController.navigate(R.id.mapsFragment);
+                } else {
+                    SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                }
+
+            } else {
+                Log.i("TAG-1", "navigateToNextReport: ");
+                SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
+                    Log.i("TAG-2", "navigateToNextReport: ");
+                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                } else {
+                    Log.i("TAG-3", "navigateToNextReport: ");
+                    navigateToNextReport();
+                }
+            }
+        } else {
+            SecondActivity.vanIndex = 0;
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+        }
+
+    }
+
+    public void navigateToPreviousReport() {
+        navController = NavHostFragment.findNavController(fragment);
+
+        SecondActivity.vanIndex = SecondActivity.vanIndex - 1;
+        if (SecondActivity.vanIndex >= 0) {
+            if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
+                    navController.navigate(R.id.mapsFragment);
+                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                    if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
+                        navController.navigate(R.id.peakHourReportFragment);
+                    } else {
+                        Log.i("TAG-1", "navigateToPreviousReport: ");
+//                        drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                        navigateToPreviousReport();
+                    }
+                } else {
+                    Log.i("TAG-2", "navigateToPreviousReport: ");
+//                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    navigateToPreviousReport();
+                }
+
+            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
+                    navController.navigate(R.id.peakHourReportFragment);
+                } else {
+                    Log.i("TAG-3", "navigateToPreviousReport: ");
+                    navigateToPreviousReport();
+                }
+            } else {
+                Log.i("TAG-4", "navigateToPreviousReport: ");
+//                drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
+                    Log.i("TAG-5", "navigateToPreviousReport: ");
+                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                } else {
+                    Log.i("TAG-6", "navigateToPreviousReport: ");
+                    Log.i("index", SecondActivity.vanIndex + "");
+                    navigateToPreviousReport();
+                }
+            }
+        } else {
+            SecondActivity.vanIndex = 0;
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+        }
+    }
+
     public void navigate(Fragment fragment) {
         try {
             navController = NavHostFragment.findNavController(fragment);
@@ -361,7 +459,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             navController.navigate(R.id.branchSummaryFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(7))
             navController.navigate(R.id.summaryOfLastMonthFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null)
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(5))
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
@@ -394,45 +492,31 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 //        SecondActivity.firstCenterKeyPause = userReportForEachPaused;
         if (!userReportForEachPaused) {
             SecondActivity.playAll();
-            navigateToPeakHourFromUserReport(SecondActivity.vanIndex);
+            navigateToNextReport();
         } else {
             SecondActivity.pauseAll();
         }
         keyPadControl(userReportForEachPaused);
-
     }
 
     @Override
     public void leftKey() {
-        /*
+
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
-        if (branchIndex == 0) {
-            leftNavigate(fragment);
-        } else {
-            inflateAllTables(branchIndex - 1);
-        }
-
-         */
+        navigateToPreviousReport();
     }
 
     @Override
     public void rightKey() {
-        /*
+
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
         }
+        navigateToNextReport();
 
-//        if (branchIndex == SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() - 1) {
-//        if (branchIndex == getallUserReportSize(SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch()) - 1) {
-        if (branchIndex == getallUserReportSize(userReportDataForSingleOus) - 1) {
-            navigate(fragment);
-        } else {
-            inflateAllTables(branchIndex + 1);
-        }
 
-         */
     }
 
     public void keyPadControl(boolean paused) {

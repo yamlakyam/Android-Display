@@ -25,7 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingStart="10dp"
-                tools:layout_editor_absoluteY="2dp" />
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
@@ -110,8 +111,8 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="start"
             android:text="SN"
@@ -120,8 +121,8 @@
 
         <TextView
             android:id="@+id/branchSummaryHeader1"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="start|center_horizontal|center_vertical"
@@ -131,12 +132,12 @@
 
         <TextView
             android:id="@+id/branchSummaryHeader2"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
-            android:text="Quantity"
+            android:text="Qty"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
@@ -147,19 +148,30 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
-            android:text="Percentage"
+            android:text="Trans. Count"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/branchSummaryHeader4"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Percentage"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/branchSummaryHeader5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
-            android:text="Total"
+            android:text="Grand Total"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 

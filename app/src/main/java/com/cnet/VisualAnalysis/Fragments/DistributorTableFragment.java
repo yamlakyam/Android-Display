@@ -209,7 +209,8 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         distributorQuantityCountTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorQuantityCountTV.setTextSize(25f);
 
-        distributorTotalSalesTV.setText(numberFormat.format(Math.round(sumofSales * 100.0) / 100.0));
+//        distributorTotalSalesTV.setText(numberFormat.format(Math.round(sumofSales * 100.0) / 100.0));
+        distributorTotalSalesTV.setText(UtilityFunctionsForActivity2.decimalFormat.format(sumofSales));
         distributorTotalSalesTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorTotalSalesTV.setTextSize(25f);
 

@@ -142,7 +142,7 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/advent_pro_thin"
-                    android:text="Day"
+                    android:text="Date"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
 
@@ -153,7 +153,7 @@
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/advent_pro_thin"
                     android:gravity="end"
-                    android:text="Amount"
+                    android:text="Trans. Count"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
 
@@ -165,7 +165,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/advent_pro_thin"
                     android:gravity="end"
-                    android:text="Date"
+                    android:text="Grand Total"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
 

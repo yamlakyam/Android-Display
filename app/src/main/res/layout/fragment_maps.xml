@@ -191,14 +191,14 @@
                         android:orientation="horizontal"
                         android:paddingStart="16dp"
                         android:paddingRight="16dp"
-                        android:visibility="invisible">
+                        android:visibility="visible">
 
                         <TextView
                             android:id="@+id/attribute1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Total Outlets"
+                            android:text="Trans. Count"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
@@ -208,7 +208,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="50"
+                            android:text="--"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -237,7 +237,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="25"
+                            android:text="--"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -267,7 +267,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="500"
+                            android:text="---"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>

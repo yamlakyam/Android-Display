@@ -25,6 +25,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment;
+import com.cnet.VisualAnalysis.Fragments.MapsFragment;
 import com.cnet.VisualAnalysis.Fragments.PeakHourReportForAllOusFragment;
 import com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment;
 import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment;
@@ -37,7 +38,6 @@ import com.cnet.VisualAnalysis.Fragments.UserReportForEachOuFragment;
 import com.cnet.VisualAnalysis.Utils.AllDataParser;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.VolleyHttp;
-import com.gu.toolargetool.TooLargeTool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -519,7 +519,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                         if (getCurrentFragment() instanceof KeyPress)
                             keyPress.rightKey();
 
-
                         break;
                 }
             }
@@ -550,6 +549,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = true;
         UserReportForAllOusFragment.userReportForAllPaused = true;
         UserReportForEachOuFragment.userReportForEachPaused = true;
+        MapsFragment.mapPaused = true;
 //        VansOfASingleOrganizationFragment.vanListPaused = true;
 
     }
@@ -565,6 +565,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = false;
         UserReportForAllOusFragment.userReportForAllPaused = false;
         UserReportForEachOuFragment.userReportForEachPaused = false;
+        MapsFragment.mapPaused = false;
+
 //        VansOfASingleOrganizationFragment.vanListPaused = false;
     }
 
@@ -578,10 +580,16 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 SummaryOfLastMonthFragment.summaryOfLAstXdaysPaused == true ||
                 SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused == true ||
                 UserReportForAllOusFragment.userReportForAllPaused == true ||
-                UserReportForEachOuFragment.userReportForEachPaused == true) {
+                UserReportForEachOuFragment.userReportForEachPaused == true ||
+                MapsFragment.mapPaused == true) {
             return true;
         }
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+    }
 }

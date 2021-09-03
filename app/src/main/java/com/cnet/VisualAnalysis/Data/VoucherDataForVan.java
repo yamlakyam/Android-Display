@@ -6,13 +6,16 @@ public class VoucherDataForVan {
     public String nameOfVan;
     public ArrayList<VoucherData> voucherDataArrayList;
     public double grandTotal;
-    public int countS;
+    public int transactionCount;
+    public int lineItems;
 
-    public VoucherDataForVan(String nameOfVan, ArrayList<VoucherData> voucherDataArrayList, double grandTotal, int countS) {
+    public VoucherDataForVan(String nameOfVan, ArrayList<VoucherData> voucherDataArrayList, double grandTotal, int transactionCount, int lineItems) {
         this.nameOfVan = nameOfVan;
         this.voucherDataArrayList = voucherDataArrayList;
         this.grandTotal = grandTotal;
-        this.countS=countS;
+        this.transactionCount = transactionCount;
+        this.lineItems = lineItems;
+
     }
 
     public String getNameOfVan() {
@@ -27,7 +30,4 @@ public class VoucherDataForVan {
         return grandTotal;
     }
 
-    public int getCountS() {
-        return countS;
-    }
 }

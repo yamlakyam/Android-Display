@@ -90,7 +90,8 @@ public class UtilityFunctionsForActivity1 {
             totalOutlatesTextView.setText(numberFormat.format(row.getSalesOutLateCount()));
             totalSkuTextView.setText(numberFormat.format(row.getSkuCount()));
             totalQuantityTextView.setText(numberFormat.format(row.getQuantityCount()));
-            totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
+//            totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
+            totalSalesTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSalesAmountAfterTax()));
             activeVansTextView.setText(numberFormat.format(row.getActiveVans()));
             prospectTextView.setText(numberFormat.format(row.getProspect()));
 
@@ -137,7 +138,8 @@ public class UtilityFunctionsForActivity1 {
                 distributorSalesOutletTV.setText(String.valueOf(row.getSalesOutLateCount()));
                 distributorSKUcountTV.setText(String.valueOf(row.getSkuCount()));
                 distributorQuantityCountTV.setText(String.valueOf(row.getQuantityCount()));
-                distributorTotalSalesTV.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
+//                distributorTotalSalesTV.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
+                distributorTotalSalesTV.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSalesAmountAfterTax()));
 
                 if (distributorTableLayout != null) {
                     distributorTableLayout.addView(tableElements);
@@ -176,7 +178,8 @@ public class UtilityFunctionsForActivity1 {
 
                 userReportSN.setText(String.valueOf(index + 1));
                 userReportSummaryType.setText(row.getSummaryType());
-                userReportGrandTotal.setText(String.valueOf(Math.round(row.grandTotal * 100.0) / 100.0));
+//                userReportGrandTotal.setText(String.valueOf(Math.round(row.grandTotal * 100.0) / 100.0));
+                userReportGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
                 userReportPercentage.setText(numberFormat.format(percentage) + "%");
 
 
@@ -217,7 +220,8 @@ public class UtilityFunctionsForActivity1 {
                 peakHourReportSN.setText(String.valueOf(index + 1));
                 peakHourReportSummaryType.setText(formatHourNmin(row.dateNTime));
                 peakHourReportTotalCount.setText(String.valueOf(row.totalCount));
-                peakHourReportGrandTotal.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
+//                peakHourReportGrandTotal.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
+                peakHourReportGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
 
                 if (peakHourReportTableLayout != null) {
                     peakHourReportTableLayout.addView(tableElements);
@@ -290,7 +294,8 @@ public class UtilityFunctionsForActivity1 {
                 peakHourReportForAllTime.setText(formatHourNmin(row.getDateNTime()));
                 peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
 
-                peakHourReportForAllGrandTotal.setText(numberFormat.format(Math.round(row.grandTotal * 100.0) / 100.0));
+//                peakHourReportForAllGrandTotal.setText(numberFormat.format(Math.round(row.grandTotal * 100.0) / 100.0));
+                peakHourReportForAllGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
 
                 if (peakHourReportTableLayout != null) {
                     peakHourReportTableLayout.addView(tableElements);
@@ -438,9 +443,11 @@ public class UtilityFunctionsForActivity1 {
                 TINtextView.setText(row.getTIN());
                 dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
                 itemCountTextview.setText(String.valueOf(row.getItemCount()));
-                subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
+//                subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
+                subTotalTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getSubTotal()));
                 VATtextView.setText((int) row.getVAT());
-                totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
+//                totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
+                totalSalesTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSales()));
                 if (vsmTransactionTableLayout != null) {
                     vsmTransactionTableLayout.addView(tableElements);
                 }
@@ -483,7 +490,25 @@ public class UtilityFunctionsForActivity1 {
 
     public String formatDateToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
+//        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat output = new SimpleDateFormat("MMM, yyyy");
+
+        Date parsed = null;
+        String formattedTime = null;
+        try {
+            parsed = input.parse(lastActive);
+            formattedTime = output.format(parsed);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedTime;
+    }
+
+    public String formatDateToString2(String lastActive) {
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat output = new SimpleDateFormat("EEE, MMM yyyy");
 
         Date parsed = null;
         String formattedTime = null;
@@ -512,6 +537,7 @@ public class UtilityFunctionsForActivity1 {
         }
         return formattedTime;
     }
+
 
     public Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -570,6 +596,30 @@ public class UtilityFunctionsForActivity1 {
         } else
 //            return elapsedDays + " days, " + elapsedHours + " hours, " + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds ago";
             return elapsedSeconds + "";
+    }
+
+    public String driverStatus(Date startDate, Date endDate) {
+        long difference = endDate.getTime() - startDate.getTime();
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+        long monthsInMilli = daysInMilli * 30;
+
+        long elapsedMonths = difference / monthsInMilli;
+        difference = difference % monthsInMilli;
+        long elapsedDays = difference / daysInMilli;
+        difference = difference % daysInMilli;
+        long elapsedHours = difference / hoursInMilli;
+        difference = difference % hoursInMilli;
+        long elapsedMinutes = difference / minutesInMilli;
+        difference = difference % minutesInMilli;
+
+        long elapsedSeconds = difference / secondsInMilli;
+        if (elapsedHours < 1) {
+            return "Active";
+        } else
+            return "Away";
     }
 
 }

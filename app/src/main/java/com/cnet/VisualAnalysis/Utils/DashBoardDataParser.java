@@ -112,7 +112,6 @@ public class DashBoardDataParser {
                 xValues[i] = i;
                 yValues[i] = (float) grandTotal;
                 legends[i] = summaryOfArticleAtInedx.getString("articleName");
-
             }
 
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
@@ -224,14 +223,14 @@ public class DashBoardDataParser {
                 SummaryOfLast6MonthsRow summaryOfLast6MonthsRow = new SummaryOfLast6MonthsRow(
                         last6MonsSummaryAtInedx.getString("name"),
                         last6MonsSummaryAtInedx.getDouble("amount"),
-                        last6MonsSummaryAtInedx.getString("dateTime")
+                        last6MonsSummaryAtInedx.getString("dateTime"),
+                        last6MonsSummaryAtInedx.getInt("transactionCount")
                 );
                 tableData.add(summaryOfLast6MonthsRow);
 //                xValues[i] = i + 1;
                 xValues[i] = i;
                 yValues[i] = (float) last6MonsSummaryAtInedx.getDouble("amount");
                 legends[i] = last6MonsSummaryAtInedx.getString("name");
-
             }
 
             PieChartData pieChartData = new PieChartData(yValues, legends);
@@ -261,7 +260,8 @@ public class DashBoardDataParser {
                 SummaryOfLast30DaysRow summaryOfLast30DaysRow = new SummaryOfLast30DaysRow(
                         summaryAtIndex.getString("name"),
                         summaryAtIndex.getDouble("amount"),
-                        summaryAtIndex.getString("dateTime")
+                        summaryAtIndex.getString("dateTime"),
+                        summaryAtIndex.getInt("transactionCount")
                 );
 
                 tableData.add(summaryOfLast30DaysRow);
@@ -302,7 +302,8 @@ public class DashBoardDataParser {
                 BranchSummaryTableRow branchSummaryTableRow = new BranchSummaryTableRow(
                         branchSummaryAtInedx.getString("org"),
                         branchSummaryAtInedx.getDouble("grandTotal"),
-                        branchSummaryAtInedx.getInt("countS")
+                        branchSummaryAtInedx.getInt("transactionCount"),
+                        branchSummaryAtInedx.getInt("lineItems")
                 );
 
                 tableData.add(branchSummaryTableRow);
@@ -325,6 +326,7 @@ public class DashBoardDataParser {
         if (summaryOfBranchArray.length() > 0) {
             for (int i = 0; i < summaryOfBranchArray.length(); i++) {
                 JSONArray userReportArray = summaryOfBranchArray.getJSONObject(i).getJSONArray("userReport");
+                JSONArray figureReportArray = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport");
                 String org = summaryOfBranchArray.getJSONObject(i).getString("org");
                 ArrayList<UserReportTableRow> userReportTableRowArrayList = new ArrayList<>();
 
@@ -334,17 +336,35 @@ public class DashBoardDataParser {
 
                 for (int j = 0; j < userReportArray.length(); j++) {
                     JSONObject userReportForSingleOu = userReportArray.getJSONObject(j);
-                    UserReportTableRow userReportTableRow = new UserReportTableRow(userReportForSingleOu.getString("summaryType"),
+                    UserReportTableRow userReportTableRow = new UserReportTableRow(new UtilityFunctionsForActivity1().formatHourNmin(userReportForSingleOu.getString("summaryType")),
                             userReportForSingleOu.getInt("totalCount"), userReportForSingleOu.getDouble("subTotal"),
                             userReportForSingleOu.getDouble("additionalCharge"), userReportForSingleOu.getDouble("discount"),
                             userReportForSingleOu.getDouble("totalTaxAmt"), userReportForSingleOu.getDouble("grandTotal"), org);
                     userReportTableRowArrayList.add(userReportTableRow);
-
 //                    xValues[j] = j + 1;
                     xValues[j] = j;
                     yValues[j] = (float) userReportForSingleOu.getDouble("grandTotal");
-                    legends[j] = userReportForSingleOu.getString("summaryType");
+                    legends[j] = new UtilityFunctionsForActivity1().formatHourNmin(userReportForSingleOu.getString("summaryType"));
                 }
+
+
+//                float[] xValues = new float[figureReportArray.length()];
+//                float[] yValues = new float[figureReportArray.length()];
+//                String[] legends = new String[figureReportArray.length()];
+//
+//
+//                for (int j = 0; j < figureReportArray.length(); j++) {
+//
+//                    UserReportTableRow userReportTableRow = new UserReportTableRow("Aug 10 2021 10:00AM",
+//                            12, 20000,
+//                            1334, 0,
+//                            0.15, 300000, org);
+//                    userReportTableRowArrayList.add(userReportTableRow);
+//
+//                    xValues[j] = j;
+//                    yValues[j] = (float) 300000;
+//                    legends[j] = new UtilityFunctionsForActivity1().formatHourNmin("Aug 10 2021 10:00AM");
+//                }
 
                 PieChartData pieChartData = new PieChartData(yValues, legends);
                 LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
@@ -387,7 +407,6 @@ public class DashBoardDataParser {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
 
         ArrayList<FigureReportData> figureReportDataArrayList = new ArrayList<>();
-        ArrayList<FigureReportData> figureReportDataArrayListFiltered = new ArrayList<>();
 
         if (summaryOfBranchArray.length() > 0) {
             for (int i = 0; i < summaryOfBranchArray.length(); i++) {
@@ -412,19 +431,19 @@ public class DashBoardDataParser {
                             singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
                     figureReportDataElementsArrayList.add(figureReportDataElements);
 
-                    xValues[j] = j;
-                    yValues1[j] = (float) singleFigureReportObject.getDouble("grandTotal");
+                    xValues[j] = j + 1;
+                    yValues1[j] = (float) singleFigureReportObject.getDouble("grandTotal") / 1000;
                     yValues2[j] = (float) singleFigureReportObject.getInt("totalCount");
-                    legends[j] = singleFigureReportObject.getString("summaryType");
-
+                    legends[j] = new UtilityFunctionsForActivity1().formatHourNmin(singleFigureReportObject.getString("summaryType"));
                 }
 
                 LineChartData lineChartData1 = new LineChartData(xValues, yValues1, legends);
                 LineChartData lineChartData2 = new LineChartData(xValues, yValues2, legends);
                 PieChartData pieChartData = new PieChartData(yValues1, legends);
-                BarChartData barChartData = new BarChartData(xValues, yValues1, legends);
+                BarChartData barChartData1 = new BarChartData(xValues, yValues1, legends);
+                BarChartData barChartData2 = new BarChartData(xValues, yValues2, legends);
                 FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData1, lineChartData2, org,
-                        totalForThisOrg, pieChartData, barChartData);
+                        totalForThisOrg, pieChartData, barChartData1, barChartData2);
                 figureReportDataArrayList.add(figureReportData);
 
             }
@@ -513,7 +532,9 @@ public class DashBoardDataParser {
             JSONArray vouchers = summaryOfBranchArray.getJSONObject(i).getJSONArray("vouchers");
             String org = summaryOfBranchArray.getJSONObject(i).getString("org");
             double grandTotal = summaryOfBranchArray.getJSONObject(i).getDouble("grandTotal");
-            int countS = summaryOfBranchArray.getJSONObject(i).getInt("countS");
+//            int countS = summaryOfBranchArray.getJSONObject(i).getInt("countS");
+            int transactionCount = summaryOfBranchArray.getJSONObject(i).getInt("transactionCount");
+            int lineItems = summaryOfBranchArray.getJSONObject(i).getInt("lineItems");
 
             ArrayList<VoucherData> voucherDataArrayList = new ArrayList<>();
             for (int j = 0; j < vouchers.length(); j++) {
@@ -527,7 +548,7 @@ public class DashBoardDataParser {
                 voucherDataArrayList.add(voucherData);
 
             }
-            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList, grandTotal, countS);
+            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList, grandTotal, transactionCount, lineItems);
             voucherDataForVanList.add(voucherDataForVan);
         }
         return voucherDataForVanList;

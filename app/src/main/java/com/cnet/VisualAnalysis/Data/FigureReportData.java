@@ -9,17 +9,19 @@ public class FigureReportData {
     public String org;
     public double totalForThisVan;
     public PieChartData pieChartData;
-    public BarChartData barChartData;
+    public BarChartData barChartData1;
+    public BarChartData barChartData2;
 
     public FigureReportData(ArrayList<FigureReportDataElements> figureReportDataElementsArrayList, LineChartData lineChartData1, LineChartData lineChartData2, String org, double totalForThisVan,
-                            PieChartData pieChartData, BarChartData barChartData) {
+                            PieChartData pieChartData, BarChartData barChartData1, BarChartData barChartData2) {
         this.figureReportDataElementsArrayList = figureReportDataElementsArrayList;
         this.lineChartData1 = lineChartData1;
         this.lineChartData2 = lineChartData2;
         this.org = org;
         this.totalForThisVan = totalForThisVan;
         this.pieChartData = pieChartData;
-        this.barChartData = barChartData;
+        this.barChartData1 = barChartData1;
+        this.barChartData2 = barChartData2;
     }
 
     public ArrayList<FigureReportDataElements> getFigureReportDataElementsArrayList() {
@@ -46,7 +48,11 @@ public class FigureReportData {
         return pieChartData;
     }
 
-    public BarChartData getBarChartData() {
-        return barChartData;
+    public BarChartData getBarChartData1() {
+        return barChartData1;
+    }
+
+    public BarChartData getBarChartData2() {
+        return barChartData2;
     }
 }

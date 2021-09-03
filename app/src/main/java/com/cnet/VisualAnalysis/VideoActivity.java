@@ -67,4 +67,9 @@ public class VideoActivity extends AppCompatActivity {
 //        }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(VideoActivity.this, SplashScreenActivity.class));
+    }
 }
