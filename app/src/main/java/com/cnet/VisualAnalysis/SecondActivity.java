@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,23 +42,13 @@ import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
-    public int refreshTime = 600000;
+    public int refreshTime = 180000;
     String updateFail = "Failed updating";
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onSuccess(JSONObject jsonObject) throws JSONException {
-
-        AllDataParser allDataParser = new AllDataParser(jsonObject);
-        SplashScreenActivity.allData = allDataParser.parseAllData();
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-        Toast.makeText(this, updateFail, Toast.LENGTH_LONG);
-    }
 
     public interface KeyPress {
         void centerKey();
@@ -418,8 +408,25 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+//        Handler handler = new Handler();
+//        Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                VolleyHttp http = new VolleyHttp(getApplicationContext());
+//                try {
+//                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
+//                            SecondActivity.this);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                handler.postDelayed(this, refreshTime);
+//            }
+//        };
+//        handler.post(runnable);
+//
+
+        Timer timer = new Timer();
+        TimerTask hourlyTask = new TimerTask() {
             @Override
             public void run() {
                 VolleyHttp http = new VolleyHttp(getApplicationContext());
@@ -429,10 +436,25 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                handler.postDelayed(this, refreshTime);
+
             }
         };
-        handler.post(runnable);
+        timer.schedule(hourlyTask, 0, 1000 * 60 * 10);
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onSuccess(JSONObject jsonObject) throws JSONException {
+
+        Log.i("update called", "onSuccess: ");
+        AllDataParser allDataParser = new AllDataParser(jsonObject);
+        SplashScreenActivity.allData = allDataParser.parseAllData();
+    }
+
+    @Override
+    public void onFailure(VolleyError error) {
+        Toast.makeText(this, updateFail, Toast.LENGTH_LONG);
     }
 
     public void setHomeFragment() {
@@ -590,6 +612,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+//        startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
     }
 }

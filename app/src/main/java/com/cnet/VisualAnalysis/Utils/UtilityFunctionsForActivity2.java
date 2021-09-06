@@ -89,11 +89,10 @@ public class UtilityFunctionsForActivity2 {
 //        pieDataSet.setValueLineColor(Color.parseColor("#FFFFFF"));
         pieDataSet.setUsingSliceColorAsValueLineColor(true);
         pieDataSet.setValueTextColor(Color.parseColor("#FFFFFF"));
-        piechart.setExtraOffsets(7f, 5f, 7f, 5f);
+        piechart.setExtraOffsets(7f, 7f, 7f, 7f);
 //        pieDataSet.setSliceSpace(2);
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
-
     }
 
     public void drawDonutChart(PieChartData pieChartData, PieChart piechart, String label) {

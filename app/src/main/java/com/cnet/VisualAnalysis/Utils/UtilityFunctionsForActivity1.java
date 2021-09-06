@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class UtilityFunctionsForActivity1 {
 
@@ -600,22 +601,24 @@ public class UtilityFunctionsForActivity1 {
 
     public String driverStatus(Date startDate, Date endDate) {
         long difference = endDate.getTime() - startDate.getTime();
-        long secondsInMilli = 1000;
-        long minutesInMilli = secondsInMilli * 60;
-        long hoursInMilli = minutesInMilli * 60;
-        long daysInMilli = hoursInMilli * 24;
-        long monthsInMilli = daysInMilli * 30;
+//        long secondsInMilli = 1000;
+//        long minutesInMilli = secondsInMilli * 60;
+//        long hoursInMilli = minutesInMilli * 60;
+//        long daysInMilli = hoursInMilli * 24;
+//        long monthsInMilli = daysInMilli * 30;
+//
+//        long elapsedMonths = difference / monthsInMilli;
+//        difference = difference % monthsInMilli;
+//        long elapsedDays = difference / daysInMilli;
+//        difference = difference % daysInMilli;
+//        long elapsedHours = difference / hoursInMilli;
+//        difference = difference % hoursInMilli;
+//        long elapsedMinutes = difference / minutesInMilli;
+//        difference = difference % minutesInMilli;
 
-        long elapsedMonths = difference / monthsInMilli;
-        difference = difference % monthsInMilli;
-        long elapsedDays = difference / daysInMilli;
-        difference = difference % daysInMilli;
-        long elapsedHours = difference / hoursInMilli;
-        difference = difference % hoursInMilli;
-        long elapsedMinutes = difference / minutesInMilli;
-        difference = difference % minutesInMilli;
+//        long elapsedSeconds = difference / secondsInMilli;
 
-        long elapsedSeconds = difference / secondsInMilli;
+        long elapsedHours = TimeUnit.MILLISECONDS.toHours(difference);
         if (elapsedHours < 1) {
             return "Active";
         } else

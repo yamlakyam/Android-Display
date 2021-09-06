@@ -102,7 +102,7 @@ public class DashBoardDataParser {
                         summaryOfArticleAtInedx.getDouble("taxAmount")
                 );
 
-                Log.i("quantities", summaryOfArticleAtInedx.getDouble("quantity") + "");
+//                Log.i("quantities", summaryOfArticleAtInedx.getDouble("quantity") + "");
 
                 double grandTotal = summaryOfArticleAtInedx.getDouble("totalAmount") +
                         summaryOfArticleAtInedx.getDouble("totalServCharge") +

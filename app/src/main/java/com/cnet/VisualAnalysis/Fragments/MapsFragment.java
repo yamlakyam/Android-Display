@@ -96,7 +96,6 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
 
         if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size()) {
             if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
-
                 drawAll(SecondActivity.vanIndex, googleMap);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
@@ -181,6 +180,11 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
 //        parameter3.setText(numberFormat.format(Math.round(vansToDisplay.get(vanIndex).grandTotal * 100.0) / 100.0));
         parameter3.setText(UtilityFunctionsForActivity2.decimalFormat.format(vansToDisplay.get(vanIndex).grandTotal));
 
+        int lastIndexInaVan = vansToDisplay.get(vanIndex).voucherDataArrayList.size() - 1;
+        driverStatusText.setText(new UtilityFunctionsForActivity1().driverStatus(
+//                                new UtilityFunctionsForActivity1().formatTime(vsmTransactionTableRows.get(index).getDateAndTime()), Calendar.getInstance().getTime()));
+                new UtilityFunctionsForActivity1().formatTime(vansToDisplay.get(vanIndex).voucherDataArrayList.get(lastIndexInaVan).dateAndTime), Calendar.getInstance().getTime()));
+
         if (currentLocationIndex == 0) {
             googleMap.clear();
         }
@@ -200,6 +204,9 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                     currentLocationIndex = 0;
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size() && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() - 1) {
+
+                    Log.i("TAG-LAST VAN N VOUCHER", "handleMessage: ");
+
                     if (mapPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
@@ -209,8 +216,10 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                         startActivity(new Intent(requireActivity(), VideoActivity.class));
                     }
 
-                }
-                if (index == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size()) {
+                } else if (index == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size()) {
+
+                    Log.i("TAG-LAST VAN", "handleMessage: ");
+
                     if (mapPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
@@ -284,10 +293,10 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                     if (driverNameText != null) {
                         driverNameText.setText(vsmTransactionTableRows.get(index).getUsername());
                     }
-                    if (driverStatusText != null) {
-                        driverStatusText.setText(new UtilityFunctionsForActivity1().driverStatus(
-                                new UtilityFunctionsForActivity1().formatTime(vsmTransactionTableRows.get(index).getDateAndTime()), Calendar.getInstance().getTime()));
-                    }
+//                    if (driverStatusText != null) {
+//                        driverStatusText.setText(new UtilityFunctionsForActivity1().driverStatus(
+//                                new UtilityFunctionsForActivity1().formatTime(vsmTransactionTableRows.get(index).getDateAndTime()), Calendar.getInstance().getTime()));
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -370,11 +379,11 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
         if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size()) {
             if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
                 if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(SecondActivity.vanIndex).userReportTableRowArrayList.size() > 0) {
-                    Log.i("TAG-1", "navigateToNextReport: ");
 //                    if (!mapPaused) {
                     navController.navigate(R.id.userReportForEachOusFragment);
 //                    }
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+
                     if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
 //                        if (!mapPaused) {
                         navController.navigate(R.id.peakHourReportFragment);
@@ -388,7 +397,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                         navigateToNextReport(navController);
                     }
                 } else {
-                    Log.i("TAG-2", "navigateToNextReport: ");
+//                    Log.i("TAG-2", "navigateToNextReport: ");
                     if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
 //                        if (!mapPaused) {
                         drawAvailableReportFromMap(SecondActivity.vanIndex, gmap);
@@ -399,30 +408,37 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                     }
                 }
             } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                Log.i("TAG-MAP_1", "navigateToNextReport: ");
                 if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size()) {
                     if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
+                        Log.i("TAG-MAP_2", "navigateToNextReport: ");
 //                        if (!mapPaused) {
                         navController.navigate(R.id.peakHourReportFragment);
 //                        }
 
                     } else if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size()) {
+                        Log.i("TAG-MAP_3", "navigateToNextReport: ");
 //                        if (!mapPaused) {
                         drawAvailableReportFromMap(SecondActivity.vanIndex, gmap);
 //                        }
                     } else {
+                        Log.i("TAG-MAP_4", "navigateToNextReport: ");
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                         navigateToNextReport(navController);
                     }
                 } else {
 //                    SecondActivity.vanIndex = 0;
 //                    startActivity(new Intent(requireActivity(), VideoActivity.class));
+                    Log.i("TAG-MAP_5", "navigateToNextReport: ");
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                     navigateToNextReport(navController);
                 }
             } else {
+                Log.i("TAG-MAP_6", "navigateToNextReport: ");
                 drawAvailableReportFromMap(SecondActivity.vanIndex, gmap);
             }
         } else {
+            Log.i("TAG-MAP_7", "navigateToNextReport: ");
             SecondActivity.vanIndex = 0;
             startActivity(new Intent(requireActivity(), VideoActivity.class));
         }
