@@ -24,9 +24,11 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.BackGroundTasks;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.VideoActivity;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +42,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
+public class MapsFragment extends Fragment implements SecondActivity.KeyPress, BackGroundTasks.CalculateInBackground {
+    Marker marker;
+
     int width;
     TextView vanNameText;
     TextView driverNameText;
@@ -51,6 +55,9 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
     int currentVanIndex;
     int currentLocationIndex = 0;
     public static boolean mapPaused;
+
+
+    TextView grandTotalText;
 
     public ArrayList<VoucherDataForVan> vansToDisplay;
 
@@ -67,14 +74,20 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
 
     View view;
 
+    ArrayList<String> place_names = new ArrayList<>();
+    ArrayList<String> time_elapsed_values;
+    ArrayList<String> grand_total_values;
+    CameraUpdate cu;
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
+//            BackGroundTasks backGroundTasks = new BackGroundTasks(mapFragment.getContext(), MapsFragment.this);
+//            backGroundTasks.execute();
+
             gmap = googleMap;
-//            if (!mapPaused) {
             drawAvailableReportFromMap(SecondActivity.vanIndex, googleMap);
-//            }
         }
     };
 
@@ -202,6 +215,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size() - 1) {
                     currentLocationIndex = 0;
+                    gmap.moveCamera(cu);
                 }
                 if (index == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size() && vanIndex == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() - 1) {
 
@@ -279,12 +293,13 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                     if (place_name.length() > 21) {
                         place_name = vsmTransactionTableRows.get(index).getOutlates().substring(0, 21) + "...";
                     }
+
                     nameTextView.setText(place_name);
+
                     TextView timeTextView = (TextView) view.findViewById(R.id.timeTextView);
                     timeTextView.setText(new UtilityFunctionsForActivity1().timeElapsed(
                             new UtilityFunctionsForActivity1().formatTime(vsmTransactionTableRows.get(index).getDateAndTime()), Calendar.getInstance().getTime()));
-                    TextView grandTotalText = (TextView) view.findViewById(R.id.grandTotalText);
-//                    grandTotalText.setText(numberFormat.format(Math.round(vsmTransactionTableRows.get(index).getGrandTotal() * 100.0) / 100.0));
+                    grandTotalText = (TextView) view.findViewById(R.id.grandTotalText);
                     grandTotalText.setText(UtilityFunctionsForActivity2.decimalFormat.format(vsmTransactionTableRows.get(index).getGrandTotal()));
                     TextView itemCountText = (TextView) view.findViewById(R.id.itemCountText);
                     itemCountText.setText(numberFormat.format(vsmTransactionTableRows.get(index).getItemCount()));
@@ -309,6 +324,8 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (!SecondActivity.pausedstate()) {
             mapPaused = false;
         } else {
@@ -359,7 +376,6 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
         if (gmap != null) {
             gmap.clear();
         }
-
         mapFragment.onDestroyView();
         super.onDestroyView();
         driverNameText = null;
@@ -369,9 +385,8 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
         parameter2 = null;
         parameter3 = null;
         view = null;
-        if (handleRowAnimationThread != null) {
-
-        }
+        Log.i("ON-DESTROYVIEW", "onDestroyView: ");
+//        System.gc();
     }
 
     public void navigateToNextReport(NavController navController) {
@@ -563,5 +578,66 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
         navController = NavHostFragment.findNavController(mapFragment);
         navigateToNextReport(navController);
+    }
+
+    @Override
+    public void onPreExecute() {
+
+    }
+
+    @Override
+    public void doInBackground() {
+        place_names = new ArrayList<>();
+        time_elapsed_values = new ArrayList<>();
+        grand_total_values = new ArrayList<>();
+
+        ArrayList<VoucherData> vsmTransactionTableRows = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList;
+        for (int i = 0; i < vsmTransactionTableRows.size(); i++) {
+            String time_eplased = new UtilityFunctionsForActivity1().timeElapsed(
+                    new UtilityFunctionsForActivity1().formatTime(vsmTransactionTableRows.get(i).getDateAndTime()), Calendar.getInstance().getTime());
+
+            String grand_total = UtilityFunctionsForActivity2.decimalFormat.format(vsmTransactionTableRows.get(i).getGrandTotal());
+            String place_name = vsmTransactionTableRows.get(i).getOutlates();
+            if (place_name.length() > 21) {
+                place_name = vsmTransactionTableRows.get(i).getOutlates().substring(0, 21) + "...";
+            } else {
+                place_name = place_name;
+            }
+
+            place_names.add(place_name);
+            time_elapsed_values.add(time_eplased);
+            grand_total_values.add(grand_total);
+        }
+
+
+        ArrayList<VoucherData> voucherData = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList;
+        ArrayList<Marker> markers = new ArrayList<>();
+        for (int i = 0; i < voucherData.size(); i++) {
+            double latitude = voucherData.get(i).latitude;
+            double longitude = voucherData.get(i).longitude;
+            LatLng loc = new LatLng(latitude, longitude);
+            MarkerOptions markerOption = new MarkerOptions().position(loc);
+            Marker marker = gmap.addMarker(markerOption);
+            Log.i("markerr", marker + "");
+            markers.add(marker);
+        }
+
+        Log.i("markers", markers + "");
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : markers) {
+            builder.include(marker.getPosition());
+        }
+
+        LatLngBounds bounds = builder.build();
+        width = mapFragment.getResources().getDisplayMetrics().widthPixels;
+        int padding = (int) (width * 0.15);
+        cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+    }
+
+    @Override
+    public void onPostExecute() {
+
     }
 }

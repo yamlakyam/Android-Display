@@ -116,7 +116,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
         bCardSummaryOfLast30Days = view.findViewById(R.id.bCardSummaryOfLast30Days);
 
-        backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
+//        backTraverse(fragment, R.id.summaryOfLastSixMonthsFragment);
 
         keyPadControl(summaryOfLAstXdaysPaused);
 

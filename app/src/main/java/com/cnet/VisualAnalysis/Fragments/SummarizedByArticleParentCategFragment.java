@@ -118,7 +118,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
         pCardSummByArticleParent = view.findViewById(R.id.pCardSummByArticleParent);
 
-        backTraverse(fragment, R.id.summarizedByArticleFragment2);
+//        backTraverse(fragment, R.id.summarizedByArticleFragment2);
 
         keyPadControl(summByParentArticlePaused);
 

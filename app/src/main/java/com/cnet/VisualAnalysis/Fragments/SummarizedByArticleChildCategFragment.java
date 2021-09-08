@@ -107,7 +107,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         sumByChildKeyPad = view.findViewById(R.id.sumByChildKeyPad);
         pCardSummByArticleChild = view.findViewById(R.id.pCardSummByArticleChild);
 
-        backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
+//        backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
         keyPadControl(summByChildArticlePaused);
 
         return view;
@@ -230,15 +230,15 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         new UtilityFunctionsForActivity1().animate(summaryByChildArticleTableLayout, tableElements);
     }
 
-    public void backTraverse(Fragment fragment, int id) {
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                Intent intent = new Intent(getActivity(), SplashScreenActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+//    public void backTraverse(Fragment fragment, int id) {
+//        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                Intent intent = new Intent(getActivity(), SplashScreenActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 
     public void navigate(Fragment fragment) {
         requireActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);

@@ -47,7 +47,7 @@ import java.util.TimerTask;
 
 public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
-    public int refreshTime = 180000;
+    public int refreshTime = 300000;
     String updateFail = "Failed updating";
 
     public interface KeyPress {
@@ -87,7 +87,12 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
         context = SecondActivity.this;
         setContentView(R.layout.activity_second);
-        setHomeFragment();
+
+        if (mappedFragment() != null) {
+            setHomeFragment();
+        } else {
+            startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+        }
 
 //        TooLargeTool.startLogging(SecondActivity.this);
         leftArrow = findViewById(R.id.leftArrow);
@@ -408,25 +413,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-//        Handler handler = new Handler();
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                VolleyHttp http = new VolleyHttp(getApplicationContext());
-//                try {
-//                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
-//                            SecondActivity.this);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                handler.postDelayed(this, refreshTime);
-//            }
-//        };
-//        handler.post(runnable);
-//
-
-        Timer timer = new Timer();
-        TimerTask hourlyTask = new TimerTask() {
+        /*Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 VolleyHttp http = new VolleyHttp(getApplicationContext());
@@ -436,10 +424,53 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                handler.postDelayed(this, refreshTime);
             }
         };
-        timer.schedule(hourlyTask, 0, 1000 * 60 * 10);
+        handler.post(runnable);
+
+         */
+
+
+        Timer timer = new Timer();
+        TimerTask hourlyTask = new TimerTask() {
+            @Override
+            public void run() {
+                VolleyHttp http = new VolleyHttp(getApplicationContext());
+                try {
+                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
+                            SecondActivity.this);
+                    Log.i("REQUEST MADE", "run: ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer.schedule(hourlyTask, 0, refreshTime);
+
+
+       /* Thread refreshDataThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                while (true) {
+                    try {
+                        Thread.sleep(refreshTime);
+                        VolleyHttp http = new VolleyHttp(getApplicationContext());
+                        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
+                                SecondActivity.this);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+        };
+
+        refreshDataThread.start();
+
+        */
 
     }
 
@@ -465,7 +496,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         NavGraph graph = inflater.inflate(R.navigation.second_nav);
 
         graph.setStartDestination(mappedFragment());
-
         NavController navController = navHostFragment.getNavController();
         navController.setGraph(graph);
 
@@ -484,8 +514,9 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         navController.setGraph(graph);
     }
 
-    public int mappedFragment() {
-        int frgamentId = R.id.branchSummaryFragment;
+    public Integer mappedFragment() {
+//        int frgamentId = R.id.branchSummaryFragment;
+        Integer frgamentId = null;
         if (SplashScreenActivity.allData != null) {
             if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
                 frgamentId = R.id.summarizedByArticleFragment2;
@@ -510,7 +541,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
                 frgamentId = R.id.mapsFragment;
         }
-
         return frgamentId;
     }
 

@@ -111,7 +111,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         sumLastXMonthplayPause = view.findViewById(R.id.sumLastXMonthplayPause);
         pCardSummOfLast6Months = view.findViewById(R.id.pCardSummOfLast6Months);
 
-        backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
+//        backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
         keyPadControl(summaryOfLAstXmonthPaused);
 
         return view;

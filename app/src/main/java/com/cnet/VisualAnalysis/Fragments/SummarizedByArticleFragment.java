@@ -1,7 +1,6 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,7 +23,6 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -40,6 +38,7 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
+import com.cnet.VisualAnalysis.Utils.BackGroundTasks;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -50,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class SummarizedByArticleFragment extends Fragment implements SecondActivity.KeyPress {
+public class SummarizedByArticleFragment extends Fragment implements SecondActivity.KeyPress, BackGroundTasks.CalculateInBackground {
 
     TableLayout summarizedByArticleTableLayout;
     Handler animationHandler;
@@ -75,6 +74,9 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
     Fragment fragment;
     MaterialCardView pCardSummByArticle;
+
+    ////////////
+    ArrayList<SummarizedByArticleTableRow> tablesToDisplay;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         pCardSummByArticle = view.findViewById(R.id.pCardSummByArticle);
 
         keyPadControl(summByarticlePaused);
-        backTraverse();
         return view;
     }
 
@@ -123,11 +124,17 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     @Override
     public void onResume() {
         super.onResume();
+
+//        BackGroundTasks backGroundTasks = new BackGroundTasks(fragment.getContext(), this);
+//        backGroundTasks.execute();
+
         if (SplashScreenActivity.allData != null) {
             articleSummaryProgressBar.setVisibility(View.GONE);
             constraintLayout.setVisibility(View.VISIBLE);
 
             if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null) {
+                totalLastRow();
+                Log.i("totalUnitAmount", totalUnitAmount + "");
                 initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
             } else {
                 navigate(fragment);
@@ -138,9 +145,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<SummarizedByArticleTableRow> tablesToDisplay, int seconds) {
-        totalQuantity = 0;
-        totalUnitAmount = 0;
-        totalAmount = 0;
         summarizedByArticleTableLayout.removeAllViews();
         animationHandler = new Handler() {
             @Override
@@ -161,12 +165,13 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                                 handleRowAnimationThread.interrupt();
                             }
                         } else {
+                            resetLastRow();
                             navigate(fragment);
                         }
                     }
 
                 } else if (index < tablesToDisplay.size()) {
-                    totalLastRow(tablesToDisplay.get(index));
+//                    totalLastRow(tablesToDisplay.get(index));
                     new UtilityFunctionsForActivity2().drawSummaryByArticleTable(tablesToDisplay, getContext(), summarizedByArticleTableLayout, index);
                     new UtilityFunctionsForActivity1().scrollRows(summByArticleScrollView);
                 }
@@ -249,10 +254,19 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         }
     }
 
-    public void totalLastRow(SummarizedByArticleTableRow row) {
-        totalQuantity = totalQuantity + row.getQuantity();
-        totalUnitAmount = totalUnitAmount + row.getAvgAmount();
-        totalAmount = totalAmount + row.getTotalAmount();
+    public void totalLastRow() {
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().getTableData();
+        for (int i = 0; i < tablesToDisplay.size(); i++) {
+            totalUnitAmount = totalUnitAmount + tablesToDisplay.get(i).getAvgAmount();
+            totalQuantity = totalQuantity + tablesToDisplay.get(i).getQuantity();
+            totalAmount = totalAmount + tablesToDisplay.get(i).getTotalAmount();
+        }
+    }
+
+    public void resetLastRow() {
+        totalUnitAmount = 0;
+        totalQuantity = 0;
+        totalAmount = 0;
     }
 
     public void drawLastArticleSummaryTotalRow() {
@@ -317,24 +331,12 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         }
         Log.i("TAG", chartType + "");
 
-
         new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticle,
                 dashBoardData.getSummarizedByArticleData().pieChartData, dashBoardData.getSummarizedByArticleData().barChartData,
                 dashBoardData.getSummarizedByArticleData().lineChartData, "Summarized by Article");
 
-
     }
 
-    public void backTraverse() {
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-
-                Intent intent = new Intent(requireActivity(), SplashScreenActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
 
     @Override
     public void centerKey() {
@@ -375,5 +377,22 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         } else {
             sumByArticleKeyPad.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onPreExecute() {
+        Log.i("TAG", "onPreExecute: ");
+    }
+
+    @Override
+    public void doInBackground() {
+        Log.i("TAG", "doInBackground: ");
+        totalLastRow();
+    }
+
+    @Override
+    public void onPostExecute() {
+        Log.i("TAG", "onPostExecute: ");
+        initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
     }
 }

@@ -275,7 +275,6 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/rowValueColor3"
                         android:textSize="34sp">
-
                     </DigitalClock>
                 </LinearLayout>
 
