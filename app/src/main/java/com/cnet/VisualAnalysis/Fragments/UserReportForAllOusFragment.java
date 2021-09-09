@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     TextView userReportForAllTitle;
     ScrollView userReportForAllScrollView;
     DigitalClock digitalClock;
+    TextClock userReportAll_textClock;
     public Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
 
@@ -88,11 +90,13 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         userReportForAllScrollView = view.findViewById(R.id.userReportForAllScrollView);
         scrollingUserReportForAllText = view.findViewById(R.id.scrollingUserReportForAllText);
         scrollingUserReportForAllText.setSelected(true);
-        digitalClock = view.findViewById(R.id.userReportAll_digitalClock);
-        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
+        userReportAll_textClock = view.findViewById(R.id.userReportAll_textClock);
+        userReportAll_textClock.setFormat12Hour("kk:mm:ss");
+        userReportAll_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
         userReportForAllTitle = view.findViewById(R.id.userReportForAllTitle);
         userReportForAllTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
-
         allUserRepKeyPad = view.findViewById(R.id.allUserRepKeyPad);
         userRepoAllleftArrow = view.findViewById(R.id.userRepoAllleftArrow);
         userRepoAllplayPause = view.findViewById(R.id.userRepoAllplayPause);
@@ -240,17 +244,17 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
         NavController navController = NavHostFragment.findNavController(fragment);
 
-        if (SplashScreenActivity.allData.getLayoutList().contains(11)&& SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null)
+        if (SplashScreenActivity.allData.getLayoutList().contains(11) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null)
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(10)&& SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10) && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null)
             navController.navigate(R.id.userReportForEachOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(12)&& SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null)
             navController.navigate(R.id.peakHourReportFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1)&& SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1) && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3)&& SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null)
             navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(4)&& SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData()!=null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null)
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(5) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null)
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
@@ -277,17 +281,17 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
         else if (SplashScreenActivity.allData.getLayoutList().contains(5) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null)
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(4)&& SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData()!=null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null)
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3)&& SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null)
             navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1)&& SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1) && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(12)&& SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null)
             navController.navigate(R.id.peakHourReportFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(10)&& SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10) && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null)
             navController.navigate(R.id.userReportForEachOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(11)&& SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(11) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null)
             navController.navigate(R.id.peakHourReportForAllOusFragment);
         else {
             inflateTable();

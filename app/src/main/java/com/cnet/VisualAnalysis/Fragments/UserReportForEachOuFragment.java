@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     TextView userReportTitle;
     TextView scrollingUserReportForEachText;
     DigitalClock digitalClock;
+    TextClock userReportEach_textClock;
     public Handler animationHandler;
     public Handler changeDataHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
@@ -96,8 +98,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         userReportTitle = view.findViewById(R.id.userReportTitle);
         scrollingUserReportForEachText = view.findViewById(R.id.scrollingUserReportForEachText);
         scrollingUserReportForEachText.setSelected(true);
-        digitalClock = view.findViewById(R.id.userReportEach_digitalClock);
-        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        userReportEach_textClock = view.findViewById(R.id.userReportEach_textClock);
+        userReportEach_textClock.setFormat12Hour("kk:mm:ss");
+        userReportEach_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
 
         eachUserReportKeyPad = view.findViewById(R.id.eachUserReportKeyPad);
         userRepEachleftArrow = view.findViewById(R.id.userRepEachleftArrow);

@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,8 @@ import com.google.android.material.card.MaterialCardView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class UtilityFunctionsForActivity2 {
     public static DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
@@ -89,7 +92,7 @@ public class UtilityFunctionsForActivity2 {
 //        pieDataSet.setValueLineColor(Color.parseColor("#FFFFFF"));
         pieDataSet.setUsingSliceColorAsValueLineColor(true);
         pieDataSet.setValueTextColor(Color.parseColor("#FFFFFF"));
-        piechart.setExtraOffsets(7f, 7f, 7f, 7f);
+        piechart.setExtraOffsets(30f, 30f, 30f, 30f);
 //        pieDataSet.setSliceSpace(2);
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
@@ -143,7 +146,7 @@ public class UtilityFunctionsForActivity2 {
         pieDataSet.setValueLineColor(Color.parseColor("#FFFFFF"));
         pieDataSet.setUsingSliceColorAsValueLineColor(true);
         pieDataSet.setValueTextColor(Color.parseColor("#FFFFFF"));
-        piechart.setExtraOffsets(7f, 5f, 7f, 5f);
+        piechart.setExtraOffsets(30f, 30f, 30f, 30f);
 
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
@@ -465,7 +468,7 @@ public class UtilityFunctionsForActivity2 {
 //            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAvgAmount() * 100.0) / 100.0));
             tableRowProperty4.setText(decimalFormat.format(row.getAvgAmount()));
 //            tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty5.setText(decimalFormat.format(grandTotal));
+            tableRowProperty5.setText(decimalFormat.format(grandTotal/row.getQuantity()));
 
             summarizedByArticleTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByArticleTableLayout, tableElements);
@@ -600,6 +603,7 @@ public class UtilityFunctionsForActivity2 {
             numberFormat.setGroupingUsed(true);
 
             tableRowProperty1.setText(String.valueOf(index + 1));
+            tableRowProperty2.setText(new UtilityFunctionsForActivity1().formatDateToString2(row.getDateTime()));
             tableRowProperty2.setText(new UtilityFunctionsForActivity1().formatDateToString2(row.getDateTime()));
             tableRowProperty3.setText(numberFormat.format(row.getTransactionCount()));
 //            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));

@@ -5,15 +5,20 @@ import java.util.ArrayList;
 public class SummaryOfLast6MonthsData {
     private PieChartData pieChartData;
     private ArrayList<SummaryOfLast6MonthsRow> tableData;
-    private BarChartData barChartData;
-    private LineChartData lineChartData;
+    private BarChartData barChartData1;
+    private BarChartData barChartData2;
+    private LineChartData lineChartDat1;
+    private LineChartData lineChartData2;
 
-    public SummaryOfLast6MonthsData(PieChartData pieChartData, ArrayList<SummaryOfLast6MonthsRow> tableData, BarChartData barChartData,
-                                    LineChartData lineChartData) {
+    public SummaryOfLast6MonthsData(PieChartData pieChartData, ArrayList<SummaryOfLast6MonthsRow> tableData,
+                                    BarChartData barChartData1, BarChartData barChartData2,
+                                    LineChartData lineChartDat1, LineChartData lineChartData2) {
         this.pieChartData = pieChartData;
         this.tableData = tableData;
-        this.barChartData = barChartData;
-        this.lineChartData = lineChartData;
+        this.barChartData1 = barChartData1;
+        this.barChartData2 = barChartData2;
+        this.lineChartDat1 = lineChartDat1;
+        this.lineChartData2 = lineChartData2;
     }
 
     public PieChartData getPieChartData() {
@@ -24,11 +29,19 @@ public class SummaryOfLast6MonthsData {
         return tableData;
     }
 
-    public BarChartData getBarChartData() {
-        return barChartData;
+    public BarChartData getBarChartData1() {
+        return barChartData1;
     }
 
-    public LineChartData getLineChartData() {
-        return lineChartData;
+    public BarChartData getBarChartData2() {
+        return barChartData2;
+    }
+
+    public LineChartData getLineChartDat1() {
+        return lineChartDat1;
+    }
+
+    public LineChartData getLineChartData2() {
+        return lineChartData2;
     }
 }

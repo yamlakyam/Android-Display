@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,6 +60,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     TableLayout peakHourReportTableLayout;
     ScrollView peakHourReportScrollView;
     DigitalClock digitalClock;
+    TextClock peakHourEach_textClock;
     int branchIndex = 0;
     public static boolean peakHourForEachPaused;
     ImageView peakHrEachleftArrow;
@@ -104,8 +106,9 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         peakHrEachKeyPad = view.findViewById(R.id.peakHrEachKeyPad);
 
         scrollingPeakText.setSelected(true);
-        digitalClock = view.findViewById(R.id.peakHourEach_digitalClock);
-        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        peakHourEach_textClock = view.findViewById(R.id.peakHourEach_textClock);
+        peakHourEach_textClock.setFormat12Hour("kk:mm:ss");
+        peakHourEach_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         cCardEachPeakHour = view.findViewById(R.id.cCardEachPeakHour);
 
         keyPadControl(peakHourForEachPaused);
@@ -209,12 +212,11 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             }
             new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachPeakHour, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getPieChartData(),
                     dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData1(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData2(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData1,
-                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, "Grand Total in Thousands (K)", "Total Count");
+                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, "Grand Total ", "Total Count");
             peakHourReportTitle.setText("Peak Hour Report for " + SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(vanIndex).org);
             peakHourReportTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
         }
     }
-
     @SuppressLint("HandlerLeak")
     private void inflateTable(int dataIndex) {
         grandTotalSum = 0;

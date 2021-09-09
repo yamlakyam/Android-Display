@@ -1,7 +1,6 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -157,7 +156,6 @@ public class DashBoardDataParser {
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
             LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
 
-
             SummarizedByParentArticleData summarizedByParentArticleData = new SummarizedByParentArticleData(tableData, barChartData, pieChartData, lineChartData);
 
             return summarizedByParentArticleData;
@@ -214,7 +212,8 @@ public class DashBoardDataParser {
         if (last6MonthsSale.length() > 0) {
             ArrayList<SummaryOfLast6MonthsRow> tableData = new ArrayList<>();
             float[] xValues = new float[last6MonthsSale.length()];
-            float[] yValues = new float[last6MonthsSale.length()];
+            float[] yValues1 = new float[last6MonthsSale.length()];
+            float[] yValues2 = new float[last6MonthsSale.length()];
             String[] legends = new String[last6MonthsSale.length()];
 
             for (int i = 0; i < last6MonthsSale.length(); i++) {
@@ -229,20 +228,24 @@ public class DashBoardDataParser {
                 tableData.add(summaryOfLast6MonthsRow);
 //                xValues[i] = i + 1;
                 xValues[i] = i;
-                yValues[i] = (float) last6MonsSummaryAtInedx.getDouble("amount");
+                yValues1[i] = (float) last6MonsSummaryAtInedx.getDouble("amount");
+                yValues2[i] = (float) last6MonsSummaryAtInedx.getDouble("transactionCount");
                 legends[i] = last6MonsSummaryAtInedx.getString("name");
             }
 
-            PieChartData pieChartData = new PieChartData(yValues, legends);
-            BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
+            PieChartData pieChartData = new PieChartData(yValues1, legends);
+            BarChartData barChartData1 = new BarChartData(xValues, yValues1, legends);
+            BarChartData barChartData2 = new BarChartData(xValues, yValues2, legends);
+            LineChartData lineChartData1 = new LineChartData(xValues, yValues1, legends);
+            LineChartData lineChartData2 = new LineChartData(xValues, yValues2, legends);
 
-            SummaryOfLast6MonthsData summaryOfLast6MonthsData = new SummaryOfLast6MonthsData(pieChartData, tableData, barChartData, lineChartData);
+            SummaryOfLast6MonthsData summaryOfLast6MonthsData = new SummaryOfLast6MonthsData(pieChartData, tableData, barChartData1, barChartData2, lineChartData1, lineChartData2);
 
             return summaryOfLast6MonthsData;
         }
         return new SummaryOfLast6MonthsData(new PieChartData(new float[0], new String[0]), new ArrayList<SummaryOfLast6MonthsRow>(), new BarChartData(new float[0], new float[0], new String[0]),
-                new LineChartData(new float[0], new float[0], new String[0]));
+                new BarChartData(new float[0], new float[0], new String[0]), new LineChartData(new float[0], new float[0], new String[0])
+                , new LineChartData(new float[0], new float[0], new String[0]));
 
     }
 
@@ -251,7 +254,8 @@ public class DashBoardDataParser {
         if (lastDaysOfMonthSale.length() > 0) {
             ArrayList<SummaryOfLast30DaysRow> tableData = new ArrayList<>();
             float[] xValues = new float[lastDaysOfMonthSale.length()];
-            float[] yValues = new float[lastDaysOfMonthSale.length()];
+            float[] yValues1 = new float[lastDaysOfMonthSale.length()];
+            float[] yValues2 = new float[lastDaysOfMonthSale.length()];
             String[] legends = new String[lastDaysOfMonthSale.length()];
 
             for (int i = 0; i < lastDaysOfMonthSale.length(); i++) {
@@ -267,22 +271,27 @@ public class DashBoardDataParser {
                 tableData.add(summaryOfLast30DaysRow);
 //                xValues[i] = i + 1;
                 xValues[i] = i;
-                yValues[i] = (float) summaryAtIndex.getDouble("amount");
+                yValues1[i] = (float) summaryAtIndex.getDouble("amount");
+                yValues2[i] = (float) summaryAtIndex.getDouble("transactionCount");
                 legends[i] = summaryAtIndex.getString("name");
 
             }
 
 
 //        LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
-            BarChartData barChartData = new BarChartData(xValues, yValues, legends);
-            LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
-            PieChartData pieChartData = new PieChartData(yValues, legends);
-            SummaryOfLast30DaysData summaryOfLast30DaysData = new SummaryOfLast30DaysData(barChartData, tableData, lineChartData, pieChartData);
+            BarChartData barChartData1 = new BarChartData(xValues, yValues1, legends);
+            BarChartData barChartData2 = new BarChartData(xValues, yValues2, legends);
+            LineChartData lineChartData1 = new LineChartData(xValues, yValues1, legends);
+            LineChartData lineChartData2 = new LineChartData(xValues, yValues2, legends);
+            PieChartData pieChartData = new PieChartData(yValues1, legends);
+            SummaryOfLast30DaysData summaryOfLast30DaysData = new SummaryOfLast30DaysData(lineChartData1, lineChartData2, barChartData1, barChartData2, tableData, pieChartData);
 
             return summaryOfLast30DaysData;
         }
-        return new SummaryOfLast30DaysData(new BarChartData(new float[0], new float[0], new String[0]), new ArrayList<SummaryOfLast30DaysRow>(),
-                new LineChartData(new float[0], new float[0], new String[0]), new PieChartData(new float[0], new String[0]));
+        return new SummaryOfLast30DaysData(
+                new LineChartData(new float[0], new float[0], new String[0]), new LineChartData(new float[0], new float[0], new String[0]),
+                new BarChartData(new float[0], new float[0], new String[0]), new BarChartData(new float[0], new float[0], new String[0]),
+                new ArrayList<SummaryOfLast30DaysRow>(), new PieChartData(new float[0], new String[0]));
     }
 
     public static BranchSummaryData branchSummaryParser(JSONObject jsonObject) throws JSONException {
@@ -432,7 +441,7 @@ public class DashBoardDataParser {
                     figureReportDataElementsArrayList.add(figureReportDataElements);
 
                     xValues[j] = j + 1;
-                    yValues1[j] = (float) singleFigureReportObject.getDouble("grandTotal") / 1000;
+                    yValues1[j] = (float) singleFigureReportObject.getDouble("grandTotal");
                     yValues2[j] = (float) singleFigureReportObject.getInt("totalCount");
                     legends[j] = new UtilityFunctionsForActivity1().formatHourNmin(singleFigureReportObject.getString("summaryType"));
                 }

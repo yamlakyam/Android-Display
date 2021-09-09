@@ -509,7 +509,8 @@ public class UtilityFunctionsForActivity1 {
     public String formatDateToString2(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 //        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
-        SimpleDateFormat output = new SimpleDateFormat("EEE, MMM yyyy");
+//        SimpleDateFormat output = new SimpleDateFormat("EEE, MMM yyyy");
+        SimpleDateFormat output = new SimpleDateFormat(Constants.dateCriteriaFormat);
 
         Date parsed = null;
         String formattedTime = null;

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -58,7 +59,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     Handler animationHandler;
     Fragment fragment;
     TextView scrollingBranchText;
-    DigitalClock digitalClock;
+
+    TextClock branchSummary_textClock;
     TextView branchSummaryHeaderTextView;
     public static boolean branchSummaryPaused;
     ImageView brancplayPause;
@@ -104,10 +106,12 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         linearLayout = view.findViewById(R.id.branchKeypad);
 
         scrollingBranchText.setSelected(true);
-        digitalClock = view.findViewById(R.id.branchSummary_digitalClock);
+        branchSummary_textClock = view.findViewById(R.id.branchSummary_textClock);
+        branchSummary_textClock.setFormat12Hour("kk:mm:ss");
+        branchSummary_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
         branchSummaryHeaderTextView = view.findViewById(R.id.branchSummaryHeaderTextView);
         branchSummaryHeaderTextView.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
-        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         fragment = this;
 
         backTraverse(fragment, R.id.summaryOfLastMonthFragment);

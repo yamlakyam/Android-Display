@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +47,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     TableLayout peakHourReportForAllTableLayout;
     ScrollView peakHourReportScrollView;
     TextView scrollingPeakHourForAllText;
-    DigitalClock digitalClock;
+    TextClock peakHourAll_textClock;
     public Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
     private ArrayList<FigureReportDataElements> tablesToDisplay;
@@ -85,8 +86,9 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         peakHrAllrightArrow = view.findViewById(R.id.peakHrAllrightArrow);
         linearLayout = view.findViewById(R.id.peakHrForAllKeypad);
         scrollingPeakHourForAllText.setSelected(true);
-        digitalClock = view.findViewById(R.id.peakHourAll_digitalClock);
-        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+        peakHourAll_textClock = view.findViewById(R.id.peakHourAll_textClock);
+        peakHourAll_textClock.setFormat12Hour("kk:mm:ss");
+        peakHourAll_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         peakHourReportLineCard = view.findViewById(R.id.peakHourReportLineCard);
         fragment = this;
 

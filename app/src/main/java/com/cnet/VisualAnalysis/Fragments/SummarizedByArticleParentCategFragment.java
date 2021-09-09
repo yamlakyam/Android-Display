@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -62,6 +63,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     FrameLayout summarizedByParentArticleFrameLayout;
     TextView scrollingParentText;
     DigitalClock digitalClock;
+    TextClock parentArticle_textClock;
     TextView articleParentSummaryTitle;
 
     LinearLayout sumByParentKeyPad;
@@ -74,6 +76,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     public HandleRowAnimationThread handleRowAnimationThread;
 
     double grandTotal = 0;
+    double totalPercentage = 0;
     public static boolean summByParentArticlePaused;
 
     @Override
@@ -107,8 +110,13 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         summarizedByParentArticleFrameLayout = view.findViewById(R.id.summarizedByParentArticleFrameLayout);
         scrollingParentText = view.findViewById(R.id.scrollingParentText);
         scrollingParentText.setSelected(true);
-        digitalClock = view.findViewById(R.id.parentArticle_digitalClock);
-        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+//        digitalClock = view.findViewById(R.id.parentArticle_digitalClock);
+//        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
+        parentArticle_textClock = view.findViewById(R.id.parentArticle_textClock);
+        parentArticle_textClock.setFormat12Hour("kk:mm:ss");
+        parentArticle_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
         articleParentSummaryTitle = view.findViewById(R.id.articleParentSummaryTitle);
         articleParentSummaryTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
         sumByParentKeyPad = view.findViewById(R.id.sumByParentKeyPad);
@@ -143,6 +151,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     private void inflateTable(ArrayList<SummarizedByParentArticleRow> tablesToDisplay, int seconds) {
 
         grandTotal = 0;
+        totalPercentage = 0;
         if (summarizedByParentArticleTableLayout != null) {
             summarizedByParentArticleTableLayout.removeAllViews();
 
@@ -213,8 +222,18 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
     public void totalLastRow(SummarizedByParentArticleRow row) {
 
-        grandTotal = grandTotal + row.getTotalAmount() + row.getTaxAmount() + row.getTotalServCharge();
+        double grandTotalForAll = 0;
+        ArrayList<SummarizedByParentArticleRow> summarizedByParentArticleRows = SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData();
+        for (int i = 0; i < summarizedByParentArticleRows.size(); i++) {
+            double grandTotalForI = summarizedByParentArticleRows.get(i).getTotalAmount() +
+                    summarizedByParentArticleRows.get(i).getTotalServCharge() +
+                    summarizedByParentArticleRows.get(i).getTaxAmount();
+            grandTotalForAll = grandTotalForAll + grandTotalForI;
+        }
+//        double percentage = (grandTotal / grandTotalForAll) * 100;
 
+        grandTotal = grandTotal + row.getTotalAmount() + row.getTaxAmount() + row.getTotalServCharge();
+        totalPercentage = totalPercentage + ((row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount()) / grandTotalForAll) * 100;
 
     }
 
@@ -233,15 +252,17 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty2.setTextSize(16f);
 
-        tableRowProperty3.setText("");
+        tableRowProperty3.setText(UtilityFunctionsForActivity2.decimalFormat.format(totalPercentage) + "%");
+        tableRowProperty3.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty3.setTextSize(16f);
 
-//        tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
         tableRowProperty4.setText(UtilityFunctionsForActivity2.decimalFormat.format(grandTotal));
         tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty4.setTextSize(16f);
 
         Animation animation = AnimationUtils.loadAnimation(requireActivity().getApplicationContext(), R.anim.blink);
         tableRowProperty2.startAnimation(animation);
+        tableRowProperty3.startAnimation(animation);
         tableRowProperty4.startAnimation(animation);
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         summarizedByParentArticleTableLayout.addView(tableElements);
@@ -359,7 +380,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         }
         navigate(fragment);
     }
-
 
     public void keyPadControl(boolean paused) {
         if (paused) {

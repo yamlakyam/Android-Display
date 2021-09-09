@@ -31,6 +31,7 @@
                     android:id="@+id/imageView4"
                     android:layout_width="74dp"
                     android:layout_height="75dp"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/download" />
             </androidx.cardview.widget.CardView>
 

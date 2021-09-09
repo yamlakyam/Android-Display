@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     ImageView summarticlerightArrow;
 
     DigitalClock digitalClock;
+    TextClock articleSummary_textClock;
     public HandleRowAnimationThread handleRowAnimationThread;
     public static boolean summByarticlePaused;
 
@@ -106,6 +108,11 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         constraintLayout = view.findViewById(R.id.constraintLayout);
         digitalClock = view.findViewById(R.id.articleSummary_digitalClock);
         digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
+        articleSummary_textClock = view.findViewById(R.id.articleSummary_textClock);
+        articleSummary_textClock.setFormat12Hour("kk:mm:ss");
+        articleSummary_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
         summarizedByArticleTextView = view.findViewById(R.id.summarizedByArticleTextView);
         summarizedByArticleTextView.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
@@ -259,7 +266,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         for (int i = 0; i < tablesToDisplay.size(); i++) {
             totalUnitAmount = totalUnitAmount + tablesToDisplay.get(i).getAvgAmount();
             totalQuantity = totalQuantity + tablesToDisplay.get(i).getQuantity();
-            totalAmount = totalAmount + tablesToDisplay.get(i).getTotalAmount();
+            totalAmount = totalAmount + (tablesToDisplay.get(i).getTotalAmount() / tablesToDisplay.get(i).getQuantity());
         }
     }
 

@@ -217,16 +217,18 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <DigitalClock
-                    android:id="@+id/userReportEach_digitalClock"
+                <TextClock
+                    android:id="@+id/userReportEach_textClock"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/digital_7"
+                    android:format12Hour="@null"
+                    android:timeZone="GMT+0300"
+                    android:format24Hour="MMM dd, yyyy k:mm"
                     android:gravity="center_vertical"
-                    android:textColor="@color/rowValueColor3"
-                    android:textSize="34sp">
-
-                </DigitalClock>
+                    android:textSize="34sp"
+                    android:textColor="@color/rowValueColor3">
+                </TextClock>
             </LinearLayout>
 
         </LinearLayout>

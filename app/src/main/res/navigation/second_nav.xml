@@ -169,6 +169,11 @@
         android:name="com.cnet.VisualAnalysis.Fragments.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video" />
 
 
 </navigation>

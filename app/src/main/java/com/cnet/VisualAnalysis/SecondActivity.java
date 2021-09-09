@@ -485,6 +485,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     @Override
     public void onFailure(VolleyError error) {
+        Log.i("update failed", "onFailure: ");
         Toast.makeText(this, updateFail, Toast.LENGTH_LONG);
     }
 
@@ -642,6 +643,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+        startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
     }
 }

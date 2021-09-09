@@ -107,7 +107,7 @@
             app:layout_constraintStart_toEndOf="@+id/tCardSummByArticle"
             app:layout_constraintTop_toTopOf="@+id/tCardSummByArticle">
 
-<!--            <com.github.mikephil.charting.charts.PieChart-->
+            <!--            <com.github.mikephil.charting.charts.PieChart-->
             <!--                android:id="@+id/pChartSumByArticle"-->
             <!--                android:layout_width="match_parent"-->
             <!--                android:layout_height="match_parent"-->
@@ -181,7 +181,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="Grand Total"
+                    android:text="Ave. Amount"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
@@ -220,12 +220,12 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/scrollingRTextCard"
-            android:transitionName="articleScrollCard"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:transitionName="articleScrollCard"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -274,8 +274,23 @@
                         android:fontFamily="@font/digital_7"
                         android:gravity="center_vertical"
                         android:textColor="@color/rowValueColor3"
-                        android:textSize="34sp">
+                        android:textSize="34sp"
+                        android:visibility="gone">
                     </DigitalClock>
+
+                    <TextClock
+                        android:id="@+id/articleSummary_textClock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/digital_7"
+                        android:format12Hour="@null"
+                        android:timeZone="GMT+0300"
+                        android:format24Hour="MMM dd, yyyy k:mm"
+                        android:gravity="center_vertical"
+                        android:textSize="34sp"
+                        android:textColor="@color/rowValueColor3">
+                    </TextClock>
+
                 </LinearLayout>
 
             </LinearLayout>
