@@ -2,7 +2,6 @@ package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,8 +43,6 @@ import com.google.android.material.card.MaterialCardView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class UtilityFunctionsForActivity2 {
     public static DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
@@ -468,7 +465,7 @@ public class UtilityFunctionsForActivity2 {
 //            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAvgAmount() * 100.0) / 100.0));
             tableRowProperty4.setText(decimalFormat.format(row.getAvgAmount()));
 //            tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty5.setText(decimalFormat.format(grandTotal/row.getQuantity()));
+            tableRowProperty5.setText(decimalFormat.format(grandTotal / row.getQuantity()));
 
             summarizedByArticleTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByArticleTableLayout, tableElements);
@@ -707,19 +704,19 @@ public class UtilityFunctionsForActivity2 {
         if (chartType.equals(Constants.DONUT_TYPE)) {
             View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
             viewHolder.addView(pieElement);
-            new UtilityFunctionsForActivity2().drawDonutChart(pieChartData, (PieChart) pieElement, label);
+            drawDonutChart(pieChartData, (PieChart) pieElement, label);
         } else if (chartType.equals(Constants.BAR_TYPE)) {
             View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
             viewHolder.addView(barElement);
-            new UtilityFunctionsForActivity2().drawBarChart(barChartData, (BarChart) barElement, label);
+            drawBarChart(barChartData, (BarChart) barElement, label);
         } else if (chartType.equals(Constants.LINE_TYPE)) {
             View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
             viewHolder.addView(lineElement);
-            new UtilityFunctionsForActivity2().drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
+            drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
         } else {//default pie chart
             View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
             viewHolder.addView(pieElement);
-            new UtilityFunctionsForActivity2().drawPieChart(pieChartData, (PieChart) pieElement, label);
+            drawPieChart(pieChartData, (PieChart) pieElement, label);
         }
     }
 

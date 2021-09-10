@@ -266,7 +266,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         for (int i = 0; i < tablesToDisplay.size(); i++) {
             totalUnitAmount = totalUnitAmount + tablesToDisplay.get(i).getAvgAmount();
             totalQuantity = totalQuantity + tablesToDisplay.get(i).getQuantity();
-            totalAmount = totalAmount + (tablesToDisplay.get(i).getTotalAmount() / tablesToDisplay.get(i).getQuantity());
+            totalAmount = totalAmount + ((tablesToDisplay.get(i).getTotalAmount() + tablesToDisplay.get(i).getTaxAmount()) / tablesToDisplay.get(i).getQuantity());
         }
     }
 

@@ -479,8 +479,21 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     public void onSuccess(JSONObject jsonObject) throws JSONException {
 
         Log.i("update called", "onSuccess: ");
-        AllDataParser allDataParser = new AllDataParser(jsonObject);
-        SplashScreenActivity.allData = allDataParser.parseAllData();
+
+        Thread refreshedDataParsingThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                AllDataParser allDataParser = new AllDataParser(jsonObject);
+                try {
+                    SplashScreenActivity.allData = allDataParser.parseAllData();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        refreshedDataParsingThread.start();
+
     }
 
     @Override

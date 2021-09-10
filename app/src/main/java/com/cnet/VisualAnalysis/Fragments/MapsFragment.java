@@ -49,7 +49,6 @@ import java.util.Calendar;
 public class MapsFragment extends Fragment implements SecondActivity.KeyPress, BackGroundTasks.CalculateInBackground {
     Marker marker;
 
-    int width;
     TextView vanNameText;
     TextView driverNameText;
     TextView driverStatusText;
@@ -86,13 +85,19 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
     ArrayList<VoucherData> voucherData = new ArrayList<>();
     ArrayList<VoucherDataForVan> voucherDataForVans = new ArrayList<>();
 
+    LatLngBounds bounds;
+    int padding, width, height;
+
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            BackGroundTasks backGroundTasks = new BackGroundTasks(mapFragment.getContext(), MapsFragment.this);
-            backGroundTasks.execute();
+            Log.i("onMapReady", "onMapReady: ");
+//            BackGroundTasks backGroundTasks = new BackGroundTasks(mapFragment.getContext(), MapsFragment.this);
+//            backGroundTasks.execute();
+            Log.i("AsyncTaskCalled", "onMapReady: ");
             gmap = googleMap;
-//            drawAvailableReportFromMap(SecondActivity.vanIndex, googleMap);
+            drawAvailableReportFromMap(SecondActivity.vanIndex, googleMap);
         }
     };
 
@@ -106,6 +111,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
     public void drawAll(int vanIndex, GoogleMap googleMap) {
 //        if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null) {
         if (voucherDataForVans != null) {
+            Log.i("TAG", "drawAll: ");
             drawMarkerInVan(vanIndex, googleMap);
             drawLeftPane(googleMap, vanIndex);
         }
@@ -117,6 +123,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
         if (SecondActivity.vanIndex < voucherDataForVans.size()) {
 //            if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
             if (voucherData.size() > 0) {
+                Log.i("drawAll called", "drawAvailableReportFromMap: ");
                 drawAll(SecondActivity.vanIndex, googleMap);
             } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
@@ -220,7 +227,9 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
                 }
 //                if (index == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size()) {
                 if (index == voucherData.size()) {
-                    gmap.animateCamera(cu);
+                    Log.i("SHOW_ALL_VAN", "handleMessage: ");
+                    gmap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
+//                    gmap.animateCamera(cu);
                 }
 //                if (index == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size() &&
 //                        vanIndex == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() + 1) {
@@ -228,6 +237,8 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
                 if (index == voucherData.size() &&
 //                        vanIndex == SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() + 1) {
                         vanIndex == voucherDataForVans.size() + 1) {
+
+                    Log.i("NAVIGATE_TO_ANIMATION", "handleMessage: ");
                     if (mapPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
@@ -248,12 +259,14 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
                             handleRowAnimationThread.interrupt();
                         }
                     } else {
+                        Log.i("NAVIGATE_TO_NEXT_REP", "handleMessage: ");
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                         navigateToNextReport(navController);
                     }
 
 //                } else if (index < SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size()) {
                 } else if (index < voucherData.size()) {
+                    Log.i("DRAW_EACH_MARKER", "handleMessage: ");
 //                    double latitude = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.get(index).getLatitude();
                     double latitude = voucherData.get(index).getLatitude();
 //                    double longitude = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.get(index).getLongitude();
@@ -282,6 +295,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
             public View getInfoWindow(Marker marker) {
                 return null;
             }
+
             @Override
             public View getInfoContents(Marker marker) {
                 View view = null;
@@ -321,6 +335,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
 //                        driverStatusText.setText(new UtilityFunctionsForActivity1().driverStatus(
 //                                new UtilityFunctionsForActivity1().formatTime(vsmTransactionTableRows.get(index).getDateAndTime()), Calendar.getInstance().getTime()));
 //                    }
+                    Log.i("AFTER_SNIPPET_DRAWN", "getInfoContents: ");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -333,6 +348,9 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        BackGroundTasks backGroundTasks = new BackGroundTasks(mapFragment.getContext(), MapsFragment.this);
+        BackGroundTasks backGroundTasks = new BackGroundTasks(getContext(), MapsFragment.this);
+        backGroundTasks.execute();
         if (!SecondActivity.pausedstate()) {
             mapPaused = false;
         } else {
@@ -599,6 +617,8 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
 
     @Override
     public void doInBackground() {
+
+        Log.i("doInBackground-started", "doInBackground: ");
         voucherDataForVans = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans();
         voucherData = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList;
 
@@ -777,17 +797,23 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress, B
             builder.include(marker.getPosition());
         }
 
-        LatLngBounds bounds = builder.build();
-        width = mapFragment.getResources().getDisplayMetrics().widthPixels;
-        int padding = (int) (width * 0.15);
-        int height = getResources().getDisplayMetrics().heightPixels;
-        cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-        Log.i("last", "doInBackground: ");
+        bounds = builder.build();
+//        width = mapFragment.getResources().getDisplayMetrics().widthPixels;
+        width = getContext().getResources().getDisplayMetrics().widthPixels;
+        padding = (int) (width * 0.15);
+        height = getResources().getDisplayMetrics().heightPixels;
+
+//        cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+        Log.i("doInBackground-finished", "doInBackground: ");
     }
 
     @Override
     public void onPostExecute() {
-        drawAvailableReportFromMap(SecondActivity.vanIndex, gmap);
+        Log.i("onPostExecute-started", "onPostExecute: ");
+//        drawAvailableReportFromMap(SecondActivity.vanIndex, gmap);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
 
     }
 }
