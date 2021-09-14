@@ -27,7 +27,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.SummaryTableRow;
 import com.cnet.VisualAnalysis.MainActivity;
-//import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
@@ -205,7 +204,8 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
         totalQuantityTextView.setTextSize(25f);
 
 //        totalSalesTextView.setText(numberFormat.format(Math.round(sumOfTotalSales * 100.0) / 100.0));
-        totalSalesTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(sumOfTotalSales));
+        totalSalesTextView.setText((sumOfTotalSales > 1) ? UtilityFunctionsForActivity2.decimalFormat.format(sumOfTotalSales):
+                UtilityFunctionsForActivity2.smallDecimlFormat.format(sumOfTotalSales));
         totalSalesTextView.setTypeface(Typeface.DEFAULT_BOLD);
         totalSalesTextView.setTextSize(25f);
 

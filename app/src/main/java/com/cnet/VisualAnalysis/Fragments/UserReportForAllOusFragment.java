@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.DigitalClock;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -52,7 +51,6 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     TextView scrollingUserReportForAllText;
     TextView userReportForAllTitle;
     ScrollView userReportForAllScrollView;
-    DigitalClock digitalClock;
     TextClock userReportAll_textClock;
     public Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
@@ -177,7 +175,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         numberFormat.setGroupingUsed(true);
 
         userReportForAllSN.setText("");
-        userReportForAllUserName.setText("Grand Total");
+        userReportForAllUserName.setText("Total Amount");
         userReportForAllUserName.setTypeface(Typeface.DEFAULT_BOLD);
         userReportForAllUserName.setTextSize(16f);
 
@@ -244,25 +242,45 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
         NavController navController = NavHostFragment.findNavController(fragment);
 
-        if (SplashScreenActivity.allData.getLayoutList().contains(11) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null)
+        if (SplashScreenActivity.allData.getLayoutList().contains(11) &&
+                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0)
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(10) && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10) &&
+                SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0)
             navController.navigate(R.id.userReportForEachOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(12) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12) &&
+                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0)
             navController.navigate(R.id.peakHourReportFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1) && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
+                SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
+                && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
             navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(4) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(5) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(6) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(7) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size() > 0)
             navController.navigate(R.id.summaryOfLastMonthFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(8) &&
+                SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
         else {
             inflateTable();
@@ -273,25 +291,45 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
     public void navigateLeft(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
-        if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+        if (SplashScreenActivity.allData.getLayoutList().contains(8) &&
+                SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(7) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(7) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size() > 0)
             navController.navigate(R.id.summaryOfLastMonthFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(6) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(5) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(4) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
             navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(1) && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
+                SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
+                && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(12) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(12) &&
+                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0)
             navController.navigate(R.id.peakHourReportFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(10) && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(10) &&
+                SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0)
             navController.navigate(R.id.userReportForEachOusFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(11) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null)
+        else if (SplashScreenActivity.allData.getLayoutList().contains(11) &&
+                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0)
             navController.navigate(R.id.peakHourReportForAllOusFragment);
         else {
             inflateTable();

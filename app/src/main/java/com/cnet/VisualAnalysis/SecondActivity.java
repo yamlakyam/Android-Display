@@ -42,6 +42,7 @@ import com.cnet.VisualAnalysis.Utils.VolleyHttp;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -72,7 +73,10 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     public Context context;
 
     KeyPress keyPress;
+
     public static int vanIndex = 0;
+
+    ArrayList<Integer> layouts;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -84,6 +88,9 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("Van-Index-Before", vanIndex + "");
+        vanIndex = 0;
+        Log.i("Van-Index-After", vanIndex + "");
 
         context = SecondActivity.this;
         setContentView(R.layout.activity_second);
@@ -105,27 +112,29 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         if (name != null) {
             if (name.equals("pressed")) {
                 if (SplashScreenActivity.allData != null) {
-                    if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                    layouts = SplashScreenActivity.allData.getLayoutList();
+                    DashBoardData dBData = SplashScreenActivity.allData.getDashBoardData();
+                    if (layouts.contains(1)) {
                         setHomeFragment(R.id.mapsFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                    } else if (layouts.contains(12)) {
                         setHomeFragment(R.id.peakHourReportFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                    } else if (layouts.contains(11)) {
                         setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                    } else if (layouts.contains(10)) {
                         setHomeFragment(R.id.userReportForEachOusFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                    } else if (layouts.contains(9)) {
                         setHomeFragment(R.id.userReportForAllOusFragment2);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+                    } else if (layouts.contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
                         setHomeFragment(R.id.branchSummaryFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                    } else if (layouts.contains(7)) {
                         setHomeFragment(R.id.summaryOfLastMonthFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                    } else if (layouts.contains(6)) {
                         setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                    } else if (layouts.contains(5)) {
                         setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                    } else if (layouts.contains(4)) {
                         setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                    } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                    } else if (layouts.contains(3)) {
                         setHomeFragment(R.id.summarizedByArticleFragment2);
                     }
                 }
@@ -135,276 +144,298 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         int fragId = intent.getIntExtra("fromVideo", 0);
         if (fragId == 3) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+                if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
                 }
             }
 
         } else if (fragId == 4) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
                 }
             }
 
         } else if (fragId == 5) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
                 }
             }
 
         } else if (fragId == 6) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
                 }
             }
 
         } else if (fragId == 7) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
                 }
             }
 
         } else if (fragId == 8) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
                 }
             }
 
         } else if (fragId == 9) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
                 }
             }
 
         } else if (fragId == 10) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                } else if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
                 }
             }
 
         } else if (fragId == 11) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(12)) {
                     setHomeFragment(R.id.peakHourReportFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                } else if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
                 }
             }
 
         } else if (fragId == 12) {
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
                 }
             }
 
         } else if (fragId == 1) {
-//            startActivity(new Intent(SecondActivity.this, MapsActivity.class));
+
             if (SplashScreenActivity.allData != null) {
-                if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
+                layouts = SplashScreenActivity.allData.getLayoutList();
+
+                if (layouts.contains(1)) {
                     setHomeFragment(R.id.mapsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+                } else if (layouts.contains(3)) {
                     setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+                } else if (layouts.contains(4)) {
                     setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+                } else if (layouts.contains(5)) {
                     setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+                } else if (layouts.contains(6)) {
                     setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+                } else if (layouts.contains(7)) {
                     setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(8)) {
+                } else if (layouts.contains(8)) {
                     setHomeFragment(R.id.branchSummaryFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+                } else if (layouts.contains(9)) {
                     setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+                } else if (layouts.contains(10)) {
                     setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+                } else if (layouts.contains(11)) {
                     setHomeFragment(R.id.peakHourReportForAllOusFragment);
                 }
             }
@@ -478,8 +509,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     @Override
     public void onSuccess(JSONObject jsonObject) throws JSONException {
 
-        Log.i("update called", "onSuccess: ");
-
         Thread refreshedDataParsingThread = new Thread() {
             @Override
             public void run() {
@@ -487,6 +516,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 AllDataParser allDataParser = new AllDataParser(jsonObject);
                 try {
                     SplashScreenActivity.allData = allDataParser.parseAllData();
+                    Log.i("Refreshed_Data_Parsed", "run: ");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -509,9 +539,19 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         NavInflater inflater = navHostFragment.getNavController().getNavInflater();
         NavGraph graph = inflater.inflate(R.navigation.second_nav);
 
-        graph.setStartDestination(mappedFragment());
-        NavController navController = navHostFragment.getNavController();
-        navController.setGraph(graph);
+        if (SplashScreenActivity.allData != null) {
+            if (SplashScreenActivity.allData.getDashBoardData() != null) {
+                if (!SplashScreenActivity.allData.getLayoutList().isEmpty()) {
+                    graph.setStartDestination(mappedFragment());
+                    NavController navController = navHostFragment.getNavController();
+                    navController.setGraph(graph);
+                } else {
+                    startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+                }
+            }
+        } else {
+            startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+        }
 
     }
 
@@ -529,30 +569,47 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     }
 
     public Integer mappedFragment() {
-//        int frgamentId = R.id.branchSummaryFragment;
         Integer frgamentId = null;
         if (SplashScreenActivity.allData != null) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
+            Log.i("TAG", "mappedFragment: ");
+            ArrayList<Integer> layouts = SplashScreenActivity.allData.getLayoutList();
+            DashBoardData dBData = SplashScreenActivity.allData.getDashBoardData();
+            if (layouts.contains(3) &&
+                    dBData.getSummarizedByArticleData() != null &&
+                    dBData.getSummarizedByArticleData().tableData.size() > 0) {
                 frgamentId = R.id.summarizedByArticleFragment2;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
+            } else if (layouts.contains(4)
+                    && dBData.getSummarizedByParentArticleData() != null
+                    && dBData.getSummarizedByParentArticleData().getTableData().size() > 0) {
                 frgamentId = R.id.summarizedByArticleParentCategFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
+            } else if (layouts.contains(5)
+                    && dBData.getSummarizedByChildArticleData() != null
+                    && dBData.getSummarizedByChildArticleData().getTableData().size() > 0) {
                 frgamentId = R.id.summarizedByArticleChildCategFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
+            } else if (layouts.contains(6)
+                    && dBData.getSummaryOfLast6MonthsData() != null
+                    && dBData.getSummaryOfLast6MonthsData().getTableData().size() > 0) {
                 frgamentId = R.id.summaryOfLastSixMonthsFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
+            } else if (layouts.contains(7)
+                    && dBData.getSummaryOfLast30DaysData() != null
+                    && dBData.getSummaryOfLast30DaysData().tableData.size() > 0) {
                 frgamentId = R.id.summaryOfLastMonthFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+            } else if (layouts.contains(8) && dBData.getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
                 frgamentId = R.id.branchSummaryFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
+            } else if (layouts.contains(9)
+                    && dBData.getUserReportForAllBranch().size() > 0) {
                 frgamentId = R.id.userReportForAllOusFragment2;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
+            } else if (layouts.contains(10)
+                    && dBData.getUserReportForEachBranch().size() > 0) {
                 frgamentId = R.id.userReportForEachOusFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
+            } else if (layouts.contains(11) &&
+                    dBData.getFigureReportDataforAllBranch().size() > 0) {
                 frgamentId = R.id.peakHourReportForAllOusFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
+            } else if (layouts.contains(12)
+                    && dBData.getFigureReportDataforEachBranch().size() > 0) {
                 frgamentId = R.id.peakHourReportFragment;
-            } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
+            } else if (layouts.contains(1) &&
+                    dBData.getVoucherDataForVans().size() > 0)
                 frgamentId = R.id.mapsFragment;
         }
         return frgamentId;
@@ -567,7 +624,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             if (SplashScreenActivity.allData.isEnableNavigation()) {
                 navController = NavHostFragment.findNavController(getCurrentFragment());
                 switch (keyCode) {
-
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                         if (getCurrentFragment() instanceof KeyPress) {
                             keyPress.centerKey();

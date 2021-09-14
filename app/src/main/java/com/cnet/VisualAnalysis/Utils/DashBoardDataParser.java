@@ -54,20 +54,7 @@ public class DashBoardDataParser {
         DashBoardData dashBoardData = new DashBoardData();
         try {
             JSONObject rootJSON = jsonArray.getJSONObject(0);
-
             parseAllDashBoardDataCatching(dashBoardData, rootJSON);
-
-//            dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));
-//            dashBoardData.setSummarizedByParentArticleData(summarizedByParentArticleParser(rootJSON));
-//            dashBoardData.setSummarizedByChildArticleData(summarizedByChildArticleParser(rootJSON));
-//            dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
-//            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
-//            dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
-//            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
-//            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
-//            dashBoardData.setFigureReportDataforEachBranch(figureReportDataParser(rootJSON));
-//            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
-//            dashBoardData.setFigureReportDataforAllBranch(figureReportAllTogetherOuDataParser(rootJSON));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -101,7 +88,6 @@ public class DashBoardDataParser {
                         summaryOfArticleAtInedx.getDouble("taxAmount")
                 );
 
-//                Log.i("quantities", summaryOfArticleAtInedx.getDouble("quantity") + "");
 
                 double grandTotal = summaryOfArticleAtInedx.getDouble("totalAmount") +
                         summaryOfArticleAtInedx.getDouble("totalServCharge") +
@@ -111,6 +97,9 @@ public class DashBoardDataParser {
                 xValues[i] = i;
                 yValues[i] = (float) grandTotal;
                 legends[i] = summaryOfArticleAtInedx.getString("articleName");
+                if (legends[i].length() > 18) {
+                    legends[i] = legends[i].substring(0, 7) + "..." + legends[i].substring(legends[i].length() - 15, legends[i].length() - 8);
+                }
             }
 
             BarChartData barChartData = new BarChartData(xValues, yValues, legends);
@@ -226,7 +215,7 @@ public class DashBoardDataParser {
                         last6MonsSummaryAtInedx.getInt("transactionCount")
                 );
                 tableData.add(summaryOfLast6MonthsRow);
-//                xValues[i] = i + 1;
+
                 xValues[i] = i;
                 yValues1[i] = (float) last6MonsSummaryAtInedx.getDouble("amount");
                 yValues2[i] = (float) last6MonsSummaryAtInedx.getDouble("transactionCount");
@@ -277,8 +266,6 @@ public class DashBoardDataParser {
 
             }
 
-
-//        LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
             BarChartData barChartData1 = new BarChartData(xValues, yValues1, legends);
             BarChartData barChartData2 = new BarChartData(xValues, yValues2, legends);
             LineChartData lineChartData1 = new LineChartData(xValues, yValues1, legends);
@@ -356,25 +343,6 @@ public class DashBoardDataParser {
                     legends[j] = new UtilityFunctionsForActivity1().formatHourNmin(userReportForSingleOu.getString("summaryType"));
                 }
 
-
-//                float[] xValues = new float[figureReportArray.length()];
-//                float[] yValues = new float[figureReportArray.length()];
-//                String[] legends = new String[figureReportArray.length()];
-//
-//
-//                for (int j = 0; j < figureReportArray.length(); j++) {
-//
-//                    UserReportTableRow userReportTableRow = new UserReportTableRow("Aug 10 2021 10:00AM",
-//                            12, 20000,
-//                            1334, 0,
-//                            0.15, 300000, org);
-//                    userReportTableRowArrayList.add(userReportTableRow);
-//
-//                    xValues[j] = j;
-//                    yValues[j] = (float) 300000;
-//                    legends[j] = new UtilityFunctionsForActivity1().formatHourNmin("Aug 10 2021 10:00AM");
-//                }
-
                 PieChartData pieChartData = new PieChartData(yValues, legends);
                 LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
                 BarChartData barChartData = new BarChartData(xValues, yValues, legends);
@@ -403,7 +371,6 @@ public class DashBoardDataParser {
                             userReportForSingleOu.getDouble("additionalCharge"), userReportForSingleOu.getDouble("discount"),
                             userReportForSingleOu.getDouble("totalTaxAmt"), userReportForSingleOu.getDouble("grandTotal"), org);
                     userReportTableRowArrayList.add(userReportTableRow);
-
                 }
             }
 
@@ -476,7 +443,6 @@ public class DashBoardDataParser {
 
                 double grandTotalSum = 0;
 
-
                 for (int j = 0; j < figureReportDatForEach.length(); j++) {
                     FigureReportDataElements figureReportDataElements = new FigureReportDataElements(figureReportDatForEach.getJSONObject(j).getString("summaryType"),
                             figureReportDatForEach.getJSONObject(j).getInt("totalCount"),
@@ -486,7 +452,7 @@ public class DashBoardDataParser {
 
                 }
             }
-//            Log.i("DISTINICT TIMES",distinictDates(figureReportTableRowArrayList).toString());
+
             return figureReportTableRowArrayList;
         }
         return new ArrayList<FigureReportDataElements>();
@@ -504,34 +470,6 @@ public class DashBoardDataParser {
         return dates;
     }
 
-//    public static ArrayList<VoucherDataForVan> voucherParser(JSONObject jsonObject) throws JSONException {
-//
-//        JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
-//        ArrayList<VoucherDataForVan> voucherDataForVanList = new ArrayList<>();
-////        if (summaryOfBranchArray.length() > 0) {
-//        for (int i = 0; i < summaryOfBranchArray.length(); i++) {
-//
-//            JSONArray voucherArray = summaryOfBranchArray.getJSONObject(i).getJSONArray("vouchers");
-////            Log.i("voucherArray", voucherArray + "");
-//            String org = summaryOfBranchArray.getJSONObject(i).getString("org");
-//            ArrayList<VoucherData> voucherDataList = new ArrayList<>();
-//
-//            for (int j = 0; j < voucherArray.length(); j++) {
-//                JSONObject voucherForVan = voucherArray.getJSONObject(j);
-//                VoucherData voucherData = new VoucherData(voucherForVan.getString("voucherNo"), "",
-//                        voucherForVan.getDouble("grandTotal"), voucherForVan.getDouble("latitude"), voucherForVan.getDouble("longitude"),
-//                        voucherForVan.getDouble("taxAmount"), voucherForVan.getString("tin"), voucherForVan.getString("dateAndTime"),
-//                        voucherForVan.getDouble("subTotal"), voucherForVan.getString("username"), voucherForVan.getInt("itemCount"));
-//                voucherDataList.add(voucherData);
-//            }
-//
-//            VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataList);
-//            voucherDataForVanList.add(voucherDataForVan);
-//
-//        }
-//        return voucherDataForVanList;
-//    }
-
 
     public ArrayList<VoucherDataForVan> voucherParser(JSONObject jsonObject) throws JSONException {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
@@ -547,7 +485,7 @@ public class DashBoardDataParser {
 
             ArrayList<VoucherData> voucherDataArrayList = new ArrayList<>();
             for (int j = 0; j < vouchers.length(); j++) {
-//            for (int j = 0; j < 2; j++) {
+
                 JSONObject voucherObject = vouchers.getJSONObject(j);
                 String outlet = (voucherObject.getString("outlates") == null) ? "- - - - -" : voucherObject.getString("outlates");
                 VoucherData voucherData = new VoucherData(voucherObject.getString("voucherNo"), outlet, voucherObject.getDouble("grandTotal"),
@@ -562,59 +500,6 @@ public class DashBoardDataParser {
         }
         return voucherDataForVanList;
     }
-
-//    public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
-//        JSONArray vsmTransactionArray = jsonObject.getJSONArray("getSalesDataToDisplayOnVsmTable");
-//        if (vsmTransactionArray.length() > 0) {
-//            JSONObject vsmTransactionObject = vsmTransactionArray.getJSONObject(0);
-//
-////        VsmTableForSingleDistributor dataForAdistributor = new VsmTableForSingleDistributor();
-//            JSONArray vsmTables = vsmTransactionObject.getJSONArray("vsmTables");
-//            String orgName = vsmTransactionObject.getString("orgName");
-//
-//            ArrayList<VsmTableDataForSingleVan> allVans = new ArrayList<VsmTableDataForSingleVan>();
-//
-//            for (int i = 0; i < vsmTables.length(); i++) {
-//                JSONObject tableDataObjectForSingleVanInJson = vsmTables.getJSONObject(i);
-//
-//                JSONArray transactionsOfaVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
-//                String vanName = tableDataObjectForSingleVanInJson.getString("van");
-//                int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
-//                String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
-//                int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
-//                double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
-//
-//                ArrayList<VsmTransactionTableRow> singleTransactionOfaVan = new ArrayList<VsmTransactionTableRow>();
-//                for (int j = 0; j < transactionsOfaVan.length(); j++) {
-//                    JSONObject singleTransactionObject = transactionsOfaVan.getJSONObject(j);
-//
-//                    VsmTransactionTableRow vsmTransactionTableRow = new VsmTransactionTableRow(
-//                            singleTransactionObject.getString("voucherNo"),
-//                            singleTransactionObject.getString("outlates"),
-//                            singleTransactionObject.getString("tin"),
-//                            singleTransactionObject.getString("dateAndTime"),
-//                            (int) singleTransactionObject.getDouble("itemCount"),
-//                            singleTransactionObject.getDouble("subTotal"),
-//                            singleTransactionObject.getDouble("vat"),
-//                            singleTransactionObject.getDouble("grandTotal"),
-//                            singleTransactionObject.getDouble("latitude"),
-//                            singleTransactionObject.getDouble("longitude"),
-//                            singleTransactionObject.getString("username"));
-//
-//                    singleTransactionOfaVan.add(vsmTransactionTableRow);
-//                }
-//
-//                VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan, salesOutLateCount,
-//                        lastActive, allLineItemCount, totalPrice);
-//                allVans.add(vsmTableDataForSingleVan);
-//
-//            }
-//
-//            VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(allVans, orgName);
-//            return vsmTableForSingleDistributor;
-//        }
-//        return new VsmTableForSingleDistributor(new ArrayList<VsmTableDataForSingleVan>(), "");
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void parseAllDashBoardDataCatching(DashBoardData dashBoardData, JSONObject rootJSON) {
@@ -638,13 +523,16 @@ public class DashBoardDataParser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        try {
-            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
-//            dashBoardData.setSummaryOfLast30DaysData(new SummaryOfLast30DaysData(new BarChartData(new float[0], new float[0], new String[0]), new ArrayList<SummaryOfLast30DaysRow>()));
+//        try {
+//            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
+            dashBoardData.setSummaryOfLast30DaysData(new SummaryOfLast30DaysData(new LineChartData(new float[0], new float[0], new String[0]),
+                    new LineChartData(new float[0], new float[0], new String[0]),
+                    new BarChartData(new float[0], new float[0], new String[0]),new BarChartData(new float[0], new float[0], new String[0]),
+                    new ArrayList<SummaryOfLast30DaysRow>(),new PieChartData(new float[0], new String[0])));
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         try {
             dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
         } catch (JSONException e) {

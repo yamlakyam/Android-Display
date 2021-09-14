@@ -170,7 +170,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Unit Amount"
+                    android:text="Ave. Amount"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
@@ -181,7 +181,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="Ave. Amount"
+                    android:text="Grand Total"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 

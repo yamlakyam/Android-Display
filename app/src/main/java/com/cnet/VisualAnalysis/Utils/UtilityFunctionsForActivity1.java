@@ -65,7 +65,9 @@ public class UtilityFunctionsForActivity1 {
         SummaryTableRow row = summaryTableRows.get(index);
 
         if (context != null) {
-            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary, null, false);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary, null, false);
+            View tableElements =inflater.inflate(R.layout.table_row_summary, null, false);
 
             TextView serialNumberTextView = tableElements.findViewById(R.id.serialNumberTextView);
             TextView distributorNameTextView = tableElements.findViewById(R.id.distributorNameTextView);
@@ -108,7 +110,9 @@ public class UtilityFunctionsForActivity1 {
 
             View tableElements = null;
             try {
-                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_distributor, null, false);
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_distributor, null, false);
+                tableElements = inflater.inflate(R.layout.table_row_distributor, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -158,7 +162,9 @@ public class UtilityFunctionsForActivity1 {
 
             View tableElements = null;
             try {
-                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+                tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -199,7 +205,12 @@ public class UtilityFunctionsForActivity1 {
 
             View tableElements = null;
             try {
-                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+                if(context!=null){
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+                    tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -238,7 +249,9 @@ public class UtilityFunctionsForActivity1 {
 
             View tableElements = null;
             try {
-                tableElements = LayoutInflater.from(context).inflate(R.layout.user_report_for_all_table_row, null, false);
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                tableElements = inflater.inflate(R.layout.user_report_for_all_table_row, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -280,7 +293,8 @@ public class UtilityFunctionsForActivity1 {
 
             View tableElements = null;
             try {
-                tableElements = LayoutInflater.from(context).inflate(R.layout.figure_report_for_all_table_row, null, false);
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                tableElements = inflater.inflate(R.layout.figure_report_for_all_table_row, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

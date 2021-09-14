@@ -72,13 +72,16 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
     double totalUnitAmount = 0;
     int totalQuantity = 0;
-    double totalAmount = 0;
+    double totalAvgAmount = 0;
+    double totalGrand = 0;
 
     Fragment fragment;
     MaterialCardView pCardSummByArticle;
 
     ////////////
     ArrayList<SummarizedByArticleTableRow> tablesToDisplay;
+    ArrayList<Integer> layoutList;
+    DashBoardData dashBoardData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,21 +135,21 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     public void onResume() {
         super.onResume();
 
-//        BackGroundTasks backGroundTasks = new BackGroundTasks(fragment.getContext(), this);
-//        backGroundTasks.execute();
+        BackGroundTasks backGroundTasks = new BackGroundTasks(fragment.getContext(), this);
+        backGroundTasks.execute();
 
-        if (SplashScreenActivity.allData != null) {
-            articleSummaryProgressBar.setVisibility(View.GONE);
-            constraintLayout.setVisibility(View.VISIBLE);
-
-            if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null) {
-                totalLastRow();
-                Log.i("totalUnitAmount", totalUnitAmount + "");
-                initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
-            } else {
-                navigate(fragment);
-            }
-        }
+//        if (SplashScreenActivity.allData != null) {
+//            articleSummaryProgressBar.setVisibility(View.GONE);
+//            constraintLayout.setVisibility(View.VISIBLE);
+//
+//            if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null) {
+//                totalLastRow();
+//                Log.i("totalUnitAmount", totalUnitAmount + "");
+//                initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
+//            } else {
+//                navigate(fragment);
+//            }
+//        }
     }
 
 
@@ -196,60 +199,101 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
         NavController navController = NavHostFragment.findNavController(fragment);
 
-        if (SplashScreenActivity.allData.getLayoutList().contains(4) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null) {
+        if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0) {
             navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(5) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0) {
             navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(6) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0) {
             navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(7) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(7) &&
+                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size() > 0) {
             navController.navigate(R.id.summaryOfLastMonthFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(8) &&
+                SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData() != null
+                && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
             navController.navigate(R.id.branchSummaryFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(9) && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(9) &&
+                SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size() > 0) {
             navController.navigate(R.id.userReportForAllOusFragment2);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(11) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(11) &&
+                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0) {
             navController.navigate(R.id.peakHourReportForAllOusFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(10) && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(10) &&
+                SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0) {
             navController.navigate(R.id.userReportForEachOusFragment);
-
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(12) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(12) &&
+                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null
+                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0) {
             navController.navigate(R.id.peakHourReportFragment);
-        } else if (SplashScreenActivity.allData.getLayoutList().contains(1) && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null) {
+        } else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
+                SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
+                && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0) {
             navController.navigate(R.id.mapsFragment);
         } else {
-            initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
+            initFragment(dashBoardData, 100);
         }
-
     }
 
     public void naviagteLeft(Fragment fragment) {
         NavController navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
-            if (SplashScreenActivity.allData.getLayoutList().contains(1) && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null)
-                navController.navigate(R.id.mapsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(12) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null)
-                navController.navigate(R.id.peakHourReportFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(10) && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null)
-                navController.navigate(R.id.userReportForEachOusFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(11) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null)
-                navController.navigate(R.id.peakHourReportForAllOusFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(9) && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null)
-                navController.navigate(R.id.userReportForAllOusFragment2);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-                navController.navigate(R.id.branchSummaryFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(7) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null)
-                navController.navigate(R.id.summaryOfLastMonthFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(6) && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null)
-                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(5) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null)
-                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-            else if (SplashScreenActivity.allData.getLayoutList().contains(4) && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null)
-                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-            else
-                initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
+            if (layoutList != null) {
+                if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
+                        SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
+                    navController.navigate(R.id.mapsFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(12) &&
+                        SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0)
+                    navController.navigate(R.id.peakHourReportFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(10) &&
+                        SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0)
+                    navController.navigate(R.id.userReportForEachOusFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(11) &&
+                        SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0)
+                    navController.navigate(R.id.peakHourReportForAllOusFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(9) &&
+                        SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size() > 0)
+                    navController.navigate(R.id.userReportForAllOusFragment2);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(8) &&
+                        SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+                    navController.navigate(R.id.branchSummaryFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(7) &&
+                        SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size() > 0)
+                    navController.navigate(R.id.summaryOfLastMonthFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
+                        SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
+                    navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
+                        SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
+                    navController.navigate(R.id.summarizedByArticleChildCategFragment);
+                else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
+                        SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
+                        && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
+                    navController.navigate(R.id.summarizedByArticleParentCategFragment);
+                else
+                    initFragment(dashBoardData, 100);
 
+            }
         }
+
     }
 
     @Override
@@ -266,14 +310,16 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         for (int i = 0; i < tablesToDisplay.size(); i++) {
             totalUnitAmount = totalUnitAmount + tablesToDisplay.get(i).getAvgAmount();
             totalQuantity = totalQuantity + tablesToDisplay.get(i).getQuantity();
-            totalAmount = totalAmount + ((tablesToDisplay.get(i).getTotalAmount() + tablesToDisplay.get(i).getTaxAmount()) / tablesToDisplay.get(i).getQuantity());
+            totalAvgAmount = totalAvgAmount + ((tablesToDisplay.get(i).getTotalAmount() + tablesToDisplay.get(i).getTaxAmount()) / tablesToDisplay.get(i).getQuantity());
+            totalGrand = totalGrand + tablesToDisplay.get(i).getTotalAmount() + tablesToDisplay.get(i).getTaxAmount();
         }
     }
 
     public void resetLastRow() {
         totalUnitAmount = 0;
         totalQuantity = 0;
-        totalAmount = 0;
+        totalAvgAmount = 0;
+        totalGrand = 0;
     }
 
     public void drawLastArticleSummaryTotalRow() {
@@ -290,7 +336,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             numberFormat.setGroupingUsed(true);
 
             tableRowProperty1.setText("");
-            tableRowProperty2.setText("Grand Total");
+            tableRowProperty2.setText("Total Amount");
             tableRowProperty2.setTypeface(Typeface.DEFAULT_BOLD);
             tableRowProperty2.setTextSize(16f);
 
@@ -299,12 +345,12 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             tableRowProperty3.setTextSize(16f);
 
 //            tableRowProperty4.setText(numberFormat.format(Math.round(totalUnitAmount * 100.0) / 100.0));
-            tableRowProperty4.setText(UtilityFunctionsForActivity2.decimalFormat.format(totalUnitAmount));
+            tableRowProperty4.setText("");
             tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
             tableRowProperty4.setTextSize(16f);
 
 //            tableRowProperty5.setText(numberFormat.format(Math.round(totalAmount * 100.0) / 100.0));
-            tableRowProperty5.setText(UtilityFunctionsForActivity2.decimalFormat.format(totalAmount));
+            tableRowProperty5.setText(UtilityFunctionsForActivity2.decimalFormat.format(totalGrand));
             tableRowProperty5.setTypeface(Typeface.DEFAULT_BOLD);
             tableRowProperty5.setTextSize(16f);
 
@@ -328,7 +374,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
         inflateTable(dashBoardData.getSummarizedByArticleData().getTableData(), seconds);
 
-        int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_ARTICLE_INDEX);
+//        int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_ARTICLE_INDEX);
+        int chartTypeIndex = layoutList.indexOf(Constants.SUMMARY_OF_ARTICLE_INDEX);
         Log.i("TAG", chartTypeIndex + "");
         String chartType = "";
         if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
@@ -394,12 +441,28 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     @Override
     public void doInBackground() {
         Log.i("TAG", "doInBackground: ");
-        totalLastRow();
+
+
+        if (SplashScreenActivity.allData != null) {
+            totalLastRow();
+            layoutList = SplashScreenActivity.allData.getLayoutList();
+            dashBoardData = SplashScreenActivity.allData.getDashBoardData();
+        }
     }
 
     @Override
     public void onPostExecute() {
         Log.i("TAG", "onPostExecute: ");
-        initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
+        if (SplashScreenActivity.allData != null) {
+            articleSummaryProgressBar.setVisibility(View.GONE);
+            constraintLayout.setVisibility(View.VISIBLE);
+
+            if (dashBoardData.getSummarizedByArticleData() != null) {
+                Log.i("totalUnitAmount", totalUnitAmount + "");
+                initFragment(dashBoardData, 100);
+            } else {
+                navigate(fragment);
+            }
+        }
     }
 }

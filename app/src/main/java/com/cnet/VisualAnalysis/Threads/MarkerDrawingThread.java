@@ -19,30 +19,33 @@ public class MarkerDrawingThread extends Thread {
     @Override
     public void run() {
         super.run();
-        for (int i = 0; i <= rows + 1; i++) {
 
-            Message message = changeDataHandler.obtainMessage();
-            message.obj = String.valueOf(i);
-            changeDataHandler.sendMessage(message);
-            try {
-                if (i == rows + 1) {
-                    Thread.sleep(3000);
+        if (!Thread.currentThread().isInterrupted())
+            for (int i = 0; i <= rows + 1; i++) {
 
-                } else if (i == rows) {
-                    Log.i("last row", "run: ");
+                Message message = changeDataHandler.obtainMessage();
+                message.obj = String.valueOf(i);
+                changeDataHandler.sendMessage(message);
+                try {
+                    if (i == rows + 1) {
+                        Thread.sleep(3000);
+
+                    } else if (i == rows) {
+                        Log.i("last row-marker", "run: ");
 //                    lastRowAnimationSleep();
-                    Thread.sleep(3000);
-                } else if (i == rows - 1) {
-                    Thread.sleep(5000);
+                        Thread.sleep(3000);
+                    } else if (i == rows - 1) {
+                        Thread.sleep(5000);
 
-                } else {
-                    Thread.sleep(numberOfSeconds);
+                    } else {
+                        Thread.sleep(numberOfSeconds);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                    return;
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                return;
             }
-        }
     }
 
 }

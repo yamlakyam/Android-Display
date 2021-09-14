@@ -38,6 +38,8 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.DecimalFormat;
@@ -45,7 +47,17 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class UtilityFunctionsForActivity2 {
+
     public static DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
+    public static DecimalFormat smallDecimlFormat = new DecimalFormat("0.00");
+
+    private float ellipse(float angle) {
+        float a;
+        if (angle % 180f >= 0.0 && angle % 180 <= 90.0) a = (angle % 180f) / 2;
+        else a = 90f - (angle % 180f) / 2;
+        a = a * Utils.FDEG2RAD;
+        return (float) Math.tan(a);
+    }
 
     public void drawPieChart(PieChartData pieChartData, PieChart piechart, String label) {
         piechart.setDrawSliceText(true);// to draw the labels
@@ -53,7 +65,6 @@ public class UtilityFunctionsForActivity2 {
         piechart.setDrawHoleEnabled(false);
         piechart.getDescription().setTextColor(Color.parseColor("#f6f8fb"));
         piechart.getDescription().setText(label);
-
 
         piechart.getLegend().setEnabled(false);
 
@@ -83,16 +94,27 @@ public class UtilityFunctionsForActivity2 {
 
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        pieDataSet.setValueLinePart1OffsetPercentage(10); //starting of the line from center of the chart offset
-        pieDataSet.setValueLinePart1Length(0.6f);
+        pieDataSet.setValueLinePart1OffsetPercentage(100f); //starting of the line from center of the chart offset
+
+//        piechart.setRenderer(new PieChartCustomRendederer(piechart,piechart.getAnimator(),piechart.getViewPortHandler()));
+
+        pieDataSet.setSliceSpace(3f);
+        pieDataSet.setIconsOffset(new MPPointF(0, 40));
+        pieDataSet.setSelectionShift(10f);
+
+        pieDataSet.setValueLinePart1Length(0.8f);
+//        pieDataSet.setValueLinePart1Length(radius * (1 + 0.6f) * sliceYBase + piechart.getCenterCircleBox().y);
         pieDataSet.setValueLinePart2Length(0.6f);
+//        pieDataSet.setValueLinePart2Length((radius * (1 + 0.6f * ellipse(rotationAngle) * 1.5f) * sliceYBase + piechart.getCenterCircleBox().y));
 //        pieDataSet.setValueLineColor(Color.parseColor("#FFFFFF"));
+
         pieDataSet.setUsingSliceColorAsValueLineColor(true);
         pieDataSet.setValueTextColor(Color.parseColor("#FFFFFF"));
         piechart.setExtraOffsets(30f, 30f, 30f, 30f);
 //        pieDataSet.setSliceSpace(2);
         PieData pieData = new PieData(pieDataSet);
         piechart.setData(pieData);
+        pieData.setValueTextSize(10f);
     }
 
     public void drawDonutChart(PieChartData pieChartData, PieChart piechart, String label) {
@@ -210,6 +232,8 @@ public class UtilityFunctionsForActivity2 {
         barChart.getXAxis().setGranularity(1f);
         barChart.getXAxis().setCenterAxisLabels(true);
         barChart.getXAxis().setLabelCount(barChartData1.x.length);
+        barChart.getXAxis().setLabelRotationAngle(-45);
+
 
         ArrayList<BarEntry> barChartEntries1 = new ArrayList<BarEntry>();
         ArrayList<BarEntry> barChartEntries2 = new ArrayList<BarEntry>();
@@ -444,7 +468,6 @@ public class UtilityFunctionsForActivity2 {
             numberFormat.setGroupingUsed(true);
 
             double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
-
             String formattedArticleName;
 
 
@@ -463,9 +486,11 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty2.setText(formattedArticleName);
             tableRowProperty3.setText(numberFormat.format(row.getQuantity()));
 //            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAvgAmount() * 100.0) / 100.0));
-            tableRowProperty4.setText(decimalFormat.format(row.getAvgAmount()));
+            tableRowProperty5.setText((grandTotal > 1) ? decimalFormat.format(grandTotal) :
+                    smallDecimlFormat.format(grandTotal));
 //            tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty5.setText(decimalFormat.format(grandTotal / row.getQuantity()));
+            tableRowProperty4.setText(((grandTotal / row.getQuantity()) > 1) ? decimalFormat.format(grandTotal / row.getQuantity()) :
+                    smallDecimlFormat.format(grandTotal / row.getQuantity()));
 
             summarizedByArticleTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByArticleTableLayout, tableElements);
@@ -515,9 +540,11 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
 //            tableRowProperty3.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
-            tableRowProperty3.setText(decimalFormat.format(percentage) + "%");
+            tableRowProperty3.setText((percentage > 1) ? decimalFormat.format(percentage) + "%" :
+                    smallDecimlFormat.format(percentage) + "%");
 //            tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty4.setText(decimalFormat.format(grandTotal));
+            tableRowProperty4.setText((grandTotal > 1) ? decimalFormat.format(grandTotal) :
+                    smallDecimlFormat.format(grandTotal));
 
             summarizedByParentArticleTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByParentArticleTableLayout, tableElements);
@@ -568,9 +595,11 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
 //            tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-            tableRowProperty4.setText(decimalFormat.format(grandTotal));
+            tableRowProperty4.setText((grandTotal > 1) ? decimalFormat.format(grandTotal) :
+                    smallDecimlFormat.format(grandTotal));
 //            tableRowProperty3.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
-            tableRowProperty3.setText(decimalFormat.format(percentage) + "%");
+            tableRowProperty3.setText((percentage > 1) ? decimalFormat.format(percentage) + "%" :
+                    smallDecimlFormat.format(percentage) + "%");
 
 
             summarizedByChildArticleTableLayout.addView(tableElements);
@@ -604,7 +633,8 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty2.setText(new UtilityFunctionsForActivity1().formatDateToString2(row.getDateTime()));
             tableRowProperty3.setText(numberFormat.format(row.getTransactionCount()));
 //            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-            tableRowProperty4.setText(decimalFormat.format(row.getAmount()));
+            tableRowProperty4.setText((row.getAmount() > 1) ? decimalFormat.format(row.getAmount()) :
+                    smallDecimlFormat.format(row.getAmount()));
 
             summarizedByLast30DaysTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByLast30DaysTableLayout, tableElements);
@@ -635,13 +665,13 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty2.setText(new UtilityFunctionsForActivity1().formatDateToString(row.getDateTime()));
             tableRowProperty3.setText(numberFormat.format(row.getTransactionCount()));
 //            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
-            tableRowProperty4.setText(decimalFormat.format(row.getAmount()));
+            tableRowProperty4.setText((row.getAmount() > 1) ? decimalFormat.format(row.getAmount()) :
+                    smallDecimlFormat.format(row.getAmount()));
 //            tableRowProperty4.setText(new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
             summarizedByLast6MonthsTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByLast6MonthsTableLayout, tableElements);
         }
-
 
     }
 
@@ -682,9 +712,11 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty3.setText(String.valueOf(row.getLineItems()));
             tableRowProperty4.setText(numberFormat.format(row.getTransactionCount()));
 //            tableRowProperty5.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
-            tableRowProperty5.setText(decimalFormat.format(percentage) + "%");
+            tableRowProperty5.setText((percentage > 1) ? decimalFormat.format(percentage) + "%" :
+                    smallDecimlFormat.format(percentage) + "%");
 //            tableRowProperty6.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
-            tableRowProperty6.setText(decimalFormat.format(row.getGrandTotal()));
+            tableRowProperty6.setText((row.getGrandTotal() > 0) ? decimalFormat.format(row.getGrandTotal()) :
+                    smallDecimlFormat.format(row.getGrandTotal()));
 
             branchSummaryTableLayout.addView(tableElements);
             animateBottomToTop(branchSummaryTableLayout, tableElements);
@@ -702,21 +734,44 @@ public class UtilityFunctionsForActivity2 {
                           String label) {
 
         if (chartType.equals(Constants.DONUT_TYPE)) {
-            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
-            viewHolder.addView(pieElement);
-            drawDonutChart(pieChartData, (PieChart) pieElement, label);
+            if (context != null) {
+                View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(pieElement);
+                    drawDonutChart(pieChartData, (PieChart) pieElement, label);
+                }
+            }
+
+
         } else if (chartType.equals(Constants.BAR_TYPE)) {
-            View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
-            viewHolder.addView(barElement);
-            drawBarChart(barChartData, (BarChart) barElement, label);
+            if (context != null) {
+                View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(barElement);
+                    drawBarChart(barChartData, (BarChart) barElement, label);
+                }
+            }
+
+
         } else if (chartType.equals(Constants.LINE_TYPE)) {
-            View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
-            viewHolder.addView(lineElement);
-            drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
-        } else {//default pie chart
-            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
-            viewHolder.addView(pieElement);
-            drawPieChart(pieChartData, (PieChart) pieElement, label);
+            if (context != null) {
+                View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(lineElement);
+                    drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
+                }
+            }
+
+
+        } else {
+            if (context != null) {
+                View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(pieElement);
+                    drawPieChart(pieChartData, (PieChart) pieElement, label);
+                }
+            }
+
         }
     }
 
@@ -724,23 +779,42 @@ public class UtilityFunctionsForActivity2 {
                           LineChartData lineChartData2, String label1, String label2) {
 
         if (chartType.equals(Constants.DONUT_TYPE)) {
-            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
-            viewHolder.addView(pieElement);
-            drawDonutChart(pieChartData, (PieChart) pieElement, label1);
+            if (context != null) {
+                View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(pieElement);
+                    drawDonutChart(pieChartData, (PieChart) pieElement, label1);
+                }
+            }
+
+
         } else if (chartType.equals(Constants.BAR_TYPE)) {
-            View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
-            viewHolder.addView(barElement);
-//            drawBarChart(barChartData, (BarChart) barElement, label1);
-            drawDoubleBarChart(barChartData1, barChartData2, (BarChart) barElement, label1, label2);
+            if (context != null) {
+                View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(barElement);
+                    drawDoubleBarChart(barChartData1, barChartData2, (BarChart) barElement, label1, label2);
+                }
+            }
+
         } else if (chartType.equals(Constants.PIE_TYPE)) {//default pie chart
-            View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
-            viewHolder.addView(pieElement);
-            drawPieChart(pieChartData, (PieChart) pieElement, label1);
+            if (context != null) {
+                View pieElement = LayoutInflater.from(context).inflate(R.layout.pie_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(pieElement);
+                    drawPieChart(pieChartData, (PieChart) pieElement, label1);
+                }
+            }
+
+
         } else {//default lineChart
             View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
-            viewHolder.addView(lineElement);
+            if (viewHolder != null) {
+                viewHolder.addView(lineElement);
 //            new UtilityFunctionsForActivity2().drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
-            drawDoubleLineChart(lineChartData1, lineChartData2, (LineChart) lineElement, label1, label2);
+                drawDoubleLineChart(lineChartData1, lineChartData2, (LineChart) lineElement, label1, label2);
+            }
+
         }
     }
 

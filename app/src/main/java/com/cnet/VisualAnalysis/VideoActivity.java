@@ -18,17 +18,16 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
 
         videoView = findViewById(R.id.lastVideo);
-
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logo_animation);
         videoView.setVideoURI(uri);
         videoView.start();
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-//                startActivity(new Intent(VideoActivity.this, SecondActivity.class));
                 navigate();
             }
         });
+
     }
 
     public void navigate() {
@@ -40,37 +39,15 @@ public class VideoActivity extends AppCompatActivity {
 
     }
 
-
-    //        if (SplashScreenActivity.allData.getLayoutList().contains(3)) {
-//            if (SplashScreenActivity.allData.getLayoutList().contains(4)) {
-//                navController.navigate(R.id.summarizedByArticleParentCategFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(5)) {
-//                navController.navigate(R.id.summarizedByArticleChildCategFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(6)) {
-//                navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(7)) {
-//                navController.navigate(R.id.summaryOfLastMonthFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
-//                navController.navigate(R.id.branchSummaryFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(9)) {
-//                navController.navigate(R.id.userReportForAllOusFragment2);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(10)) {
-//                navController.navigate(R.id.userReportForEachOusFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(11)) {
-//                navController.navigate(R.id.peakHourReportForAllOusFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
-//                navController.navigate(R.id.peakHourReportFragment);
-//            } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
-////                startActivity(new Intent(requireActivity(), MapsActivity.class));
-//                navController.navigate(R.id.vansOfASingleOrganizationFragment);
-//            }
-//
-//        }
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(VideoActivity.this, SplashScreenActivity.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 }

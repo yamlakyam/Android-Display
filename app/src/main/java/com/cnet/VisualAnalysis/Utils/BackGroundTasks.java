@@ -33,7 +33,6 @@ public class BackGroundTasks extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
         calculateInBackground.doInBackground();
-        Log.i("from backgroundTasks", "doInBackground: ");
         return null;
 
     }
