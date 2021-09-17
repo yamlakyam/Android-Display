@@ -105,6 +105,8 @@ public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                Log.i("VsmCardThread", Thread.currentThread() + "");
             }
         };
 

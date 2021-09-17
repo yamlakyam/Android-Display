@@ -9,13 +9,13 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
@@ -43,13 +43,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Set;
 
 public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
     public int refreshTime = 300000;
     String updateFail = "Failed updating";
+
+    ProgressBar secondActivtyProgressBar;
+    ConstraintLayout refreshingConstraintLayout;
+    NavGraph graph;
 
     public interface KeyPress {
         void centerKey();
@@ -64,10 +67,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     NavController navController;
 
     public static boolean firstCenterKeyPause;
+    public static boolean ThreadInterrupted = false;
 
-    ImageView leftArrow;
-    ImageView playPause;
-    ImageView rightArrow;
     LinearLayout playPauseKeyPad;
 
     public Context context;
@@ -78,371 +79,93 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     ArrayList<Integer> layouts;
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //Clear the Activity's bundle of the subsidiary fragments' bundles.
-        outState.clear();
-    }
+    String lastActivty;
+    String deviceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        secondActivtyProgressBar = findViewById(R.id.secondActivtyProgressBar);
+        refreshingConstraintLayout = findViewById(R.id.refreshingConstraintLayout);
+
         Log.i("Van-Index-Before", vanIndex + "");
         vanIndex = 0;
-        Log.i("Van-Index-After", vanIndex + "");
+
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        Log.i("ThreadSets-onCreate", threadSet.toString());
+        Log.i("ThreadSetCount-onCreate", threadSet.size() + "");
 
         context = SecondActivity.this;
         setContentView(R.layout.activity_second);
 
-        if (mappedFragment() != null) {
-            setHomeFragment();
-        } else {
-            startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
-        }
+        deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-//        TooLargeTool.startLogging(SecondActivity.this);
-        leftArrow = findViewById(R.id.leftArrow);
-        playPause = findViewById(R.id.playPause);
-        rightArrow = findViewById(R.id.rightArrow);
-        playPauseKeyPad = findViewById(R.id.playPauseKeyPad);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("left");
-        if (name != null) {
-            if (name.equals("pressed")) {
-                if (SplashScreenActivity.allData != null) {
-                    layouts = SplashScreenActivity.allData.getLayoutList();
-                    DashBoardData dBData = SplashScreenActivity.allData.getDashBoardData();
-                    if (layouts.contains(1)) {
-                        setHomeFragment(R.id.mapsFragment);
-                    } else if (layouts.contains(12)) {
-                        setHomeFragment(R.id.peakHourReportFragment);
-                    } else if (layouts.contains(11)) {
-                        setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                    } else if (layouts.contains(10)) {
-                        setHomeFragment(R.id.userReportForEachOusFragment);
-                    } else if (layouts.contains(9)) {
-                        setHomeFragment(R.id.userReportForAllOusFragment2);
-                    } else if (layouts.contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
-                        setHomeFragment(R.id.branchSummaryFragment);
-                    } else if (layouts.contains(7)) {
-                        setHomeFragment(R.id.summaryOfLastMonthFragment);
-                    } else if (layouts.contains(6)) {
-                        setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                    } else if (layouts.contains(5)) {
-                        setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                    } else if (layouts.contains(4)) {
-                        setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                    } else if (layouts.contains(3)) {
-                        setHomeFragment(R.id.summarizedByArticleFragment2);
-                    }
-                }
+//        if (mappedFragment() != null) {
+//            setHomeFragment();
+//        } else {
+//            startActivity(new Intent(SecondActivity.this, VideoActivity.class));
+//        }
+//
+//        String name = intent.getStringExtra("left");
+//        if (name != null) {
+//            Log.i("This called", "onCreate: ");
+//            if (name.equals("pressed")) {
+//                if (SplashScreenActivity.allData != null) {
+//                    layouts = SplashScreenActivity.allData.getLayoutList();
+//                    DashBoardData dBData = SplashScreenActivity.allData.getDashBoardData();
+//                    if (layouts.contains(1)) {
+//                        setHomeFragment(R.id.mapsFragment);
+//                    } else if (layouts.contains(12)) {
+//                        setHomeFragment(R.id.peakHourReportFragment);
+//                    } else if (layouts.contains(11)) {
+//                        setHomeFragment(R.id.peakHourReportForAllOusFragment);
+//                    } else if (layouts.contains(10)) {
+//                        setHomeFragment(R.id.userReportForEachOusFragment);
+//                    } else if (layouts.contains(9)) {
+//                        setHomeFragment(R.id.userReportForAllOusFragment2);
+//                    } else if (layouts.contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+//                        setHomeFragment(R.id.branchSummaryFragment);
+//                    } else if (layouts.contains(7)) {
+//                        setHomeFragment(R.id.summaryOfLastMonthFragment);
+//                    } else if (layouts.contains(6)) {
+//                        setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
+//                    } else if (layouts.contains(5)) {
+//                        setHomeFragment(R.id.summarizedByArticleChildCategFragment);
+//                    } else if (layouts.contains(4)) {
+//                        setHomeFragment(R.id.summarizedByArticleParentCategFragment);
+//                    } else if (layouts.contains(3)) {
+//                        setHomeFragment(R.id.summarizedByArticleFragment2);
+//                    }
+//                }
+//            }
+//        }
+
+        lastActivty = intent.getStringExtra("prev-activity");
+//        lastActivty = intent.getStringExtra("prevvvvvvv-activity");
+
+        refreshingConstraintLayout = findViewById(R.id.refreshingConstraintLayout);
+
+
+        if (lastActivty != null) {
+            Log.i("FROM_VID", "onCreate: ");
+            refreshingConstraintLayout.setVisibility(ConstraintLayout.VISIBLE);
+//            fragmentWhileDataRefreshed();
+            VolleyHttp http = new VolleyHttp(getApplicationContext());
+            http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
+                    SecondActivity.this);
+        } else {
+            Log.i("FIRST_TIME", "onCreate: ");
+            if (mappedFragment() != null) {
+                setHomeFragment();
+            } else {
+                Log.i("ANIMATION_CALLED-3", "onFailure: ");
+                startActivity(new Intent(SecondActivity.this, VideoActivity.class));
             }
         }
 
-        int fragId = intent.getIntExtra("fromVideo", 0);
-        if (fragId == 3) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-                if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                }
-            }
-
-        } else if (fragId == 4) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                }
-            }
-
-        } else if (fragId == 5) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                }
-            }
-
-        } else if (fragId == 6) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                }
-            }
-
-        } else if (fragId == 7) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                }
-            }
-
-        } else if (fragId == 8) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                }
-            }
-
-        } else if (fragId == 9) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                }
-            }
-
-        } else if (fragId == 10) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                } else if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                }
-            }
-
-        } else if (fragId == 11) {
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(12)) {
-                    setHomeFragment(R.id.peakHourReportFragment);
-                } else if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                }
-            }
-
-        } else if (fragId == 12) {
-            if (SplashScreenActivity.allData != null) {
-
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                }
-            }
-
-        } else if (fragId == 1) {
-
-            if (SplashScreenActivity.allData != null) {
-                layouts = SplashScreenActivity.allData.getLayoutList();
-
-                if (layouts.contains(1)) {
-                    setHomeFragment(R.id.mapsFragment);
-                } else if (layouts.contains(3)) {
-                    setHomeFragment(R.id.summarizedByArticleFragment2);
-                } else if (layouts.contains(4)) {
-                    setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-                } else if (layouts.contains(5)) {
-                    setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-                } else if (layouts.contains(6)) {
-                    setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-                } else if (layouts.contains(7)) {
-                    setHomeFragment(R.id.summaryOfLastMonthFragment);
-                } else if (layouts.contains(8)) {
-                    setHomeFragment(R.id.branchSummaryFragment);
-                } else if (layouts.contains(9)) {
-                    setHomeFragment(R.id.userReportForAllOusFragment2);
-                } else if (layouts.contains(10)) {
-                    setHomeFragment(R.id.userReportForEachOusFragment);
-                } else if (layouts.contains(11)) {
-                    setHomeFragment(R.id.peakHourReportForAllOusFragment);
-                }
-            }
-        }
-        //////////////////////
-
-        String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         /*Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -462,25 +185,25 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
          */
 
+//        Timer timer = new Timer();
+//        TimerTask hourlyTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                VolleyHttp http = new VolleyHttp(getApplicationContext());
+//                try {
+//                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
+//                            SecondActivity.this);
+//                    Log.i("REQUEST MADE", "run: ");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//        timer.schedule(hourlyTask, 0, refreshTime);
 
-        Timer timer = new Timer();
-        TimerTask hourlyTask = new TimerTask() {
-            @Override
-            public void run() {
-                VolleyHttp http = new VolleyHttp(getApplicationContext());
-                try {
-                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
-                            SecondActivity.this);
-                    Log.i("REQUEST MADE", "run: ");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        timer.schedule(hourlyTask, 0, refreshTime);
+        /*
 
-
-       /* Thread refreshDataThread = new Thread() {
+       Thread refreshDataThread = new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -494,50 +217,71 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                         e.printStackTrace();
                     }
 
-
                 }
             }
         };
 
         refreshDataThread.start();
 
-        */
-
+         */
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSuccess(JSONObject jsonObject) throws JSONException {
+        Log.i("Success", "onSuccess: ");
+        AllDataParser allDataParser = new AllDataParser(jsonObject);
+        try {
+            SplashScreenActivity.allData = allDataParser.parseAllData();
+            Log.i("Refreshed_Data_Parsed", "run: ");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        Thread refreshedDataParsingThread = new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                AllDataParser allDataParser = new AllDataParser(jsonObject);
-                try {
-                    SplashScreenActivity.allData = allDataParser.parseAllData();
-                    Log.i("Refreshed_Data_Parsed", "run: ");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        refreshedDataParsingThread.start();
+        refreshingConstraintLayout.setVisibility(View.GONE);
+        if (mappedFragment() != null) {
+            setHomeFragment();
+        } else {
+            Log.i("ANIMATION_CALLED-2", "onFailure: ");
 
+            startActivity(new Intent(SecondActivity.this, VideoActivity.class));
+        }
     }
 
     @Override
     public void onFailure(VolleyError error) {
         Log.i("update failed", "onFailure: ");
         Toast.makeText(this, updateFail, Toast.LENGTH_LONG);
+        refreshingConstraintLayout.setVisibility(View.GONE);
+
+        if (mappedFragment() != null) {
+            setHomeFragment();
+        } else {
+            Log.i("ANIMATION_CALLED-1", "onFailure: ");
+
+            startActivity(new Intent(SecondActivity.this, VideoActivity.class));
+        }
+
+    }
+
+    public void fragmentWhileDataRefreshed() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_second);
+        NavInflater inflater = navHostFragment.getNavController().getNavInflater();
+        graph = inflater.inflate(R.navigation.second_nav);
+        graph.setStartDestination(R.id.stallingFragment);
+        NavController navController = navHostFragment.getNavController();
+        navController.setGraph(graph);
     }
 
     public void setHomeFragment() {
+
+        Log.i("SET_HOME_FRAGMENT", "setHomeFragment: ");
         int frgamentId;
 //        mappedFragment();
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_second);
         NavInflater inflater = navHostFragment.getNavController().getNavInflater();
-        NavGraph graph = inflater.inflate(R.navigation.second_nav);
+        graph = inflater.inflate(R.navigation.second_nav);
 
         if (SplashScreenActivity.allData != null) {
             if (SplashScreenActivity.allData.getDashBoardData() != null) {
@@ -546,10 +290,16 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                     NavController navController = navHostFragment.getNavController();
                     navController.setGraph(graph);
                 } else {
+                    Log.i("ANIMATION_CALLED-6", "onFailure: ");
+
+
                     startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
                 }
             }
         } else {
+            Log.i("ANIMATION_CALLED-5", "onFailure: ");
+
+
             startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
         }
 
@@ -577,40 +327,52 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             if (layouts.contains(3) &&
                     dBData.getSummarizedByArticleData() != null &&
                     dBData.getSummarizedByArticleData().tableData.size() > 0) {
+                Log.i("article", "mappedFragment: ");
                 frgamentId = R.id.summarizedByArticleFragment2;
             } else if (layouts.contains(4)
                     && dBData.getSummarizedByParentArticleData() != null
                     && dBData.getSummarizedByParentArticleData().getTableData().size() > 0) {
+                Log.i("parent", "mappedFragment: ");
                 frgamentId = R.id.summarizedByArticleParentCategFragment;
             } else if (layouts.contains(5)
                     && dBData.getSummarizedByChildArticleData() != null
                     && dBData.getSummarizedByChildArticleData().getTableData().size() > 0) {
+                Log.i("child", "mappedFragment: ");
                 frgamentId = R.id.summarizedByArticleChildCategFragment;
             } else if (layouts.contains(6)
                     && dBData.getSummaryOfLast6MonthsData() != null
                     && dBData.getSummaryOfLast6MonthsData().getTableData().size() > 0) {
+                Log.i("last 6 mons", "mappedFragment: ");
                 frgamentId = R.id.summaryOfLastSixMonthsFragment;
             } else if (layouts.contains(7)
                     && dBData.getSummaryOfLast30DaysData() != null
                     && dBData.getSummaryOfLast30DaysData().tableData.size() > 0) {
+                Log.i("last 30 days", "mappedFragment: ");
                 frgamentId = R.id.summaryOfLastMonthFragment;
             } else if (layouts.contains(8) && dBData.getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
+                Log.i("branch", "mappedFragment: ");
                 frgamentId = R.id.branchSummaryFragment;
             } else if (layouts.contains(9)
                     && dBData.getUserReportForAllBranch().size() > 0) {
+                Log.i("user-rep", "mappedFragment: ");
                 frgamentId = R.id.userReportForAllOusFragment2;
             } else if (layouts.contains(10)
                     && dBData.getUserReportForEachBranch().size() > 0) {
+                Log.i("user-rep-each", "mappedFragment: ");
                 frgamentId = R.id.userReportForEachOusFragment;
             } else if (layouts.contains(11) &&
                     dBData.getFigureReportDataforAllBranch().size() > 0) {
+                Log.i("peaK-HR", "mappedFragment: ");
                 frgamentId = R.id.peakHourReportForAllOusFragment;
             } else if (layouts.contains(12)
                     && dBData.getFigureReportDataforEachBranch().size() > 0) {
+                Log.i("PeakHr-each", "mappedFragment: ");
                 frgamentId = R.id.peakHourReportFragment;
             } else if (layouts.contains(1) &&
-                    dBData.getVoucherDataForVans().size() > 0)
+                    dBData.getVoucherDataForVans().size() > 0) {
+                Log.i("map", "mappedFragment: ");
                 frgamentId = R.id.mapsFragment;
+            }
         }
         return frgamentId;
     }
@@ -637,10 +399,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                         break;
                     case KeyEvent.KEYCODE_DPAD_RIGHT:
 
-
                         if (getCurrentFragment() instanceof KeyPress)
                             keyPress.rightKey();
-
                         break;
                 }
             }
@@ -653,7 +413,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         Fragment navHostFragment = getSupportFragmentManager().getPrimaryNavigationFragment();
         return navHostFragment.getChildFragmentManager().getFragments().get(0);
     }
-
 
     public void pausedState() {
         firstCenterKeyPause = false;
@@ -712,6 +471,32 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Log.i("ANIMATION_CALLED-4", "onFailure: ");
+
         startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        Log.i("ThreadSets-onStop", threadSet.toString());
+        Log.i("ThreadSetCount-onStop", threadSet.size() + "");
+
+        Runtime runtime = Runtime.getRuntime();
+        long usedMemInMB = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
+        long maxHeapSizeInMB = runtime.maxMemory() / 1048576L;
+        long availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB;
+        Log.i("availHeapSizeInMB-B", availHeapSizeInMB + "");
+        System.gc();
+        Log.i("availHeapSizeInMB-A", availHeapSizeInMB + "");
+
+    }
+
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
     }
 }

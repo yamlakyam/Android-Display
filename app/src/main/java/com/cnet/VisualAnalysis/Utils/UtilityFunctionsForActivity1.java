@@ -227,8 +227,6 @@ public class UtilityFunctionsForActivity1 {
                 }
                 double percentage = (row.grandTotal / grandTotalForAll) * 100;
 
-                NumberFormat numberFormat = NumberFormat.getInstance();
-
                 peakHourReportSN.setText(String.valueOf(index + 1));
                 peakHourReportSummaryType.setText(formatHourNmin(row.dateNTime));
                 peakHourReportTotalCount.setText(String.valueOf(row.totalCount));

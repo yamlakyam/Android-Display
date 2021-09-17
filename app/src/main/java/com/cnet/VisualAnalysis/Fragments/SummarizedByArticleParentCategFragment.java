@@ -42,6 +42,7 @@ import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.card.MaterialCardView;
@@ -62,7 +63,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     Fragment fragment;
     FrameLayout summarizedByParentArticleFrameLayout;
     TextView scrollingParentText;
-    DigitalClock digitalClock;
     TextClock parentArticle_textClock;
     TextView articleParentSummaryTitle;
 
@@ -139,7 +139,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
         if (SplashScreenActivity.allData != null) {
             summarizedByParentArticleFrameLayout.setVisibility(View.GONE);
-            if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null) {
+            if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null &&
+                    SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0
+                    && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData() != null) {
                 initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
             } else {
                 navigate(fragment);
@@ -175,6 +177,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                     if (summByParentArticlePaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
+                            handleRowAnimationThread = null;
+
                         }
                     } else {
                         navigate(fragment);
@@ -182,7 +186,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
                 } else if (index < tablesToDisplay.size()) {
                     totalLastRow(tablesToDisplay.get(index));
-                    new UtilityFunctionsForActivity2().drawSummaryByParentArticleTable(tablesToDisplay, requireActivity().getApplicationContext(), summarizedByParentArticleTableLayout, index);
+                    new UtilityFunctionsForActivity2().drawSummaryByParentArticleTable(tablesToDisplay, getContext(), summarizedByParentArticleTableLayout, index);
                     new UtilityFunctionsForActivity1().scrollRows(scrollView);
                 }
             }
@@ -205,14 +209,18 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
                 int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_parent_ARTICLE_INDEX);
                 String chartType = "";
-                if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
-                    chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+                if (SplashScreenActivity.allData.getChartList() != null) {
+                    if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size() && SplashScreenActivity.allData.getChartList().contains(chartTypeIndex)) {
+                        chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
+                    } else {
+                        chartType = "";
+                    }
                 } else {
                     chartType = "";
+
                 }
 
-//                new UtilityFunctionsForActivity2().drawBarChart(dashBoardData.getSummarizedByParentArticleData().getBarChartData(), barChart, "Summarized by Article parent category");
-//                new UtilityFunctionsForActivity2().drawPieChart(dashBoardData.getSummarizedByParentArticleData().getPieChartData(), pieChart, "Summarized by Article parent category");
+
                 new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticleParent,
                         dashBoardData.getSummarizedByParentArticleData().getPieChartData(), dashBoardData.getSummarizedByParentArticleData().getBarChartData(),
                         dashBoardData.getSummarizedByParentArticleData().getLineChartData(), "Summarized by Article parent category");
@@ -230,8 +238,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                     summarizedByParentArticleRows.get(i).getTaxAmount();
             grandTotalForAll = grandTotalForAll + grandTotalForI;
         }
-//        double percentage = (grandTotal / grandTotalForAll) * 100;
-
         grandTotal = grandTotal + row.getTotalAmount() + row.getTaxAmount() + row.getTotalServCharge();
         totalPercentage = totalPercentage + ((row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount()) / grandTotalForAll) * 100;
 
@@ -323,13 +329,14 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-            navController.navigate(R.id.summarizedByArticleFragment2);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
+//            navController.navigate(R.id.summarizedByArticleFragment2);
 
         else
-            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
+//            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
 
     }
 
@@ -378,7 +385,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                     && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
                 navController.navigate(R.id.summarizedByArticleChildCategFragment);
             else
-                initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
+                startActivity(new Intent(requireActivity(), VideoActivity.class));
+//            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
 
         }
 
@@ -411,6 +419,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     public void leftKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigateLeft(fragment);
 
@@ -420,6 +430,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     public void rightKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigate(fragment);
     }

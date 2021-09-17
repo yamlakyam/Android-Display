@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.VideoActivity;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
@@ -57,7 +59,6 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     Fragment fragment;
     FrameLayout summaryOfLastMonthFrameLayout;
     TextView scrollingLastMonthText;
-    DigitalClock digitalClock;
     TextClock lastXdays_textClock;
     TextView summaryOfLast30DaysTitle;
     public static boolean summaryOfLAstXdaysPaused;
@@ -186,6 +187,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
                 }
 
                 if (index == tablesToDisplay.size()) {
+                    Log.i("drawing last row ", "last x days row");
+
                     drawLastTotalRow();
                     new UtilityFunctionsForActivity1().scrollRows(scrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast30DaysPause) {
@@ -194,12 +197,15 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
                     if (summaryOfLAstXdaysPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
+                            handleRowAnimationThread = null;
+
                         }
                     } else {
                         navigate(fragment);
                     }
 
                 } else if (index < tablesToDisplay.size()) {
+                    Log.i("drawing ", "last x days row");
                     totalLastRow(tablesToDisplay.get(index));
                     new UtilityFunctionsForActivity2().drawSummaryOfLast30Days(tablesToDisplay, getContext(), summaryOfLast30DaysTableLayout, index);
                     new UtilityFunctionsForActivity1().scrollRows(scrollView);
@@ -298,24 +304,25 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-            navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
+//            navController.navigate(R.id.summarizedByArticleFragment2);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
+//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
+//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
+//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
         else
-            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+//            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
 
 
     }
@@ -397,6 +404,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     public void leftKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigateLeft(fragment);
     }
@@ -405,6 +414,8 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     public void rightKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigate(fragment);
 
@@ -422,4 +433,6 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
 
         }
     }
+
+
 }

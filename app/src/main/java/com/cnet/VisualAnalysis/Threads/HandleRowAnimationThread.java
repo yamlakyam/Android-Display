@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Threads;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -24,31 +25,39 @@ public class HandleRowAnimationThread extends Thread {
     @Override
     public void run() {
         super.run();
-        for (int i = 0; i <= rows + 1; i++) {
+        Log.i("ThreadCalled", Thread.currentThread() + "");
 
-            Message message = changeDataHandler.obtainMessage();
-            message.obj = String.valueOf(i);
-            changeDataHandler.sendMessage(message);
-            try {
-                if (i == rows + 1) {
-                    Thread.sleep(3000);
+        if (Thread.currentThread() != null)
+            if (!Thread.currentThread().isInterrupted()) {
+                for (int i = 0; i <= rows + 1; i++) {
+                    Message message = changeDataHandler.obtainMessage();
+                    message.obj = String.valueOf(i);
+                    changeDataHandler.sendMessage(message);
+                    try {
+                        if (i == rows + 1) {
+                            Thread.sleep(3000);
 
-                } else if (i == rows) {
-                    Log.i("last row-animation", "run: ");
+                        } else if (i == rows) {
+                            Log.i("last row-animation", "run: ");
 //                    lastRowAnimationSleep();
-                    Thread.sleep(3000);
-                } else if (i == rows-1) {
-                    Thread.sleep(5000);
+                            Thread.sleep(3000);
+                        } else if (i == rows - 1) {
+                            Thread.sleep(5000);
 
-                } else {
-                    Thread.sleep(numberOfSeconds);
+                        } else {
+                            Thread.sleep(numberOfSeconds);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        boolean IsMainThread = changeDataHandler.getLooper() == Looper.getMainLooper();
+                        Log.i("IsMainThread", IsMainThread + "");
+                        return;
+                    }
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                return;
             }
-        }
+
     }
+
 
     public void lastRowAnimationSleep() throws InterruptedException {
         if (SplashScreenActivity.allData != null) {
@@ -67,5 +76,12 @@ public class HandleRowAnimationThread extends Thread {
         } else {
             Thread.sleep(5000);
         }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        Log.i("Finalize Called", this + " " + Thread.currentThread() + " finalized");
+        Log.i("Cores", Runtime.getRuntime().availableProcessors() + "");
     }
 }

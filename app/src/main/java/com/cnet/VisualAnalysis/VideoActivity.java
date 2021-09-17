@@ -31,12 +31,9 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     public void navigate() {
-        Intent intent = getIntent();
-        int fragNo = intent.getIntExtra("from", 0);
         Intent intentToSecondActivity = new Intent(VideoActivity.this, SecondActivity.class);
-        intentToSecondActivity.putExtra("fromVideo", fragNo);
+        intentToSecondActivity.putExtra("prev-activity", "Video");
         startActivity(intentToSecondActivity);
-
     }
 
     @Override
@@ -50,4 +47,5 @@ public class VideoActivity extends AppCompatActivity {
         super.onStop();
 
     }
+
 }

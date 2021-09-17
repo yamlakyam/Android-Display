@@ -41,6 +41,7 @@ import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.NumberFormat;
@@ -155,6 +156,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                     if (branchSummaryPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
+                            handleRowAnimationThread = null;
+
                         }
                     } else {
                         navigate(fragment);
@@ -293,28 +296,33 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-            navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(7) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size() > 0)
-            navController.navigate(R.id.summaryOfLastMonthFragment);
-        else
-            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+        else{
+            startActivity(new Intent(requireActivity(),VideoActivity.class));
+        }
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
+//            navController.navigate(R.id.summarizedByArticleFragment2);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
+//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
+//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
+//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(7) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size() > 0)
+//            navController.navigate(R.id.summaryOfLastMonthFragment);
+//        else
+////            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+//            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
     }
 
     public void leftNavigate(Fragment fragment) {
@@ -360,7 +368,9 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                 && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size() > 0)
             navController.navigate(R.id.userReportForAllOusFragment2);
         else
-            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+//            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
     }
 
     @Override
@@ -390,6 +400,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     public void leftKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
         }
         leftNavigate(fragment);
     }
@@ -398,6 +409,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     public void rightKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigate(fragment);
     }

@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Threads;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 public class HandleDataChangeThread extends Thread {
     Handler changeDataHandler;
@@ -18,6 +19,7 @@ public class HandleDataChangeThread extends Thread {
 
     public void run() {
         super.run();
+        Log.i("HandleDataChangeThread", "Called");
 
         for (int i = startingIndex; i < numberOfDistributors; i++) {
             Message message = changeDataHandler.obtainMessage();

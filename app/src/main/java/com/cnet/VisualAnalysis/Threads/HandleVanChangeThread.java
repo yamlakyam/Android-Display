@@ -2,6 +2,7 @@ package com.cnet.VisualAnalysis.Threads;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.cnet.VisualAnalysis.Data.VsmTableDataForSingleVan;
 
@@ -22,6 +23,8 @@ public class HandleVanChangeThread extends Thread {
     }
 
     public void run() {
+
+        Log.i("HandleVanChangeThread", "called ");
 
         for (int i = startingIndex; i < numberOfVans; i++) {
             Message message = changeDataHandler.obtainMessage();

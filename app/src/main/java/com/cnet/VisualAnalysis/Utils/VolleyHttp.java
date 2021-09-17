@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 public class VolleyHttp {
 
     private Context context;
+    public static RequestQueue requestQueue;
 
     public interface GetRequest {
         void onSuccess(JSONObject jsonObject) throws JSONException;
@@ -28,9 +30,13 @@ public class VolleyHttp {
     }
 
     public void makeGetRequest(String url, GetRequest request) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        Log.i("Request is made", "makeGetRequest: ");
+        requestQueue = Volley.newRequestQueue(context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+
                 Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
             //                Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -52,9 +58,17 @@ public class VolleyHttp {
                 });
 
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                180000,
+                120000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(jsonObjectRequest);
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                Log.i("VolleyHttp", "onRequestFinished: ");
+                requestQueue.stop();
+            }
+        });
+
     }
 }

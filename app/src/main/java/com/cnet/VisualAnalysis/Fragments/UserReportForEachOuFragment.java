@@ -134,6 +134,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
                     Log.i("iterating", "drawAvailableReportFromUserReport: ");
+                    interruptThread();
                     drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 } else {
                     SecondActivity.vanIndex = 0;
@@ -160,14 +161,17 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                         navController.navigate(R.id.mapsFragment);
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                        interruptThread();
                         drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                     }
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                    interruptThread();
                     drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 }
             } else {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                interruptThread();
                 drawAvailableReportFromUserReport(SecondActivity.vanIndex);
             }
 
@@ -182,6 +186,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
             } else {
 
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                interruptThread();
                 drawAvailableReportFromUserReport(SecondActivity.vanIndex);
             }
         } else {//size is 0
@@ -244,6 +249,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     if (userReportForEachPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
+                            handleRowAnimationThread = null;
+
                         }
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
@@ -254,6 +261,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     if (userReportForEachPaused) {
                         if (handleRowAnimationThread != null) {
                             handleRowAnimationThread.interrupt();
+                            handleRowAnimationThread = null;
+
                         }
                     } else {
                         navigateToNextReport();
@@ -268,6 +277,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
         handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, 200);
         handleRowAnimationThread.start();
+        Log.i("UserReportThread", handleRowAnimationThread + "");
     }
 
     public void drawLastRow() {
@@ -320,10 +330,12 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                         navController.navigate(R.id.mapsFragment);
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                        interruptThread();
                         drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                     }
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                    interruptThread();
                     drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 }
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
@@ -331,6 +343,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     navController.navigate(R.id.mapsFragment);
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
+                    interruptThread();
                     drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 }
 
@@ -339,6 +352,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
                     Log.i("TAG-2", "navigateToNextReport: ");
+                    interruptThread();
                     drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 } else {
                     Log.i("TAG-3", "navigateToNextReport: ");
@@ -383,6 +397,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 Log.i("TAG-4", "navigateToPreviousReport: ");
                 if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
                     Log.i("TAG-5", "navigateToPreviousReport: ");
+                    interruptThread();
                     drawAvailableReportFromUserReport(SecondActivity.vanIndex);
                 } else {
                     Log.i("TAG-6", "navigateToPreviousReport: ");
@@ -411,32 +426,34 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-            navController.navigate(R.id.summarizedByArticleFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
-                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
-                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
-            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
-            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
-            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
-            navController.navigate(R.id.summaryOfLastMonthFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-            navController.navigate(R.id.branchSummaryFragment);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(9) &&
-                SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null
-                && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size() > 0)
-            navController.navigate(R.id.userReportForAllOusFragment2);
-        else if (SplashScreenActivity.allData.getLayoutList().contains(11) &&
-                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null
-                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0)
-            navController.navigate(R.id.peakHourReportForAllOusFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
+//            navController.navigate(R.id.summarizedByArticleFragment2);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
+//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
+//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
+//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
+//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
+//            navController.navigate(R.id.summaryOfLastMonthFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
+//            navController.navigate(R.id.branchSummaryFragment);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(9) &&
+//                SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size() > 0)
+//            navController.navigate(R.id.userReportForAllOusFragment2);
+//        else if (SplashScreenActivity.allData.getLayoutList().contains(11) &&
+//                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null
+//                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0)
+//            navController.navigate(R.id.peakHourReportForAllOusFragment);
         else {
-            drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+//            drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
         }
     }
 
@@ -483,7 +500,15 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0)
             navController.navigate(R.id.userReportForEachOusFragment);
         else {
-            drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+//            drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
+        }
+    }
+
+    public void interruptThread() {
+        if (handleRowAnimationThread != null) {
+            handleRowAnimationThread.interrupt();
         }
     }
 
@@ -514,6 +539,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigateToPreviousReport();
     }
@@ -523,9 +550,10 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigateToNextReport();
-
 
     }
 

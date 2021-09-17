@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,7 @@ import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.VideoActivity;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -133,6 +135,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                         if (peakHourForAllPaused) {
                             if (handleRowAnimationThread != null) {
                                 handleRowAnimationThread.interrupt();
+                                handleRowAnimationThread = null;
+
                             }
                         } else {
                             navigate(fragment);
@@ -159,7 +163,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     public void drawLineChartForAllPeakHourReport() {
 
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
-        ArrayList<String> distinctDates = DashBoardDataParser.distinictDates(tablesToDisplay);
+        ArrayList<String> distinctDates = new UtilityFunctionsForActivity2().distinictDates(tablesToDisplay);
 
         Log.i("distinctDates", distinctDates + "");
         Collections.sort(distinctDates, new Comparator<String>() {
@@ -305,8 +309,10 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                 && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size() > 0)
             navController.navigate(R.id.userReportForAllOusFragment2);
         else {
-            inflateTable();
-            drawLineChartForAllPeakHourReport();
+//            inflateTable();
+//            drawLineChartForAllPeakHourReport();
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
         }
 
     }
@@ -354,14 +360,16 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
                 && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0)
             navController.navigate(R.id.userReportForEachOusFragment);
         else {
-            inflateTable();
-            drawLineChartForAllPeakHourReport();
+//            inflateTable();
+//            drawLineChartForAllPeakHourReport();
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
         }
     }
 
     public void dataofTheSameHour() {
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch();
-        ArrayList<String> distinctDates = DashBoardDataParser.distinictDates(tablesToDisplay);
+        ArrayList<String> distinctDates = new UtilityFunctionsForActivity2().distinictDates(tablesToDisplay);
         Collections.sort(distinctDates, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -434,6 +442,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     public void leftKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigateLeft(fragment);
     }
@@ -442,6 +452,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     public void rightKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigate(fragment);
     }

@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 
 import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
+import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.Data.LineChartData;
 import com.cnet.VisualAnalysis.Data.PieChartData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
@@ -45,6 +46,8 @@ import com.google.android.material.card.MaterialCardView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UtilityFunctionsForActivity2 {
 
@@ -470,7 +473,6 @@ public class UtilityFunctionsForActivity2 {
             double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
             String formattedArticleName;
 
-
             if (!row.getArticleName().equals("null")) {
                 if (row.getArticleName().length() > 28) {
                     formattedArticleName = row.getArticleName().substring(0, 25) + "...";
@@ -481,14 +483,11 @@ public class UtilityFunctionsForActivity2 {
                 formattedArticleName = "- - - - - - - - - - - - - ";
             }
 
-
             tableRowProperty1.setText(numberFormat.format(index + 1));
             tableRowProperty2.setText(formattedArticleName);
             tableRowProperty3.setText(numberFormat.format(row.getQuantity()));
-//            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAvgAmount() * 100.0) / 100.0));
             tableRowProperty5.setText((grandTotal > 1) ? decimalFormat.format(grandTotal) :
                     smallDecimlFormat.format(grandTotal));
-//            tableRowProperty5.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
             tableRowProperty4.setText(((grandTotal / row.getQuantity()) > 1) ? decimalFormat.format(grandTotal / row.getQuantity()) :
                     smallDecimlFormat.format(grandTotal / row.getQuantity()));
 
@@ -539,10 +538,8 @@ public class UtilityFunctionsForActivity2 {
 
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
-//            tableRowProperty3.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
             tableRowProperty3.setText((percentage > 1) ? decimalFormat.format(percentage) + "%" :
                     smallDecimlFormat.format(percentage) + "%");
-//            tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
             tableRowProperty4.setText((grandTotal > 1) ? decimalFormat.format(grandTotal) :
                     smallDecimlFormat.format(grandTotal));
 
@@ -574,7 +571,6 @@ public class UtilityFunctionsForActivity2 {
 
             double grandTotal = row.getTotalAmount() + row.getTotalServCharge() + row.getTaxAmount();
 
-
             double grandTotalForAll = 0;
             for (int i = 0; i < summarizedByChildArticleRows.size(); i++) {
                 double grandTotalForI = summarizedByChildArticleRows.get(i).getTotalAmount() +
@@ -591,13 +587,10 @@ public class UtilityFunctionsForActivity2 {
                 formattedCategoryType = row.getCategoryType();
             }
 
-
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(formattedCategoryType);
-//            tableRowProperty4.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
             tableRowProperty4.setText((grandTotal > 1) ? decimalFormat.format(grandTotal) :
                     smallDecimlFormat.format(grandTotal));
-//            tableRowProperty3.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
             tableRowProperty3.setText((percentage > 1) ? decimalFormat.format(percentage) + "%" :
                     smallDecimlFormat.format(percentage) + "%");
 
@@ -632,7 +625,6 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty2.setText(new UtilityFunctionsForActivity1().formatDateToString2(row.getDateTime()));
             tableRowProperty2.setText(new UtilityFunctionsForActivity1().formatDateToString2(row.getDateTime()));
             tableRowProperty3.setText(numberFormat.format(row.getTransactionCount()));
-//            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
             tableRowProperty4.setText((row.getAmount() > 1) ? decimalFormat.format(row.getAmount()) :
                     smallDecimlFormat.format(row.getAmount()));
 
@@ -661,13 +653,10 @@ public class UtilityFunctionsForActivity2 {
             numberFormat.setGroupingUsed(true);
 
             tableRowProperty1.setText(String.valueOf(index + 1));
-//            tableRowProperty2.setText(row.getName());
             tableRowProperty2.setText(new UtilityFunctionsForActivity1().formatDateToString(row.getDateTime()));
             tableRowProperty3.setText(numberFormat.format(row.getTransactionCount()));
-//            tableRowProperty4.setText(numberFormat.format(Math.round(row.getAmount() * 100.0) / 100.0));
             tableRowProperty4.setText((row.getAmount() > 1) ? decimalFormat.format(row.getAmount()) :
                     smallDecimlFormat.format(row.getAmount()));
-//            tableRowProperty4.setText(new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
 
             summarizedByLast6MonthsTableLayout.addView(tableElements);
             animateBottomToTop(summarizedByLast6MonthsTableLayout, tableElements);
@@ -721,8 +710,17 @@ public class UtilityFunctionsForActivity2 {
             branchSummaryTableLayout.addView(tableElements);
             animateBottomToTop(branchSummaryTableLayout, tableElements);
         }
+    }
 
-
+    public ArrayList<String> distinictDates(ArrayList<FigureReportDataElements> figureReportDataElements) {
+        ArrayList<String> dates = new ArrayList<>();
+        for (FigureReportDataElements figure : figureReportDataElements) {
+            dates.add(figure.dateNTime);
+        }
+        Set<String> set = new HashSet<>(dates);
+        dates.clear();
+        dates.addAll(set);
+        return dates;
     }
 
     public void animateBottomToTop(View container, View child) {
@@ -808,13 +806,14 @@ public class UtilityFunctionsForActivity2 {
 
 
         } else {//default lineChart
-            View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
-            if (viewHolder != null) {
-                viewHolder.addView(lineElement);
-//            new UtilityFunctionsForActivity2().drawSingleLineChart(lineChartData, (LineChart) lineElement, label);
-                drawDoubleLineChart(lineChartData1, lineChartData2, (LineChart) lineElement, label1, label2);
-            }
+            if (context != null) {
+                View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
+                if (viewHolder != null) {
+                    viewHolder.addView(lineElement);
 
+                    drawDoubleLineChart(lineChartData1, lineChartData2, (LineChart) lineElement, label1, label2);
+                }
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -43,6 +44,7 @@ import com.cnet.VisualAnalysis.Utils.BackGroundTasks;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.VideoActivity;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
@@ -135,23 +137,25 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     public void onResume() {
         super.onResume();
 
-        BackGroundTasks backGroundTasks = new BackGroundTasks(fragment.getContext(), this);
-        backGroundTasks.execute();
+//        BackGroundTasks backGroundTasks = new BackGroundTasks(fragment.getContext(), this);
+//        backGroundTasks.execute();
 
-//        if (SplashScreenActivity.allData != null) {
-//            articleSummaryProgressBar.setVisibility(View.GONE);
-//            constraintLayout.setVisibility(View.VISIBLE);
-//
-//            if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null) {
-//                totalLastRow();
-//                Log.i("totalUnitAmount", totalUnitAmount + "");
-//                initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
-//            } else {
-//                navigate(fragment);
-//            }
-//        }
+        if (SplashScreenActivity.allData != null) {
+            articleSummaryProgressBar.setVisibility(View.GONE);
+            constraintLayout.setVisibility(View.VISIBLE);
+
+            if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null) {
+
+                layoutList = SplashScreenActivity.allData.getLayoutList();
+                dashBoardData = SplashScreenActivity.allData.getDashBoardData();
+                totalLastRow();
+                Log.i("totalUnitAmount", totalUnitAmount + "");
+                initFragment(SplashScreenActivity.allData.getDashBoardData(), 100);
+            } else {
+                navigate(fragment);
+            }
+        }
     }
-
 
     @SuppressLint("HandlerLeak")
     private void inflateTable(ArrayList<SummarizedByArticleTableRow> tablesToDisplay, int seconds) {
@@ -173,6 +177,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                         if (summByarticlePaused) {
                             if (handleRowAnimationThread != null) {
                                 handleRowAnimationThread.interrupt();
+                                handleRowAnimationThread = null;
+
                             }
                         } else {
                             resetLastRow();
@@ -186,19 +192,20 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                     new UtilityFunctionsForActivity1().scrollRows(summByArticleScrollView);
                 }
 
+
             }
 
         };
 
         handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), animationHandler, seconds);
         handleRowAnimationThread.start();
+        Log.i("Article - Thread", handleRowAnimationThread + "");
     }
 
 
     public void navigate(Fragment fragment) {
 
         NavController navController = NavHostFragment.findNavController(fragment);
-
         if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
                 SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
                 && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0) {
@@ -240,7 +247,9 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0) {
             navController.navigate(R.id.mapsFragment);
         } else {
-            initFragment(dashBoardData, 100);
+//            initFragment(dashBoardData, 100);
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
         }
     }
 
@@ -289,7 +298,9 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                         && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
                     navController.navigate(R.id.summarizedByArticleParentCategFragment);
                 else
-                    initFragment(dashBoardData, 100);
+                    startActivity(new Intent(requireActivity(), VideoActivity.class));
+
+//                    initFragment(dashBoardData, 100);
 
             }
         }
@@ -410,6 +421,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     public void leftKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+            handleRowAnimationThread.destroy();
         }
         naviagteLeft(fragment);
     }
@@ -418,6 +431,8 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     public void rightKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigate(fragment);
     }
@@ -441,6 +456,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     @Override
     public void doInBackground() {
         Log.i("TAG", "doInBackground: ");
+        Log.i("ArticleAsyncThread", Thread.currentThread().getName() + "");
 
 
         if (SplashScreenActivity.allData != null) {
@@ -448,6 +464,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
             layoutList = SplashScreenActivity.allData.getLayoutList();
             dashBoardData = SplashScreenActivity.allData.getDashBoardData();
         }
+
     }
 
     @Override

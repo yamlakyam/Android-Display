@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -37,6 +38,7 @@ import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
+import com.cnet.VisualAnalysis.VideoActivity;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
@@ -144,6 +146,8 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
                         if (userReportForAllPaused) {
                             if (handleRowAnimationThread != null) {
                                 handleRowAnimationThread.interrupt();
+                                handleRowAnimationThread = null;
+
                             }
                         } else {
                             navigate(fragment);
@@ -283,8 +287,10 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
                 && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
             navController.navigate(R.id.branchSummaryFragment);
         else {
-            inflateTable();
-            drawPieChartForAllUsers();
+//            inflateTable();
+//            drawPieChartForAllUsers();
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
         }
 
     }
@@ -332,8 +338,10 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
                 && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0)
             navController.navigate(R.id.peakHourReportForAllOusFragment);
         else {
-            inflateTable();
-            drawPieChartForAllUsers();
+//            inflateTable();
+//            drawPieChartForAllUsers();
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
+
         }
 
     }
@@ -365,6 +373,8 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     public void leftKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigateLeft(fragment);
     }
@@ -373,6 +383,8 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     public void rightKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
+            handleRowAnimationThread = null;
+
         }
         navigate(fragment);
     }

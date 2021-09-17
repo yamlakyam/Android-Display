@@ -20,6 +20,8 @@ public class MarkerDrawingThread extends Thread {
     public void run() {
         super.run();
 
+        Log.i("MarkerDrawingThread", Thread.currentThread()+"");
+
         if (!Thread.currentThread().isInterrupted())
             for (int i = 0; i <= rows + 1; i++) {
 
