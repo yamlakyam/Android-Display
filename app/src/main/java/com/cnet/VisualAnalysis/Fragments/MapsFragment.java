@@ -486,6 +486,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                 Log.i("TAG-MAP_6", "navigateToNextReport: ");
                 interruptThread();
                 drawAvailableReportFromMap(SecondActivity.vanIndex, gmap);
+
             }
         } else {
             Log.i("TAG-MAP_7", "navigateToNextReport: ");
@@ -644,7 +645,6 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
     public void rightKey() {
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
-            Log.i("thread-interrupted", "rightKey: ");
         }
         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
         navController = NavHostFragment.findNavController(mapFragment);

@@ -37,8 +37,6 @@ public class VsmCardFragment extends Fragment implements MainActivity.KeyPress {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override

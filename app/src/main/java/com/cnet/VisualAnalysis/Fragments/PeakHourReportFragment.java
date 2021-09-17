@@ -36,7 +36,6 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.BackGroundTasks;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -48,10 +47,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
-public class PeakHourReportFragment extends Fragment implements SecondActivity.KeyPress{
+public class PeakHourReportFragment extends Fragment implements SecondActivity.KeyPress {
 
     public Handler animationHandler;
     public HandleRowAnimationThread handleRowAnimationThread;
@@ -213,6 +214,13 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 
     public void drawAllPeakHourReport(int vanIndex) {
         if (dashBoardData.getFigureReportDataforEachBranch().get(vanIndex) != null) {
+
+            Collections.sort(dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).figureReportDataElementsArrayList, new Comparator<FigureReportDataElements>() {
+                @Override
+                public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
+                    return convertToTime(o1.getDateNTime()).compareTo(convertToTime(o2.getDateNTime()));
+                }
+            });
 
             inflateTable(vanIndex);
             String chartType = "";
