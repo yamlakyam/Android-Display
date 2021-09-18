@@ -46,6 +46,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -84,9 +85,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         thisContext = requireActivity().getApplicationContext();
-//
-//        BackGroundTasks backGroundTasks = new BackGroundTasks(thisContext, this);
-//        backGroundTasks.execute();
         if (!SecondActivity.pausedstate()) {
             peakHourForEachPaused = false;
         } else {
@@ -132,6 +130,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
         }
     }
+
 
     private void drawAvailableReportFromPeakHour(int vanIndex) {
 //        if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size()) {
@@ -212,20 +211,15 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
 
     }
 
+
     public void drawAllPeakHourReport(int vanIndex) {
         if (dashBoardData.getFigureReportDataforEachBranch().get(vanIndex) != null) {
-
-            Collections.sort(dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).figureReportDataElementsArrayList, new Comparator<FigureReportDataElements>() {
-                @Override
-                public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
-                    return convertToTime(o1.getDateNTime()).compareTo(convertToTime(o2.getDateNTime()));
-                }
-            });
-
-            inflateTable(vanIndex);
-            String chartType = "";
-
             DashBoardData dashBoardData = SplashScreenActivity.allData.getDashBoardData();
+
+            sortPeakHourReportTableData(dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).figureReportDataElementsArrayList);
+            inflateTable(vanIndex);
+
+            String chartType = "";
             if (layouts.contains(Constants.EACH_PEAK_HOUR_INDEX)) {
                 int chartTypeIndex = layouts.indexOf(Constants.EACH_PEAK_HOUR_INDEX);
                 Log.i("chartTypeIndex", chartTypeIndex + "");
@@ -236,6 +230,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                 }
                 Log.i("chart", chartType + "");
             }
+
             new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachPeakHour, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getPieChartData(),
                     dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData1(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData2(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData1,
                     dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, "Grand Total ", "Total Count");
@@ -247,6 +242,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         }
     }
 
+
     @SuppressLint("HandlerLeak")
     private void inflateTable(int dataIndex) {
         grandTotalSum = 0;
@@ -257,9 +253,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (cCardEachPeakHour != null) {
             cCardEachPeakHour.removeAllViews();
         }
-        tablesToDisplay = dashBoardData.getFigureReportDataforEachBranch().get(dataIndex).figureReportDataElementsArrayList;
-//        tablesToDisplay = figureReportData.get(dataIndex).figureReportDataElementsArrayList;
-
+        tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(dataIndex).figureReportDataElementsArrayList;
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -546,7 +540,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     }
 
     public Date convertToTime(String dateInString) {
-        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy HH:mmaa");
+        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);
 
         Date parsed = null;
         try {
@@ -556,6 +550,16 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         }
         return parsed;
     }
+
+    public void sortPeakHourReportTableData(ArrayList<FigureReportDataElements> tablesToDisplay) {
+        Collections.sort(tablesToDisplay, new Comparator<FigureReportDataElements>() {
+            @Override
+            public int compare(FigureReportDataElements o1, FigureReportDataElements o2) {
+                return convertToTime(o1.getDateNTime()).compareTo(convertToTime(o2.getDateNTime()));
+            }
+        });
+    }
+
 
     @Override
     public void onStop() {

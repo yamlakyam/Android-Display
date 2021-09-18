@@ -1,6 +1,7 @@
 package com.cnet.VisualAnalysis.Utils;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -26,14 +27,15 @@ import com.cnet.VisualAnalysis.Data.UserReportDataForSingleOu;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.Data.VoucherData;
 import com.cnet.VisualAnalysis.Data.VoucherDataForVan;
+import com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class DashBoardDataParser {
 
@@ -446,6 +448,7 @@ public class DashBoardDataParser {
                     PieChartData pieChartData = new PieChartData(yValues1, legends);
                     BarChartData barChartData1 = new BarChartData(xValues, yValues1, legends);
                     BarChartData barChartData2 = new BarChartData(xValues, yValues2, legends);
+
                     FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData1, lineChartData2, org,
                             totalForThisOrg, pieChartData, barChartData1, barChartData2);
                     figureReportDataArrayList.add(figureReportData);

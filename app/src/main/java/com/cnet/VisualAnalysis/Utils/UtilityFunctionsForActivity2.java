@@ -46,6 +46,8 @@ import com.google.android.material.card.MaterialCardView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -246,10 +248,8 @@ public class UtilityFunctionsForActivity2 {
         for (int i = 0; i < barChartData1.x.length; i++) {
             barChartEntries1.add(new BarEntry(barChartData1.x[i], barChartData1.y[i]));
             barChartEntries2.add(new BarEntry(barChartData2.x[i], barChartData2.y[i]));
-
             String xLabelAtIndex = barChartData1.legends[i];
             formattedXLabels.add(xLabelAtIndex);
-
         }
 
         BarDataSet barDataSet1 = new BarDataSet(barChartEntries1, label1);

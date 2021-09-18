@@ -22,7 +22,7 @@ public class AllDataParser {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public AllData parseAllData() throws JSONException {
         AllData allData = new AllData();
-        allData.setLayoutList(layoutListParser(jsonObject));
+//        allData.setLayoutList(layoutListParser(jsonObject));
         allData.setChartList(chartTypeParser(jsonObject));
 
 //        ArrayList<Integer> layoutList = new ArrayList<Integer>();
