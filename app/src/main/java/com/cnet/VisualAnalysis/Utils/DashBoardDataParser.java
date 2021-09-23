@@ -1,10 +1,5 @@
 package com.cnet.VisualAnalysis.Utils;
 
-import android.os.Build;
-import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-
 import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
@@ -27,15 +22,12 @@ import com.cnet.VisualAnalysis.Data.UserReportDataForSingleOu;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
 import com.cnet.VisualAnalysis.Data.VoucherData;
 import com.cnet.VisualAnalysis.Data.VoucherDataForVan;
-import com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class DashBoardDataParser {
 
@@ -52,7 +44,7 @@ public class DashBoardDataParser {
         this.jsonArray = jsonArray;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    //    @RequiresApi(api = Build.VERSION_CODES.N)
     public DashBoardData parseDashBoardData() {
         DashBoardData dashBoardData = new DashBoardData();
         try {
@@ -321,7 +313,8 @@ public class DashBoardDataParser {
                             branchSummaryAtInedx.getString("org"),
                             branchSummaryAtInedx.getDouble("grandTotal"),
                             branchSummaryAtInedx.getInt("transactionCount"),
-                            branchSummaryAtInedx.getInt("lineItems")
+                            branchSummaryAtInedx.getInt("lineItems"),
+                            branchSummaryAtInedx.getString("lastActivity")
                     );
 
                     tableData.add(branchSummaryTableRow);
@@ -540,7 +533,7 @@ public class DashBoardDataParser {
 //        return dates;
 //    }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    //    @RequiresApi(api = Build.VERSION_CODES.N)
     public void parseAllDashBoardDataCatching(DashBoardData dashBoardData, JSONObject rootJSON) {
         try {
             dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));

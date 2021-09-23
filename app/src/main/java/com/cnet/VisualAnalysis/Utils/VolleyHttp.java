@@ -31,7 +31,7 @@ public class VolleyHttp {
 
     public void makeGetRequest(String url, GetRequest request) {
 
-        Log.i("Request is made", "makeGetRequest: ");
+//        Log.i("Request is made", "makeGetRequest: ");
         requestQueue = Volley.newRequestQueue(context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
 
@@ -67,6 +67,7 @@ public class VolleyHttp {
             public void onRequestFinished(Request<Object> request) {
                 Log.i("VolleyHttp", "onRequestFinished: ");
                 requestQueue.stop();
+                context = null;
             }
         });
 

@@ -5,32 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardBackgroundDark"
+    android:id="@+id/articleCL"
+
     tools:context=".Fragments.SummarizedByArticleFragment">
 
-
-    <ProgressBar
-        android:id="@+id/articleSummaryProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="103dp"
-        android:layout_height="78dp"
-        android:layout_gravity="center|center_horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </ProgressBar>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/titleSummaryByArticle"
@@ -267,17 +245,6 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <DigitalClock
-                        android:id="@+id/articleSummary_digitalClock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/digital_7"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/rowValueColor3"
-                        android:textSize="34sp"
-                        android:visibility="gone">
-                    </DigitalClock>
-
                     <TextClock
                         android:id="@+id/articleSummary_textClock"
                         android:layout_width="wrap_content"
@@ -298,5 +265,3 @@
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>

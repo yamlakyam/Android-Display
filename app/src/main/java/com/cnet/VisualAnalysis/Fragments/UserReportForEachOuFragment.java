@@ -23,6 +23,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -66,6 +67,13 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
     ImageView userRepEachrightArrow;
     NavController navController;
 
+    ConstraintLayout userReportCL;
+
+    TextView userReportSN;
+    TextView userReportSummaryType;
+    TextView userReportGrandTotal;
+    TextView userReportPercentage;
+
     double grandTotalSum;
     public static boolean userReportForEachPaused;
 
@@ -96,12 +104,12 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         userReportEach_textClock = view.findViewById(R.id.userReportEach_textClock);
         userReportEach_textClock.setFormat12Hour("kk:mm:ss");
         userReportEach_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
-
         eachUserReportKeyPad = view.findViewById(R.id.eachUserReportKeyPad);
         userRepEachleftArrow = view.findViewById(R.id.userRepEachleftArrow);
         userRepEachplayPause = view.findViewById(R.id.userRepEachplayPause);
         userRepEachrightArrow = view.findViewById(R.id.userRepEachrightArrow);
         cCardEachUserReport = view.findViewById(R.id.cCardEachUserReport);
+        userReportCL = view.findViewById(R.id.userReportCL);
 
         fragment = this;
         return view;
@@ -113,11 +121,11 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
         if (SplashScreenActivity.allData != null) {
             navController = NavHostFragment.findNavController(fragment);
-            drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+            drawAvailableReportFromUserReport();
         }
     }
 
-    private void drawAvailableReportFromUserReport(int vanIndex) {
+    private void drawAvailableReportFromUserReport() {
         if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
             if (SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().get(SecondActivity.vanIndex).userReportTableRowArrayList.size() > 0) {
 
@@ -128,14 +136,14 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                 Log.i("navigated", "to map");
-                navigateToMapFromUserReport(SecondActivity.vanIndex);
+                navigateToMapFromUserReport();
 
             } else {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
                     Log.i("iterating", "drawAvailableReportFromUserReport: ");
                     interruptThread();
-                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    drawAvailableReportFromUserReport();
                 } else {
                     SecondActivity.vanIndex = 0;
                     startActivity(new Intent(requireActivity(), VideoActivity.class));
@@ -162,23 +170,23 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                         interruptThread();
-                        drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                        drawAvailableReportFromUserReport();
                     }
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                     interruptThread();
-                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    drawAvailableReportFromUserReport();
                 }
             } else {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 interruptThread();
-                drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                drawAvailableReportFromUserReport();
             }
 
         }
     }
 
-    private void navigateToMapFromUserReport(int vanIndex) {
+    private void navigateToMapFromUserReport() {
         navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0) {
             if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
@@ -187,7 +195,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
 
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 interruptThread();
-                drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                drawAvailableReportFromUserReport();
             }
         } else {//size is 0
             SecondActivity.vanIndex = 0;
@@ -284,10 +292,10 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         thisContext = requireActivity().getApplicationContext();
 
         View tableElements = LayoutInflater.from(thisContext).inflate(R.layout.table_row_summary_by_parent_article, null, false);
-        TextView userReportSN = tableElements.findViewById(R.id.tableRowParentArtProperty1);
-        TextView userReportSummaryType = tableElements.findViewById(R.id.tableRowParentArtProperty2);
-        TextView userReportGrandTotal = tableElements.findViewById(R.id.tableRowParentArtProperty3);
-        TextView userReportPercentage = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+        userReportSN = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+        userReportSummaryType = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+        userReportGrandTotal = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+        userReportPercentage = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
@@ -331,12 +339,12 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                         interruptThread();
-                        drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                        drawAvailableReportFromUserReport();
                     }
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                     interruptThread();
-                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    drawAvailableReportFromUserReport();
                 }
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                 if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
@@ -344,7 +352,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                     interruptThread();
-                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    drawAvailableReportFromUserReport();
                 }
 
             } else {
@@ -353,7 +361,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size()) {
                     Log.i("TAG-2", "navigateToNextReport: ");
                     interruptThread();
-                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    drawAvailableReportFromUserReport();
                 } else {
                     Log.i("TAG-3", "navigateToNextReport: ");
                     navigateToNextReport();
@@ -398,7 +406,7 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
                     Log.i("TAG-5", "navigateToPreviousReport: ");
                     interruptThread();
-                    drawAvailableReportFromUserReport(SecondActivity.vanIndex);
+                    drawAvailableReportFromUserReport();
                 } else {
                     Log.i("TAG-6", "navigateToPreviousReport: ");
                     Log.i("index", SecondActivity.vanIndex + "");
@@ -417,7 +425,6 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (SplashScreenActivity.allData.getLayoutList().contains(12) &&
                 SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null
                 && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0)
@@ -426,34 +433,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-//            navController.navigate(R.id.summarizedByArticleFragment2);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
-//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(5))
-//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(6))
-//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(7))
-//            navController.navigate(R.id.summaryOfLastMonthFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0)
-//            navController.navigate(R.id.branchSummaryFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(9) &&
-//                SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getUserReportForAllBranch().size() > 0)
-//            navController.navigate(R.id.userReportForAllOusFragment2);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(11) &&
-//                SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforAllBranch().size() > 0)
-//            navController.navigate(R.id.peakHourReportForAllOusFragment);
         else {
-//            drawAvailableReportFromUserReport(SecondActivity.vanIndex);
             startActivity(new Intent(requireActivity(), VideoActivity.class));
-
         }
     }
 
@@ -568,10 +549,28 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         }
     }
 
-
     @Override
     public void onDestroyView() {
         thisContext = null;
         super.onDestroyView();
+        userReportTableLayout = null;
+        userReportScrollView = null;
+        userReportTitle = null;
+        scrollingUserReportForEachText = null;
+        userReportEach_textClock = null;
+        eachUserReportKeyPad = null;
+        userRepEachleftArrow = null;
+        userRepEachplayPause = null;
+        userRepEachrightArrow = null;
+        cCardEachUserReport = null;
+
+        userReportSN = null;
+        userReportSummaryType = null;
+        userReportGrandTotal = null;
+        userReportPercentage = null;
+        userReportCL = null;
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
+
     }
 }

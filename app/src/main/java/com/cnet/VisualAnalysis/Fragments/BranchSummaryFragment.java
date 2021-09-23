@@ -26,6 +26,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -68,6 +69,16 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     ImageView brancright;
     LinearLayout linearLayout;
 
+    TextView tableRowProperty1;
+    TextView tableRowProperty2;
+    TextView tableRowProperty3;
+    TextView tableRowProperty4;
+    TextView tableRowProperty5;
+    TextView tableRowProperty6;
+    TextView tableRowProperty7;
+
+    ConstraintLayout branchSummaryCL;
+
     public HandleRowAnimationThread handleRowAnimationThread;
 
     int totalQuantity = 0;
@@ -105,11 +116,13 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         brancleft = view.findViewById(R.id.branchleftArrow);
         brancright = view.findViewById(R.id.brancrightArrow);
         linearLayout = view.findViewById(R.id.branchKeypad);
+        branchSummaryCL = view.findViewById(R.id.branchSummaryCL);
 
         scrollingBranchText.setSelected(true);
         branchSummary_textClock = view.findViewById(R.id.branchSummary_textClock);
         branchSummary_textClock.setFormat12Hour("kk:mm:ss");
         branchSummary_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
 
         branchSummaryHeaderTextView = view.findViewById(R.id.branchSummaryHeaderTextView);
         branchSummaryHeaderTextView.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
@@ -183,10 +196,19 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
         ArrayList<BranchSummaryTableRow> branchSummaryTableRows = dashBoardData.getBranchSummaryData().getBranchSummaryTableRows();
         try {
+//            Collections.sort(branchSummaryTableRows, new Comparator<BranchSummaryTableRow>() {
+//                @Override
+//                public int compare(BranchSummaryTableRow o1, BranchSummaryTableRow o2) {
+//                    return o1.getGrandTotal() > o2.getGrandTotal() ? 1 : 0;
+//                }
+//            });
             Collections.sort(branchSummaryTableRows, new Comparator<BranchSummaryTableRow>() {
                 @Override
                 public int compare(BranchSummaryTableRow o1, BranchSummaryTableRow o2) {
-                    return o1.getGrandTotal() > o2.getGrandTotal() ? 1 : 0;
+                    return new UtilityFunctionsForActivity1().formatTime(o2.getLastActivity())
+                            .compareTo(new UtilityFunctionsForActivity1().formatTime(o1.getLastActivity()));
+
+
                 }
             });
         } catch (Exception e) {
@@ -230,12 +252,13 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
     public void drawLastBranchSummaryRow() {
         View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_branch_summary, null, false);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowBranchSummary1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowBranchSummary2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowBranchSummary3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowBranchSummary4);
-        TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowBranchSummary5);
-        TextView tableRowProperty6 = tableElements.findViewById(R.id.tableRowBranchSummary6);
+        tableRowProperty1 = tableElements.findViewById(R.id.tableRowBranchSummary1);
+        tableRowProperty2 = tableElements.findViewById(R.id.tableRowBranchSummary2);
+        tableRowProperty3 = tableElements.findViewById(R.id.tableRowBranchSummary3);
+        tableRowProperty4 = tableElements.findViewById(R.id.tableRowBranchSummary4);
+        tableRowProperty5 = tableElements.findViewById(R.id.tableRowBranchSummary5);
+        tableRowProperty6 = tableElements.findViewById(R.id.tableRowBranchSummary6);
+        tableRowProperty7 = tableElements.findViewById(R.id.tableRowBranchSummary7);
 
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
@@ -250,13 +273,13 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         tableRowProperty4.setText(numberFormat.format(totalTransCount));
         tableRowProperty4.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty4.setTextSize(16f);
-        tableRowProperty5.setText(UtilityFunctionsForActivity2.decimalFormat.format(totalPercentage) + "%");
-        tableRowProperty5.setTypeface(Typeface.DEFAULT_BOLD);
-        tableRowProperty5.setTextSize(16f);
-//        tableRowProperty6.setText(numberFormat.format(Math.round(grandTotal * 100.0) / 100.0));
-        tableRowProperty6.setText(UtilityFunctionsForActivity2.decimalFormat.format(grandTotal));
+        tableRowProperty5.setText("");
+        tableRowProperty6.setText(UtilityFunctionsForActivity2.decimalFormat.format(totalPercentage) + "%");
         tableRowProperty6.setTypeface(Typeface.DEFAULT_BOLD);
         tableRowProperty6.setTextSize(16f);
+        tableRowProperty7.setText(UtilityFunctionsForActivity2.decimalFormat.format(grandTotal));
+        tableRowProperty7.setTypeface(Typeface.DEFAULT_BOLD);
+        tableRowProperty7.setTextSize(16f);
 
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
 
@@ -267,6 +290,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         tableRowProperty4.startAnimation(animation);
         tableRowProperty5.startAnimation(animation);
         tableRowProperty6.startAnimation(animation);
+        tableRowProperty7.startAnimation(animation);
 
         branchSummaryTableLayout.addView(tableElements);
         new UtilityFunctionsForActivity2().animateBottomToTop(branchSummaryTableLayout, tableElements);
@@ -296,32 +320,9 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-        else{
-            startActivity(new Intent(requireActivity(),VideoActivity.class));
+        else {
+            startActivity(new Intent(requireActivity(), VideoActivity.class));
         }
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-//            navController.navigate(R.id.summarizedByArticleFragment2);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
-//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
-//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(6) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast6MonthsData().getTableData().size() > 0)
-//            navController.navigate(R.id.summaryOfLastSixMonthsFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(7) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummaryOfLast30DaysData().tableData.size() > 0)
-//            navController.navigate(R.id.summaryOfLastMonthFragment);
-//        else
-////            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
-//            startActivity(new Intent(requireActivity(), VideoActivity.class));
 
     }
 
@@ -424,5 +425,32 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         } else {
             linearLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        branchSummaryTableLayout = null;
+        scrollBranchSummaryTable = null;
+        pChartBranchSummary = null;
+        scrollingBranchText = null;
+        brancplayPause = null;
+        brancleft = null;
+        brancright = null;
+        linearLayout = null;
+        branchSummary_textClock = null;
+        branchSummaryHeaderTextView = null;
+        branchSummaryCL = null;
+
+        tableRowProperty1 = null;
+        tableRowProperty2 = null;
+        tableRowProperty3 = null;
+        tableRowProperty4 = null;
+        tableRowProperty6 = null;
+        tableRowProperty7 = null;
+
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
+
     }
 }

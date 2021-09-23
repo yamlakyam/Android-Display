@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.DigitalClock;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -27,6 +25,7 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -58,7 +57,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     Handler animationHandler;
     ScrollView scrollView;
     Fragment fragment;
-    FrameLayout summaryOfLastSixMonthFrameLayout;
     TextView scrollingLast6MonthText;
     TextClock lastXmons_textClock;
     TextView SummaryOfLast6MonthsTitle;
@@ -69,10 +67,17 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
 
     MaterialCardView pCardSummOfLast6Months;
 
+    ConstraintLayout lastXmonthCL;
+
     public HandleRowAnimationThread handleRowAnimationThread;
     double totalAmount = 0;
     int totalTransCount = 0;
     public static boolean summaryOfLAstXmonthPaused;
+
+    TextView tableRowProperty1;
+    TextView tableRowProperty2;
+    TextView tableRowProperty3;
+    TextView tableRowProperty4;
 
     public SummaryOfLastSixMonthsFragment() {
         // Required empty public constructor
@@ -101,7 +106,6 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         fragment = this;
         summaryOfLast6MonthsTableLayout = view.findViewById(R.id.summaryOfLast6MonthsTableLayout);
         scrollView = view.findViewById(R.id.summaryOfLast6MonsScrollView);
-        summaryOfLastSixMonthFrameLayout = view.findViewById(R.id.summaryOfLastSixMonthFrameLayout);
         scrollingLast6MonthText = view.findViewById(R.id.scrollingLast6MonthText);
         scrollingLast6MonthText.setSelected(true);
 
@@ -115,6 +119,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
         sumLastXMonthrightArrow = view.findViewById(R.id.sumLastXMonthrightArrow);
         sumLastXMonthplayPause = view.findViewById(R.id.sumLastXMonthplayPause);
         pCardSummOfLast6Months = view.findViewById(R.id.pCardSummOfLast6Months);
+        lastXmonthCL = view.findViewById(R.id.lastXmonthCL);
 
 //        backTraverse(fragment, R.id.summarizedByArticleChildCategFragment);
         keyPadControl(summaryOfLAstXmonthPaused);
@@ -131,7 +136,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
             SummaryOfLast6MonthsTitle.setText("Summary of Last " + months + " Months");
             SummaryOfLast6MonthsTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
             scrollingLast6MonthText.append(" " + months + " months");
-            summaryOfLastSixMonthFrameLayout.setVisibility(View.GONE);
+
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
         }
     }
@@ -213,10 +218,10 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
     public void drawLast6MonsTotalRow() {
         View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
 
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+        tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+        tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+        tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+        tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
@@ -290,20 +295,7 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-//            navController.navigate(R.id.summarizedByArticleFragment2);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(4) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0)
-//            navController.navigate(R.id.summarizedByArticleParentCategFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(5) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData().getTableData().size() > 0)
-//            navController.navigate(R.id.summarizedByArticleChildCategFragment);
         else
-//            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
             startActivity(new Intent(requireActivity(), VideoActivity.class));
 
     }
@@ -416,5 +408,27 @@ public class SummaryOfLastSixMonthsFragment extends Fragment implements SecondAc
             sumOfLAstXMonthsKeyPad.setVisibility(View.GONE);
 
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        summaryOfLast6MonthsTableLayout = null;
+        scrollView = null;
+        scrollingLast6MonthText = null;
+        lastXmons_textClock = null;
+        SummaryOfLast6MonthsTitle = null;
+        sumOfLAstXMonthsKeyPad = null;
+        sumLastXMonthleftArrow = null;
+        sumLastXMonthrightArrow = null;
+        sumLastXMonthplayPause = null;
+        pCardSummOfLast6Months = null;
+        tableRowProperty1 = null;
+        tableRowProperty2 = null;
+        tableRowProperty3 = null;
+        tableRowProperty4 = null;
+        lastXmonthCL = null;
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
     }
 }

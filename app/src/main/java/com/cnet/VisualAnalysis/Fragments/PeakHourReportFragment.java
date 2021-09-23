@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.DigitalClock;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -24,14 +23,18 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
+import com.cnet.VisualAnalysis.Data.LineChartData;
+import com.cnet.VisualAnalysis.Data.PieChartData;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -42,11 +45,9 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.VideoActivity;
 import com.google.android.material.card.MaterialCardView;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,7 +63,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     TextView scrollingPeakText;
     TableLayout peakHourReportTableLayout;
     ScrollView peakHourReportScrollView;
-    DigitalClock digitalClock;
     TextClock peakHourEach_textClock;
     public static boolean peakHourForEachPaused;
     ImageView peakHrEachleftArrow;
@@ -71,6 +71,13 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     LinearLayout peakHrEachKeyPad;
     NavController navController;
     MaterialCardView cCardEachPeakHour;
+
+    TextView peakHourReportSN;
+    TextView peakHourReportSummaryType;
+    TextView peakHourReportTotalCount;
+    TextView peakHourReportGrandTotal;
+
+    ConstraintLayout peakHrCL;
 
     ArrayList<Integer> layouts;
     DashBoardData dashBoardData;
@@ -113,9 +120,9 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         peakHourEach_textClock.setFormat12Hour("kk:mm:ss");
         peakHourEach_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         cCardEachPeakHour = view.findViewById(R.id.cCardEachPeakHour);
+        peakHrCL = view.findViewById(R.id.peakHrCL);
 
         keyPadControl(peakHourForEachPaused);
-
         fragment = this;
         return view;
     }
@@ -127,12 +134,12 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         if (SplashScreenActivity.allData != null) {
             layouts = SplashScreenActivity.allData.getLayoutList();
             dashBoardData = SplashScreenActivity.allData.getDashBoardData();
-            drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+            drawAvailableReportFromPeakHour();
         }
     }
 
 
-    private void drawAvailableReportFromPeakHour(int vanIndex) {
+    private void drawAvailableReportFromPeakHour() {
 //        if (SecondActivity.vanIndex < SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size()) {
         if (SecondActivity.vanIndex < dashBoardData.getFigureReportDataforEachBranch().size()) {
 //            if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
@@ -141,20 +148,20 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             } else if (layouts.contains(1)) {
                 Log.i("paused-1-", "drawAvailableReportFromPeakHour: ");
 //                if (!peakHourForEachPaused) {
-                navigateToMapFromPeakHour(SecondActivity.vanIndex);
+                navigateToMapFromPeakHour();
 //                }
                 Log.i("TAG-", "drawAvailableReportFromPeakHour: ");
             } else if (layouts.contains(10)) {
                 Log.i("paused-2-", "drawAvailableReportFromPeakHour: ");
 //                if (!peakHourForEachPaused) {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
-                navigateToUserReportFromPeakHour(SecondActivity.vanIndex);
+                navigateToUserReportFromPeakHour();
 //                }
             } else {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 if (SecondActivity.vanIndex < dashBoardData.getVoucherDataForVans().size()) {
                     interruptThread();
-                    drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                    drawAvailableReportFromPeakHour();
                 }
             }
         } else {
@@ -164,7 +171,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     }
 
 
-    private void navigateToMapFromPeakHour(int vanIndex) {
+    private void navigateToMapFromPeakHour() {
         navController = NavHostFragment.findNavController(fragment);
         if (dashBoardData.getVoucherDataForVans().size() > 0) {
 //            if (SplashScreenActivity.allData.getDashBoardData().getVsmTableForSingleDistributor().getAllVansData().get(vanIndex).tableRows.size() > 0) {
@@ -174,7 +181,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             } else {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                 interruptThread();
-                drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                drawAvailableReportFromPeakHour();
             }
         } else {
             SecondActivity.vanIndex = 0;
@@ -182,7 +189,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         }
     }
 
-    private void navigateToUserReportFromPeakHour(int vanIndex) {
+    private void navigateToUserReportFromPeakHour() {
         if (getView() != null) {
             getView().post(new Runnable() {
                 @Override
@@ -194,7 +201,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                                 navController.navigate(R.id.userReportForEachOusFragment);
                             } else {
                                 interruptThread();
-                                drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                                drawAvailableReportFromPeakHour();
                             }
                         } else {
                             SecondActivity.vanIndex = 0;
@@ -219,6 +226,29 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             sortPeakHourReportTableData(dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).figureReportDataElementsArrayList);
             inflateTable(vanIndex);
 
+
+            ArrayList<FigureReportDataElements> figureReport = dashBoardData.getFigureReportDataforEachBranch()
+                    .get(vanIndex).figureReportDataElementsArrayList;
+
+            float[] x = new float[figureReport.size()];
+            float[] y1 = new float[figureReport.size()];
+            float[] y2 = new float[figureReport.size()];
+            String[] legends = new String[figureReport.size()];
+
+            for (int i = 0; i < figureReport.size(); i++) {
+                x[i] = (float) i;
+                y1[i] = (float) figureReport.get(i).grandTotal;
+                y2[i] = (float) figureReport.get(i).totalCount;
+                legends[i] = new UtilityFunctionsForActivity1().formatHourNmin(figureReport.get(i).dateNTime);
+            }
+
+            LineChartData lineChartData1 = new LineChartData(x, y1, legends);
+            LineChartData lineChartData2 = new LineChartData(x, y2, legends);
+            PieChartData pieChartData = new PieChartData(y1, legends);
+            BarChartData barChartData1 = new BarChartData(x, y1, legends);
+            BarChartData barChartData2 = new BarChartData(x, y2, legends);
+
+
             String chartType = "";
             if (layouts.contains(Constants.EACH_PEAK_HOUR_INDEX)) {
                 int chartTypeIndex = layouts.indexOf(Constants.EACH_PEAK_HOUR_INDEX);
@@ -231,9 +261,12 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                 Log.i("chart", chartType + "");
             }
 
-            new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachPeakHour, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getPieChartData(),
-                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData1(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData2(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData1,
-                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, "Grand Total ", "Total Count");
+//            new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachPeakHour, dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getPieChartData(),
+//                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData1(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).getBarChartData2(), dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData1,
+//                    dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).lineChartData2, "Grand Total ", "Total Count");
+
+            new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, cCardEachPeakHour, pieChartData,
+                    barChartData1, barChartData2, lineChartData1, lineChartData2, "Grand Total ", "Total Count");
 
             if (peakHourReportTitle != null) {
                 peakHourReportTitle.setText("Peak Hour Report for " + dashBoardData.getFigureReportDataforEachBranch().get(vanIndex).org);
@@ -254,6 +287,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             cCardEachPeakHour.removeAllViews();
         }
         tablesToDisplay = SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(dataIndex).figureReportDataElementsArrayList;
+
         animationHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -327,14 +361,14 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                         } else {
                             Log.i("Redrawn-2", "drawAvailableReportFromPeakHour: ");
                             interruptThread();
-                            drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                            drawAvailableReportFromPeakHour();
                         }
                     } else {
                         Log.i("TAG-3", "navigateToNextReport: ");
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                         Log.i("Redrawn-3", "drawAvailableReportFromPeakHour: ");
                         interruptThread();
-                        drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                        drawAvailableReportFromPeakHour();
                     }
                 } else if (layouts.contains(10)) {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
@@ -344,7 +378,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                         } else {
                             Log.i("Redrawn -5", "navigateToNextReport: ");
                             interruptThread();
-                            drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                            drawAvailableReportFromPeakHour();
                         }
                     } else {
                         Log.i("TAG-4", "navigateToNextReport: ");
@@ -357,7 +391,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                     Log.i("Redrawn-4", "drawAvailableReportFromPeakHour: ");
                     interruptThread();
-                    drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                    drawAvailableReportFromPeakHour();
                 }
             } else {
                 Log.i("TAG-6", "navigateToNextReport: ");
@@ -388,7 +422,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                         } else if (dashBoardData.getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
                             Log.i("TAG-3", "navigateToPreviousReport: ");
                             interruptThread();
-                            drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                            drawAvailableReportFromPeakHour();
                         } else {
                             Log.i("TAG-4", "navigateToPreviousReport: ");
                             navigateToPreviousReport();
@@ -396,7 +430,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                     } else {
                         if (dashBoardData.getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
                             interruptThread();
-                            drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                            drawAvailableReportFromPeakHour();
                         } else {
                             navigateToPreviousReport();
                         }
@@ -414,7 +448,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                     navController.navigate(R.id.mapsFragment);
                 } else if (dashBoardData.getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
                     interruptThread();
-                    drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                    drawAvailableReportFromPeakHour();
                 } else {
                     navigateToPreviousReport();
                 }
@@ -430,7 +464,7 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
             if (SecondActivity.vanIndex >= 0) {
                 if (dashBoardData.getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
                     interruptThread();
-                    drawAvailableReportFromPeakHour(SecondActivity.vanIndex);
+                    drawAvailableReportFromPeakHour();
                 } else {
                     navigateToPreviousReport();
                 }
@@ -481,8 +515,9 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
         }
     }
 
+    @SuppressLint("InflateParams")
     private void drawLastRow() {
-        View tableElements = null;
+        View tableElements;
         try {
             if (thisContext != null) {
                 LayoutInflater inflater = (LayoutInflater) thisContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -493,7 +528,6 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
                 TextView peakHourReportTotalCount = tableElements.findViewById(R.id.tableRowParentArtProperty3);
                 TextView peakHourReportGrandTotal = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
-                NumberFormat numberFormat = NumberFormat.getInstance();
 
                 peakHourReportSN.setText("");
 
@@ -617,7 +651,31 @@ public class PeakHourReportFragment extends Fragment implements SecondActivity.K
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        peakHourReportTitle = null;
+        peakHourReportTableLayout = null;
+        peakHourReportScrollView = null;
+        scrollingPeakText = null;
+        peakHrEachleftArrow = null;
+        peakHrEachrightArrow = null;
+        peakHrEachplaypause = null;
+        peakHrEachKeyPad = null;
+        peakHourEach_textClock = null;
+        cCardEachPeakHour = null;
+        peakHourReportSN = null;
+        peakHourReportSummaryType = null;
+        peakHourReportTotalCount = null;
+        peakHourReportGrandTotal = null;
+        peakHrCL = null;
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         thisContext = null;
+        fragment = null;
     }
 
 }

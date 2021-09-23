@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -26,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -55,7 +55,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     ScrollView summarizedByChildArticleScrollView;
     Handler animationHandler;
     Fragment fragment;
-    FrameLayout summarizedByChildArticleFrameLayout;
     TextView scrollingChildText;
     TextClock childArticle_textClock;
     TextView articleChildSummaryTitle;
@@ -64,9 +63,16 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
     ImageView sumChildArticleplayPause;
     ImageView sumChildArticlerightArrow;
 
+    ConstraintLayout childArticleCL;
+
     MaterialCardView pCardSummByArticleChild;
 
     public HandleRowAnimationThread handleRowAnimationThread;
+
+    TextView tableRowProperty1;
+    TextView tableRowProperty2;
+    TextView tableRowProperty3;
+    TextView tableRowProperty4;
 
 
     double grandTotal = 0;
@@ -96,7 +102,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         fragment = this;
         summaryByChildArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
         summarizedByChildArticleScrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
-        summarizedByChildArticleFrameLayout = view.findViewById(R.id.summarizedByChildArticleFrameLayout);
+
         scrollingChildText = view.findViewById(R.id.scrollingChildText);
         scrollingChildText.setSelected(true);
 
@@ -112,6 +118,7 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         sumChildArticleplayPause = view.findViewById(R.id.sumChildArticleplayPause);
         sumByChildKeyPad = view.findViewById(R.id.sumByChildKeyPad);
         pCardSummByArticleChild = view.findViewById(R.id.pCardSummByArticleChild);
+        childArticleCL = view.findViewById(R.id.childArticleCL);
 
 //        backTraverse(fragment, R.id.summarizedByArticleParentCategFragment);
         keyPadControl(summByChildArticlePaused);
@@ -125,7 +132,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         super.onResume();
 
         if (SplashScreenActivity.allData != null) {
-            summarizedByChildArticleFrameLayout.setVisibility(View.GONE);
             if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByChildArticleData() != null) {
 
                 initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
@@ -425,5 +431,28 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         } else {
             sumByChildKeyPad.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        summaryByChildArticleTableLayout = null;
+        summarizedByChildArticleScrollView = null;
+        scrollingChildText = null;
+        childArticle_textClock = null;
+        articleChildSummaryTitle = null;
+        sumChildArticleleftArrow = null;
+        sumChildArticlerightArrow = null;
+        sumChildArticleplayPause = null;
+        sumByChildKeyPad = null;
+        pCardSummByArticleChild = null;
+        tableRowProperty1 = null;
+        tableRowProperty2 = null;
+        tableRowProperty3 = null;
+        tableRowProperty4 = null;
+        childArticleCL = null;
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
+
     }
 }

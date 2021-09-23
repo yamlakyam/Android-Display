@@ -18,6 +18,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -33,7 +34,6 @@ import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
 import com.cnet.VisualAnalysis.Utils.Constants;
-import com.cnet.VisualAnalysis.Utils.DashBoardDataParser;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.VideoActivity;
@@ -58,6 +58,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
     ImageView peakHrAllrightArrow;
     ImageView peakHrAllplaypause;
     LinearLayout linearLayout;
+    ConstraintLayout peakHrAllCL;
 
     MaterialCardView peakHourReportLineCard;
 
@@ -91,6 +92,7 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         peakHourAll_textClock.setFormat12Hour("kk:mm:ss");
         peakHourAll_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
         peakHourReportLineCard = view.findViewById(R.id.peakHourReportLineCard);
+        peakHrAllCL = view.findViewById(R.id.peakHrAllCL);
         fragment = this;
 
         keyPadControl(peakHourForAllPaused);
@@ -469,4 +471,23 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        peakHourReportForAllTableLayout = null;
+        peakHourReportScrollView = null;
+        scrollingPeakHourForAllText = null;
+        peakHrAllleftArrow = null;
+        peakHrAllplaypause = null;
+        peakHrAllrightArrow = null;
+        linearLayout = null;
+        peakHourAll_textClock = null;
+        peakHourReportLineCard = null;
+        peakHrAllCL = null;
+
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
+
+    }
 }

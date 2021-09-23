@@ -46,8 +46,7 @@ import com.google.android.material.card.MaterialCardView;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -681,6 +680,7 @@ public class UtilityFunctionsForActivity2 {
             TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowBranchSummary4);
             TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowBranchSummary5);
             TextView tableRowProperty6 = tableElements.findViewById(R.id.tableRowBranchSummary6);
+            TextView tableRowProperty7 = tableElements.findViewById(R.id.tableRowBranchSummary7);
 
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setGroupingUsed(true);
@@ -700,12 +700,41 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty2.setText(row.getBranch());
             tableRowProperty3.setText(String.valueOf(row.getLineItems()));
             tableRowProperty4.setText(numberFormat.format(row.getTransactionCount()));
+            tableRowProperty5.setText(new UtilityFunctionsForActivity1().timeElapsed(
+                    new UtilityFunctionsForActivity1().formatTime(row.getLastActivity()), Calendar.getInstance().getTime()));
+
 //            tableRowProperty5.setText(numberFormat.format(Math.round(percentage * 100.0) / 100.0) + "%");
-            tableRowProperty5.setText((percentage > 1) ? decimalFormat.format(percentage) + "%" :
+            tableRowProperty6.setText((percentage > 1) ? decimalFormat.format(percentage) + "%" :
                     smallDecimlFormat.format(percentage) + "%");
-//            tableRowProperty6.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
-            tableRowProperty6.setText((row.getGrandTotal() > 0) ? decimalFormat.format(row.getGrandTotal()) :
+            tableRowProperty7.setText((row.getGrandTotal() > 0) ? decimalFormat.format(row.getGrandTotal()) :
                     smallDecimlFormat.format(row.getGrandTotal()));
+
+            if(index==0){
+                tableRowProperty1.setTextColor(Color.parseColor("#A30000"));
+                tableRowProperty2.setTextColor(Color.parseColor("#A30000"));
+                tableRowProperty3.setTextColor(Color.parseColor("#A30000"));
+                tableRowProperty4.setTextColor(Color.parseColor("#A30000"));
+                tableRowProperty5.setTextColor(Color.parseColor("#A30000"));
+                tableRowProperty6.setTextColor(Color.parseColor("#A30000"));
+                tableRowProperty7.setTextColor(Color.parseColor("#A30000"));
+            }else if(index==1){
+                tableRowProperty1.setTextColor(Color.parseColor("#FFBF00"));
+                tableRowProperty2.setTextColor(Color.parseColor("#FFBF00"));
+                tableRowProperty3.setTextColor(Color.parseColor("#FFBF00"));
+                tableRowProperty4.setTextColor(Color.parseColor("#FFBF00"));
+                tableRowProperty5.setTextColor(Color.parseColor("#FFBF00"));
+                tableRowProperty6.setTextColor(Color.parseColor("#FFBF00"));
+                tableRowProperty7.setTextColor(Color.parseColor("#FFBF00"));
+            }
+            else if(index==2){
+                tableRowProperty1.setTextColor(Color.parseColor("#4ada5f"));
+                tableRowProperty2.setTextColor(Color.parseColor("#4ada5f"));
+                tableRowProperty3.setTextColor(Color.parseColor("#4ada5f"));
+                tableRowProperty4.setTextColor(Color.parseColor("#4ada5f"));
+                tableRowProperty5.setTextColor(Color.parseColor("#4ada5f"));
+                tableRowProperty6.setTextColor(Color.parseColor("#4ada5f"));
+                tableRowProperty7.setTextColor(Color.parseColor("#4ada5f"));
+            }
 
             branchSummaryTableLayout.addView(tableElements);
             animateBottomToTop(branchSummaryTableLayout, tableElements);

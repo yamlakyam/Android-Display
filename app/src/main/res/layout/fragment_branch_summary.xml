@@ -3,6 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/branchSummaryCL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardBackgroundDark"
@@ -108,11 +109,10 @@
 
         <TextView
             android:id="@+id/branchSummaryHeader0"
-            android:layout_width="30dp"
+            android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="start"
             android:text="SN"
@@ -121,7 +121,7 @@
 
         <TextView
             android:id="@+id/branchSummaryHeader1"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
@@ -132,7 +132,7 @@
 
         <TextView
             android:id="@+id/branchSummaryHeader2"
-            android:layout_width="50dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
@@ -143,7 +143,7 @@
 
         <TextView
             android:id="@+id/branchSummaryHeader3"
-            android:layout_width="100dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
@@ -153,8 +153,19 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/branchSummaryLastActiveHeader"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Last Active"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
             android:id="@+id/branchSummaryHeader4"
-            android:layout_width="100dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/advent_pro_thin"
@@ -168,7 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Grand Total"
@@ -292,12 +303,11 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/digital_7"
                     android:format12Hour="@null"
-                    android:timeZone="GMT+0300"
                     android:format24Hour="MMM dd, yyyy k:mm"
                     android:gravity="center_vertical"
+                    android:textColor="@color/rowValueColor3"
                     android:textSize="34sp"
-                    android:textColor="@color/rowValueColor3">
-                </TextClock>
+                    android:timeZone="GMT+0300"></TextClock>
 
             </LinearLayout>
 

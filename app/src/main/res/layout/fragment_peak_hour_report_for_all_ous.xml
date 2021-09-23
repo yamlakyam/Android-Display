@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/peakHrAllCL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardBackgroundDark"
@@ -140,12 +141,11 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/digital_7"
                     android:format12Hour="@null"
-                    android:timeZone="GMT+0300"
                     android:format24Hour="MMM dd, yyyy k:mm"
                     android:gravity="center_vertical"
+                    android:textColor="@color/rowValueColor3"
                     android:textSize="34sp"
-                    android:textColor="@color/rowValueColor3">
-                </TextClock>
+                    android:timeZone="GMT+0300"></TextClock>
             </LinearLayout>
 
         </LinearLayout>

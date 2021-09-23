@@ -62,12 +62,9 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         void rightKey();
     }
 
-    public static DashBoardData dashBoardData;
-
     NavController navController;
 
     public static boolean firstCenterKeyPause;
-    public static boolean ThreadInterrupted = false;
 
     LinearLayout playPauseKeyPad;
 
@@ -99,60 +96,15 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         context = SecondActivity.this;
         setContentView(R.layout.activity_second);
 
-        deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-
+        deviceID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         Intent intent = getIntent();
-//        if (mappedFragment() != null) {
-//            setHomeFragment();
-//        } else {
-//            startActivity(new Intent(SecondActivity.this, VideoActivity.class));
-//        }
-//
-//        String name = intent.getStringExtra("left");
-//        if (name != null) {
-//            Log.i("This called", "onCreate: ");
-//            if (name.equals("pressed")) {
-//                if (SplashScreenActivity.allData != null) {
-//                    layouts = SplashScreenActivity.allData.getLayoutList();
-//                    DashBoardData dBData = SplashScreenActivity.allData.getDashBoardData();
-//                    if (layouts.contains(1)) {
-//                        setHomeFragment(R.id.mapsFragment);
-//                    } else if (layouts.contains(12)) {
-//                        setHomeFragment(R.id.peakHourReportFragment);
-//                    } else if (layouts.contains(11)) {
-//                        setHomeFragment(R.id.peakHourReportForAllOusFragment);
-//                    } else if (layouts.contains(10)) {
-//                        setHomeFragment(R.id.userReportForEachOusFragment);
-//                    } else if (layouts.contains(9)) {
-//                        setHomeFragment(R.id.userReportForAllOusFragment2);
-//                    } else if (layouts.contains(8) && SplashScreenActivity.allData.getDashBoardData().getBranchSummaryData().getBranchSummaryTableRows().size() > 0) {
-//                        setHomeFragment(R.id.branchSummaryFragment);
-//                    } else if (layouts.contains(7)) {
-//                        setHomeFragment(R.id.summaryOfLastMonthFragment);
-//                    } else if (layouts.contains(6)) {
-//                        setHomeFragment(R.id.summaryOfLastSixMonthsFragment);
-//                    } else if (layouts.contains(5)) {
-//                        setHomeFragment(R.id.summarizedByArticleChildCategFragment);
-//                    } else if (layouts.contains(4)) {
-//                        setHomeFragment(R.id.summarizedByArticleParentCategFragment);
-//                    } else if (layouts.contains(3)) {
-//                        setHomeFragment(R.id.summarizedByArticleFragment2);
-//                    }
-//                }
-//            }
-//        }
-
-        lastActivty = intent.getStringExtra("prev-activity");
-//        lastActivty = intent.getStringExtra("prevvvvvvv-activity");
-
+        lastActivty = intent.getStringExtra("prevvvvvvv-activity");
         refreshingConstraintLayout = findViewById(R.id.refreshingConstraintLayout);
-
 
         if (lastActivty != null) {
             Log.i("FROM_VID", "onCreate: ");
             refreshingConstraintLayout.setVisibility(ConstraintLayout.VISIBLE);
-//            fragmentWhileDataRefreshed();
             VolleyHttp http = new VolleyHttp(getApplicationContext());
             http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
                     SecondActivity.this);
@@ -166,8 +118,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
         }
 
-
-        /*Handler handler = new Handler();
+       /*Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -175,6 +126,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 try {
                     http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
                             SecondActivity.this);
+                    Log.i("REQUEST", "MADE");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -185,24 +137,25 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
          */
 
-//        Timer timer = new Timer();
-//        TimerTask hourlyTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                VolleyHttp http = new VolleyHttp(getApplicationContext());
-//                try {
+      /* Timer timer = new Timer();
+        TimerTask hourlyTask = new TimerTask() {
+            @Override
+            public void run() {
+                VolleyHttp http = new VolleyHttp(getApplicationContext());
+                try {
 //                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
 //                            SecondActivity.this);
-//                    Log.i("REQUEST MADE", "run: ");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//        timer.schedule(hourlyTask, 0, refreshTime);
+                    Log.i("REQUEST MADE", "run: ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer.schedule(hourlyTask, 0, refreshTime);
 
-        /*
+       */
 
+       /*
        Thread refreshDataThread = new Thread() {
             @Override
             public void run() {
@@ -222,10 +175,9 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         };
 
         refreshDataThread.start();
-
          */
-    }
 
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -259,7 +211,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             setHomeFragment();
         } else {
             Log.i("ANIMATION_CALLED-1", "onFailure: ");
-
             startActivity(new Intent(SecondActivity.this, VideoActivity.class));
         }
 
@@ -476,24 +427,32 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
     }
 
+
     @Override
     protected void onStop() {
         super.onStop();
-
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+
+
         Log.i("ThreadSets-onStop", threadSet.toString());
         Log.i("ThreadSetCount-onStop", threadSet.size() + "");
+        Log.i("Active Count", Thread.activeCount() + "");
 
         Runtime runtime = Runtime.getRuntime();
         long usedMemInMB = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
         long maxHeapSizeInMB = runtime.maxMemory() / 1048576L;
         long availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB;
-        Log.i("availHeapSizeInMB-B", availHeapSizeInMB + "");
-        System.gc();
-        Log.i("availHeapSizeInMB-A", availHeapSizeInMB + "");
+        Log.i("availHeapSizeInMB", availHeapSizeInMB + "");
+//        System.gc();
+//        Runtime.getRuntime().freeMemory();
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        context = null;
+    }
 
     @Override
     protected void finalize() throws Throwable {

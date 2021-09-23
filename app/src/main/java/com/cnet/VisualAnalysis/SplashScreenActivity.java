@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -29,8 +28,7 @@ import org.json.JSONObject;
 public class SplashScreenActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
     public static AllData allData;
-    public static String myAndroidDeviceId;
-    public Handler handler;
+    public String myAndroidDeviceId;
     TextView loadingStatusText;
     String connFailMessage = "Connection not available, Restart the app";
     ProgressBar splashProgressBar;
@@ -38,7 +36,6 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_splash_screen);
         setContentView(R.layout.splash_screen);
 
         loadingStatusText = findViewById(R.id.loadingStatusText);
@@ -47,28 +44,12 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
         VolleyHttp http = new VolleyHttp(getApplicationContext());
         http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + getDeviceId(getApplicationContext()),
                 SplashScreenActivity.this);
-//        http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + "cc70a81e8233444a",
-//                SplashScreenActivity.this);
 
-
-       /* Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logo_animation);
-        videoView.setVideoURI(uri);
-
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-                mp.start();
-            }
-        });
-
-        */
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSuccess(JSONObject jsonObject) {
-
 
         try {
             AllDataParser allDataParser = new AllDataParser(jsonObject);
@@ -87,8 +68,6 @@ public class SplashScreenActivity extends AppCompatActivity implements VolleyHtt
 
     @Override
     public void onFailure(VolleyError error) {
-//        progressBarCircular.setVisibility(View.GONE);
-//        loadingTextView.setText(R.string.volley_error);
         Log.i("error", error + "");
         Toast.makeText(this, "Connection not available, Restart the app", Toast.LENGTH_LONG).show();
         loadingStatusText.setText(connFailMessage);

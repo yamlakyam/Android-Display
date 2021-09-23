@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.DigitalClock;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -24,9 +22,9 @@ import android.widget.TableLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -44,7 +42,6 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import com.cnet.VisualAnalysis.VideoActivity;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.NumberFormat;
@@ -58,10 +55,9 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
     TableLayout summarizedByParentArticleTableLayout;
     ScrollView scrollView;
-    PieChart pieChart;
     BarChart barChart;
     Fragment fragment;
-    FrameLayout summarizedByParentArticleFrameLayout;
+
     TextView scrollingParentText;
     TextClock parentArticle_textClock;
     TextView articleParentSummaryTitle;
@@ -72,8 +68,14 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     ImageView sumParentArticlerightArrow;
 
     MaterialCardView pCardSummByArticleParent;
+    ConstraintLayout parentArticleCL;
 
     public HandleRowAnimationThread handleRowAnimationThread;
+
+    TextView tableRowProperty1;
+    TextView tableRowProperty2;
+    TextView tableRowProperty3;
+    TextView tableRowProperty4;
 
     double grandTotal = 0;
     double totalPercentage = 0;
@@ -103,28 +105,22 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         }
         fragment = this;
 
-
         summarizedByParentArticleTableLayout = view.findViewById(R.id.summaryByChildArticleTableLayout);
         scrollView = view.findViewById(R.id.summarizedByChildArticleScrollView);
         barChart = view.findViewById(R.id.bChartSumByArticleParent);
-        summarizedByParentArticleFrameLayout = view.findViewById(R.id.summarizedByParentArticleFrameLayout);
         scrollingParentText = view.findViewById(R.id.scrollingParentText);
         scrollingParentText.setSelected(true);
-//        digitalClock = view.findViewById(R.id.parentArticle_digitalClock);
-//        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
-
         parentArticle_textClock = view.findViewById(R.id.parentArticle_textClock);
         parentArticle_textClock.setFormat12Hour("kk:mm:ss");
         parentArticle_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
-
         articleParentSummaryTitle = view.findViewById(R.id.articleParentSummaryTitle);
         articleParentSummaryTitle.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
         sumByParentKeyPad = view.findViewById(R.id.sumByParentKeyPad);
         sumParentArticleleftArrow = view.findViewById(R.id.sumParentArticleleftArrow);
         sumParentArticleplayPause = view.findViewById(R.id.sumParentArticleplayPause);
         sumParentArticlerightArrow = view.findViewById(R.id.sumParentArticlerightArrow);
-
         pCardSummByArticleParent = view.findViewById(R.id.pCardSummByArticleParent);
+        parentArticleCL = view.findViewById(R.id.parentArticleCL);
 
 //        backTraverse(fragment, R.id.summarizedByArticleFragment2);
 
@@ -138,11 +134,11 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         super.onResume();
 
         if (SplashScreenActivity.allData != null) {
-            summarizedByParentArticleFrameLayout.setVisibility(View.GONE);
+
             if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData() != null &&
                     SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData().size() > 0
                     && SplashScreenActivity.allData.getDashBoardData().getSummarizedByParentArticleData().getTableData() != null) {
-                initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
+                initFragment(SplashScreenActivity.allData.getDashBoardData());
             } else {
                 navigate(fragment);
             }
@@ -198,14 +194,12 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
     }
 
 
-    private void initFragment(DashBoardData dashBoardDataP, int seconds) {
+    private void initFragment(DashBoardData dashBoardDataP) {
 
 
-        DashBoardData dashBoardData = dashBoardDataP;
-
-        if (dashBoardData != null) {
-            if (dashBoardData.getSummarizedByParentArticleData() != null) {
-                inflateTable(dashBoardData.getSummarizedByParentArticleData().getTableData(), seconds);
+        if (dashBoardDataP != null) {
+            if (dashBoardDataP.getSummarizedByParentArticleData() != null) {
+                inflateTable(dashBoardDataP.getSummarizedByParentArticleData().getTableData(), 200);
 
                 int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.SUMMARY_OF_parent_ARTICLE_INDEX);
                 String chartType = "";
@@ -222,8 +216,8 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
 
                 new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticleParent,
-                        dashBoardData.getSummarizedByParentArticleData().getPieChartData(), dashBoardData.getSummarizedByParentArticleData().getBarChartData(),
-                        dashBoardData.getSummarizedByParentArticleData().getLineChartData(), "Summarized by Article parent category");
+                        dashBoardDataP.getSummarizedByParentArticleData().getPieChartData(), dashBoardDataP.getSummarizedByParentArticleData().getBarChartData(),
+                        dashBoardDataP.getSummarizedByParentArticleData().getLineChartData(), "Summarized by Article parent category");
             }
         }
     }
@@ -243,12 +237,13 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
     }
 
+    @SuppressLint("SetTextI18n")
     public void drawLastArticleParentRow() {
-        View tableElements = LayoutInflater.from(requireActivity().getApplicationContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
-        TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
-        TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
-        TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
-        TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
+        @SuppressLint("InflateParams") View tableElements = LayoutInflater.from(requireActivity().getApplicationContext()).inflate(R.layout.table_row_summary_by_parent_article, null, false);
+        tableRowProperty1 = tableElements.findViewById(R.id.tableRowParentArtProperty1);
+        tableRowProperty2 = tableElements.findViewById(R.id.tableRowParentArtProperty2);
+        tableRowProperty3 = tableElements.findViewById(R.id.tableRowParentArtProperty3);
+        tableRowProperty4 = tableElements.findViewById(R.id.tableRowParentArtProperty4);
 
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
@@ -278,15 +273,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
     }
 
-    public void backTraverse(Fragment fragment, int id) {
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                Intent intent = new Intent(getActivity(), SplashScreenActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
 
     public void navigate(Fragment fragment) {
 
@@ -329,13 +315,7 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-//        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
-//                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
-//                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
-//            navController.navigate(R.id.summarizedByArticleFragment2);
-
         else
-//            initFragment(SplashScreenActivity.allData.getDashBoardData(), 200);
             startActivity(new Intent(requireActivity(), VideoActivity.class));
 
     }
@@ -423,7 +403,6 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
 
         }
         navigateLeft(fragment);
-
     }
 
     @Override
@@ -446,5 +425,32 @@ public class SummarizedByArticleParentCategFragment extends Fragment implements 
         } else {
             sumByParentKeyPad.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        summarizedByParentArticleTableLayout = null;
+        scrollView = null;
+        barChart = null;
+        scrollingParentText = null;
+        parentArticle_textClock = null;
+        articleParentSummaryTitle = null;
+        sumByParentKeyPad = null;
+        sumParentArticleleftArrow = null;
+        sumParentArticleplayPause = null;
+        sumParentArticlerightArrow = null;
+        pCardSummByArticleParent = null;
+
+        tableRowProperty1 = null;
+        tableRowProperty2 = null;
+        tableRowProperty3 = null;
+        tableRowProperty4 = null;
+
+        parentArticleCL = null;
+
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
+
     }
 }

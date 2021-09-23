@@ -6,12 +6,14 @@ public class BranchSummaryTableRow {
     int quantity;
     int transactionCount;
     int lineItems;
+    String lastActivity;
 
-    public BranchSummaryTableRow(String branch, double grandTotal, int transactionCount, int lineItems) {
+    public BranchSummaryTableRow(String branch, double grandTotal, int transactionCount, int lineItems, String lastActivity) {
         this.branch = branch;
         this.grandTotal = grandTotal;
         this.transactionCount = transactionCount;
         this.lineItems = lineItems;
+        this.lastActivity = lastActivity;
 
     }
 
@@ -29,5 +31,9 @@ public class BranchSummaryTableRow {
 
     public int getLineItems() {
         return lineItems;
+    }
+
+    public String getLastActivity() {
+        return lastActivity;
     }
 }

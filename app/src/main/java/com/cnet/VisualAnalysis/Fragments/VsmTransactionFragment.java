@@ -121,7 +121,7 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
 
         if (distributors > 0) {
             getSize();
-            handleDistDataChangeThread = new HandleDistributorChangeThread(changeDistributorHandler, distributors, (int) (vansSum(numberOfRowsInSingleVan.get(distributorIndex))), distributorStartIndex);
+            handleDistDataChangeThread = new HandleDistributorChangeThread(changeDistributorHandler, distributors, (vansSum(numberOfRowsInSingleVan.get(distributorIndex))), distributorStartIndex);
             handleDistDataChangeThread.start();
         }
     }

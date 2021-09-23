@@ -16,10 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.DigitalClock;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextClock;
@@ -40,7 +38,6 @@ import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 import com.cnet.VisualAnalysis.Threads.HandleRowAnimationThread;
-import com.cnet.VisualAnalysis.Utils.BackGroundTasks;
 import com.cnet.VisualAnalysis.Utils.Constants;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity1;
 import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
@@ -52,25 +49,27 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class SummarizedByArticleFragment extends Fragment implements SecondActivity.KeyPress, BackGroundTasks.CalculateInBackground {
+public class SummarizedByArticleFragment extends Fragment implements SecondActivity.KeyPress {
 
     TableLayout summarizedByArticleTableLayout;
     Handler animationHandler;
     TextView scrollingArticleText;
     TextView summarizedByArticleTextView;
     ScrollView summByArticleScrollView;
-    ProgressBar articleSummaryProgressBar;
-    ConstraintLayout constraintLayout;
-
     LinearLayout sumByArticleKeyPad;
     ImageView summarticleleftArrow;
     ImageView summarticleplayPause;
     ImageView summarticlerightArrow;
 
-    DigitalClock digitalClock;
     TextClock articleSummary_textClock;
     public HandleRowAnimationThread handleRowAnimationThread;
     public static boolean summByarticlePaused;
+
+    TextView tableRowProperty1;
+    TextView tableRowProperty2;
+    TextView tableRowProperty3;
+    TextView tableRowProperty4;
+    TextView tableRowProperty5;
 
     double totalUnitAmount = 0;
     int totalQuantity = 0;
@@ -79,6 +78,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 
     Fragment fragment;
     MaterialCardView pCardSummByArticle;
+    ConstraintLayout articleCL;
 
     ////////////
     ArrayList<SummarizedByArticleTableRow> tablesToDisplay;
@@ -109,10 +109,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         scrollingArticleText = view.findViewById(R.id.scrollingArticleText);
         scrollingArticleText.setSelected(true);
         summByArticleScrollView = view.findViewById(R.id.summByArticleScrollView);
-        articleSummaryProgressBar = view.findViewById(R.id.articleSummaryProgressBar);
-        constraintLayout = view.findViewById(R.id.constraintLayout);
-        digitalClock = view.findViewById(R.id.articleSummary_digitalClock);
-        digitalClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
+
 
         articleSummary_textClock = view.findViewById(R.id.articleSummary_textClock);
         articleSummary_textClock.setFormat12Hour("kk:mm:ss");
@@ -127,6 +124,7 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         sumByArticleKeyPad = view.findViewById(R.id.sumByArticleKeyPad);
 
         pCardSummByArticle = view.findViewById(R.id.pCardSummByArticle);
+        articleCL = view.findViewById(R.id.articleCL);
 
         keyPadControl(summByarticlePaused);
         return view;
@@ -141,8 +139,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
 //        backGroundTasks.execute();
 
         if (SplashScreenActivity.allData != null) {
-            articleSummaryProgressBar.setVisibility(View.GONE);
-            constraintLayout.setVisibility(View.VISIBLE);
 
             if (SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null) {
 
@@ -337,11 +333,11 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         if (getContext() != null) {
             View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.table_row_summary_by_article, null, false);
 
-            TextView tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
-            TextView tableRowProperty2 = tableElements.findViewById(R.id.tableRowArticleProperty2);
-            TextView tableRowProperty3 = tableElements.findViewById(R.id.tableRowArticleProperty3);
-            TextView tableRowProperty4 = tableElements.findViewById(R.id.tableRowArticleProperty4);
-            TextView tableRowProperty5 = tableElements.findViewById(R.id.tableRowArticleProperty5);
+            tableRowProperty1 = tableElements.findViewById(R.id.tableRowArticleProperty1);
+            tableRowProperty2 = tableElements.findViewById(R.id.tableRowArticleProperty2);
+            tableRowProperty3 = tableElements.findViewById(R.id.tableRowArticleProperty3);
+            tableRowProperty4 = tableElements.findViewById(R.id.tableRowArticleProperty4);
+            tableRowProperty5 = tableElements.findViewById(R.id.tableRowArticleProperty5);
 
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setGroupingUsed(true);
@@ -449,37 +445,28 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
     }
 
     @Override
-    public void onPreExecute() {
-        Log.i("TAG", "onPreExecute: ");
-    }
+    public void onDestroyView() {
+        super.onDestroyView();
+        summarizedByArticleTableLayout = null;
+        scrollingArticleText = null;
+        summByArticleScrollView = null;
 
-    @Override
-    public void doInBackground() {
-        Log.i("TAG", "doInBackground: ");
-        Log.i("ArticleAsyncThread", Thread.currentThread().getName() + "");
+        articleSummary_textClock = null;
+        summarizedByArticleTextView = null;
+        summarticlerightArrow = null;
+        summarticleplayPause = null;
+        summarticleleftArrow = null;
+        sumByArticleKeyPad = null;
+        pCardSummByArticle = null;
 
+        tableRowProperty1 = null;
+        tableRowProperty2 = null;
+        tableRowProperty3 = null;
+        tableRowProperty4 = null;
+        tableRowProperty5 = null;
+        articleCL = null;
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
 
-        if (SplashScreenActivity.allData != null) {
-            totalLastRow();
-            layoutList = SplashScreenActivity.allData.getLayoutList();
-            dashBoardData = SplashScreenActivity.allData.getDashBoardData();
-        }
-
-    }
-
-    @Override
-    public void onPostExecute() {
-        Log.i("TAG", "onPostExecute: ");
-        if (SplashScreenActivity.allData != null) {
-            articleSummaryProgressBar.setVisibility(View.GONE);
-            constraintLayout.setVisibility(View.VISIBLE);
-
-            if (dashBoardData.getSummarizedByArticleData() != null) {
-                Log.i("totalUnitAmount", totalUnitAmount + "");
-                initFragment(dashBoardData, 100);
-            } else {
-                navigate(fragment);
-            }
-        }
     }
 }

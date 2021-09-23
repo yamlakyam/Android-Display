@@ -21,6 +21,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -65,6 +66,14 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
     ImageView userRepoAllplayPause;
     ImageView userRepoAllrightArrow;
 
+    TextView userReportForAllSN;
+    TextView userReportForAllUserName;
+    TextView userReportForAllGrandTotal;
+    TextView userReportForAllBranchName;
+    TextView userReportForAllPercentage;
+
+    ConstraintLayout userReportAllCL;
+
     double grandTotalSum;
     public static boolean userReportForAllPaused;
 
@@ -102,6 +111,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         userRepoAllplayPause = view.findViewById(R.id.userRepoAllplayPause);
         userRepoAllrightArrow = view.findViewById(R.id.userRepoAllrightArrow);
         cCardAllUserReport = view.findViewById(R.id.cCardAllUserReport);
+        userReportAllCL = view.findViewById(R.id.userReportAllCL);
 
         fragment = this;
 
@@ -168,12 +178,12 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 
     private void drawLastRow() {
 
-        View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.user_report_for_all_table_row, null, false);
-        TextView userReportForAllSN = tableElements.findViewById(R.id.tableRowAllUserReportProperty1);
-        TextView userReportForAllUserName = tableElements.findViewById(R.id.tableRowAllUserReportProperty2);
-        TextView userReportForAllGrandTotal = tableElements.findViewById(R.id.tableRowAllUserReportProperty3);
-        TextView userReportForAllBranchName = tableElements.findViewById(R.id.tableRowAllUserReportProperty4);
-        TextView userReportForAllPercentage = tableElements.findViewById(R.id.tableRowAllUserReportProperty5);
+        @SuppressLint("InflateParams") View tableElements = LayoutInflater.from(getContext()).inflate(R.layout.user_report_for_all_table_row, null, false);
+        userReportForAllSN = tableElements.findViewById(R.id.tableRowAllUserReportProperty1);
+        userReportForAllUserName = tableElements.findViewById(R.id.tableRowAllUserReportProperty2);
+        userReportForAllGrandTotal = tableElements.findViewById(R.id.tableRowAllUserReportProperty3);
+        userReportForAllBranchName = tableElements.findViewById(R.id.tableRowAllUserReportProperty4);
+        userReportForAllPercentage = tableElements.findViewById(R.id.tableRowAllUserReportProperty5);
 
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
@@ -205,7 +215,6 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         if (userReportForAllTableLayout != null) {
             userReportForAllTableLayout.addView(tableElements);
             new UtilityFunctionsForActivity2().animateBottomToTop(userReportForAllTableLayout, tableElements);
-
         }
     }
 
@@ -226,7 +235,7 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
 //        new UtilityFunctionsForActivity2().drawPieChart(pieChartData, pieChart, "User Report For All Organizations");
 
         int chartTypeIndex = SplashScreenActivity.allData.getLayoutList().indexOf(Constants.ALL_USER_REPORT_INDEX);
-        String chartType = "";
+        String chartType;
         if (chartTypeIndex < SplashScreenActivity.allData.getChartList().size()) {
             chartType = SplashScreenActivity.allData.getChartList().get(chartTypeIndex);
         } else {
@@ -399,5 +408,30 @@ public class UserReportForAllOusFragment extends Fragment implements SecondActiv
         } else {
             allUserRepKeyPad.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        userReportForAllTableLayout = null;
+        userReportForAllScrollView = null;
+        scrollingUserReportForAllText = null;
+        userReportAll_textClock = null;
+        userReportForAllTitle = null;
+        allUserRepKeyPad = null;
+        userRepoAllleftArrow = null;
+        userRepoAllplayPause = null;
+        userRepoAllrightArrow = null;
+        cCardAllUserReport = null;
+
+        userReportForAllSN = null;
+        userReportForAllUserName = null;
+        userReportForAllGrandTotal = null;
+        userReportForAllBranchName = null;
+        userReportForAllPercentage = null;
+        userReportAllCL = null;
+        if (animationHandler != null)
+            animationHandler.removeCallbacksAndMessages(null);
+
     }
 }
