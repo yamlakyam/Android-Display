@@ -27,7 +27,7 @@
             android:id="@+id/distributorHeaderVsmTransaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:text="Distributor"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
@@ -41,7 +41,7 @@
             android:id="@+id/vanHeaderVsmTransaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:text="Van"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
@@ -64,7 +64,7 @@
             android:layout_width="50dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:text="SN"
@@ -76,7 +76,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="end"
             android:text="Voucher No"
             android:textColor="#FFFFFF"
@@ -87,7 +87,7 @@
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="center"
             android:text="Outlet"
             android:textColor="#FFFFFF"
@@ -98,7 +98,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="center"
             android:text="TIN"
             android:textColor="#FFFFFF"
@@ -109,7 +109,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="end"
             android:text="Time"
             android:textColor="#FFFFFF"
@@ -120,7 +120,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="end"
             android:text="Item Count"
             android:textColor="#FFFFFF"
@@ -131,7 +131,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="end"
             android:text="Sub Total"
             android:textColor="#FFFFFF"
@@ -142,7 +142,7 @@
             android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="end"
             android:text="VAT"
             android:textColor="#FFFFFF"
@@ -153,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:gravity="end"
             android:paddingEnd="10dp"
             android:text="Grand Total"

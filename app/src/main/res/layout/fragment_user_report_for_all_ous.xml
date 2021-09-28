@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:text="SN"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
@@ -102,7 +102,7 @@
                 android:id="@+id/userReportOverAllHeader1"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:gravity="start"
                 android:text="User Name"
                 android:textColor="#ffffff"
@@ -112,7 +112,7 @@
                 android:id="@+id/userReportOverAllHeader2"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:gravity="end"
                 android:text="Grand Total"
                 android:textColor="#ffffff"
@@ -122,7 +122,7 @@
                 android:id="@+id/userReportOverAllHeader3"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:gravity="end"
                 android:text="Branch"
                 android:textColor="#ffffff"
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:gravity="end"
                 android:text="Percentage"
                 android:textColor="#ffffff"
@@ -233,13 +233,13 @@
                     android:id="@+id/userReportAll_textClock"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/digital_7"
+
                     android:format12Hour="@null"
                     android:format24Hour="MMM dd, yyyy k:mm"
                     android:gravity="center_vertical"
                     android:textColor="@color/rowValueColor3"
                     android:textSize="34sp"
-                    android:timeZone="GMT+0300"></TextClock>
+                    android:timeZone="GMT+0300" />
             </LinearLayout>
 
         </LinearLayout>

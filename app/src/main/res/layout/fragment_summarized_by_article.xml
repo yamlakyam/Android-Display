@@ -249,7 +249,7 @@
                         android:id="@+id/articleSummary_textClock"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/digital_7"
+
                         android:format12Hour="@null"
                         android:timeZone="GMT+0300"
                         android:format24Hour="MMM dd, yyyy k:mm"

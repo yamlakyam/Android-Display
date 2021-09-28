@@ -472,7 +472,8 @@ public class DashBoardDataParser {
                     double grandTotalSum = 0;
 
                     for (int j = 0; j < figureReportDatForEach.length(); j++) {
-                        FigureReportDataElements figureReportDataElements = new FigureReportDataElements(figureReportDatForEach.getJSONObject(j).getString("summaryType"),
+                        FigureReportDataElements figureReportDataElements = new FigureReportDataElements(
+                                figureReportDatForEach.getJSONObject(j).getString("summaryType"),
                                 figureReportDatForEach.getJSONObject(j).getInt("totalCount"),
                                 figureReportDatForEach.getJSONObject(j).getDouble("grandTotal"),
                                 org);

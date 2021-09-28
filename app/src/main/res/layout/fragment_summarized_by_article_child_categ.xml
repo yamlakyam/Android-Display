@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/advent_pro_thin"
+
             android:text="Summary Of Article By Child Category"
             android:textColor="#FFFFFF"
             android:textSize="34sp" />
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:text="SN"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
@@ -138,7 +138,7 @@
                 android:id="@+id/summaryByChildArticleHeader1"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:gravity="start"
                 android:text="Category"
                 android:textColor="#ffffff"
@@ -148,7 +148,7 @@
                 android:id="@+id/summaryByChildArticleHeader2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:gravity="end"
                 android:text="Percentage"
                 android:textColor="#ffffff"
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/advent_pro_thin"
+
                 android:gravity="end"
                 android:text="Grand Total"
                 android:textColor="#ffffff"
@@ -244,7 +244,7 @@
                     android:id="@+id/childArticle_textClock"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/digital_7"
+
                     android:format12Hour="@null"
                     android:format24Hour="MMM dd, yyyy k:mm"
                     android:gravity="center_vertical"

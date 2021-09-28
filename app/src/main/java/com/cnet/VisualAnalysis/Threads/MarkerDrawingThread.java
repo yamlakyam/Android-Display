@@ -30,13 +30,15 @@ public class MarkerDrawingThread extends Thread {
                 changeDataHandler.sendMessage(message);
                 try {
                     if (i == rows + 1) {
+                        Log.i("ROW+1", "run: ");
                         Thread.sleep(3000);
 
                     } else if (i == rows) {
-                        Log.i("last row-marker", "run: ");
+                        Log.i("ROW", "run: ");
 //                    lastRowAnimationSleep();
                         Thread.sleep(3000);
                     } else if (i == rows - 1) {
+                        Log.i("ROW-1", "run: ");
                         Thread.sleep(5000);
 
                     } else {

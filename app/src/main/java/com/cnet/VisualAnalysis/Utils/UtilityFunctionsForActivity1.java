@@ -135,7 +135,6 @@ public class UtilityFunctionsForActivity1 {
                 TextView distributorQuantityCountTV = tableElements.findViewById(R.id.distributorQuantityCountTV);
                 TextView distributorTotalSalesTV = tableElements.findViewById(R.id.distributorTotalSalesTV);
 
-
                 distributorSerialNumberTV.setText(String.valueOf(index + 1));
                 distributorVSITV.setText(row.getVsi());
                 distributorProspectTV.setText(String.valueOf(row.getProspect()));
@@ -143,7 +142,6 @@ public class UtilityFunctionsForActivity1 {
                 distributorSalesOutletTV.setText(String.valueOf(row.getSalesOutLateCount()));
                 distributorSKUcountTV.setText(String.valueOf(row.getSkuCount()));
                 distributorQuantityCountTV.setText(String.valueOf(row.getQuantityCount()));
-//                distributorTotalSalesTV.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
                 distributorTotalSalesTV.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSalesAmountAfterTax()));
 
                 if (distributorTableLayout != null) {
@@ -163,7 +161,6 @@ public class UtilityFunctionsForActivity1 {
             View tableElements = null;
             try {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
                 tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -185,7 +182,6 @@ public class UtilityFunctionsForActivity1 {
 
                 userReportSN.setText(String.valueOf(index + 1));
                 userReportSummaryType.setText(row.getSummaryType());
-//                userReportGrandTotal.setText(String.valueOf(Math.round(row.grandTotal * 100.0) / 100.0));
                 userReportGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
                 userReportPercentage.setText(numberFormat.format(percentage) + "%");
 
@@ -207,7 +203,6 @@ public class UtilityFunctionsForActivity1 {
             try {
                 if(context!=null){
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
                     tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
                 }
 
@@ -307,7 +302,6 @@ public class UtilityFunctionsForActivity1 {
                 peakHourReportForAllTime.setText(formatHourNmin(row.getDateNTime()));
                 peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
 
-//                peakHourReportForAllGrandTotal.setText(numberFormat.format(Math.round(row.grandTotal * 100.0) / 100.0));
                 peakHourReportForAllGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
 
                 if (peakHourReportTableLayout != null) {
@@ -319,45 +313,6 @@ public class UtilityFunctionsForActivity1 {
         }
 
     }
-
-//    public void drawVansOfSingleOrgTable(ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleVanArrayList, Context context, TableLayout vanListTableLayout, int index) {
-//        if (vsmTableDataForSingleVanArrayList != null) {
-//            VsmTableDataForSingleVan row = vsmTableDataForSingleVanArrayList.get(index);
-//
-//            View tableElements = null;
-//            try {
-//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vans_of_single_org, null, false);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            if (tableElements != null) {
-//                TextView singleOrgVansSerialNumberTV = tableElements.findViewById(R.id.singleOrgVansSerialNumberTV);
-//                TextView singleOrgVansVSITV = tableElements.findViewById(R.id.singleOrgVansVSITV);
-//                TextView singleOrgVansProspectTV = tableElements.findViewById(R.id.singleOrgVansProspectTV);
-//                TextView singleOrgVansEndTimeTV = tableElements.findViewById(R.id.singleOrgVansEndTimeTV);
-//                TextView singleOrgVansSalesOutletTV = tableElements.findViewById(R.id.singleOrgVansSalesOutletTV);
-//                TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
-//                TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
-//
-//
-//                NumberFormat numberFormat = NumberFormat.getInstance();
-//                singleOrgVansSerialNumberTV.setText(String.valueOf(index + 1));
-//                singleOrgVansVSITV.setText(row.nameOfVan);
-//                singleOrgVansProspectTV.setText(String.valueOf(1));
-//                singleOrgVansEndTimeTV.setText(formatDateTimeToString(row.getLastActive()));
-//                singleOrgVansSalesOutletTV.setText(numberFormat.format(row.salesOutLateCount));
-//                singleOrgVansQuantityCountTV.setText(numberFormat.format(row.allLineItemCount));
-//                singleOrgVansTotalSalesTV.setText(numberFormat.format(Math.round(row.totalPrice * 100.0) / 100.0));
-//
-//                if (vanListTableLayout != null) {
-//                    vanListTableLayout.addView(tableElements);
-//                }
-//                animate(vanListTableLayout, tableElements);
-//            }
-//
-//        }
-//
-//    }
 
     public void animate(View container, View child) {
         if (container != null) {
@@ -385,46 +340,6 @@ public class UtilityFunctionsForActivity1 {
         VSMcardGridView.setAdapter(adapter);
     }
 
-//    public VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
-//        JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
-//        String nameOfVan = tableDataObjectForSingleVanInJson.getString("van");
-//        int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
-//        String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
-//        int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
-//        double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
-//        ArrayList<VsmTransactionTableRow> vsmTableForSingleVan = new ArrayList<>();
-//        for (int k = 0; k < tableRowsForSingleVan.length(); k++) {
-//            JSONObject tableRowForSingleVan = tableRowsForSingleVan.getJSONObject(k);
-//
-//            String formattedOutlet;
-//            String formattedTIN;
-//            if (tableRowForSingleVan.getString("outlates").length() > 15) {
-//                formattedOutlet = tableRowForSingleVan.getString("outlates").substring(0, 12) + "...";
-//            } else
-//                formattedOutlet = tableRowForSingleVan.getString("outlates");
-//
-//            if (tableRowForSingleVan.getString("tin").length() == 0) {
-//                formattedTIN = "- - - - - - - - - - -";
-//            } else {
-//                formattedTIN = tableRowForSingleVan.getString("tin");
-//            }
-//            vsmTableForSingleVan.add(new VsmTransactionTableRow(
-//                    tableRowForSingleVan.getString("voucherNo"),
-//                    formattedOutlet,
-//                    formattedTIN,
-//                    tableRowForSingleVan.getString("dateAndTime"),
-//                    tableRowForSingleVan.getInt("itemCount"),
-//                    tableRowForSingleVan.getDouble("subTotal"),
-//                    tableRowForSingleVan.getDouble("vat"),
-//                    tableRowForSingleVan.getDouble("grandTotal"),
-//                    tableRowForSingleVan.getDouble("latitude"),
-//                    tableRowForSingleVan.getDouble("longitude"), tableRowForSingleVan.getString("username")
-//            ));
-//        }
-//        return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan, salesOutLateCount,
-//                lastActive, allLineItemCount, totalPrice);
-//    }
-
     public void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
         ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();
         VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
@@ -435,7 +350,6 @@ public class UtilityFunctionsForActivity1 {
             if (context != null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View tableElements = inflater.inflate(R.layout.table_row_vsm_transaction, null);
-//            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
                 TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
                 TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
                 TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);
@@ -456,10 +370,8 @@ public class UtilityFunctionsForActivity1 {
                 TINtextView.setText(row.getTIN());
                 dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
                 itemCountTextview.setText(String.valueOf(row.getItemCount()));
-//                subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
                 subTotalTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getSubTotal()));
                 VATtextView.setText((int) row.getVAT());
-//                totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
                 totalSalesTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSales()));
                 if (vsmTransactionTableLayout != null) {
                     vsmTransactionTableLayout.addView(tableElements);
@@ -520,8 +432,6 @@ public class UtilityFunctionsForActivity1 {
 
     public String formatDateToString2(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
-//        SimpleDateFormat output = new SimpleDateFormat("EEE, MMM yyyy");
         SimpleDateFormat output = new SimpleDateFormat(Constants.dateCriteriaFormat);
 
         Date parsed = null;
@@ -608,29 +518,11 @@ public class UtilityFunctionsForActivity1 {
         } else if (elapsedDays == 0 && elapsedHours == 0 & elapsedMinutes == 0 && elapsedSeconds > 0) {
             return elapsedSeconds + " seconds ago";
         } else
-//            return elapsedDays + " days, " + elapsedHours + " hours, " + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds ago";
             return elapsedSeconds + "";
     }
 
     public String driverStatus(Date startDate, Date endDate) {
         long difference = endDate.getTime() - startDate.getTime();
-//        long secondsInMilli = 1000;
-//        long minutesInMilli = secondsInMilli * 60;
-//        long hoursInMilli = minutesInMilli * 60;
-//        long daysInMilli = hoursInMilli * 24;
-//        long monthsInMilli = daysInMilli * 30;
-//
-//        long elapsedMonths = difference / monthsInMilli;
-//        difference = difference % monthsInMilli;
-//        long elapsedDays = difference / daysInMilli;
-//        difference = difference % daysInMilli;
-//        long elapsedHours = difference / hoursInMilli;
-//        difference = difference % hoursInMilli;
-//        long elapsedMinutes = difference / minutesInMilli;
-//        difference = difference % minutesInMilli;
-
-//        long elapsedSeconds = difference / secondsInMilli;
-
         long elapsedHours = TimeUnit.MILLISECONDS.toHours(difference);
         if (elapsedHours < 1) {
             return "Active";

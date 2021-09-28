@@ -16,7 +16,7 @@
         android:layout_width="75dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="start|center_vertical"
         android:paddingStart="10dp"
         android:text="TextView"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="5dp"
-        android:fontFamily="sans-serif-light"
+
         android:paddingStart="5dp"
         android:singleLine="false"
         android:text="TextView"
@@ -40,7 +40,7 @@
         android:id="@+id/distributorProspectTV"
         android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:text="TextView"
         android:textColor="@color/rowValueColor3"
@@ -50,7 +50,7 @@
         android:id="@+id/distributorEndTimeTV"
         android:layout_width="175dp"
         android:layout_height="match_parent"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:text="TextView"
         android:textColor="@color/rowValueColor3"
@@ -60,7 +60,7 @@
         android:id="@+id/distributorSalesOutletTV"
         android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:text="TextView"
         android:textColor="@color/rowValueColor3"
@@ -70,7 +70,7 @@
         android:id="@+id/distributorSKUcountTV"
         android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:text="TextView"
         android:textColor="@color/rowValueColor3"
@@ -81,7 +81,7 @@
         android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_marginRight="15dp"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:text="TextView"
         android:textColor="@color/rowValueColor3"
@@ -93,7 +93,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/totalValueBackground"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:text="TextView"
         android:textColor="@color/rowValueColor3"

@@ -15,7 +15,7 @@
         android:id="@+id/vsmTransSNtextView"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingStart="10dp"
@@ -29,7 +29,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -41,7 +41,7 @@
         android:id="@+id/vsmTransOutletTextView"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="start|center_vertical"
         android:maxLines="1"
         android:paddingRight="5dp"
@@ -53,7 +53,7 @@
         android:id="@+id/vsmTransTINtextView"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -65,7 +65,7 @@
         android:id="@+id/vsmTransDateNtimeTextV"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -77,7 +77,7 @@
         android:id="@+id/vsmTransItemCountTxtV"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -89,7 +89,7 @@
         android:id="@+id/vsmTransSubTotalTxtv"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -101,7 +101,7 @@
         android:id="@+id/vsmTransVATtextView"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:paddingEnd="5dp"
@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="#3f4152"
-        android:fontFamily="sans-serif-light"
+
         android:gravity="center_vertical|end"
         android:maxLines="1"
         android:text="TextView"

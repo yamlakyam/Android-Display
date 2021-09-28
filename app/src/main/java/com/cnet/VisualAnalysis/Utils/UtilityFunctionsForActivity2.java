@@ -709,7 +709,7 @@ public class UtilityFunctionsForActivity2 {
             tableRowProperty7.setText((row.getGrandTotal() > 0) ? decimalFormat.format(row.getGrandTotal()) :
                     smallDecimlFormat.format(row.getGrandTotal()));
 
-            if(index==0){
+            if (index == 0) {
                 tableRowProperty1.setTextColor(Color.parseColor("#A30000"));
                 tableRowProperty2.setTextColor(Color.parseColor("#A30000"));
                 tableRowProperty3.setTextColor(Color.parseColor("#A30000"));
@@ -717,7 +717,7 @@ public class UtilityFunctionsForActivity2 {
                 tableRowProperty5.setTextColor(Color.parseColor("#A30000"));
                 tableRowProperty6.setTextColor(Color.parseColor("#A30000"));
                 tableRowProperty7.setTextColor(Color.parseColor("#A30000"));
-            }else if(index==1){
+            } else if (index == 1) {
                 tableRowProperty1.setTextColor(Color.parseColor("#FFBF00"));
                 tableRowProperty2.setTextColor(Color.parseColor("#FFBF00"));
                 tableRowProperty3.setTextColor(Color.parseColor("#FFBF00"));
@@ -725,8 +725,7 @@ public class UtilityFunctionsForActivity2 {
                 tableRowProperty5.setTextColor(Color.parseColor("#FFBF00"));
                 tableRowProperty6.setTextColor(Color.parseColor("#FFBF00"));
                 tableRowProperty7.setTextColor(Color.parseColor("#FFBF00"));
-            }
-            else if(index==2){
+            } else if (index == 2) {
                 tableRowProperty1.setTextColor(Color.parseColor("#4ada5f"));
                 tableRowProperty2.setTextColor(Color.parseColor("#4ada5f"));
                 tableRowProperty3.setTextColor(Color.parseColor("#4ada5f"));
@@ -814,7 +813,6 @@ public class UtilityFunctionsForActivity2 {
                 }
             }
 
-
         } else if (chartType.equals(Constants.BAR_TYPE)) {
             if (context != null) {
                 View barElement = LayoutInflater.from(context).inflate(R.layout.bar_chart_layout, null, false);
@@ -833,13 +831,11 @@ public class UtilityFunctionsForActivity2 {
                 }
             }
 
-
         } else {//default lineChart
             if (context != null) {
                 View lineElement = LayoutInflater.from(context).inflate(R.layout.line_chart_layout, null, false);
                 if (viewHolder != null) {
                     viewHolder.addView(lineElement);
-
                     drawDoubleLineChart(lineChartData1, lineChartData2, (LineChart) lineElement, label1, label2);
                 }
             }

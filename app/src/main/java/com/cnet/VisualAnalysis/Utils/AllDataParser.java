@@ -44,6 +44,7 @@ public class AllDataParser {
             allData.setTransitionTimeInMinutes(jsonObject.getString("transitionTimeInSeconds"));
         }
         return allData;
+
     }
 
     public ArrayList<Integer> layoutListParser(JSONObject jsonObject) throws JSONException {

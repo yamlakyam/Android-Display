@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -185,8 +184,6 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
                 }
 
                 if (index == tablesToDisplay.size()) {
-                    Log.i("drawing last row ", "last x days row");
-
                     drawLastTotalRow();
                     new UtilityFunctionsForActivity1().scrollRows(scrollView);
 //                } else if (index == tablesToDisplay.size() + 1 && !SecondActivity.summaryOfLast30DaysPause) {
@@ -203,7 +200,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
                     }
 
                 } else if (index < tablesToDisplay.size()) {
-                    Log.i("drawing ", "last x days row");
+
                     totalLastRow(tablesToDisplay.get(index));
                     new UtilityFunctionsForActivity2().drawSummaryOfLast30Days(tablesToDisplay, getContext(), summaryOfLast30DaysTableLayout, index);
                     new UtilityFunctionsForActivity1().scrollRows(scrollView);
