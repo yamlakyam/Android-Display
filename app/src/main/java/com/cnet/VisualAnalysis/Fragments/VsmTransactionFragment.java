@@ -98,7 +98,6 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
             tablesToDisplay = SplashScreenActivity.allData.getFmcgData().getVsmTableForSingleDistributors();
             inflateAlldistributors(tablesToDisplay, 0, 0);
         }
-
     }
 
     @SuppressLint("HandlerLeak")
@@ -191,7 +190,6 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
                     new UtilityFunctionsForActivity1().drawVsmTransactionTable(allOrgData, getContext(), vsmTransactionTableLayout, distributorIndex, vanIndex, index);
                     new UtilityFunctionsForActivity1().scrollRows(scrollVSMtable);
                 }
-
             }
         };
 
@@ -228,7 +226,6 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
             NumberFormat numberFormat = NumberFormat.getInstance();
 
             numberFormat.setGroupingUsed(true);
-
 
             snTextView.setText("");
 

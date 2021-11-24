@@ -197,7 +197,6 @@ public class FmcgDataParser {
                 }
             }
 
-
         }
 
         return dataForAllDis;

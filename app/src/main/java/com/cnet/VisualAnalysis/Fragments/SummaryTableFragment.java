@@ -149,7 +149,6 @@ public class SummaryTableFragment extends Fragment implements MainActivity.KeyPr
         sumOfTotalSales = sumOfTotalSales + summaryTableRow.getTotalSalesAmountAfterTax();
         sumOfActiveVans = sumOfActiveVans + summaryTableRow.getActiveVans();
         sumOfProspects = sumOfProspects + summaryTableRow.getProspect();
-
     }
 
     public void resetSumOfLastRow() {

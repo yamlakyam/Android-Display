@@ -123,7 +123,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
         branchSummary_textClock.setFormat12Hour("kk:mm:ss");
         branchSummary_textClock.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.digital_7));
 
-
         branchSummaryHeaderTextView = view.findViewById(R.id.branchSummaryHeaderTextView);
         branchSummaryHeaderTextView.append(" on " + new SimpleDateFormat(Constants.dateCriteriaFormat, Locale.getDefault()).format(Calendar.getInstance().getTime()));
         fragment = this;

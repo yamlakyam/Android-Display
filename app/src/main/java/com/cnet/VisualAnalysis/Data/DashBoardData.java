@@ -19,7 +19,6 @@ public class DashBoardData {
 
     ArrayList<VoucherDataForVan> voucherDataForVans;
 
-
     public SummarizedByArticleData getSummarizedByArticleData() {
         return summarizedByArticleData;
     }
@@ -108,7 +107,6 @@ public class DashBoardData {
     public ArrayList<VoucherDataForVan> getVoucherDataForVans() {
         return voucherDataForVans;
     }
-
 
 }
 

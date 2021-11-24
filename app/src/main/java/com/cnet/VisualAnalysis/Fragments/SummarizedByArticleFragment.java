@@ -181,13 +181,11 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                             navigate(fragment);
                         }
                     }
-
                 } else if (index < tablesToDisplay.size()) {
 //                    totalLastRow(tablesToDisplay.get(index));
                     new UtilityFunctionsForActivity2().drawSummaryByArticleTable(tablesToDisplay, getContext(), summarizedByArticleTableLayout, index);
                     new UtilityFunctionsForActivity1().scrollRows(summByArticleScrollView);
                 }
-
 
             }
 
@@ -297,7 +295,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
                     startActivity(new Intent(requireActivity(), VideoActivity.class));
 
 //                    initFragment(dashBoardData, 100);
-
             }
         }
 
@@ -395,7 +392,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         new UtilityFunctionsForActivity2().drawChart(getContext(), chartType, pCardSummByArticle,
                 dashBoardData.getSummarizedByArticleData().pieChartData, dashBoardData.getSummarizedByArticleData().barChartData,
                 dashBoardData.getSummarizedByArticleData().lineChartData, "Summarized by Article");
-
     }
 
 
@@ -418,7 +414,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
             handleRowAnimationThread = null;
-            handleRowAnimationThread.destroy();
         }
         naviagteLeft(fragment);
     }
@@ -428,7 +423,6 @@ public class SummarizedByArticleFragment extends Fragment implements SecondActiv
         if (handleRowAnimationThread != null) {
             handleRowAnimationThread.interrupt();
             handleRowAnimationThread = null;
-
         }
         navigate(fragment);
     }

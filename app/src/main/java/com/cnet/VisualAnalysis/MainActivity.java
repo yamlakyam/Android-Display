@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public interface VsmCardKeyPress {
         void dispatchKey(KeyEvent event);
 

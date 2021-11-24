@@ -236,6 +236,7 @@ public class UtilityFunctionsForActivity1 {
         }
     }
 
+
     public void drawUserReportForAllOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
         if (userReportTableRows != null) {
             UserReportTableRow row = userReportTableRows.get(index);
@@ -462,7 +463,6 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-
     public Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsed = null;
@@ -473,7 +473,6 @@ public class UtilityFunctionsForActivity1 {
         }
         return parsed;
     }
-
 
     public Date peakHourFormatter(String dateTime) {
         SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);

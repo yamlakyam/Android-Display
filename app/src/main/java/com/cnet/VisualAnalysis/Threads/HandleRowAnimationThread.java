@@ -78,10 +78,11 @@ public class HandleRowAnimationThread extends Thread {
         }
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        Log.i("Finalize Called", this + " " + Thread.currentThread() + " finalized");
-        Log.i("Cores", Runtime.getRuntime().availableProcessors() + "");
-    }
+//    @Override
+//    protected void finalize() throws Throwable {
+//        super.finalize();
+//        Log.i("Finalize Called", this + " " + Thread.currentThread() + " finalized");
+//        Log.i("Cores", Runtime.getRuntime().availableProcessors() + "");
+//    }
+
 }

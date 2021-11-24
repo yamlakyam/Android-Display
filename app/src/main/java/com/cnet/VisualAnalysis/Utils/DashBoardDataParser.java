@@ -1,5 +1,7 @@
 package com.cnet.VisualAnalysis.Utils;
 
+import android.util.Log;
+
 import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryData;
 import com.cnet.VisualAnalysis.Data.BranchSummaryTableRow;
@@ -73,15 +75,24 @@ public class DashBoardDataParser {
                 for (int i = 0; i < summaryOfArticle.length(); i++) {
                     JSONObject summaryOfArticleAtInedx = summaryOfArticle.getJSONObject(i);
 
+                    String articleCode = (summaryOfArticleAtInedx.isNull("articleCode")) ? "- - - -" : summaryOfArticleAtInedx.getString("articleCode");
+                    String articleName = (summaryOfArticleAtInedx.isNull("articleName")) ? "- - - -" : summaryOfArticleAtInedx.getString("articleName");
+                    double quantity = (summaryOfArticleAtInedx.isNull("quantity")) ? 0.0 : summaryOfArticleAtInedx.getDouble("quantity");
+                    double avgAmount = (summaryOfArticleAtInedx.isNull("avgAmount")) ? 0.0 : summaryOfArticleAtInedx.getDouble("avgAmount");
+                    double totalAmount = (summaryOfArticleAtInedx.isNull("totalAmount")) ? 0.0 : summaryOfArticleAtInedx.getDouble("totalAmount");
+                    double totalServCharge = (summaryOfArticleAtInedx.isNull("totalServCharge")) ? 0.0 : summaryOfArticleAtInedx.getDouble("totalServCharge");
+                    double totalDiscount = (summaryOfArticleAtInedx.isNull("totalDiscount")) ? 0.0 : summaryOfArticleAtInedx.getDouble("totalDiscount");
+                    double taxAmount = (summaryOfArticleAtInedx.isNull("taxAmount")) ? 0.0 : summaryOfArticleAtInedx.getDouble("taxAmount");
+
                     SummarizedByArticleTableRow summarizedByArticleTableRow = new SummarizedByArticleTableRow(
-                            summaryOfArticleAtInedx.getString("articleCode"),
-                            summaryOfArticleAtInedx.getString("articleName"),
-                            (int) summaryOfArticleAtInedx.getDouble("quantity"),
-                            summaryOfArticleAtInedx.getDouble("avgAmount"),
-                            summaryOfArticleAtInedx.getDouble("totalAmount"),
-                            summaryOfArticleAtInedx.getDouble("totalServCharge"),
-                            summaryOfArticleAtInedx.getDouble("totalDiscount"),
-                            summaryOfArticleAtInedx.getDouble("taxAmount")
+                            articleCode,
+                            articleName,
+                            (int) quantity,
+                            avgAmount,
+                            totalAmount,
+                            totalServCharge,
+                            totalDiscount,
+                            taxAmount
                     );
 
                     double grandTotal = summaryOfArticleAtInedx.getDouble("totalAmount") +
@@ -508,8 +519,14 @@ public class DashBoardDataParser {
 
                     JSONObject voucherObject = vouchers.getJSONObject(j);
                     String outlet = (voucherObject.getString("outlates") == null) ? "- - - - -" : voucherObject.getString("outlates");
-                    VoucherData voucherData = new VoucherData(voucherObject.getString("voucherNo"), outlet, voucherObject.getDouble("grandTotal"),
-                            voucherObject.getDouble("latitude"), voucherObject.getDouble("longitude"), voucherObject.getDouble("taxAmount"),
+                    String voucherNo = (voucherObject.getString("voucherNo") == null) ? "- - - - -" : voucherObject.getString("voucherNo");
+                    double grandTotall = (voucherObject.isNull("grandTotal")) ? 0.0 : voucherObject.getDouble("grandTotal");
+                    double latitude = (voucherObject.isNull("latitude")) ? 0.0 : voucherObject.getDouble("latitude");
+                    double longitude = (voucherObject.isNull("longitude")) ? 0.0 : voucherObject.getDouble("longitude");
+
+                    VoucherData voucherData = new VoucherData(voucherNo,
+                            outlet, voucherObject.getDouble("grandTotal"),
+                            latitude, longitude, voucherObject.getDouble("taxAmount"),
                             voucherObject.getString("tin"), voucherObject.getString("dateAndTime"), voucherObject.getDouble("subTotal"),
                             voucherObject.getString("username"), voucherObject.getInt("itemCount"));
                     voucherDataArrayList.add(voucherData);
@@ -518,8 +535,10 @@ public class DashBoardDataParser {
                 VoucherDataForVan voucherDataForVan = new VoucherDataForVan(org, voucherDataArrayList, grandTotal, transactionCount, lineItems);
                 voucherDataForVanList.add(voucherDataForVan);
             }
+            Log.i("VOUCHER", "WITH VALUE");
             return voucherDataForVanList;
         }
+        Log.i("VOUCHER", "EMPTY");
         return new ArrayList<VoucherDataForVan>();
     }
 
