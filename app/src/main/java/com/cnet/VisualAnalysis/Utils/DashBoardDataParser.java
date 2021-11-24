@@ -134,14 +134,22 @@ public class DashBoardDataParser {
                 for (int i = 0; i < summaryOfParentArticle.length(); i++) {
                     JSONObject summaryOfParentarticleAtInedx = summaryOfParentArticle.getJSONObject(i);
 
+                    String categoryType = summaryOfParentarticleAtInedx.isNull("categoryType") ? "- - - -" : summaryOfParentarticleAtInedx.getString("categoryType");
+                    double quantity = summaryOfParentarticleAtInedx.isNull("quantity") ? 0.0 : summaryOfParentarticleAtInedx.getDouble("quantity");
+                    double avgAmount = summaryOfParentarticleAtInedx.isNull("avgAmount") ? 0.0 : summaryOfParentarticleAtInedx.getDouble("avgAmount");
+                    double totalAmount = summaryOfParentarticleAtInedx.isNull("totalAmount") ? 0.0 : summaryOfParentarticleAtInedx.getDouble("totalAmount");
+                    double totalServCharge = summaryOfParentarticleAtInedx.isNull("totalServCharge") ? 0.0 : summaryOfParentarticleAtInedx.getDouble("totalServCharge");
+                    double totalDiscount = summaryOfParentarticleAtInedx.isNull("totalDiscount") ? 0.0 : summaryOfParentarticleAtInedx.getDouble("totalDiscount");
+                    double taxAmount = summaryOfParentarticleAtInedx.isNull("taxAmount") ? 0.0 : summaryOfParentarticleAtInedx.getDouble("taxAmount");
+
                     SummarizedByParentArticleRow summarizedByParentArticleRow = new SummarizedByParentArticleRow(
-                            summaryOfParentarticleAtInedx.getString("categoryType"),
-                            summaryOfParentarticleAtInedx.getDouble("quantity"),
-                            summaryOfParentarticleAtInedx.getDouble("avgAmount"),
-                            summaryOfParentarticleAtInedx.getDouble("totalAmount"),
-                            summaryOfParentarticleAtInedx.getDouble("totalServCharge"),
-                            summaryOfParentarticleAtInedx.getDouble("totalDiscount"),
-                            summaryOfParentarticleAtInedx.getDouble("taxAmount")
+                            categoryType,
+                            quantity,
+                            avgAmount,
+                            totalAmount,
+                            totalServCharge,
+                            totalDiscount,
+                            taxAmount
                     );
                     tableData.add(summarizedByParentArticleRow);
                     xValues[i] = i;
