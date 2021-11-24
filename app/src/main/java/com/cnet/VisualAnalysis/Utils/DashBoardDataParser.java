@@ -449,10 +449,25 @@ public class DashBoardDataParser {
                     String org = summaryOfBranchArray.getJSONObject(i).getString("org");
                     for (int j = 0; j < userReportArray.length(); j++) {
                         JSONObject userReportForSingleOu = userReportArray.getJSONObject(j);
-                        UserReportTableRow userReportTableRow = new UserReportTableRow(userReportForSingleOu.getString("summaryType"),
-                                userReportForSingleOu.getInt("totalCount"), userReportForSingleOu.getDouble("subTotal"),
-                                userReportForSingleOu.getDouble("additionalCharge"), userReportForSingleOu.getDouble("discount"),
-                                userReportForSingleOu.getDouble("totalTaxAmt"), userReportForSingleOu.getDouble("grandTotal"), org);
+
+                        String summaryType = userReportForSingleOu.isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString())
+                                : userReportForSingleOu.getString("summaryType");
+                        int totalCount = userReportForSingleOu.isNull("totalCount") ? 0 : userReportForSingleOu.getInt("totalCount");
+                        double subTotal = userReportForSingleOu.isNull("subTotal") ? 0.0 : userReportForSingleOu.getDouble("subTotal");
+                        double additionalCharge = userReportForSingleOu.isNull("additionalCharge") ? 0.0 : userReportForSingleOu.getDouble("additionalCharge");
+                        double discount = userReportForSingleOu.isNull("discount") ? 0.0 : userReportForSingleOu.getDouble("discount");
+                        double totalTaxAmt = userReportForSingleOu.isNull("totalTaxAmt") ? 0.0 : userReportForSingleOu.getDouble("totalTaxAmt");
+                        double grandTotal = userReportForSingleOu.isNull("grandTotal") ? 0.0 : userReportForSingleOu.getDouble("grandTotal");
+
+                        UserReportTableRow userReportTableRow = new UserReportTableRow(
+                                summaryType,
+                                totalCount,
+                                subTotal,
+                                additionalCharge,
+                                discount,
+                                totalTaxAmt,
+                                grandTotal
+                                , org);
                         userReportTableRowArrayList.add(userReportTableRow);
                     }
                 }
