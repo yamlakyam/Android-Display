@@ -348,12 +348,18 @@ public class DashBoardDataParser {
                 for (int i = 0; i < summaryOfBranch.length(); i++) {
                     JSONObject branchSummaryAtInedx = summaryOfBranch.getJSONObject(i);
 
+                    String org = branchSummaryAtInedx.isNull("org") ? "- - - -" : branchSummaryAtInedx.getString("org");
+                    double grandTotal = branchSummaryAtInedx.isNull("grandTotal") ? 0.0 : branchSummaryAtInedx.getDouble("grandTotal");
+                    int transactionCount = branchSummaryAtInedx.isNull("transactionCount") ? 0 : branchSummaryAtInedx.getInt("transactionCount");
+                    int lineItems = branchSummaryAtInedx.isNull("lineItems") ? 0 : branchSummaryAtInedx.getInt("lineItems");
+                    String lastActivity = branchSummaryAtInedx.isNull("lastActivity") ? Calendar.getInstance().toString() : branchSummaryAtInedx.getString("lastActivity");
+
                     BranchSummaryTableRow branchSummaryTableRow = new BranchSummaryTableRow(
-                            branchSummaryAtInedx.getString("org"),
-                            branchSummaryAtInedx.getDouble("grandTotal"),
-                            branchSummaryAtInedx.getInt("transactionCount"),
-                            branchSummaryAtInedx.getInt("lineItems"),
-                            branchSummaryAtInedx.getString("lastActivity")
+                            org,
+                            grandTotal,
+                            transactionCount,
+                            lineItems,
+                            lastActivity
                     );
 
                     tableData.add(branchSummaryTableRow);
