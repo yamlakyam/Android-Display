@@ -29,8 +29,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class DashBoardDataParser {
 
@@ -244,7 +248,7 @@ public class DashBoardDataParser {
 
                     String name = last6MonsSummaryAtInedx.isNull("name") ? "- - - -" : last6MonsSummaryAtInedx.getString("name");
                     double amount = last6MonsSummaryAtInedx.isNull("amount") ? 0 : last6MonsSummaryAtInedx.getDouble("amount");
-                    String dateTime = last6MonsSummaryAtInedx.isNull("name") ? Calendar.getInstance().toString() : last6MonsSummaryAtInedx.getString("dateTime");
+                    String dateTime = last6MonsSummaryAtInedx.isNull("name") ? Calendar.getInstance().getTime().toString() : last6MonsSummaryAtInedx.getString("dateTime");
                     int transactionCount = last6MonsSummaryAtInedx.isNull("transactionCount") ? 0 : last6MonsSummaryAtInedx.getInt("transactionCount");
 
                     SummaryOfLast6MonthsRow summaryOfLast6MonthsRow = new SummaryOfLast6MonthsRow(
@@ -295,7 +299,7 @@ public class DashBoardDataParser {
 
                     String name = summaryAtIndex.isNull("name") ? "- - - -" : summaryAtIndex.getString("name");
                     double amount = summaryAtIndex.isNull("amount") ? 0.0 : summaryAtIndex.getDouble("amount");
-                    String dateTime = summaryAtIndex.isNull("dateTime") ? Calendar.getInstance().toString() : summaryAtIndex.getString("dateTime");
+                    String dateTime = summaryAtIndex.isNull("dateTime") ? Calendar.getInstance().getTime().toString() : summaryAtIndex.getString("dateTime");
                     int transactionCount = summaryAtIndex.isNull("transactionCount") ? 0 : summaryAtIndex.getInt("transactionCount");
 
                     SummaryOfLast30DaysRow
@@ -352,7 +356,7 @@ public class DashBoardDataParser {
                     double grandTotal = branchSummaryAtInedx.isNull("grandTotal") ? 0.0 : branchSummaryAtInedx.getDouble("grandTotal");
                     int transactionCount = branchSummaryAtInedx.isNull("transactionCount") ? 0 : branchSummaryAtInedx.getInt("transactionCount");
                     int lineItems = branchSummaryAtInedx.isNull("lineItems") ? 0 : branchSummaryAtInedx.getInt("lineItems");
-                    String lastActivity = branchSummaryAtInedx.isNull("lastActivity") ? Calendar.getInstance().toString() : branchSummaryAtInedx.getString("lastActivity");
+                    String lastActivity = branchSummaryAtInedx.isNull("lastActivity") ? Calendar.getInstance().getTime().toString() : branchSummaryAtInedx.getString("lastActivity");
 
                     BranchSummaryTableRow branchSummaryTableRow = new BranchSummaryTableRow(
                             org,
@@ -394,10 +398,24 @@ public class DashBoardDataParser {
 
                     for (int j = 0; j < userReportArray.length(); j++) {
                         JSONObject userReportForSingleOu = userReportArray.getJSONObject(j);
-                        UserReportTableRow userReportTableRow = new UserReportTableRow(new UtilityFunctionsForActivity1().formatHourNmin(userReportForSingleOu.getString("summaryType")),
-                                userReportForSingleOu.getInt("totalCount"), userReportForSingleOu.getDouble("subTotal"),
-                                userReportForSingleOu.getDouble("additionalCharge"), userReportForSingleOu.getDouble("discount"),
-                                userReportForSingleOu.getDouble("totalTaxAmt"), userReportForSingleOu.getDouble("grandTotal"), org);
+
+                        String summaryType = userReportForSingleOu.isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString()) : userReportForSingleOu.getString("summaryType");
+                        int totalCount = userReportForSingleOu.isNull("totalCount") ? 0 : userReportForSingleOu.getInt("totalCount");
+                        double subTotal = userReportForSingleOu.isNull("subTotal") ? 0.0 : userReportForSingleOu.getDouble("subTotal");
+                        double additionalCharge = userReportForSingleOu.isNull("additionalCharge") ? 0.0 : userReportForSingleOu.getDouble("additionalCharge");
+                        double discount = userReportForSingleOu.isNull("discount") ? 0.0 : userReportForSingleOu.getDouble("discount");
+                        double totalTaxAmt = userReportForSingleOu.isNull("totalTaxAmt") ? 0.0 : userReportForSingleOu.getDouble("totalTaxAmt");
+                        double grandTotal = userReportForSingleOu.isNull("grandTotal") ? 0.0 : userReportForSingleOu.getDouble("grandTotal");
+
+                        UserReportTableRow userReportTableRow = new UserReportTableRow(
+                                new UtilityFunctionsForActivity1().formatHourNmin(summaryType),
+                                totalCount,
+                                subTotal,
+                                additionalCharge,
+                                discount,
+                                totalTaxAmt,
+                                grandTotal,
+                                org);
                         userReportTableRowArrayList.add(userReportTableRow);
 //                    xValues[j] = j + 1;
                         xValues[j] = j;
@@ -650,6 +668,24 @@ public class DashBoardDataParser {
             e.printStackTrace();
         }
     }
+
+
+    public static String formatCalendarForUserReport(String summaryType) {
+        SimpleDateFormat input = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        SimpleDateFormat output = new SimpleDateFormat("MMM dd yyyy hh:mmaa");
+
+        Date parsed = null;
+        String formattedTime = null;
+        try {
+            parsed = input.parse(summaryType);
+            formattedTime = output.format(parsed);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedTime;
+    }
+
 }
 
 
