@@ -293,11 +293,17 @@ public class DashBoardDataParser {
                 for (int i = 0; i < lastDaysOfMonthSale.length(); i++) {
                     JSONObject summaryAtIndex = lastDaysOfMonthSale.getJSONObject(i);
 
-                    SummaryOfLast30DaysRow summaryOfLast30DaysRow = new SummaryOfLast30DaysRow(
-                            summaryAtIndex.getString("name"),
-                            summaryAtIndex.getDouble("amount"),
-                            summaryAtIndex.getString("dateTime"),
-                            summaryAtIndex.getInt("transactionCount")
+                    String name = summaryAtIndex.isNull("name") ? "- - - -" : summaryAtIndex.getString("name");
+                    double amount = summaryAtIndex.isNull("amount") ? 0.0 : summaryAtIndex.getDouble("amount");
+                    String dateTime = summaryAtIndex.isNull("dateTime") ? Calendar.getInstance().toString() : summaryAtIndex.getString("dateTime");
+                    int transactionCount = summaryAtIndex.isNull("transactionCount") ? 0 : summaryAtIndex.getInt("transactionCount");
+
+                    SummaryOfLast30DaysRow
+                            summaryOfLast30DaysRow = new SummaryOfLast30DaysRow(
+                            name,
+                            amount,
+                            dateTime,
+                            transactionCount
                     );
 
                     tableData.add(summaryOfLast30DaysRow);
