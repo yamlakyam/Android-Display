@@ -248,7 +248,7 @@ public class DashBoardDataParser {
 
                     String name = last6MonsSummaryAtInedx.isNull("name") ? "- - - -" : last6MonsSummaryAtInedx.getString("name");
                     double amount = last6MonsSummaryAtInedx.isNull("amount") ? 0 : last6MonsSummaryAtInedx.getDouble("amount");
-                    String dateTime = last6MonsSummaryAtInedx.isNull("name") ? Calendar.getInstance().getTime().toString() : last6MonsSummaryAtInedx.getString("dateTime");
+                    String dateTime = last6MonsSummaryAtInedx.isNull("name") ? formatCalendarTimeForLastX(Calendar.getInstance().getTime().toString()) : last6MonsSummaryAtInedx.getString("dateTime");
                     int transactionCount = last6MonsSummaryAtInedx.isNull("transactionCount") ? 0 : last6MonsSummaryAtInedx.getInt("transactionCount");
 
                     SummaryOfLast6MonthsRow summaryOfLast6MonthsRow = new SummaryOfLast6MonthsRow(
@@ -299,7 +299,8 @@ public class DashBoardDataParser {
 
                     String name = summaryAtIndex.isNull("name") ? "- - - -" : summaryAtIndex.getString("name");
                     double amount = summaryAtIndex.isNull("amount") ? 0.0 : summaryAtIndex.getDouble("amount");
-                    String dateTime = summaryAtIndex.isNull("dateTime") ? Calendar.getInstance().getTime().toString() : summaryAtIndex.getString("dateTime");
+                    String dateTime = summaryAtIndex.isNull("dateTime") ? formatCalendarTimeForLastX(Calendar.getInstance().getTime().toString())
+                            : summaryAtIndex.getString("dateTime");
                     int transactionCount = summaryAtIndex.isNull("transactionCount") ? 0 : summaryAtIndex.getInt("transactionCount");
 
                     SummaryOfLast30DaysRow
@@ -356,7 +357,7 @@ public class DashBoardDataParser {
                     double grandTotal = branchSummaryAtInedx.isNull("grandTotal") ? 0.0 : branchSummaryAtInedx.getDouble("grandTotal");
                     int transactionCount = branchSummaryAtInedx.isNull("transactionCount") ? 0 : branchSummaryAtInedx.getInt("transactionCount");
                     int lineItems = branchSummaryAtInedx.isNull("lineItems") ? 0 : branchSummaryAtInedx.getInt("lineItems");
-                    String lastActivity = branchSummaryAtInedx.isNull("lastActivity") ? Calendar.getInstance().getTime().toString() : branchSummaryAtInedx.getString("lastActivity");
+                    String lastActivity = branchSummaryAtInedx.isNull("lastActivity") ? formatCalendarTimeForLastX(Calendar.getInstance().getTime().toString()) : branchSummaryAtInedx.getString("lastActivity");
 
                     BranchSummaryTableRow branchSummaryTableRow = new BranchSummaryTableRow(
                             org,
@@ -399,7 +400,7 @@ public class DashBoardDataParser {
                     for (int j = 0; j < userReportArray.length(); j++) {
                         JSONObject userReportForSingleOu = userReportArray.getJSONObject(j);
 
-                        String summaryType = userReportForSingleOu.isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString()) : userReportForSingleOu.getString("summaryType");
+                        String summaryType = userReportForSingleOu.isNull("summaryType") ? formatCalendarForFigureReport(Calendar.getInstance().getTime().toString()) : userReportForSingleOu.getString("summaryType");
                         int totalCount = userReportForSingleOu.isNull("totalCount") ? 0 : userReportForSingleOu.getInt("totalCount");
                         double subTotal = userReportForSingleOu.isNull("subTotal") ? 0.0 : userReportForSingleOu.getDouble("subTotal");
                         double additionalCharge = userReportForSingleOu.isNull("additionalCharge") ? 0.0 : userReportForSingleOu.getDouble("additionalCharge");
@@ -450,7 +451,7 @@ public class DashBoardDataParser {
                     for (int j = 0; j < userReportArray.length(); j++) {
                         JSONObject userReportForSingleOu = userReportArray.getJSONObject(j);
 
-                        String summaryType = userReportForSingleOu.isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString())
+                        String summaryType = userReportForSingleOu.isNull("summaryType") ? formatCalendarForFigureReport(Calendar.getInstance().getTime().toString())
                                 : userReportForSingleOu.getString("summaryType");
                         int totalCount = userReportForSingleOu.isNull("totalCount") ? 0 : userReportForSingleOu.getInt("totalCount");
                         double subTotal = userReportForSingleOu.isNull("subTotal") ? 0.0 : userReportForSingleOu.getDouble("subTotal");
@@ -504,7 +505,7 @@ public class DashBoardDataParser {
                     for (int j = 0; j < figureReportArray.length(); j++) {
                         JSONObject singleFigureReportObject = figureReportArray.getJSONObject(j);
 
-                        String summaryType = singleFigureReportObject.isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString())
+                        String summaryType = singleFigureReportObject.isNull("summaryType") ? formatCalendarForFigureReport(Calendar.getInstance().getTime().toString())
                                 : singleFigureReportObject.getString("summaryType");
                         int totalCount = singleFigureReportObject.isNull("totalCount") ? 0 : singleFigureReportObject.getInt("totalCount");
                         double grandTotal = singleFigureReportObject.isNull("grandTotal") ? 0.0 : singleFigureReportObject.getDouble("grandTotal");
@@ -560,7 +561,7 @@ public class DashBoardDataParser {
 
                     for (int j = 0; j < figureReportDatForEach.length(); j++) {
 
-                        String summaryType = figureReportDatForEach.getJSONObject(j).isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString())
+                        String summaryType = figureReportDatForEach.getJSONObject(j).isNull("summaryType") ? formatCalendarForFigureReport(Calendar.getInstance().getTime().toString())
                                 : figureReportDatForEach.getJSONObject(j).getString("summaryType");
                         int totalCount = figureReportDatForEach.getJSONObject(j).isNull("totalCount") ? 0 : figureReportDatForEach.getJSONObject(j).getInt("totalCount");
                         double grandTotal = figureReportDatForEach.getJSONObject(j).isNull("grandTotal") ? 0.0 : figureReportDatForEach.getJSONObject(j).getDouble("grandTotal");
@@ -699,8 +700,7 @@ public class DashBoardDataParser {
         }
     }
 
-
-    public static String formatCalendarForUserReport(String summaryType) {
+    public static String formatCalendarForFigureReport(String summaryType) {
         SimpleDateFormat input = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         SimpleDateFormat output = new SimpleDateFormat("MMM dd yyyy hh:mmaa");
 
@@ -708,6 +708,22 @@ public class DashBoardDataParser {
         String formattedTime = null;
         try {
             parsed = input.parse(summaryType);
+            formattedTime = output.format(parsed);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedTime;
+    }
+
+    public static String formatCalendarTimeForLastX(String dateTime) {
+        SimpleDateFormat input = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        SimpleDateFormat output = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ss");
+
+        Date parsed = null;
+        String formattedTime = null;
+        try {
+            parsed = input.parse(dateTime);
             formattedTime = output.format(parsed);
 
         } catch (ParseException e) {
