@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class DashBoardDataParser {
 
@@ -241,11 +242,16 @@ public class DashBoardDataParser {
                 for (int i = 0; i < last6MonthsSale.length(); i++) {
                     JSONObject last6MonsSummaryAtInedx = last6MonthsSale.getJSONObject(i);
 
+                    String name = last6MonsSummaryAtInedx.isNull("name") ? "- - - -" : last6MonsSummaryAtInedx.getString("name");
+                    double amount = last6MonsSummaryAtInedx.isNull("amount") ? 0 : last6MonsSummaryAtInedx.getDouble("amount");
+                    String dateTime = last6MonsSummaryAtInedx.isNull("name") ? Calendar.getInstance().toString() : last6MonsSummaryAtInedx.getString("dateTime");
+                    int transactionCount = last6MonsSummaryAtInedx.isNull("transactionCount") ? 0 : last6MonsSummaryAtInedx.getInt("transactionCount");
+
                     SummaryOfLast6MonthsRow summaryOfLast6MonthsRow = new SummaryOfLast6MonthsRow(
-                            last6MonsSummaryAtInedx.getString("name"),
-                            last6MonsSummaryAtInedx.getDouble("amount"),
-                            last6MonsSummaryAtInedx.getString("dateTime"),
-                            last6MonsSummaryAtInedx.getInt("transactionCount")
+                            name,
+                            amount,
+                            dateTime,
+                            transactionCount
                     );
                     tableData.add(summaryOfLast6MonthsRow);
 
