@@ -504,8 +504,17 @@ public class DashBoardDataParser {
                     for (int j = 0; j < figureReportArray.length(); j++) {
                         JSONObject singleFigureReportObject = figureReportArray.getJSONObject(j);
 
-                        FigureReportDataElements figureReportDataElements = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
-                                singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
+                        String summaryType = singleFigureReportObject.isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString())
+                                : singleFigureReportObject.getString("summaryType");
+                        int totalCount = singleFigureReportObject.isNull("totalCount") ? 0 : singleFigureReportObject.getInt("totalCount");
+                        double grandTotal = singleFigureReportObject.isNull("grandTotal") ? 0.0 : singleFigureReportObject.getDouble("grandTotal");
+
+                        FigureReportDataElements figureReportDataElements = new FigureReportDataElements(
+                                summaryType,
+                                totalCount,
+                                grandTotal,
+                                org);
+
                         figureReportDataElementsArrayList.add(figureReportDataElements);
 
                         xValues[j] = j + 1;
@@ -550,10 +559,16 @@ public class DashBoardDataParser {
                     double grandTotalSum = 0;
 
                     for (int j = 0; j < figureReportDatForEach.length(); j++) {
+
+                        String summaryType = figureReportDatForEach.getJSONObject(j).isNull("summaryType") ? formatCalendarForUserReport(Calendar.getInstance().getTime().toString())
+                                : figureReportDatForEach.getJSONObject(j).getString("summaryType");
+                        int totalCount = figureReportDatForEach.getJSONObject(j).isNull("totalCount") ? 0 : figureReportDatForEach.getJSONObject(j).getInt("totalCount");
+                        double grandTotal = figureReportDatForEach.getJSONObject(j).isNull("grandTotal") ? 0.0 : figureReportDatForEach.getJSONObject(j).getDouble("grandTotal");
+
                         FigureReportDataElements figureReportDataElements = new FigureReportDataElements(
-                                figureReportDatForEach.getJSONObject(j).getString("summaryType"),
-                                figureReportDatForEach.getJSONObject(j).getInt("totalCount"),
-                                figureReportDatForEach.getJSONObject(j).getDouble("grandTotal"),
+                                summaryType,
+                                totalCount,
+                                grandTotal,
                                 org);
                         figureReportTableRowArrayList.add(figureReportDataElements);
 
