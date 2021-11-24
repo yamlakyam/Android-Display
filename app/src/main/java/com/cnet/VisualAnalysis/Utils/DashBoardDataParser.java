@@ -601,17 +601,31 @@ public class DashBoardDataParser {
                 for (int j = 0; j < vouchers.length(); j++) {
 
                     JSONObject voucherObject = vouchers.getJSONObject(j);
-                    String outlet = (voucherObject.getString("outlates") == null) ? "- - - - -" : voucherObject.getString("outlates");
-                    String voucherNo = (voucherObject.getString("voucherNo") == null) ? "- - - - -" : voucherObject.getString("voucherNo");
+                    String outlet = (voucherObject.isNull("outlates")) ? "- - - - -" : voucherObject.getString("outlates");
+                    String voucherNo = (voucherObject.isNull("voucherNo")) ? "- - - - -" : voucherObject.getString("voucherNo");
                     double grandTotall = (voucherObject.isNull("grandTotal")) ? 0.0 : voucherObject.getDouble("grandTotal");
                     double latitude = (voucherObject.isNull("latitude")) ? 0.0 : voucherObject.getDouble("latitude");
                     double longitude = (voucherObject.isNull("longitude")) ? 0.0 : voucherObject.getDouble("longitude");
+                    double taxAmount = (voucherObject.isNull("taxAmount")) ? 0.0 : voucherObject.getDouble("taxAmount");
+                    String tin = (voucherObject.isNull("tin")) ? "- - - -" : voucherObject.getString("tin");
+                    String dateAndTime = (voucherObject.isNull("dateAndTime")) ? formatCalendarTimeForLastX(Calendar.getInstance().getTime().toString())
+                            : voucherObject.getString("dateAndTime");
+                    double subTotal = (voucherObject.isNull("subTotal")) ? 0.0 : voucherObject.getDouble("subTotal");
+                    String username = voucherObject.isNull("username") ? "- - - -" : voucherObject.getString("username");
+                    int itemCount = voucherObject.isNull("itemCount") ? 0 : voucherObject.getInt("itemCount");
+
 
                     VoucherData voucherData = new VoucherData(voucherNo,
-                            outlet, voucherObject.getDouble("grandTotal"),
-                            latitude, longitude, voucherObject.getDouble("taxAmount"),
-                            voucherObject.getString("tin"), voucherObject.getString("dateAndTime"), voucherObject.getDouble("subTotal"),
-                            voucherObject.getString("username"), voucherObject.getInt("itemCount"));
+                            outlet,
+                            grandTotall,
+                            latitude,
+                            longitude,
+                            taxAmount,
+                            tin,
+                            dateAndTime,
+                            subTotal,
+                            username,
+                            itemCount);
                     voucherDataArrayList.add(voucherData);
 
                 }
