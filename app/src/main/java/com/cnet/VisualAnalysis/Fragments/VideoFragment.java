@@ -1,5 +1,6 @@
 package com.cnet.VisualAnalysis.Fragments;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
 
@@ -74,7 +76,9 @@ public class VideoFragment extends Fragment {
         } else if (SplashScreenActivity.allData.getLayoutList().contains(12) && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null) {
             navController.navigate(R.id.peakHourReportFragment);
         } else if (SplashScreenActivity.allData.getLayoutList().contains(1) && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null) {
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
         } else {
             playVideo();
         }

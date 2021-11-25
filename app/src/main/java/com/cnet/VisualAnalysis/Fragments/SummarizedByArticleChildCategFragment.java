@@ -34,6 +34,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummarizedByChildArticleRow;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -308,7 +309,9 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
         else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
 //        else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
 //                SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
 //                && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
@@ -337,7 +340,9 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
             else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                     SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                     && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-                navController.navigate(R.id.mapsFragment);
+//                navController.navigate(R.id.mapsFragment);
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
+
 //                startActivity(new Intent(requireActivity(), MapsActivity.class));
 //                navController.navigate(R.id.vansOfASingleOrganizationFragment);
             else if (SplashScreenActivity.allData.getLayoutList().contains(12) &&

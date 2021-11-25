@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Set;
 
 
 public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
@@ -50,7 +51,6 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
     TextView parameter2;
     TextView parameter3;
     public static boolean mapPaused;
-
     TextView grandTotalText;
     TextView nameTextView;
     TextView timeTextView;
@@ -84,7 +84,6 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
         public void onMapReady(GoogleMap googleMap) {
 
             Log.i("onMapReady", Thread.currentThread().getName());
-
             gmap = googleMap;
             drawAvailableReportFromMap(googleMap);
         }
@@ -279,6 +278,8 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                             builder.include(loc);
                         }
                         ArrayList<VoucherData> vsmTransactionTableRows = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList;
+
+
                         drawMarkerWithInfo(googleMap, loc, vsmTransactionTableRows, index);
                     }
                 }
@@ -287,7 +288,6 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
         handleRowAnimationThread = new MarkerDrawingThread(SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size(), animationHandler, 1000);
 //        Log.i("handleThread", "handleRowAnimationThread: ");
         handleRowAnimationThread.start();
-
     }
 
     private void drawMarkerWithInfo(GoogleMap googleMap, LatLng
@@ -331,6 +331,7 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
                             if (driverNameText != null) {
                                 driverNameText.setText(vsmTransactionTableRows.get(index).getUsername());
                             }
+                            justLogsAboutThreads();
                         }
 
                     }
@@ -716,5 +717,21 @@ public class MapsFragment extends Fragment implements SecondActivity.KeyPress {
         }
 //        Log.i("INTERRUPTED", handleRowAnimationThread.isInterrupted+"");
     }
+
+
+    public void justLogsAboutThreads() {
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+
+        Log.i("ThreadSets-whileOnMAp", threadSet.toString());
+        Log.i("ThreadSetCount-whileOnMAp", threadSet.size() + "");
+        Log.i("Active Count-whileOnMAp", Thread.activeCount() + "");
+
+        Runtime runtime = Runtime.getRuntime();
+        long usedMemInMB = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
+        long maxHeapSizeInMB = runtime.maxMemory() / 1048576L;
+        long availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB;
+        Log.i("availHeapSizeInMB-whileOnMAp", availHeapSizeInMB + "");
+    }
+
 
 }

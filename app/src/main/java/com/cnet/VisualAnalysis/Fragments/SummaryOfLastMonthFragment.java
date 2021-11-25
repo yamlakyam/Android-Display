@@ -35,6 +35,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.SummaryOfLast30DaysRow;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -298,7 +299,9 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
         else
             startActivity(new Intent(requireActivity(), VideoActivity.class));
 
@@ -326,7 +329,9 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
         else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
         else if (SplashScreenActivity.allData.getLayoutList().contains(12) &&
                 SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null
                 && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0)

@@ -72,11 +72,12 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     KeyPress keyPress;
 
-    public static int vanIndex = 0;
+    public static int vanIndex;
 
-    ArrayList<Integer> layouts;
+    ArrayList<Integer> layouts = SplashScreenActivity.allData.getLayoutList();
 
     String lastActivty;
+    int lastActivtyFragmentId;
     String deviceID;
 
     @Override
@@ -87,10 +88,10 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         refreshingConstraintLayout = findViewById(R.id.refreshingConstraintLayout);
 
         Log.i("Van-Index-Before", vanIndex + "");
-        vanIndex = 0;
+//        vanIndex = 0;
 
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Log.i("ThreadSets-onCreate", threadSet.toString());
+//        Log.i("ThreadSets-onCreate", threadSet.toString());
         Log.i("ThreadSetCount-onCreate", threadSet.size() + "");
 
         context = SecondActivity.this;
@@ -102,7 +103,13 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         lastActivty = intent.getStringExtra("prevvvvvvv-activity");
         refreshingConstraintLayout = findViewById(R.id.refreshingConstraintLayout);
 
-        if (lastActivty != null) {
+        lastActivtyFragmentId = intent.getIntExtra("From Map", 0);
+
+        if (lastActivtyFragmentId == R.id.userReportForEachOusFragment) {
+            setHomeFragment(R.id.userReportForEachOusFragment);
+        } else if (lastActivtyFragmentId == R.id.peakHourReportFragment) {
+            setHomeFragment(R.id.peakHourReportFragment);
+        } else if (lastActivty != null) {
             Log.i("FROM_VID", "onCreate: ");
             refreshingConstraintLayout.setVisibility(ConstraintLayout.VISIBLE);
             VolleyHttp http = new VolleyHttp(getApplicationContext());
@@ -208,6 +215,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         refreshingConstraintLayout.setVisibility(View.GONE);
 
         if (mappedFragment() != null) {
+
             setHomeFragment();
         } else {
             Log.i("ANIMATION_CALLED-1", "onFailure: ");
@@ -237,13 +245,18 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         if (SplashScreenActivity.allData != null) {
             if (SplashScreenActivity.allData.getDashBoardData() != null) {
                 if (!SplashScreenActivity.allData.getLayoutList().isEmpty()) {
-                    graph.setStartDestination(mappedFragment());
-                    NavController navController = navHostFragment.getNavController();
-                    navController.setGraph(graph);
+                    if (layouts.contains(3) || layouts.contains(4) || layouts.contains(5) ||
+                            layouts.contains(6) || layouts.contains(7) || layouts.contains(8) ||
+                            layouts.contains(9) || layouts.contains(10) || layouts.contains(11) || layouts.contains(12)) {
+                        graph.setStartDestination(mappedFragment());
+                        NavController navController = navHostFragment.getNavController();
+                        navController.setGraph(graph);
+                    } else if (layouts.contains(1)) {
+                        startActivity(new Intent(this, MapsActivity.class));
+                    }
+
                 } else {
                     Log.i("ANIMATION_CALLED-6", "onFailure: ");
-
-
                     startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
                 }
             }
@@ -433,7 +446,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         super.onStop();
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
 
-
         Log.i("ThreadSets-onStop", threadSet.toString());
         Log.i("ThreadSetCount-onStop", threadSet.size() + "");
         Log.i("Active Count", Thread.activeCount() + "");
@@ -445,7 +457,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         Log.i("availHeapSizeInMB", availHeapSizeInMB + "");
 //        System.gc();
 //        Runtime.getRuntime().freeMemory();
-
     }
 
     @Override

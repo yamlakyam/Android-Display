@@ -26,14 +26,15 @@ import org.json.JSONObject;
 public class VideoActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
     VideoView videoView;
-
     String deviceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-
+        Log.i("TAG -- ", "onCreate: ");
+        SecondActivity.vanIndex = 0;
+        Log.i("VAN RESET", "onCreate: ");
         Context context = VideoActivity.this;
         deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -101,7 +102,6 @@ public class VideoActivity extends AppCompatActivity implements VolleyHttp.GetRe
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

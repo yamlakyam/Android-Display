@@ -204,10 +204,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
             Collections.sort(branchSummaryTableRows, new Comparator<BranchSummaryTableRow>() {
                 @Override
                 public int compare(BranchSummaryTableRow o1, BranchSummaryTableRow o2) {
-                    return new UtilityFunctionsForActivity1().formatTime(o2.getLastActivity())
-                            .compareTo(new UtilityFunctionsForActivity1().formatTime(o1.getLastActivity()));
-
-
+                    return new UtilityFunctionsForActivity1().formatTime(o1.getLastActivity())
+                            .compareTo(new UtilityFunctionsForActivity1().formatTime(o2.getLastActivity()));
                 }
             });
         } catch (Exception e) {
@@ -319,6 +317,8 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
+
+
         else {
             startActivity(new Intent(requireActivity(), VideoActivity.class));
         }

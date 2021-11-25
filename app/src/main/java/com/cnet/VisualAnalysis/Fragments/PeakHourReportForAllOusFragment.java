@@ -29,6 +29,7 @@ import com.cnet.VisualAnalysis.Data.BarChartData;
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.Data.LineChartData;
 import com.cnet.VisualAnalysis.Data.PieChartData;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -306,7 +307,8 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
         else if (SplashScreenActivity.allData.getLayoutList().contains(3) &&
                 SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData() != null
                 && SplashScreenActivity.allData.getDashBoardData().getSummarizedByArticleData().tableData.size() > 0)
@@ -376,7 +378,9 @@ public class PeakHourReportForAllOusFragment extends Fragment implements SecondA
         else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
         else if (SplashScreenActivity.allData.getLayoutList().contains(12) &&
                 SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch() != null
                 && SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().size() > 0)

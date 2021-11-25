@@ -32,6 +32,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.UserReportTableRow;
+import com.cnet.VisualAnalysis.MapsActivity;
 import com.cnet.VisualAnalysis.R;
 import com.cnet.VisualAnalysis.SecondActivity;
 import com.cnet.VisualAnalysis.SplashScreenActivity;
@@ -166,7 +167,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0) {
 
                     if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
-                        navController.navigate(R.id.mapsFragment);
+//                        navController.navigate(R.id.mapsFragment);
+                        startActivity(new Intent(requireActivity(), MapsActivity.class));
+
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                         interruptThread();
@@ -190,7 +193,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         navController = NavHostFragment.findNavController(fragment);
         if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0) {
             if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
-                navController.navigate(R.id.mapsFragment);
+//                navController.navigate(R.id.mapsFragment);
+                startActivity(new Intent(requireActivity(), MapsActivity.class));
             } else {
 
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
@@ -335,7 +339,8 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
 
                     if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
-                        navController.navigate(R.id.mapsFragment);
+//                        navController.navigate(R.id.mapsFragment);
+                        startActivity(new Intent(requireActivity(), MapsActivity.class));
                     } else {
                         SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                         interruptThread();
@@ -348,7 +353,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
                 }
             } else if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                 if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
-                    navController.navigate(R.id.mapsFragment);
+//                    navController.navigate(R.id.mapsFragment);
+                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
                     interruptThread();
@@ -381,7 +388,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         if (SecondActivity.vanIndex >= 0) {
             if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                 if (SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(SecondActivity.vanIndex).voucherDataArrayList.size() > 0) {
-                    navController.navigate(R.id.mapsFragment);
+//                    navController.navigate(R.id.mapsFragment);
+                    startActivity(new Intent(requireActivity(), MapsActivity.class));
+
                 } else if (SplashScreenActivity.allData.getLayoutList().contains(12)) {
                     if (SplashScreenActivity.allData.getDashBoardData().getFigureReportDataforEachBranch().get(SecondActivity.vanIndex).figureReportDataElementsArrayList.size() > 0) {
                         navController.navigate(R.id.peakHourReportFragment);
@@ -432,7 +441,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
         else {
             startActivity(new Intent(requireActivity(), VideoActivity.class));
         }
@@ -475,7 +486,9 @@ public class UserReportForEachOuFragment extends Fragment implements SecondActiv
         else if (SplashScreenActivity.allData.getLayoutList().contains(1) &&
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
-            navController.navigate(R.id.mapsFragment);
+//            navController.navigate(R.id.mapsFragment);
+            startActivity(new Intent(requireActivity(), MapsActivity.class));
+
         else if (SplashScreenActivity.allData.getLayoutList().contains(10) &&
                 SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch() != null
                 && SplashScreenActivity.allData.getDashBoardData().getUserReportForEachBranch().size() > 0)
