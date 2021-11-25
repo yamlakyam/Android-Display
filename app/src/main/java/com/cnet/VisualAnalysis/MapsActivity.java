@@ -43,7 +43,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView parameter2;
     TextView parameter3;
 
-    boolean mapPaused = false;
+    public static boolean mapPaused;
     public ArrayList<VoucherDataForVan> vansToDisplay;
 
     GoogleMap gmap;
@@ -83,6 +83,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this::onMapReady);
+        }
+
+        if (!SecondActivity.pausedstate()) {
+            mapPaused = false;
+        } else {
+            mapPaused = true;
         }
     }
 

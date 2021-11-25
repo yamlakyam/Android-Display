@@ -394,8 +394,9 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = true;
         UserReportForAllOusFragment.userReportForAllPaused = true;
         UserReportForEachOuFragment.userReportForEachPaused = true;
-        MapsFragment.mapPaused = true;
-//        VansOfASingleOrganizationFragment.vanListPaused = true;
+//        MapsFragment.mapPaused = true;
+        MapsActivity.mapPaused = true;
+
 
     }
 
@@ -410,7 +411,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused = false;
         UserReportForAllOusFragment.userReportForAllPaused = false;
         UserReportForEachOuFragment.userReportForEachPaused = false;
-        MapsFragment.mapPaused = false;
+//        MapsFragment.mapPaused = false;
+        MapsActivity.mapPaused = false;
 
 //        VansOfASingleOrganizationFragment.vanListPaused = false;
     }
@@ -426,7 +428,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
                 SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused == true ||
                 UserReportForAllOusFragment.userReportForAllPaused == true ||
                 UserReportForEachOuFragment.userReportForEachPaused == true ||
-                MapsFragment.mapPaused == true) {
+//                MapsFragment.mapPaused == true) {
+                MapsActivity.mapPaused == true) {
             return true;
         }
         return false;
