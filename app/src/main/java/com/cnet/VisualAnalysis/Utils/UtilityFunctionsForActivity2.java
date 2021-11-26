@@ -710,13 +710,13 @@ public class UtilityFunctionsForActivity2 {
                     smallDecimlFormat.format(row.getGrandTotal()));
 
             if (index == 0) {
-                tableRowProperty1.setTextColor(Color.parseColor("#A30000"));
-                tableRowProperty2.setTextColor(Color.parseColor("#A30000"));
-                tableRowProperty3.setTextColor(Color.parseColor("#A30000"));
-                tableRowProperty4.setTextColor(Color.parseColor("#A30000"));
-                tableRowProperty5.setTextColor(Color.parseColor("#A30000"));
-                tableRowProperty6.setTextColor(Color.parseColor("#A30000"));
-                tableRowProperty7.setTextColor(Color.parseColor("#A30000"));
+                tableRowProperty1.setTextColor(Color.parseColor("#FF5349"));
+                tableRowProperty2.setTextColor(Color.parseColor("#FF5349"));
+                tableRowProperty3.setTextColor(Color.parseColor("#FF5349"));
+                tableRowProperty4.setTextColor(Color.parseColor("#FF5349"));
+                tableRowProperty5.setTextColor(Color.parseColor("#FF5349"));
+                tableRowProperty6.setTextColor(Color.parseColor("#FF5349"));
+                tableRowProperty7.setTextColor(Color.parseColor("#FF5349"));
             } else if (index == 1) {
                 tableRowProperty1.setTextColor(Color.parseColor("#FFBF00"));
                 tableRowProperty2.setTextColor(Color.parseColor("#FFBF00"));
@@ -725,15 +725,16 @@ public class UtilityFunctionsForActivity2 {
                 tableRowProperty5.setTextColor(Color.parseColor("#FFBF00"));
                 tableRowProperty6.setTextColor(Color.parseColor("#FFBF00"));
                 tableRowProperty7.setTextColor(Color.parseColor("#FFBF00"));
-            } else if (index == 2) {
-                tableRowProperty1.setTextColor(Color.parseColor("#4ada5f"));
-                tableRowProperty2.setTextColor(Color.parseColor("#4ada5f"));
-                tableRowProperty3.setTextColor(Color.parseColor("#4ada5f"));
-                tableRowProperty4.setTextColor(Color.parseColor("#4ada5f"));
-                tableRowProperty5.setTextColor(Color.parseColor("#4ada5f"));
-                tableRowProperty6.setTextColor(Color.parseColor("#4ada5f"));
-                tableRowProperty7.setTextColor(Color.parseColor("#4ada5f"));
             }
+//            else if (index == 2) {
+//                tableRowProperty1.setTextColor(Color.parseColor("#4ada5f"));
+//                tableRowProperty2.setTextColor(Color.parseColor("#4ada5f"));
+//                tableRowProperty3.setTextColor(Color.parseColor("#4ada5f"));
+//                tableRowProperty4.setTextColor(Color.parseColor("#4ada5f"));
+//                tableRowProperty5.setTextColor(Color.parseColor("#4ada5f"));
+//                tableRowProperty6.setTextColor(Color.parseColor("#4ada5f"));
+//                tableRowProperty7.setTextColor(Color.parseColor("#4ada5f"));
+//            }
 
             branchSummaryTableLayout.addView(tableElements);
             animateBottomToTop(branchSummaryTableLayout, tableElements);

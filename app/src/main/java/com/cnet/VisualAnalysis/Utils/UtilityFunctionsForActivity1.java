@@ -67,7 +67,7 @@ public class UtilityFunctionsForActivity1 {
         if (context != null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary, null, false);
-            View tableElements =inflater.inflate(R.layout.table_row_summary, null, false);
+            View tableElements = inflater.inflate(R.layout.table_row_summary, null, false);
 
             TextView serialNumberTextView = tableElements.findViewById(R.id.serialNumberTextView);
             TextView distributorNameTextView = tableElements.findViewById(R.id.distributorNameTextView);
@@ -201,7 +201,7 @@ public class UtilityFunctionsForActivity1 {
 
             View tableElements = null;
             try {
-                if(context!=null){
+                if (context != null) {
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
                 }
@@ -507,13 +507,25 @@ public class UtilityFunctionsForActivity1 {
         if (elapsedMonths > 7) {
             return " long ago";
         } else if (elapsedMonths > 0) {
+            if (elapsedMonths == 1) {
+                return elapsedMonths + " month ago";
+            }
             return elapsedMonths + " months ago";
         } else if (elapsedMonths == 0 && elapsedDays > 0) {
+            if (elapsedDays == 1) {
+                return elapsedDays + " day ago";
+            }
             return elapsedDays + " days ago";
         } else if (elapsedDays == 0 && elapsedHours > 0) {
-            return elapsedHours + " hours ago";
+            if (elapsedHours == 1) {
+                return elapsedHours + " hr ago";
+            }
+            return elapsedHours + " hrs ago";
         } else if (elapsedDays == 0 && elapsedHours == 0 & elapsedMinutes > 0) {
-            return elapsedMinutes + " minutes ago";
+            if (elapsedMinutes == 1) {
+                return elapsedMinutes + " min ago";
+            }
+            return elapsedMinutes + " mins ago";
         } else if (elapsedDays == 0 && elapsedHours == 0 & elapsedMinutes == 0 && elapsedSeconds > 0) {
             return elapsedSeconds + " seconds ago";
         } else

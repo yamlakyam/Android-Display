@@ -317,8 +317,6 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
                 SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans() != null
                 && SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().size() > 0)
             navController.navigate(R.id.mapsFragment);
-
-
         else {
             startActivity(new Intent(requireActivity(), VideoActivity.class));
         }

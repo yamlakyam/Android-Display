@@ -8,10 +8,37 @@
         <entry key="..\:/dev/Native/Display/app/src/main/res/layout/activity_maps.xml" value="0.4140625" />
         <entry key="..\:/dev/Native/Display/app/src/main/res/layout/activity_second.xml" value="0.22972972972972974" />
         <entry key="..\:/dev/Native/Display/app/src/main/res/layout/activity_video.xml" value="0.26444833625218916" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/figure_report_for_all_table_row.xml" value="0.4144144144144144" />
         <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_branch_summary.xml" value="0.42162162162162165" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_distributor_table.xml" value="0.4144144144144144" />
         <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_maps.xml" value="0.4140625" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_peak_hour_report.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_peak_hour_report_for_all_ous.xml" value="0.4144144144144144" />
         <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_summarized_by_article.xml" value="0.18213660245183888" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_summarized_by_article_child_categ.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_summarized_by_article_parent_categ.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_summary_of_last_month.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_summary_of_last_six_months.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_summary_table.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_user_report_for_all_ous.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_user_report_for_each_ou.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_vans_of_a_single_organization.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_video.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_vsm_card.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/fragment_vsm_transaction.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/line_chart_layout.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/map_overlay.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/pie_chart_layout.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/splash_screen.xml" value="0.4144144144144144" />
         <entry key="..\:/dev/Native/Display/app/src/main/res/layout/table_row_branch_summary.xml" value="0.4099099099099099" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/table_row_distributor.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/table_row_summary.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/table_row_summary_by_article.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/table_row_summary_by_parent_article.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/table_row_vans_of_single_org.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/table_row_vsm_transaction.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/user_report_for_all_table_row.xml" value="0.4144144144144144" />
+        <entry key="..\:/dev/Native/Display/app/src/main/res/layout/vsm_card_element.xml" value="0.4144144144144144" />
       </map>
     </option>
   </component>
