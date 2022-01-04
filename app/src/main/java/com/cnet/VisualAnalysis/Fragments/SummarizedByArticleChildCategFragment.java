@@ -83,12 +83,6 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
 
         }
 
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                SummaryOfLastMonthFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -167,7 +161,9 @@ public class SummarizedByArticleChildCategFragment extends Fragment implements S
                 } else if (index == tablesToDisplay.size() + 1) {
 
                     if (summByChildArticlePaused) {
-                        handleRowAnimationThread.interrupt();
+                        if(handleRowAnimationThread!=null){
+                            handleRowAnimationThread.interrupt();
+                        }
                     } else {
                         navigate(fragment);
                     }

@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -42,19 +40,6 @@ import org.json.JSONObject;
 
 public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetRequest {
 
-    @Override
-    public void onSuccess(JSONObject jsonObject) throws JSONException {
-
-        AllDataParser allDataParser = new AllDataParser(jsonObject);
-        SplashScreenActivity.allData = allDataParser.parseAllData();
-        Log.i("updated", "onSuccess: ");
-    }
-
-    @Override
-    public void onFailure(VolleyError error) {
-
-    }
-
     public interface KeyPress {
         void centerKey();
 
@@ -64,9 +49,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     }
 
     public static DashBoardData dashBoardData;
-
     NavController navController;
-
     public static boolean firstCenterKeyPause;
 
     ImageView leftArrow;
@@ -76,8 +59,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     public static Context context;
 
-
     KeyPress keyPress;
+    int refreshTime = 6000000;
 
 
     @Override
@@ -88,17 +71,14 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         setContentView(R.layout.activity_second);
         setHomeFragment();
 
-
         leftArrow = findViewById(R.id.leftArrow);
         playPause = findViewById(R.id.playPause);
         rightArrow = findViewById(R.id.rightArrow);
         playPauseKeyPad = findViewById(R.id.playPauseKeyPad);
 
-
         Intent intent = getIntent();
         String name = intent.getStringExtra("left");
         if (name != null) {
-            Log.i("Message", name);
             if (name.equals("pressed")) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(1)) {
                     setHomeFragment(R.id.vansOfASingleOrganizationFragment);
@@ -126,8 +106,8 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             }
         }
 
-        Log.i("host activty", "onCreate: ");
 
+        @SuppressLint("HardwareIds")
         String deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         Handler handler = new Handler();
@@ -136,9 +116,15 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
             @Override
             public void run() {
                 VolleyHttp http = new VolleyHttp(getApplicationContext());
-                http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
-                        SecondActivity.this);
-                handler.postDelayed(this, 2000);
+
+                try {
+                    http.makeGetRequest(Constants.allDataWithConfigurationURL + "?imei=" + deviceID,
+                            SecondActivity.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                handler.postDelayed(this, refreshTime);
             }
         };
         handler.post(runnable);
@@ -146,8 +132,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     }
 
     public void setHomeFragment() {
-        int frgamentId;
-//        mappedFragment();
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_second);
         NavInflater inflater = navHostFragment.getNavController().getNavInflater();
         NavGraph graph = inflater.inflate(R.navigation.second_nav);
@@ -160,8 +145,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     }
 
     public void setHomeFragment(int fragment) {
-        int frgamentId;
-//        mappedFragment();
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_second);
         NavInflater inflater = navHostFragment.getNavController().getNavInflater();
         NavGraph graph = inflater.inflate(R.navigation.second_nav);
@@ -198,7 +182,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         } else if (SplashScreenActivity.allData.getLayoutList().contains(1))
             frgamentId = R.id.vansOfASingleOrganizationFragment;
 
-
+//        int frgamentId = R.id.peakHourReportForAllOusFragment;
         return frgamentId;
     }
 
@@ -206,7 +190,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (getCurrentFragment() instanceof KeyPress)
             keyPress = (KeyPress) getCurrentFragment();
-
 
         if (SplashScreenActivity.allData.isEnableNavigation()) {
             navController = NavHostFragment.findNavController(getCurrentFragment());
@@ -226,7 +209,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.leftKey();
-
                     break;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
 
@@ -237,8 +219,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
                     if (getCurrentFragment() instanceof KeyPress)
                         keyPress.rightKey();
-
-
                     break;
             }
         }
@@ -250,46 +230,6 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
         return navHostFragment.getChildFragmentManager().getFragments().get(0);
     }
 
-
-    public void pausedState() {
-        firstCenterKeyPause = false;
-        playPauseKeyPad.setVisibility(View.VISIBLE);
-//        summaryByParentArticlePause = true;
-//        summaryByArticlePause = true;
-//        summaryByChildArticlePause = true;
-//        summaryOfLast6MonsPause = true;
-//        summaryOfLast30DaysPause = true;
-//        summaryOfBranchPause = true;
-    }
-
-    public static void interrupThreads(Thread firstThread, Thread secondThread, Thread
-            thirdThread, Thread fourthThread, Thread fifthThread) {
-//        try {
-//            firstThread.interrupt();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            secondThread.interrupt();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            thirdThread.interrupt();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            fourthThread.interrupt();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            fifthThread.interrupt();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
 
     public static void pauseAll() {
         BranchSummaryFragment.branchSummaryPaused = true;
@@ -321,19 +261,32 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     }
 
     public static boolean pausedstate() {
-        if (BranchSummaryFragment.branchSummaryPaused == true ||
-                PeakHourReportForAllOusFragment.peakHourForAllPaused == true ||
-                PeakHourReportFragment.peakHourForEachPaused == true ||
-                SummarizedByArticleChildCategFragment.summByChildArticlePaused == true ||
-                SummarizedByArticleFragment.summByarticlePaused == true ||
-                SummarizedByArticleParentCategFragment.summByParentArticlePaused == true ||
-                SummaryOfLastMonthFragment.summaryOfLAstXdaysPaused == true ||
-                SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused == true ||
-                UserReportForAllOusFragment.userReportForAllPaused == true ||
-                UserReportForEachOuFragment.userReportForEachPaused == true) {
+        if (BranchSummaryFragment.branchSummaryPaused ||
+                PeakHourReportForAllOusFragment.peakHourForAllPaused ||
+                PeakHourReportFragment.peakHourForEachPaused ||
+                SummarizedByArticleChildCategFragment.summByChildArticlePaused ||
+                SummarizedByArticleFragment.summByarticlePaused ||
+                SummarizedByArticleParentCategFragment.summByParentArticlePaused ||
+                SummaryOfLastMonthFragment.summaryOfLAstXdaysPaused ||
+                SummaryOfLastSixMonthsFragment.summaryOfLAstXmonthPaused ||
+                UserReportForAllOusFragment.userReportForAllPaused ||
+                UserReportForEachOuFragment.userReportForEachPaused) {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onSuccess(JSONObject jsonObject) throws JSONException {
+
+        AllDataParser allDataParser = new AllDataParser(jsonObject);
+        SplashScreenActivity.allData = allDataParser.parseAllData();
+        Log.i("updated", "onSuccess: ");
+    }
+
+    @Override
+    public void onFailure(VolleyError error) {
+
     }
 
 }

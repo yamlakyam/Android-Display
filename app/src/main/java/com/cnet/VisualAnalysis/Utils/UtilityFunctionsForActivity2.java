@@ -180,6 +180,18 @@ public class UtilityFunctionsForActivity2 {
 
         barDataSet.setColor(Color.parseColor("#27adb9"));
         barDataSet.setDrawValues(false);
+        barDataSet.setColors(Color.parseColor("#5472e8"), Color.parseColor("#26adb9"),
+                Color.parseColor("#195d57"), Color.parseColor("#acefe8"),
+                Color.parseColor("#08bed6"), Color.parseColor("#1a76ca"),
+                Color.parseColor("#1e81b0"), Color.parseColor("#063970"),
+                Color.parseColor("#21130d"), Color.parseColor("#873e23"),
+                Color.parseColor("#B6D0E2"), Color.parseColor("#96DED1"),
+                Color.parseColor("#4169E1"), Color.parseColor("#87CEEB"),
+                Color.parseColor("#4682B4"), Color.parseColor("#008080"),
+                Color.parseColor("#40E0D0"), Color.parseColor("#40B5AD"),
+                Color.parseColor("#9FE2BF"), Color.parseColor("#0F52BA")
+        );
+
 
         barChart.animateXY(3000, 3000);
         barChart.getAxisRight().setDrawLabels(false);

@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,19 +82,13 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i("lastXdays", "onCreate: ");
-
         if (!SecondActivity.pausedstate()) {
             summaryOfLAstXdaysPaused = false;
         } else {
             summaryOfLAstXdaysPaused = true;
 
         }
-        SecondActivity.interrupThreads(SummarizedByArticleFragment.handleRowAnimationThread,
-                SummarizedByArticleParentCategFragment.handleRowAnimationThread,
-                SummarizedByArticleChildCategFragment.handleRowAnimationThread,
-                SummaryOfLastSixMonthsFragment.handleRowAnimationThread,
-                BranchSummaryFragment.handleRowAnimationThread);
+
     }
 
 
@@ -143,9 +136,7 @@ public class SummaryOfLastMonthFragment extends Fragment implements SecondActivi
             summaryOfLast30DaysTitle.append(" from " + new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime()));
             scrollingLastMonthText.append(" " + days + " days");
             summaryOfLastMonthFrameLayout.setVisibility(View.GONE);
-            Log.i("initfrag", "before: ");
             initFragment(SplashScreenActivity.allData.getDashBoardData(), 200, 0);
-            Log.i("initfrag", "after: ");
         }
     }
 

@@ -7,6 +7,7 @@ import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Data.FigureReportData;
 import com.cnet.VisualAnalysis.Data.FigureReportDataElements;
 import com.cnet.VisualAnalysis.Data.LineChartData;
+import com.cnet.VisualAnalysis.Data.PeakHourReportForAllOus;
 import com.cnet.VisualAnalysis.Data.PieChartData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleData;
 import com.cnet.VisualAnalysis.Data.SummarizedByArticleTableRow;
@@ -52,20 +53,8 @@ public class DashBoardDataParser {
         try {
             JSONObject rootJSON = jsonArray.getJSONObject(0);
 
-//            Log.i("ROOT JSON", rootJSON.toString());
+            parseDataCatchingException(dashBoardData, rootJSON);
 
-            dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));
-            dashBoardData.setSummarizedByParentArticleData(summarizedByParentArticleParser(rootJSON));
-            dashBoardData.setSummarizedByChildArticleData(summarizedByChildArticleParser(rootJSON));
-            dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
-            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
-            dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
-
-            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
-            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
-            dashBoardData.setFigureReportDataforEachBranch(figureReportDataParser(rootJSON));
-            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
-            dashBoardData.setFigureReportDataforAllBranch(figureReportAllTogetherOuDataParser(rootJSON));
 //            dashBoardData.setAllFigureReportData(filteredFigureReportDataParser(parseFilteredFigureReport(rootJSON)));
 //            parseFilteredFigureReport(rootJSON);
 
@@ -338,7 +327,6 @@ public class DashBoardDataParser {
                         userReportForSingleOu.getDouble("additionalCharge"), userReportForSingleOu.getDouble("discount"),
                         userReportForSingleOu.getDouble("totalTaxAmt"), userReportForSingleOu.getDouble("grandTotal"), org);
                 userReportTableRowArrayList.add(userReportTableRow);
-
             }
         }
 
@@ -349,7 +337,6 @@ public class DashBoardDataParser {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
 
         ArrayList<FigureReportData> figureReportDataArrayList = new ArrayList<>();
-        ArrayList<FigureReportData> figureReportDataArrayListFiltered = new ArrayList<>();
 
         for (int i = 0; i < summaryOfBranchArray.length(); i++) {
 
@@ -375,53 +362,76 @@ public class DashBoardDataParser {
                 yValues[j] = (float) singleFigureReportObject.getDouble("grandTotal");
                 legends[j] = singleFigureReportObject.getString("summaryType");
 
-//                if (PeakHourReportFragment.convertToTime(singleFigureReportObject.getString("summaryType")).getMonth() == Calendar.MAY
-//                ) {
-//
-//                    FigureReportDataElements figureReportDataElementsFilterd = new FigureReportDataElements(singleFigureReportObject.getString("summaryType"),
-//                            singleFigureReportObject.getInt("totalCount"), singleFigureReportObject.getDouble("grandTotal"), org);
-//                    figureReportDataElementsFiltered.add(figureReportDataElementsFilterd);
-//
-//                }
             }
-
-//            for (int k = 0; k < figureReportDataElementsFiltered.size(); k++) {
-//                xValues[k] = k + 1;
-//                yValues[k] = (float) figureReportDataElementsFiltered.get(k).grandTotal;
-//                legends[k] = figureReportDataElementsFiltered.get(k).dateNTime;
-//            }
 
             LineChartData lineChartData = new LineChartData(xValues, yValues, legends);
             FigureReportData figureReportData = new FigureReportData(figureReportDataElementsArrayList, lineChartData, org);
             figureReportDataArrayList.add(figureReportData);
 
-//            LineChartData lineChartDataFiltered = new LineChartData(xValues, yValues, legends);
-//            FigureReportData figureReportData = new FigureReportData(figureReportDataElementsFiltered, lineChartDataFiltered, org);
-//            figureReportDataArrayListFiltered.add(figureReportData);
 
         }
-//        return figureReportDataArrayListFiltered;
+
         return figureReportDataArrayList;
     }
 
-    public static ArrayList<FigureReportDataElements> figureReportAllTogetherOuDataParser(JSONObject jsonObject) throws JSONException {
+    public static PeakHourReportForAllOus figureReportAllTogetherOuDataParser(JSONObject jsonObject) throws JSONException {
         JSONArray summaryOfBranchArray = jsonObject.getJSONArray("orgUnitSales");
         ArrayList<FigureReportDataElements> figureReportTableRowArrayList = new ArrayList<>();
+        LineChartData lineChartData = null;
 
         for (int i = 0; i < summaryOfBranchArray.length(); i++) {
             JSONArray figureReportDatForEach = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport");
             String org = summaryOfBranchArray.getJSONObject(i).getString("org");
 
+            float[] xValues = new float[figureReportDatForEach.length()];
+            float[] yValues = new float[figureReportDatForEach.length()];
+            String[] legends = new String[figureReportDatForEach.length()];
+
+            float totalSaleSum = 0;
             for (int j = 0; j < figureReportDatForEach.length(); j++) {
                 FigureReportDataElements figureReportDataElements = new FigureReportDataElements(figureReportDatForEach.getJSONObject(j).getString("summaryType"),
                         figureReportDatForEach.getJSONObject(j).getInt("totalCount"),
                         figureReportDatForEach.getJSONObject(j).getDouble("grandTotal"),
                         org);
+
+                while (i < summaryOfBranchArray.length() - 1) {
+                    //                if (i < summaryOfBranchArray.length() - 3) {
+                    if (summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType").equals(
+                            summaryOfBranchArray.getJSONObject(i + 1).getJSONArray("figureReport").getJSONObject(j).getString("summaryType")
+                    )) {
+                        xValues[j] = j + 1;
+                        yValues[j] = totalSaleSum + (float) figureReportDatForEach.getJSONObject(j).getDouble("grandTotal");
+                        legends[j] = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType");
+                    } else {
+                        xValues[j] = j + 1;
+                        yValues[j] = (float) figureReportDatForEach.getJSONObject(j).getDouble("grandTotal");
+                        legends[j] = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType");
+                    }
+//                } else {
+//                    if (summaryOfBranchArray.getJSONObject(i - 1).getJSONArray("figureReport").getJSONObject(j).getString("summaryType").equals(
+//                            summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType")
+//                    )) {
+//                        xValues[j] = j + 1;
+//                        yValues[j] = totalSaleSum + (float) figureReportDatForEach.getJSONObject(j).getDouble("grandTotal");
+//                        legends[j] = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType");
+//                    } else {
+//                        xValues[j] = j + 1;
+//                        yValues[j] = (float) figureReportDatForEach.getJSONObject(j).getDouble("grandTotal");
+//                        legends[j] = summaryOfBranchArray.getJSONObject(i).getJSONArray("figureReport").getJSONObject(j).getString("summaryType");
+//                    }
+//                }
+                }
+
+
                 figureReportTableRowArrayList.add(figureReportDataElements);
             }
+            lineChartData = new LineChartData(xValues, yValues, legends);
+
         }
 
-        return figureReportTableRowArrayList;
+        PeakHourReportForAllOus peakHourReportForAllOus = new PeakHourReportForAllOus(figureReportTableRowArrayList, lineChartData);
+
+        return peakHourReportForAllOus;
     }
 
     public static ArrayList<ArrayList<FigureReportDataElements>> parseFilteredFigureReport(JSONObject jsonObject) throws JSONException {
@@ -471,51 +481,55 @@ public class DashBoardDataParser {
 
     public static VsmTableForSingleDistributor vsmTransactionForSingleCompanyParser(JSONObject jsonObject) throws JSONException {
         JSONArray vsmTransactionArray = jsonObject.getJSONArray("getSalesDataToDisplayOnVsmTable");
-        JSONObject vsmTransactionObject = vsmTransactionArray.getJSONObject(0);
+
+        if (vsmTransactionArray.length() > 0) {
+            JSONObject vsmTransactionObject = vsmTransactionArray.getJSONObject(0);
 
 //        VsmTableForSingleDistributor dataForAdistributor = new VsmTableForSingleDistributor();
-        JSONArray vsmTables = vsmTransactionObject.getJSONArray("vsmTables");
-        String orgName = vsmTransactionObject.getString("orgName");
+            JSONArray vsmTables = vsmTransactionObject.getJSONArray("vsmTables");
+            String orgName = vsmTransactionObject.getString("orgName");
 
-        ArrayList<VsmTableDataForSingleVan> allVans = new ArrayList<VsmTableDataForSingleVan>();
+            ArrayList<VsmTableDataForSingleVan> allVans = new ArrayList<VsmTableDataForSingleVan>();
 
-        for (int i = 0; i < vsmTables.length(); i++) {
-            JSONObject tableDataObjectForSingleVanInJson = vsmTables.getJSONObject(i);
+            for (int i = 0; i < vsmTables.length(); i++) {
+                JSONObject tableDataObjectForSingleVanInJson = vsmTables.getJSONObject(i);
 
-            JSONArray transactionsOfaVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
-            String vanName = tableDataObjectForSingleVanInJson.getString("van");
-            int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
-            String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
-            int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
-            double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
+                JSONArray transactionsOfaVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
+                String vanName = tableDataObjectForSingleVanInJson.getString("van");
+                int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
+                String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
+                int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
+                double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
 
-            ArrayList<VsmTransactionTableRow> singleTransactionOfaVan = new ArrayList<VsmTransactionTableRow>();
-            for (int j = 0; j < transactionsOfaVan.length(); j++) {
-                JSONObject singleTransactionObject = transactionsOfaVan.getJSONObject(j);
+                ArrayList<VsmTransactionTableRow> singleTransactionOfaVan = new ArrayList<VsmTransactionTableRow>();
+                for (int j = 0; j < transactionsOfaVan.length(); j++) {
+                    JSONObject singleTransactionObject = transactionsOfaVan.getJSONObject(j);
 
-                VsmTransactionTableRow vsmTransactionTableRow = new VsmTransactionTableRow(
-                        singleTransactionObject.getString("voucherNo"),
-                        singleTransactionObject.getString("outlates"),
-                        singleTransactionObject.getString("tin"),
-                        singleTransactionObject.getString("dateAndTime"),
-                        (int) singleTransactionObject.getDouble("itemCount"),
-                        singleTransactionObject.getDouble("subTotal"),
-                        singleTransactionObject.getDouble("vat"),
-                        singleTransactionObject.getDouble("grandTotal"),
-                        singleTransactionObject.getDouble("latitude"),
-                        singleTransactionObject.getDouble("longitude"));
+                    VsmTransactionTableRow vsmTransactionTableRow = new VsmTransactionTableRow(
+                            singleTransactionObject.getString("voucherNo"),
+                            singleTransactionObject.getString("outlates"),
+                            singleTransactionObject.getString("tin"),
+                            singleTransactionObject.getString("dateAndTime"),
+                            (int) singleTransactionObject.getDouble("itemCount"),
+                            singleTransactionObject.getDouble("subTotal"),
+                            singleTransactionObject.getDouble("vat"),
+                            singleTransactionObject.getDouble("grandTotal"),
+                            singleTransactionObject.getDouble("latitude"),
+                            singleTransactionObject.getDouble("longitude"));
 
-                singleTransactionOfaVan.add(vsmTransactionTableRow);
+                    singleTransactionOfaVan.add(vsmTransactionTableRow);
+                }
+
+                VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan, salesOutLateCount,
+                        lastActive, allLineItemCount, totalPrice);
+                allVans.add(vsmTableDataForSingleVan);
+
             }
 
-            VsmTableDataForSingleVan vsmTableDataForSingleVan = new VsmTableDataForSingleVan(vanName, singleTransactionOfaVan, salesOutLateCount,
-                    lastActive, allLineItemCount, totalPrice);
-            allVans.add(vsmTableDataForSingleVan);
-
+            VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(allVans, orgName);
+            return vsmTableForSingleDistributor;
         }
-
-        VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(allVans, orgName);
-        return vsmTableForSingleDistributor;
+        return new VsmTableForSingleDistributor(new ArrayList<VsmTableDataForSingleVan>(), "");
     }
 
     public static ArrayList<FigureReportData> filteredFigureReportDataParser(ArrayList<ArrayList<FigureReportDataElements>> filteredUserReport) {
@@ -546,6 +560,73 @@ public class DashBoardDataParser {
         }
         return figureReportDataArrayList;
     }
+
+    public void parseDataCatchingException(DashBoardData dashBoardData, JSONObject rootJSON) {
+        try {
+            dashBoardData.setSummarizedByArticleData(summarizedByArticleParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummarizedByParentArticleData(summarizedByParentArticleParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummarizedByChildArticleData(summarizedByChildArticleParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummaryOfLast6MonthsData(last6MonthsDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setSummaryOfLast30DaysData(last30DaysDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setBranchSummaryData(branchSummaryParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//        try {
+//            dashBoardData.setVsmTableForSingleDistributor(vsmTransactionForSingleCompanyParser(rootJSON));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            dashBoardData.setUserReportForEachBranch(userReportForEachOuDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setFigureReportDataforEachBranch(figureReportDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dashBoardData.setUserReportForAllBranch(userReportAllTogetherOuDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        try {
+//            dashBoardData.setFigureReportDataforAllBranch(figureReportAllTogetherOuDataParser(rootJSON));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            dashBoardData.setPeakHourReportForAllOus(figureReportAllTogetherOuDataParser(rootJSON));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
 

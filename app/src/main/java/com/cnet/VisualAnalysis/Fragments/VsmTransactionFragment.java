@@ -363,13 +363,12 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
             handleRowAnimationThread.interrupt();
         }
         MainActivity.secondCenterKeyPause = !MainActivity.secondCenterKeyPause;
-        Log.i("keyPress", "centerKey: ");
+
 
     }
 
     @Override
     public void leftKey() {
-        Log.i("leftKey", "vsmTransaction");
 
         ArrayList<VsmTableForSingleDistributor> allOrgData = new ArrayList<>();
         if (SplashScreenActivity.allData != null)
@@ -411,7 +410,6 @@ public class VsmTransactionFragment extends Fragment implements MainActivity.Key
 
     @Override
     public void rightKey() {
-        Log.i("rightKey", "vsmTransaction");
 
         handleDistDataChangeThread.interrupt();
         handleVanDataChangeThread.interrupt();
