@@ -3,6 +3,7 @@ package com.cnet.VisualAnalysis;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         void rightKey();
 
     }
-
 
     public interface VsmCardKeyPress {
         void dispatchKey(KeyEvent event);
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("back");
         if (name != null) {
+            Log.i("Message", name);
             if (name.equals("pressed")) {
                 if (SplashScreenActivity.allData.getLayoutList().contains(2)) {
                     setHomeFragment(R.id.vsmTransactionFragment);
@@ -102,11 +103,23 @@ public class MainActivity extends AppCompatActivity {
                 keyPress.leftKey();
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
+                Log.i("right", "onKeyDown: ");
                 keyPress.rightKey();
                 break;
         }
         return false;
     }
+
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        if (getCurrentFragment() instanceof VsmCardFragment) {
+//            vsmCardKeyPress = (VsmCardKeyPress) getCurrentFragment();
+//            vsmCardKeyPress.dispatchKey(event);
+//        }
+//
+//        return super.dispatchKeyEvent(event);
+////        return true;
+//    }
 
     public Fragment getCurrentFragment() {
         Fragment navHostFragment = getSupportFragmentManager().getPrimaryNavigationFragment();

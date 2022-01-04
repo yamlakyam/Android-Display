@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardBackgroundDark"
+    tools:context=".Fragments.VansOfASingleOrganizationFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/headerRow1VanList"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/cardBackgroundDark1"
+        android:gravity="center"
+        app:cardBackgroundColor="@color/cardBackgroundDark1"
+        app:layout_constraintEnd_toEndOf="@+id/headerRow2VanList"
+        app:layout_constraintStart_toStartOf="@+id/headerRow2VanList"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/download" />
+
+        <TextView
+            android:id="@+id/OrgHeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/advent_pro_thin"
+            android:text="Organization"
+            android:textColor="#FFFFFF"
+            android:textSize="34sp" />
+
+        <LinearLayout
+            android:id="@+id/vanListKeyPad"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/vanListleftArrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_left_chevron"
+                app:tint="#D3D3D3" />
+
+            <ImageView
+                android:id="@+id/vanListplayPause"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_pause_button"
+                app:tint="#D3D3D3" />
+
+            <ImageView
+                android:id="@+id/vanListrightArrow"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_right_chevron"
+                app:tint="#D3D3D3" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <TableRow
+        android:id="@+id/headerRow2VanList"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/cardBackgroundDark1"
+        app:layout_constraintBottom_toTopOf="@+id/scrollVanListTable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerRow1VanList">
+
+        <TextView
+            android:id="@+id/vanListHeader0"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="start"
+            android:paddingStart="10dp"
+            android:text="SN"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/vanListHeader1"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="start|center_horizontal|center_vertical"
+            android:text="VSM"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/vanListHeader2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Prospect"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/vanListHeader3"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Last Active"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/vanListHeader4"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Total Outlet"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/vanListHeader5"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:text="Total Qty"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/vanListHeader6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:fontFamily="@font/advent_pro_thin"
+            android:gravity="end"
+            android:paddingEnd="10dp"
+            android:text="Grand Total"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+    </TableRow>
+
+    <ScrollView
+        android:id="@+id/scrollVanListTable"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/headerRow2VanList"
+        app:layout_constraintStart_toStartOf="@id/headerRow2VanList"
+        app:layout_constraintTop_toBottomOf="@id/headerRow2VanList">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardBackgroundColor="@color/cardBackgroundDark">
+
+                <TableLayout
+                    android:id="@+id/vanListTableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="?android:listDivider"
+                    android:showDividers="middle" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

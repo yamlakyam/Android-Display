@@ -49,8 +49,8 @@ public class FmcgDataParser {
                 tableData.add(
                         new SummaryTableRow(
                                 table.getString("organizationName"),
-                                new UtilityFunctionsForActivity1().formatTimeToString(table.getString("startTimeStamp")),
-                                new UtilityFunctionsForActivity1().formatTimeToString(table.getString("endTimeStamp")),
+                                UtilityFunctionsForActivity1.formatTimeToString(table.getString("startTimeStamp")),
+                                UtilityFunctionsForActivity1.formatTimeToString(table.getString("endTimeStamp")),
                                 table.getInt("vsiCount"),
                                 table.getInt("salesOutLateCount"),
                                 table.getInt("skuCount"),
@@ -184,8 +184,8 @@ public class FmcgDataParser {
                     ArrayList<VsmTableDataForSingleVan> dataToDisplaySingleDis = new ArrayList<>();
                     for (int j = 0; j < tableDataForSingleOrgInJson.length(); j++) {
                         JSONObject tableDataObjectForSingleVanInJson = tableDataForSingleOrgInJson.getJSONObject(j);
-//                        VsmTableDataForSingleVan dataToDisplaySingleVanTable =new UtilityFunctionsForActivity1().getSingleVanData(tableDataObjectForSingleVanInJson);
-//                        dataToDisplaySingleDis.add(dataToDisplaySingleVanTable);
+                        VsmTableDataForSingleVan dataToDisplaySingleVanTable = UtilityFunctionsForActivity1.getSingleVanData(tableDataObjectForSingleVanInJson);
+                        dataToDisplaySingleDis.add(dataToDisplaySingleVanTable);
                     }
 
                     VsmTableForSingleDistributor vsmTableForSingleDistributor = new VsmTableForSingleDistributor(
@@ -196,6 +196,7 @@ public class FmcgDataParser {
                     dataForAllDis.add(vsmTableForSingleDistributor);
                 }
             }
+
 
         }
 

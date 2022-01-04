@@ -4,17 +4,11 @@ public class BranchSummaryTableRow {
     String branch;
     double grandTotal;
     int quantity;
-    int transactionCount;
-    int lineItems;
-    String lastActivity;
 
-    public BranchSummaryTableRow(String branch, double grandTotal, int transactionCount, int lineItems, String lastActivity) {
+    public BranchSummaryTableRow(String branch, double grandTotal, int quantity) {
         this.branch = branch;
         this.grandTotal = grandTotal;
-        this.transactionCount = transactionCount;
-        this.lineItems = lineItems;
-        this.lastActivity = lastActivity;
-
+        this.quantity = quantity;
     }
 
     public String getBranch() {
@@ -25,15 +19,7 @@ public class BranchSummaryTableRow {
         return grandTotal;
     }
 
-    public int getTransactionCount() {
-        return transactionCount;
-    }
-
-    public int getLineItems() {
-        return lineItems;
-    }
-
-    public String getLastActivity() {
-        return lastActivity;
+    public int getQuantity() {
+        return quantity;
     }
 }

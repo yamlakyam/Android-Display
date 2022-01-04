@@ -3,154 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/second_nav"
-    app:startDestination="@id/stallingFragment">
+    app:startDestination="@id/summarizedByArticleParentCategFragment">
     <fragment
         android:id="@+id/summarizedByArticleFragment2"
         android:name="com.cnet.VisualAnalysis.Fragments.SummarizedByArticleFragment"
         android:label="fragment_summarized_by_article"
-        tools:layout="@layout/fragment_summarized_by_article">
-
-        <action
-
-            android:id="@+id/action_summarizedByArticleFragment2_to_summarizedByArticleParentCategFragment"
-            app:destination="@id/summarizedByArticleParentCategFragment"
-            app:enterAnim="@anim/slide_in_bottom"
-            app:exitAnim="@anim/slide_out_bottom"
-            app:popEnterAnim="@anim/nav_default_enter_anim"
-            app:popExitAnim="@anim/nav_default_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_summarized_by_article" />
     <fragment
         android:id="@+id/summarizedByArticleParentCategFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.SummarizedByArticleParentCategFragment"
-        android:label="SummarizedByArticleParentCategFragment">
-
-        <action
-            android:id="@+id/action_summarizedByArticleParentCategFragment_to_summarizedByArticleChildCategFragment"
-            app:destination="@id/summarizedByArticleChildCategFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        android:label="SummarizedByArticleParentCategFragment" />
     <fragment
         android:id="@+id/summarizedByArticleChildCategFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment"
-        android:label="SummarizedByArticleChildCategFragment">
-
-        <action
-            android:id="@+id/action_summarizedByArticleChildCategFragment_to_summaryOfLastSixMonthsFragment"
-            app:destination="@id/summaryOfLastSixMonthsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        android:label="SummarizedByArticleChildCategFragment" />
     <fragment
         android:id="@+id/summaryOfLastMonthFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.SummaryOfLastMonthFragment"
         android:label="fragment_summary_of_last_month"
-        tools:layout="@layout/fragment_summary_of_last_month">
-
-        <action
-            android:id="@+id/action_summaryOfLastMonthFragment_to_branchSummaryFragment"
-            app:destination="@id/branchSummaryFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_summary_of_last_month" />
     <fragment
         android:id="@+id/summaryOfLastSixMonthsFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.SummaryOfLastSixMonthsFragment"
         android:label="fragment_summary_of_last_six_months"
-        tools:layout="@layout/fragment_summary_of_last_six_months">
-
-        <action
-            android:id="@+id/action_summaryOfLastSixMonthsFragment_to_summaryOfLastMonthFragment"
-            app:destination="@id/summaryOfLastMonthFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_summary_of_last_six_months" />
     <fragment
         android:id="@+id/branchSummaryFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment"
         android:label="fragment_branch_summary"
-        tools:layout="@layout/fragment_branch_summary">
-
-        <action
-            android:id="@+id/action_branchSummaryFragment_to_userReportForEachOusFragment"
-            app:destination="@id/userReportForEachOusFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_branch_summary" />
     <fragment
         android:id="@+id/userReportForEachOusFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.UserReportForEachOuFragment"
         android:label="fragment_user_report_for_all_ous"
-        tools:layout="@layout/fragment_user_report_for_each_ou">
-
-        <action
-            android:id="@+id/action_userReportForEachOusFragment_to_userReportForAllOusFragment2"
-            app:destination="@id/userReportForAllOusFragment2"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_user_report_for_each_ou" />
     <fragment
         android:id="@+id/peakHourReportFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment"
         android:label="fragment_peak_hour_report"
-        tools:layout="@layout/fragment_peak_hour_report">
-
-        <action
-            android:id="@+id/action_peakHourReportFragment_to_peakHourReportForAllOusFragment"
-            app:destination="@id/peakHourReportForAllOusFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_peak_hour_report" />
     <fragment
         android:id="@+id/userReportForAllOusFragment2"
         android:name="com.cnet.VisualAnalysis.Fragments.UserReportForAllOusFragment"
         android:label="fragment_user_report_for_all_ous"
-        tools:layout="@layout/fragment_user_report_for_all_ous">
-
-        <action
-            android:id="@+id/action_userReportForAllOusFragment2_to_peakHourReportFragment"
-            app:destination="@id/peakHourReportFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_user_report_for_all_ous" />
     <fragment
         android:id="@+id/peakHourReportForAllOusFragment"
         android:name="com.cnet.VisualAnalysis.Fragments.PeakHourReportForAllOusFragment"
         android:label="fragment_peak_hour_report_for_all_ous"
-        tools:layout="@layout/fragment_peak_hour_report_for_all_ous"/>
+        tools:layout="@layout/fragment_peak_hour_report_for_all_ous" />
     <fragment
-        android:id="@+id/animationVideoFragment"
-        android:name="com.cnet.VisualAnalysis.Fragments.AnimationVideoFragment"
-        android:label="fragment_animation_video"
-        tools:layout="@layout/fragment_animation_video">
-
-    </fragment>
-    <fragment
-        android:id="@+id/mapsFragment"
-        android:name="com.cnet.VisualAnalysis.Fragments.MapsFragment"
-        android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
-    <fragment
-        android:id="@+id/stallingFragment"
-        android:name="com.cnet.VisualAnalysis.StallingFragment"
-        android:label="fragment_stalling"
-        tools:layout="@layout/fragment_stalling" />
-
-
+        android:id="@+id/vansOfASingleOrganizationFragment"
+        android:name="com.cnet.VisualAnalysis.Fragments.VansOfASingleOrganizationFragment"
+        android:label="fragment_vans_of_a_single_organization"
+        tools:layout="@layout/fragment_vans_of_a_single_organization" />
 </navigation>

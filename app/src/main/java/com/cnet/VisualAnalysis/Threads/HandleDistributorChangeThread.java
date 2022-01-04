@@ -22,7 +22,6 @@ public class HandleDistributorChangeThread extends Thread {
     public void run() {
         super.run();
 
-        Log.i("HandleDistributorChange", "Called");
         for (int i = startingIndex; i < numberOfDistributors; i++) {
             Message message = changeDataHandler.obtainMessage();
             message.obj = String.valueOf(i);

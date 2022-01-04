@@ -5,10 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardBackgroundDark"
-    android:id="@+id/articleCL"
-
     tools:context=".Fragments.SummarizedByArticleFragment">
 
+
+    <ProgressBar
+        android:id="@+id/articleSummaryProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="103dp"
+        android:layout_height="78dp"
+        android:layout_gravity="center|center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ProgressBar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/titleSummaryByArticle"
@@ -25,7 +47,7 @@
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="70dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/download" />
 
             <TextView
@@ -73,6 +95,46 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/lCardSummByArticle"
+            android:layout_width="400dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
+            app:layout_constraintBottom_toTopOf="@+id/bCardSummByArticle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleSummaryByArticle">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lchartsumByArticle"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal|center_vertical" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bCardSummByArticle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/cardBackgroundDark1"
+            app:layout_constraintBottom_toTopOf="@+id/scrollingRTextCard"
+            app:layout_constraintEnd_toEndOf="@+id/lCardSummByArticle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lCardSummByArticle">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bChartSumByArticle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/pCardSummByArticle"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -85,14 +147,14 @@
             app:layout_constraintStart_toEndOf="@+id/tCardSummByArticle"
             app:layout_constraintTop_toTopOf="@+id/tCardSummByArticle">
 
-            <!--            <com.github.mikephil.charting.charts.PieChart-->
-            <!--                android:id="@+id/pChartSumByArticle"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:layout_margin="20dp"-->
-            <!--                android:padding="10dp">-->
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pChartSumByArticle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:padding="10dp">
 
-            <!--            </com.github.mikephil.charting.charts.PieChart>-->
+            </com.github.mikephil.charting.charts.PieChart>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -148,7 +210,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Ave. Amount"
+                    android:text="Unit Amount"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
@@ -159,7 +221,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="Grand Total"
+                    android:text="Total Amount"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
@@ -203,7 +265,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:transitionName="articleScrollCard"
             app:cardBackgroundColor="@color/cardBackgroundDark1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -245,19 +306,16 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <TextClock
-                        android:id="@+id/articleSummary_textClock"
+                    <DigitalClock
+                        android:id="@+id/digitalClock"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-
-                        android:format12Hour="@null"
-                        android:timeZone="GMT+0300"
-                        android:format24Hour="MMM dd, yyyy k:mm"
+                        android:fontFamily="@font/digital_7"
                         android:gravity="center_vertical"
-                        android:textSize="34sp"
-                        android:textColor="@color/rowValueColor3">
-                    </TextClock>
+                        android:textColor="@color/rowValueColor3"
+                        android:textSize="34sp">
 
+                    </DigitalClock>
                 </LinearLayout>
 
             </LinearLayout>
@@ -265,3 +323,5 @@
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+</androidx.constraintlayout.widget.ConstraintLayout>

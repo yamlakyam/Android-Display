@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/peakHrCL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardBackgroundDark"
@@ -23,7 +22,7 @@
         <ImageView
             android:id="@+id/imageView10"
             android:layout_width="70dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:src="@drawable/download" />
 
         <TextView
@@ -71,7 +70,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cCardEachPeakHour"
+        android:id="@+id/materialCardView6"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
@@ -82,6 +81,13 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/materialCardView8"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView5">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/peakHourLineChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.github.mikephil.charting.charts.LineChart>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -98,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cCardEachPeakHour">
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView6" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -135,17 +141,16 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <TextClock
-                    android:id="@+id/peakHourEach_textClock"
+                <DigitalClock
+                    android:id="@+id/digitalClock"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-
-                    android:format12Hour="@null"
-                    android:format24Hour="MMM dd, yyyy k:mm"
+                    android:fontFamily="@font/digital_7"
                     android:gravity="center_vertical"
                     android:textColor="@color/rowValueColor3"
-                    android:textSize="34sp"
-                    android:timeZone="GMT+0300" />
+                    android:textSize="34sp">
+
+                </DigitalClock>
             </LinearLayout>
 
         </LinearLayout>
@@ -161,7 +166,7 @@
         android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/cardBackgroundDark1"
         app:layout_constraintBottom_toTopOf="@+id/materialCardView7"
-        app:layout_constraintEnd_toStartOf="@+id/cCardEachPeakHour"
+        app:layout_constraintEnd_toStartOf="@+id/materialCardView6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView5">
 
@@ -176,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:text="SN"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
@@ -185,7 +190,7 @@
                 android:id="@+id/peakHourReportHeader1"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:gravity="start"
                 android:text="Time"
                 android:textColor="#ffffff"
@@ -195,7 +200,7 @@
                 android:id="@+id/peakHourReportHeader2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:gravity="end"
                 android:text="Total Count"
                 android:textColor="#ffffff"
@@ -207,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:gravity="end"
                 android:text="Grand Total"
                 android:textColor="#ffffff"

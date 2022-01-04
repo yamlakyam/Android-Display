@@ -25,7 +25,7 @@
             android:id="@+id/distributorHeaderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:text="Distributor"
             android:textColor="#FFFFFF"
             android:textSize="24sp" />
@@ -50,7 +50,7 @@
             android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="start"
             android:paddingStart="10dp"
             android:text="SN"
@@ -62,7 +62,7 @@
             android:layout_width="175dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="start|center_horizontal|center_vertical"
             android:text="VSM"
             android:textColor="#FFFFFF"
@@ -73,6 +73,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Prospect"
             android:textColor="#FFFFFF"
@@ -83,7 +84,7 @@
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Last Active"
             android:textColor="#FFFFFF"
@@ -94,7 +95,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Total Outlet"
             android:textColor="#FFFFFF"
@@ -105,7 +106,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Total SKU"
             android:textColor="#FFFFFF"
@@ -116,7 +117,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:text="Total Qty"
             android:textColor="#FFFFFF"
@@ -128,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-
+            android:fontFamily="@font/advent_pro_thin"
             android:gravity="end"
             android:paddingEnd="10dp"
             android:text="Grand Total"

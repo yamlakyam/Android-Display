@@ -7,7 +7,6 @@ public class AllData {
     boolean enableNavigation;
     String transitionTimeInMinutes;
     ArrayList<Integer> layoutList;
-    ArrayList<String> chartList;
     DashBoardData dashBoardData;
     FmcgData fmcgData;
 
@@ -42,19 +41,12 @@ public class AllData {
     public void setDashBoardData(DashBoardData dashBoardData) {
         this.dashBoardData = dashBoardData;
     }
+
     public FmcgData getFmcgData() {
         return fmcgData;
     }
 
     public void setFmcgData(FmcgData fmcgData) {
         this.fmcgData = fmcgData;
-    }
-
-    public ArrayList<String> getChartList() {
-        return chartList;
-    }
-
-    public void setChartList(ArrayList<String> chartList) {
-        this.chartList = chartList;
     }
 }

@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/peakHrAllCL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardBackgroundDark"
@@ -23,7 +22,7 @@
         <ImageView
             android:id="@+id/imageView10"
             android:layout_width="70dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:src="@drawable/download" />
 
         <TextView
@@ -83,6 +82,13 @@
         app:layout_constraintStart_toEndOf="@+id/peakHourReportTableCard"
         app:layout_constraintTop_toBottomOf="@+id/peakHourReportTitleCard">
 
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/peakHourReportForAllLineChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.github.mikephil.charting.charts.LineChart>
+
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
@@ -135,17 +141,16 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <TextClock
-                    android:id="@+id/peakHourAll_textClock"
+                <DigitalClock
+                    android:id="@+id/digitalClock"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-
-                    android:format12Hour="@null"
-                    android:format24Hour="MMM dd, yyyy k:mm"
+                    android:fontFamily="@font/digital_7"
                     android:gravity="center_vertical"
                     android:textColor="@color/rowValueColor3"
-                    android:textSize="34sp"
-                    android:timeZone="GMT+0300" />
+                    android:textSize="34sp">
+
+                </DigitalClock>
             </LinearLayout>
 
         </LinearLayout>
@@ -176,16 +181,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:text="SN"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/peakHourReportForAllHeader1"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:gravity="start"
                 android:text="Time"
                 android:textColor="#ffffff"
@@ -193,11 +198,21 @@
 
             <TextView
                 android:id="@+id/peakHourReportForAllHeader2"
-                android:layout_width="90dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:gravity="end"
                 android:text="Total Count"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/peakHourReportForAllHeader5"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/advent_pro_thin"
+                android:gravity="end"
+                android:text="Branch"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
 
@@ -207,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-
+                android:fontFamily="@font/advent_pro_thin"
                 android:gravity="end"
                 android:text="Grand Total"
                 android:textColor="#ffffff"

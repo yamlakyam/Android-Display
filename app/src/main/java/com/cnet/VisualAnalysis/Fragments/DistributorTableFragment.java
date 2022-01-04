@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,6 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-
-//import android.app.Fragment;
 
 public class DistributorTableFragment extends Fragment implements MainActivity.KeyPress {
 
@@ -110,7 +109,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
 
                 if (index == tablesToDisplay.size()) {
                     drawLastRow();
-                    new UtilityFunctionsForActivity1().scrollRows(scrollDistributorTable);
+                    UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
                 } else if (index == tablesToDisplay.size() + 1 && dataIndex == SplashScreenActivity.allData.getFmcgData().getDistributorTableRows().size() - 1) {
                     if (fragment != null) {
                         NavController navController = NavHostFragment.findNavController(fragment);
@@ -119,13 +118,13 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
 
                 } else if (index < tablesToDisplay.size()) {
                     lastRowSummation(tablesToDisplay.get(index));
-                    new UtilityFunctionsForActivity1().drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
-                    new UtilityFunctionsForActivity1().scrollRows(scrollDistributorTable);
+                    UtilityFunctionsForActivity1.drawDistributorTable(tablesToDisplay, getContext(), distributorTableLayout, index);
+                    UtilityFunctionsForActivity1.scrollRows(scrollDistributorTable);
                 }
             }
         };
 
-        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200);
+        handleRowAnimationThread = new HandleRowAnimationThread(tablesToDisplay.size(), DistributorTableFragment.animationHandler, 200, this,0);
         handleRowAnimationThread.start();
     }
 
@@ -211,9 +210,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         distributorQuantityCountTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorQuantityCountTV.setTextSize(25f);
 
-//        distributorTotalSalesTV.setText(numberFormat.format(Math.round(sumofSales * 100.0) / 100.0));
-        distributorTotalSalesTV.setText((sumofSales > 1) ? UtilityFunctionsForActivity2.decimalFormat.format(sumofSales):
-                UtilityFunctionsForActivity2.smallDecimlFormat.format(sumofSales));
+        distributorTotalSalesTV.setText(numberFormat.format(Math.round(sumofSales * 100.0) / 100.0));
         distributorTotalSalesTV.setTypeface(Typeface.DEFAULT_BOLD);
         distributorTotalSalesTV.setTextSize(25f);
 
@@ -230,7 +227,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         tableElements.setBackgroundColor(Color.parseColor("#3f4152"));
         if (distributorTableLayout != null) {
             distributorTableLayout.addView(tableElements);
-            new UtilityFunctionsForActivity2().animateBottomToTop(distributorTableLayout, tableElements);
+            UtilityFunctionsForActivity2.animateBottomToTop(distributorTableLayout, tableElements);
 
         }
 
@@ -283,6 +280,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         }
 
 
+
     }
 
     @Override
@@ -324,6 +322,7 @@ public class DistributorTableFragment extends Fragment implements MainActivity.K
         }
 
     }
+
 
 
 }

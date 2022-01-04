@@ -30,12 +30,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class UtilityFunctionsForActivity1 {
 
-    public ArrayList<SummaryTableRow> summaryTableParser(JSONArray tableInJson) throws JSONException {
+    public static ArrayList<SummaryTableRow> summaryTableParser(JSONArray tableInJson) throws JSONException {
         ArrayList<SummaryTableRow> tableData = new ArrayList<>();
 
         for (int i = 0; i < tableInJson.length(); i++) {
@@ -60,14 +58,12 @@ public class UtilityFunctionsForActivity1 {
         return tableData;
     }
 
-    public void drawSummaryTable(ArrayList<SummaryTableRow> summaryTableRows, Context context, TableLayout summaryTableLayout, int index) {
+    public static void drawSummaryTable(ArrayList<SummaryTableRow> summaryTableRows, Context context, TableLayout summaryTableLayout, int index) {
 
         SummaryTableRow row = summaryTableRows.get(index);
 
         if (context != null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary, null, false);
-            View tableElements = inflater.inflate(R.layout.table_row_summary, null, false);
+            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary, null, false);
 
             TextView serialNumberTextView = tableElements.findViewById(R.id.serialNumberTextView);
             TextView distributorNameTextView = tableElements.findViewById(R.id.distributorNameTextView);
@@ -93,8 +89,7 @@ public class UtilityFunctionsForActivity1 {
             totalOutlatesTextView.setText(numberFormat.format(row.getSalesOutLateCount()));
             totalSkuTextView.setText(numberFormat.format(row.getSkuCount()));
             totalQuantityTextView.setText(numberFormat.format(row.getQuantityCount()));
-//            totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
-            totalSalesTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSalesAmountAfterTax()));
+            totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
             activeVansTextView.setText(numberFormat.format(row.getActiveVans()));
             prospectTextView.setText(numberFormat.format(row.getProspect()));
 
@@ -102,17 +97,16 @@ public class UtilityFunctionsForActivity1 {
             animate(summaryTableLayout, tableElements);
         }
 
+
     }
 
-    public void drawDistributorTable(ArrayList<DistributorTableRow> distributorTableRows, Context context, TableLayout distributorTableLayout, int index) {
+    public static void drawDistributorTable(ArrayList<DistributorTableRow> distributorTableRows, Context context, TableLayout distributorTableLayout, int index) {
         if (distributorTableRows != null) {
             DistributorTableRow row = distributorTableRows.get(index);
 
             View tableElements = null;
             try {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_distributor, null, false);
-                tableElements = inflater.inflate(R.layout.table_row_distributor, null, false);
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_distributor, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -135,6 +129,7 @@ public class UtilityFunctionsForActivity1 {
                 TextView distributorQuantityCountTV = tableElements.findViewById(R.id.distributorQuantityCountTV);
                 TextView distributorTotalSalesTV = tableElements.findViewById(R.id.distributorTotalSalesTV);
 
+
                 distributorSerialNumberTV.setText(String.valueOf(index + 1));
                 distributorVSITV.setText(row.getVsi());
                 distributorProspectTV.setText(String.valueOf(row.getProspect()));
@@ -142,7 +137,7 @@ public class UtilityFunctionsForActivity1 {
                 distributorSalesOutletTV.setText(String.valueOf(row.getSalesOutLateCount()));
                 distributorSKUcountTV.setText(String.valueOf(row.getSkuCount()));
                 distributorQuantityCountTV.setText(String.valueOf(row.getQuantityCount()));
-                distributorTotalSalesTV.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSalesAmountAfterTax()));
+                distributorTotalSalesTV.setText(numberFormat.format(Math.round(row.getTotalSalesAmountAfterTax() * 100) / 100));
 
                 if (distributorTableLayout != null) {
                     distributorTableLayout.addView(tableElements);
@@ -154,14 +149,13 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public void drawUserReportForEachOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
+    public static void drawUserReportForEachOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
         if (userReportTableRows != null) {
             UserReportTableRow row = userReportTableRows.get(index);
 
             View tableElements = null;
             try {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -182,7 +176,7 @@ public class UtilityFunctionsForActivity1 {
 
                 userReportSN.setText(String.valueOf(index + 1));
                 userReportSummaryType.setText(row.getSummaryType());
-                userReportGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
+                userReportGrandTotal.setText(String.valueOf(row.grandTotal));
                 userReportPercentage.setText(numberFormat.format(percentage) + "%");
 
 
@@ -195,17 +189,13 @@ public class UtilityFunctionsForActivity1 {
         }
     }
 
-    public void drawPeakHourReportForEachOu(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
+    public static void drawPeakHourReportForEachOu(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
         if (figureReportDataElements != null) {
             FigureReportDataElements row = figureReportDataElements.get(index);
 
             View tableElements = null;
             try {
-                if (context != null) {
-                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    tableElements = inflater.inflate(R.layout.table_row_summary_by_parent_article, null, false);
-                }
-
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_summary_by_parent_article, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -222,30 +212,30 @@ public class UtilityFunctionsForActivity1 {
                 }
                 double percentage = (row.grandTotal / grandTotalForAll) * 100;
 
+                NumberFormat numberFormat = NumberFormat.getInstance();
+
                 peakHourReportSN.setText(String.valueOf(index + 1));
-                peakHourReportSummaryType.setText(formatHourNmin(row.dateNTime));
+                peakHourReportSummaryType.setText(row.dateNTime);
                 peakHourReportTotalCount.setText(String.valueOf(row.totalCount));
-//                peakHourReportGrandTotal.setText(numberFormat.format(Math.round(row.getGrandTotal() * 100.0) / 100.0));
-                peakHourReportGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
+                peakHourReportGrandTotal.setText(numberFormat.format(row.getGrandTotal()));
 
                 if (peakHourReportTableLayout != null) {
                     peakHourReportTableLayout.addView(tableElements);
                 }
                 animate(peakHourReportTableLayout, tableElements);
             }
+
         }
+
     }
 
-
-    public void drawUserReportForAllOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
+    public static void drawUserReportForAllOu(ArrayList<UserReportTableRow> userReportTableRows, Context context, TableLayout userReportTableLayout, int index) {
         if (userReportTableRows != null) {
             UserReportTableRow row = userReportTableRows.get(index);
 
             View tableElements = null;
             try {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                tableElements = inflater.inflate(R.layout.user_report_for_all_table_row, null, false);
+                tableElements = LayoutInflater.from(context).inflate(R.layout.user_report_for_all_table_row, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -281,14 +271,13 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public void drawPeakHourReportForAllOus(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
+    public static void drawPeakHourReportForAllOus(ArrayList<FigureReportDataElements> figureReportDataElements, Context context, TableLayout peakHourReportTableLayout, int index) {
         if (figureReportDataElements != null) {
             FigureReportDataElements row = figureReportDataElements.get(index);
 
             View tableElements = null;
             try {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                tableElements = inflater.inflate(R.layout.figure_report_for_all_table_row, null, false);
+                tableElements = LayoutInflater.from(context).inflate(R.layout.figure_report_for_all_table_row, null, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -296,14 +285,17 @@ public class UtilityFunctionsForActivity1 {
                 TextView peakHourReportForAllSN = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty1);
                 TextView peakHourReportForAllTime = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty2);
                 TextView peakHourReportForAllTotalCount = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty3);
+                TextView peakHourReportForAllBranchName = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty4);
                 TextView peakHourReportForAllGrandTotal = tableElements.findViewById(R.id.tableRowPeakHourReportForAllProperty5);
 
-                NumberFormat numberFormat = NumberFormat.getInstance();
-                peakHourReportForAllSN.setText(String.valueOf(index + 1));
-                peakHourReportForAllTime.setText(formatHourNmin(row.getDateNTime()));
-                peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
 
-                peakHourReportForAllGrandTotal.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.grandTotal));
+                NumberFormat numberFormat = NumberFormat.getInstance();
+
+                peakHourReportForAllSN.setText(String.valueOf(index + 1));
+                peakHourReportForAllTime.setText(row.getDateNTime());
+                peakHourReportForAllTotalCount.setText(String.valueOf(row.totalCount));
+                peakHourReportForAllBranchName.setText(row.getOrg());
+                peakHourReportForAllGrandTotal.setText(numberFormat.format(row.grandTotal));
 
                 if (peakHourReportTableLayout != null) {
                     peakHourReportTableLayout.addView(tableElements);
@@ -315,14 +307,53 @@ public class UtilityFunctionsForActivity1 {
 
     }
 
-    public void animate(View container, View child) {
+    public static void drawVansOfSingleOrgTable(ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleVanArrayList, Context context, TableLayout vanListTableLayout, int index) {
+        if (vsmTableDataForSingleVanArrayList != null) {
+            VsmTableDataForSingleVan row = vsmTableDataForSingleVanArrayList.get(index);
+
+            View tableElements = null;
+            try {
+                tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vans_of_single_org, null, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (tableElements != null) {
+                TextView singleOrgVansSerialNumberTV = tableElements.findViewById(R.id.singleOrgVansSerialNumberTV);
+                TextView singleOrgVansVSITV = tableElements.findViewById(R.id.singleOrgVansVSITV);
+                TextView singleOrgVansProspectTV = tableElements.findViewById(R.id.singleOrgVansProspectTV);
+                TextView singleOrgVansEndTimeTV = tableElements.findViewById(R.id.singleOrgVansEndTimeTV);
+                TextView singleOrgVansSalesOutletTV = tableElements.findViewById(R.id.singleOrgVansSalesOutletTV);
+                TextView singleOrgVansQuantityCountTV = tableElements.findViewById(R.id.singleOrgVansQuantityCountTV);
+                TextView singleOrgVansTotalSalesTV = tableElements.findViewById(R.id.singleOrgVansTotalSalesTV);
+
+
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                singleOrgVansSerialNumberTV.setText(String.valueOf(index + 1));
+                singleOrgVansVSITV.setText(row.nameOfVan);
+                singleOrgVansProspectTV.setText(String.valueOf(1));
+                singleOrgVansEndTimeTV.setText(formatDateTimeToString(row.getLastActive()));
+                singleOrgVansSalesOutletTV.setText(numberFormat.format(row.salesOutLateCount));
+                singleOrgVansQuantityCountTV.setText(numberFormat.format(row.allLineItemCount));
+                singleOrgVansTotalSalesTV.setText(numberFormat.format(Math.round(row.totalPrice * 100.0) / 100.0));
+
+                if (vanListTableLayout != null) {
+                    vanListTableLayout.addView(tableElements);
+                }
+                animate(vanListTableLayout, tableElements);
+            }
+
+        }
+
+    }
+
+    public static void animate(View container, View child) {
         if (container != null) {
             Animation animation = AnimationUtils.loadAnimation(container.getContext(), R.anim.slide_out_bottom);
             child.startAnimation(animation);
         }
     }
 
-    public void scrollRows(ScrollView scrollView) {
+    public static void scrollRows(ScrollView scrollView) {
 
         if (scrollView != null) {
             scrollView.post(new Runnable() {
@@ -333,15 +364,56 @@ public class UtilityFunctionsForActivity1 {
             });
         }
 
+
     }
 
-    public void drawVSMCard(int index, Context context, GridView VSMcardGridView) throws JSONException {
+    public static void drawVSMCard(int index, Context context, GridView VSMcardGridView) throws JSONException {
 
         VSMCardGVAdapter adapter = new VSMCardGVAdapter(context, SplashScreenActivity.allData.getFmcgData().getVsmCards().get(index));
         VSMcardGridView.setAdapter(adapter);
     }
 
-    public void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
+    public static VsmTableDataForSingleVan getSingleVanData(JSONObject tableDataObjectForSingleVanInJson) throws JSONException {
+        JSONArray tableRowsForSingleVan = tableDataObjectForSingleVanInJson.getJSONArray("tableRows");
+        String nameOfVan = tableDataObjectForSingleVanInJson.getString("van");
+        int salesOutLateCount = tableDataObjectForSingleVanInJson.getInt("salesOutLateCount");
+        String lastActive = tableDataObjectForSingleVanInJson.getString("lastActive");
+        int allLineItemCount = tableDataObjectForSingleVanInJson.getInt("allLineItemCount");
+        double totalPrice = tableDataObjectForSingleVanInJson.getDouble("totalPrice");
+        ArrayList<VsmTransactionTableRow> vsmTableForSingleVan = new ArrayList<>();
+        for (int k = 0; k < tableRowsForSingleVan.length(); k++) {
+            JSONObject tableRowForSingleVan = tableRowsForSingleVan.getJSONObject(k);
+
+            String formattedOutlet;
+            String formattedTIN;
+            if (tableRowForSingleVan.getString("outlates").length() > 15) {
+                formattedOutlet = tableRowForSingleVan.getString("outlates").substring(0, 12) + "...";
+            } else
+                formattedOutlet = tableRowForSingleVan.getString("outlates");
+
+            if (tableRowForSingleVan.getString("tin").length() == 0) {
+                formattedTIN = "- - - - - - - - - - -";
+            } else {
+                formattedTIN = tableRowForSingleVan.getString("tin");
+            }
+            vsmTableForSingleVan.add(new VsmTransactionTableRow(
+                    tableRowForSingleVan.getString("voucherNo"),
+                    formattedOutlet,
+                    formattedTIN,
+                    tableRowForSingleVan.getString("dateAndTime"),
+                    tableRowForSingleVan.getInt("itemCount"),
+                    tableRowForSingleVan.getDouble("subTotal"),
+                    tableRowForSingleVan.getDouble("vat"),
+                    tableRowForSingleVan.getDouble("grandTotal"),
+                    tableRowForSingleVan.getDouble("latitude"),
+                    tableRowForSingleVan.getDouble("longitude")
+            ));
+        }
+        return new VsmTableDataForSingleVan(nameOfVan, vsmTableForSingleVan, salesOutLateCount,
+                lastActive, allLineItemCount, totalPrice);
+    }
+
+    public static void drawVsmTransactionTable(ArrayList<VsmTableForSingleDistributor> vsmTableDataForAll, Context context, TableLayout vsmTransactionTableLayout, int distributorIndex, int dataIndex, int animationIndex) {
         ArrayList<VsmTableDataForSingleVan> vsmTableDataForSingleDis = vsmTableDataForAll.get(distributorIndex).getAllVansData();
         VsmTableDataForSingleVan vsmTableDataForSingleVan = vsmTableDataForSingleDis.get(dataIndex);
         ArrayList<VsmTransactionTableRow> rows = vsmTableDataForSingleVan.getTableRows();
@@ -351,6 +423,7 @@ public class UtilityFunctionsForActivity1 {
             if (context != null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View tableElements = inflater.inflate(R.layout.table_row_vsm_transaction, null);
+//            View tableElements = LayoutInflater.from(context).inflate(R.layout.table_row_vsm_transaction, null, false);
                 TextView snTextView = tableElements.findViewById(R.id.vsmTransSNtextView);
                 TextView voucherNoTextView = tableElements.findViewById(R.id.vsmTransVoucherNtxtView);
                 TextView outletTextView = tableElements.findViewById(R.id.vsmTransOutletTextView);
@@ -371,9 +444,9 @@ public class UtilityFunctionsForActivity1 {
                 TINtextView.setText(row.getTIN());
                 dateNtimeTextView.setText(formatTimeToString(row.getDateNtime()));
                 itemCountTextview.setText(String.valueOf(row.getItemCount()));
-                subTotalTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getSubTotal()));
+                subTotalTextView.setText(numberFormat.format(Math.round(row.getSubTotal() * 100.0) / 100.0));
                 VATtextView.setText((int) row.getVAT());
-                totalSalesTextView.setText(UtilityFunctionsForActivity2.decimalFormat.format(row.getTotalSales()));
+                totalSalesTextView.setText(numberFormat.format(Math.round(row.getTotalSales() * 100.0) / 100.0));
                 if (vsmTransactionTableLayout != null) {
                     vsmTransactionTableLayout.addView(tableElements);
                 }
@@ -382,7 +455,7 @@ public class UtilityFunctionsForActivity1 {
         }
     }
 
-    public String formatTimeToString(String lastActive) {
+    public static String formatTimeToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("HH:mm:ss");
 
@@ -398,7 +471,7 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-    public String formatDateTimeToString(String lastActive) {
+    public static String formatDateTimeToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
@@ -414,10 +487,9 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-    public String formatDateToString(String lastActive) {
+    public static String formatDateToString(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
-        SimpleDateFormat output = new SimpleDateFormat("MMM, yyyy");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy");
 
         Date parsed = null;
         String formattedTime = null;
@@ -431,39 +503,7 @@ public class UtilityFunctionsForActivity1 {
         return formattedTime;
     }
 
-    public String formatDateToString2(String lastActive) {
-        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat output = new SimpleDateFormat(Constants.dateCriteriaFormat);
-
-        Date parsed = null;
-        String formattedTime = null;
-        try {
-            parsed = input.parse(lastActive);
-            formattedTime = output.format(parsed);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formattedTime;
-    }
-
-    public String formatHourNmin(String lastActive) {
-        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);
-        SimpleDateFormat output = new SimpleDateFormat("hh:mmaa");
-
-        Date parsed = null;
-        String formattedTime = null;
-        try {
-            parsed = input.parse(lastActive);
-            formattedTime = output.format(parsed);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return formattedTime;
-    }
-
-    public Date formatTime(String lastActive) {
+    public static Date formatTime(String lastActive) {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsed = null;
         try {
@@ -474,8 +514,8 @@ public class UtilityFunctionsForActivity1 {
         return parsed;
     }
 
-    public Date peakHourFormatter(String dateTime) {
-        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy hh:mmaa", Locale.ENGLISH);
+    public static Date peakHourFormatter(String dateTime) {
+        SimpleDateFormat input = new SimpleDateFormat("MMM dd yyyy HH:mmaa");
 
         Date parsed = null;
         try {
@@ -484,9 +524,10 @@ public class UtilityFunctionsForActivity1 {
             e.printStackTrace();
         }
         return parsed;
+
     }
 
-    public String timeElapsed(Date startDate, Date endDate) {
+    public static String timeElapsed(Date startDate, Date endDate) {
         long difference = endDate.getTime() - startDate.getTime();
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
@@ -507,38 +548,18 @@ public class UtilityFunctionsForActivity1 {
         if (elapsedMonths > 7) {
             return " long ago";
         } else if (elapsedMonths > 0) {
-            if (elapsedMonths == 1) {
-                return elapsedMonths + " month ago";
-            }
             return elapsedMonths + " months ago";
         } else if (elapsedMonths == 0 && elapsedDays > 0) {
-            if (elapsedDays == 1) {
-                return elapsedDays + " day ago";
-            }
             return elapsedDays + " days ago";
         } else if (elapsedDays == 0 && elapsedHours > 0) {
-            if (elapsedHours == 1) {
-                return elapsedHours + " hour ago";
-            }
             return elapsedHours + " hours ago";
         } else if (elapsedDays == 0 && elapsedHours == 0 & elapsedMinutes > 0) {
-            if (elapsedMinutes == 1) {
-                return elapsedMinutes + " minutes ago";
-            }
             return elapsedMinutes + " minutes ago";
         } else if (elapsedDays == 0 && elapsedHours == 0 & elapsedMinutes == 0 && elapsedSeconds > 0) {
             return elapsedSeconds + " seconds ago";
         } else
+//            return elapsedDays + " days, " + elapsedHours + " hours, " + elapsedMinutes + " minutes, " + elapsedSeconds + " seconds ago";
             return elapsedSeconds + "";
-    }
-
-    public String driverStatus(Date startDate, Date endDate) {
-        long difference = endDate.getTime() - startDate.getTime();
-        long elapsedHours = TimeUnit.MILLISECONDS.toHours(difference);
-        if (elapsedHours < 1) {
-            return "Active";
-        } else
-            return "Away";
     }
 
 }
