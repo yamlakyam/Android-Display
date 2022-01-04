@@ -108,17 +108,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-//    @Override
-//    public boolean dispatchKeyEvent(KeyEvent event) {
-//        if (getCurrentFragment() instanceof VsmCardFragment) {
-//            vsmCardKeyPress = (VsmCardKeyPress) getCurrentFragment();
-//            vsmCardKeyPress.dispatchKey(event);
-//        }
-//
-//        return super.dispatchKeyEvent(event);
-////        return true;
-//    }
-
     public Fragment getCurrentFragment() {
         Fragment navHostFragment = getSupportFragmentManager().getPrimaryNavigationFragment();
         return navHostFragment.getChildFragmentManager().getFragments().get(0);

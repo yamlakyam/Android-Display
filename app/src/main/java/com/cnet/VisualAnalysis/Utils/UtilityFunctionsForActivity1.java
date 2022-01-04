@@ -518,14 +518,14 @@ public class UtilityFunctionsForActivity1 {
             return elapsedDays + " days ago";
         } else if (elapsedDays == 0 && elapsedHours > 0) {
             if (elapsedHours == 1) {
-                return elapsedHours + " hr ago";
+                return elapsedHours + " hour ago";
             }
-            return elapsedHours + " hrs ago";
+            return elapsedHours + " hours ago";
         } else if (elapsedDays == 0 && elapsedHours == 0 & elapsedMinutes > 0) {
             if (elapsedMinutes == 1) {
-                return elapsedMinutes + " min ago";
+                return elapsedMinutes + " minutes ago";
             }
-            return elapsedMinutes + " mins ago";
+            return elapsedMinutes + " minutes ago";
         } else if (elapsedDays == 0 && elapsedHours == 0 & elapsedMinutes == 0 && elapsedSeconds > 0) {
             return elapsedSeconds + " seconds ago";
         } else

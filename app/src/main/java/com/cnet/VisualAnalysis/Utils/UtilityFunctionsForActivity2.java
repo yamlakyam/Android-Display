@@ -685,7 +685,6 @@ public class UtilityFunctionsForActivity2 {
             NumberFormat numberFormat = NumberFormat.getInstance();
             numberFormat.setGroupingUsed(true);
 
-
             double grandTotalForAll = 0;
 
             double grandTotal = row.getGrandTotal();
@@ -694,7 +693,6 @@ public class UtilityFunctionsForActivity2 {
                 grandTotalForAll = grandTotalForAll + grandTotalForI;
             }
             double percentage = (grandTotal / grandTotalForAll) * 100;
-
 
             tableRowProperty1.setText(String.valueOf(index + 1));
             tableRowProperty2.setText(row.getBranch());

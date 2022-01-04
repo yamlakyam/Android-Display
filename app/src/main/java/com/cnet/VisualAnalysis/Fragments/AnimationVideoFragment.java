@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cnet.VisualAnalysis.R;
 
 public class AnimationVideoFragment extends Fragment {
+
     Fragment fragment;
     VideoView videoView;
 

@@ -1,5 +1,4 @@
 package com.cnet.VisualAnalysis.Fragments;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;

@@ -25,7 +25,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.android.volley.VolleyError;
 import com.cnet.VisualAnalysis.Data.DashBoardData;
 import com.cnet.VisualAnalysis.Fragments.BranchSummaryFragment;
-import com.cnet.VisualAnalysis.Fragments.MapsFragment;
 import com.cnet.VisualAnalysis.Fragments.PeakHourReportForAllOusFragment;
 import com.cnet.VisualAnalysis.Fragments.PeakHourReportFragment;
 import com.cnet.VisualAnalysis.Fragments.SummarizedByArticleChildCategFragment;
@@ -74,7 +73,7 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
     public static int vanIndex;
 
-    ArrayList<Integer> layouts = SplashScreenActivity.allData.getLayoutList();
+    ArrayList<Integer> layouts;
 
     String lastActivty;
     int lastActivtyFragmentId;
@@ -86,6 +85,11 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
 
         secondActivtyProgressBar = findViewById(R.id.secondActivtyProgressBar);
         refreshingConstraintLayout = findViewById(R.id.refreshingConstraintLayout);
+
+        if (SplashScreenActivity.allData != null) {
+            if (SplashScreenActivity.allData.getLayoutList() != null)
+                layouts = SplashScreenActivity.allData.getLayoutList();
+        }
 
         Log.i("Van-Index-Before", vanIndex + "");
 //        vanIndex = 0;
@@ -438,9 +442,11 @@ public class SecondActivity extends AppCompatActivity implements VolleyHttp.GetR
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.i("ANIMATION_CALLED-4", "onFailure: ");
+        Log.i("back button from ", "onBackPressed: ");
+        finish();
+        System.exit(0);
 
-        startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
+//        startActivity(new Intent(SecondActivity.this, SplashScreenActivity.class));
     }
 
 

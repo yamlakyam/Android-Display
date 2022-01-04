@@ -129,6 +129,7 @@ public class BranchSummaryFragment extends Fragment implements SecondActivity.Ke
 
         backTraverse(fragment, R.id.summaryOfLastMonthFragment);
 
+
         keyPadControl(branchSummaryPaused);
 
         return view;

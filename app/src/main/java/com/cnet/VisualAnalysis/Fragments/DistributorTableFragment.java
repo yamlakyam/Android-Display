@@ -36,6 +36,8 @@ import com.cnet.VisualAnalysis.Utils.UtilityFunctionsForActivity2;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+//import android.app.Fragment;
+
 public class DistributorTableFragment extends Fragment implements MainActivity.KeyPress {
 
     public static Handler animationHandler;

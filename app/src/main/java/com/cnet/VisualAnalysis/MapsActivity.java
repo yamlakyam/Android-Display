@@ -298,7 +298,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         double latitude = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.get(index).getLatitude();
                         double longitude = SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.get(index).getLongitude();
+
+                        Log.i("LATLNG", latitude + "," + longitude);
                         LatLng loc = new LatLng(latitude, longitude);
+
 
                         if (builder != null) {
                             builder.include(loc);
@@ -312,7 +315,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         };
         handleRowAnimationThread = new MarkerDrawingThread(SplashScreenActivity.allData.getDashBoardData().getVoucherDataForVans().get(vanIndex).voucherDataArrayList.size(), animationHandler, 1000);
-
         handleRowAnimationThread.start();
     }
 
@@ -345,12 +347,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    navController.navigate(R.id.peakHourReportFragment);
                 } else {
                     SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
-
                     drawAvailableReportFromMap(gmap);
                 }
             } else {
                 SecondActivity.vanIndex = SecondActivity.vanIndex + 1;
-
                 drawAvailableReportFromMap(gmap);
             }
         }
